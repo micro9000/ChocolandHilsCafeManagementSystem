@@ -1,13 +1,16 @@
 CREATE DATABASE ChocolandHilsCafeDb;
 USE ChocolandHilsCafeDb;
-
+-- https://www.khanacademy.org/math/cc-third-grade-math/imp-measurement-and-data/imp-mass/v/intuition-for-grams#:~:text=.%20...%E2%80%9D-,To%20convert%20grams%20to%20kilograms%2C%20divide%20by%201%2C000.,30%2C000%20grams%20is%2030%20kilograms.
 
 -- Employee management, attendance and payroll related tables:
 
+-- if the employer decided to change/increase or decrease days on specific leave
+-- just add new entry to retain the current records and deactivate the old one
 CREATE TABLE IF NOT EXISTS LeaveTypes(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     leaveType VARCHAR(50),
     numberOfDays INT,
+    isActive BOOLEAN DEFAULT False,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
@@ -20,21 +23,35 @@ CREATE TABLE IF NOT EXISTS EmployeeShifts(
     startTime TIME,
     endTime TIME,
     numberOfHrs DECIMAL, -- can be 7.5 hrs
+    breakTime TIME,
+    breakTimeHrs DECIMAL, -- 1 is hr, 0.5 is 30mins
+    isActive BOOLEAN DEFAULT False,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+-- DateTime dt = DateTime.Now;
+-- string time = dt.ToString("hh:mm:ss");
+INSERT INTO EmployeeShifts (shift, startTime, endTime)
+VALUES ("ASDF", "08:30:00", "17:30:00");
+
+SELECT TIME_FORMAT(startTime, "%H") as startDateHrs, TIME_FORMAT(startTime, "%i") as startDateMins, 
+	TIME_FORMAT(endTime, "%H") as endDateHrs, TIME_FORMAT(endTime, "%i") as endDateMins
+FROM EmployeeShifts;
+
+select * from EmployeeShifts;
+
 CREATE TABLE IF NOT EXISTS Employees(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    employeeNumber CHAR(8) UNIQUE, -- 20210001, 02, 03
+    employeeNumber CHAR(8) UNIQUE, -- 20210001, 02, 03 (will always change the first 4 numbers, based on current year
 	firstName VARCHAR(100),
     lastName VARCHAR(100),
     address VARCHAR(255),
     birthdate DATE,
-    mobileNumber VARCHAR(255),
-    emailAddress VARCHAR(255),
+    mobileNumber VARCHAR(100),
+    emailAddress VARCHAR(100),
     branchAssign VARCHAR(255),
     dateHire DATE NOT NULL,
     sssNumber VARCHAR(50),
@@ -78,7 +95,8 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
     leaveId BIGINT NOT NULL,
     employeeNumber CHAR(8),
     numberOfDays DECIMAL, -- 1=day, 0.5 = halfday
-    remainingLeave DECIMAL, -- can leave whole day or halfday
+    remainingDays DECIMAL, -- can leave whole day or halfday
+    currentYear INT,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
@@ -86,23 +104,25 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
     FOREIGN KEY (leaveId) REFERENCES LeaveTypes(id)
 )ENGINE=INNODB;
 
+-- TODO: for halfday
 CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
-	dateNow DATETIME DEFAULT CURRENT_TIMESTAMP,
+	workDate DATETIME DEFAULT CURRENT_TIMESTAMP,
     shiftSchedId BIGINT NOT NULL,
-    in1 DATETIME,
-    out1 DATETIME,
-    in2 DATETIME,
-    out2 DATETIME,
-    late INT, -- minutes, divide to per hr (60),
-    ut INT, -- minutes
+    timeIn1 DATETIME,
+    timeOut1 DATETIME, -- noon break (matic based on timeout2) , 12:00NN, based on shiftsched:breaktime
+    timeIn2 DATETIME, -- noon time-in (matic on timeout2) : 01:00PM, based on shiftsched:breaktime
+    timeOut2 DATETIME, -- 
+    lateMins DECIMAL, -- number of minutes
+    underTimeMins DECIMAL, -- number of minutes
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(shiftSchedId) REFERENCES EmployeeShiftSchedules(id)
 )ENGINE=INNODB;
+
 
 SELECT TIME_FORMAT("08:30:00", "%H") as hrs, TIME_FORMAT("08:30:00", "%i") as mins;
 SELECT TIME_FORMAT("17:30:00", "%H.%i");
@@ -111,12 +131,12 @@ select TIMESTAMPDIFF(HOUR, '2015-12-16 18:00:00','2015-12-17 06:00:00');
 -- possible enhancement:
 -- add employee type that will use to add additional benefits
 -- certain employees can have special benefits
-CREATE TABLE IF NOT EXISTS EmployeeAdditionalBenefits(
+CREATE TABLE IF NOT EXISTS EmployeeBenefits(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     benefitTitle VARCHAR(255),
     amount DECIMAL(5,2),
     isEnabled BOOLEAN DEFAULT True,
-    payType CHAR(10), -- PER-MONTH (last pay day of the month), PER-YEAR, PER-PAYDAY, SPECIFCI-MONTH-DAY
+    paysSched CHAR(10), -- MONTHLY (last pay day of the month), YEARLY, PAYDAY, SPECIFIC-MONTH-DAY
     payMonth INT DEFAULT 0, -- nullable or empty, 1-12, only applicable to PER-YEAR and SPECIFIC-MONTH-DAY
     payDay INT DEFAULT 0, -- nullable or empty, 1-31
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -128,7 +148,7 @@ CREATE TABLE IF NOT EXISTS EmployeeAdditionalBenefits(
 -- possible enhancement:
 -- add employee type that will use to add conditional/special deduction
 -- certain employees can have special deduction
-CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
+CREATE TABLE IF NOT EXISTS EmployeeDeductions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     deductionTitle VARCHAR(255),
     amount DECIMAL(5,2),
@@ -158,16 +178,19 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
 -- employee benefits inventory per payday/payslip
 CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    payslipId BIGINT,
     employeeNumber CHAR(8),
 	benefitTitle VARCHAR(255),
     amount DECIMAL(5,2),
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
 
 -- employee deductions inventory per payday/payslip
+-- leave and absenses(Calculated from attendance) can be added on this
 CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
