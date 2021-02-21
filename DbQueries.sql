@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
 
 CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    shiftId LONG NOT NULL,
+    shiftId BIGINT NOT NULL,
     employeeNumber CHAR(8),
     schedDate DATE,
     isPresent BOOLEAN DEFAULT false, -- flag that will update once the employee time in
@@ -74,8 +74,8 @@ CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
 -- SELECT DATE_ADD("2017-06-15", INTERVAL 10 HOUR); 
 
 CREATE TABLE IF NOT EXISTS EmployeeLeaves(
-	id LONG NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    leaveId LONG NOT NULL,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    leaveId BIGINT NOT NULL,
     employeeNumber CHAR(8),
     numberOfDays DECIMAL, -- 1=day, 0.5 = halfday
     remainingLeave DECIMAL, -- can leave whole day or halfday
@@ -87,10 +87,10 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
 )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS EmployeeAttendance(
-	id LONG NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
 	dateNow DATETIME DEFAULT CURRENT_TIMESTAMP,
-    shiftSchedId LONG NOT NULL,
+    shiftSchedId BIGINT NOT NULL,
     in1 DATETIME,
     out1 DATETIME,
     in2 DATETIME,
@@ -112,7 +112,7 @@ select TIMESTAMPDIFF(HOUR, '2015-12-16 18:00:00','2015-12-17 06:00:00');
 -- add employee type that will use to add additional benefits
 -- certain employees can have special benefits
 CREATE TABLE IF NOT EXISTS EmployeeAdditionalBenefits(
-	id LONG NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     benefitTitle VARCHAR(255),
     amount DECIMAL(5,2),
     isEnabled BOOLEAN DEFAULT True,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS EmployeeAdditionalBenefits(
 -- add employee type that will use to add conditional/special deduction
 -- certain employees can have special deduction
 CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
-	id LONG NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     deductionTitle VARCHAR(255),
     amount DECIMAL(5,2),
     isEnabled BOOLEAN DEFAULT True,
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
 )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS EmployeePayslips(
-	id LONG NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
 	startShiftDate DATE,
     endShiftDate DATE,
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
 )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
-	id LONG NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
 	benefitTitle VARCHAR(255),
     amount DECIMAL(5,2),
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
 )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
-	id LONG NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
 	deductionTitle VARCHAR(255),
     amount DECIMAL(5,2),
