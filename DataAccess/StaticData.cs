@@ -13,5 +13,13 @@ namespace DataAccess
             normal,
             admin
         }
+
+        public enum EmployeeBenefitsPaySched
+        {
+            monthly,
+            yearly,
+            payday,
+            specificMonthDay
+        }
     }
 }
