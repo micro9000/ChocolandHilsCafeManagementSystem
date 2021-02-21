@@ -1,3 +1,7 @@
+using DapperGenericDataManager;
+using DataAccess;
+using DataAccess.Data.User;
+using Main.Controllers.UserBO;
 using Main.UserManagementForms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +38,7 @@ namespace Main
             using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {
                 var loginFrm = serviceProvider.GetRequiredService<LoginFrm>();
+
                 Application.Run(loginFrm);
             }
         }
@@ -52,16 +57,20 @@ namespace Main
 
         private static void ConfigureServices (ServiceCollection services, IConfigurationRoot confBuilder)
         {
-            // forms
-            services.AddScoped<LoginFrm>();
-
-            services.AddScoped<MainUserMgnFrm>();
-
-            // Business logic services
-            //services.AddTransient<IUserBO, UserBO>();
-
             // settings
             services.Configure<DBConnectionSettings>(confBuilder.GetSection(nameof(DBConnectionSettings)));
+            services.AddTransient<IDbConnectionFactory, MySQLConnection>();
+
+            // Data Access services
+            services.AddTransient<IUserData, UserData>();
+
+            // Business logic controllers/services
+            services.AddTransient<IUserController, UserController>();
+
+
+            // forms
+            services.AddScoped<LoginFrm>();
+            services.AddScoped<MainUserMgnFrm>();
 
 
             //Add Serilog
