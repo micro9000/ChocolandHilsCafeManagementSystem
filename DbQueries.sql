@@ -116,9 +116,9 @@ CREATE TABLE IF NOT EXISTS EmployeeAdditionalBenefits(
     benefitTitle VARCHAR(255),
     amount DECIMAL(5,2),
     isEnabled BOOLEAN DEFAULT True,
-    payType CHAR(10), -- PER-MONTH (last pay day of the month), PER-YEAR, PER-PAYDAY
-    perYearMonth INT, -- 1 to 12
-    perYearDay INT, -- 1 to 31
+    payType CHAR(10), -- PER-MONTH (last pay day of the month), PER-YEAR, PER-PAYDAY, SPECIFCI-MONTH-DAY
+    payMonth INT DEFAULT 0, -- nullable or empty, 1-12, only applicable to PER-YEAR and SPECIFIC-MONTH-DAY
+    payDay INT DEFAULT 0, -- nullable or empty, 1-31
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	startShiftDate DATE,
     endShiftDate DATE,
     payDate DATE,
-    NetBasicSalary DECIMAL(5,2),
+    NetBasicSalary DECIMAL(5,2), -- kinsenas
     benefitsTotal DECIMAL(5,2),
     deducationTotal DECIMAL(5,2),
     totalIncome DECIMAL(5,2),
@@ -155,6 +155,7 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+-- employee benefits inventory per payday/payslip
 CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
@@ -166,6 +167,7 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+-- employee deductions inventory per payday/payslip
 CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
