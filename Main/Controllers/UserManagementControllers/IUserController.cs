@@ -10,6 +10,6 @@ namespace Main.Controllers.UserManagementControllers
 {
     public interface IUserController
     {
-        UserModel SignIn(string username, string password);
+        EntityResult<UserModel> SignIn(string username, string password);
     }
 }

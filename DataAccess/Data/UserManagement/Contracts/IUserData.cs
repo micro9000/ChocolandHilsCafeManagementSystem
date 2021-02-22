@@ -10,6 +10,6 @@ namespace DataAccess.Data.UserManagement.Contracts
 {
     public interface IUserData : IDataManagerCRUD<UserModel>
     {
-        UserModel GetUserByUsername(string username);
+        UserModel GetUserByEmployeeNumber(string empNumber);
     }
 }

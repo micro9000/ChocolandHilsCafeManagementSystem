@@ -17,6 +17,7 @@ using DataAccess.Data.EmployeeManagement.Implementations;
 using Main.Controllers.UserManagementControllers;
 using DataAccess.Data.UserManagement.Contracts;
 using DataAccess.Data.UserManagement.Implementations;
+using Shared.Helpers;
 
 namespace Main
 {
@@ -65,6 +66,7 @@ namespace Main
             services.AddTransient<IDbConnectionFactory, MySQLConnection>(); // database settings, including connection string
 
             services.AddSingleton<Sessions>(); // application state or session
+            services.AddSingleton<Hashing>();
 
             // Data Access services
             services.AddTransient<IUserData, UserData>();

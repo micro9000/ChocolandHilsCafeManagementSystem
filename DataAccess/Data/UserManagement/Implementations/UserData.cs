@@ -19,12 +19,12 @@ namespace DataAccess.Data.UserManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public UserModel GetUserByUsername(string username)
+        public UserModel GetUserByEmployeeNumber(string empNumber)
         {
-            return new UserModel {
-                EmployeeNumber = username,
-                passwordSha512 = "test"
-            };
+            string query = @"SELECT * FORM Users 
+                            WHERE isDeleted=False AND isActive=True AND employeeNumber@EmployeeNumber";
+
+            return this.GetFirstOrDefault(query, new { EmployeeNumber = empNumber });
         }
     }
 }

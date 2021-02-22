@@ -1,42 +1,50 @@
-﻿using DataAccess.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataAccess;
 using Microsoft.Extensions.Logging;
-using System.Windows.Forms;
 using DataAccess.Entities.UserManagement;
 using DataAccess.Data.UserManagement.Contracts;
+using Shared.Helpers;
 
 namespace Main.Controllers.UserManagementControllers
 {
     public class UserController : IUserController
     {
         private readonly ILogger<LoginFrm> _logger;
+        private readonly Hashing _hashing;
         private readonly IUserData _userData;
 
-        public UserController(ILogger<LoginFrm> logger, IUserData userData)
+        public UserController(ILogger<LoginFrm> logger,
+                                Hashing hashing,
+                                IUserData userData)
         {
             _logger = logger;
+            _hashing = hashing;
             _userData = userData;
         }
 
-        public UserModel SignIn(string username, string password)
+        public EntityResult<UserModel> SignIn(string employeeNumber, string password)
         {
-            var userInfo = _userData.GetUserByUsername(username);
+            string hashPassword = _hashing.GetSHA512String(password);
+            var userInfo = _userData.GetUserByEmployeeNumber(employeeNumber);
+
+            var result = new EntityResult<UserModel>();
+            result.IsSuccess = false;
+            result.Messages.Add("User not found.");
 
             if (userInfo != null)
             {
-                return userInfo;
-            }
-            else
-            {
-                MessageBox.Show("Invalid username", "Login failed.");
+                if (userInfo.passwordSha512.ToUpper() == hashPassword.ToUpper())
+                {
+                    result.Data = userInfo;
+                    result.IsSuccess = true;
+                    result.Messages.Add("User found.");
+                }
             }
 
-            return null;
+            return result;
         }
     }
 }
