@@ -1,5 +1,5 @@
 ﻿using DapperGenericDataManager;
-using DataAccess.Data.User.Contacts;
+using DataAccess.Data.UserManagement.Contracts;
 using DataAccess.Entities.UserManagement;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Data.User
+namespace DataAccess.Data.UserManagement.Implementations
 {
     public class UserData : DataManagerCRUD<UserModel>, IUserData
     {

@@ -1,6 +1,5 @@
 using DapperGenericDataManager;
 using DataAccess;
-using DataAccess.Data.User;
 using Main.UserManagementForms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +14,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataAccess.Data.EmployeeManagement.Contracts;
 using DataAccess.Data.EmployeeManagement.Implementations;
-using DataAccess.Data.User.Contacts;
 using Main.Controllers.UserManagementControllers;
+using DataAccess.Data.UserManagement.Contracts;
+using DataAccess.Data.UserManagement.Implementations;
 
 namespace Main
 {
@@ -66,6 +66,8 @@ namespace Main
 
             // Data Access services
             services.AddTransient<IUserData, UserData>();
+            services.AddTransient<IRoleData, RoleData>();
+            services.AddTransient<IUserRoleData, UserRoleData>();
 
             // Employee Management module: services:
             services.AddTransient<IEmployeeAttendanceData, EmployeeAttendanceData>();

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Data.User.Contacts
+namespace DataAccess.Data.UserManagement.Contracts
 {
     public interface IUserData : IDataManagerCRUD<UserModel>
     {

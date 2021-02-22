@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess;
-using DataAccess.Data.User;
 using Microsoft.Extensions.Logging;
 using System.Windows.Forms;
-using DataAccess.Data.User.Contacts;
 using DataAccess.Entities.UserManagement;
+using DataAccess.Data.UserManagement.Contracts;
 
 namespace Main.Controllers.UserManagementControllers
 {

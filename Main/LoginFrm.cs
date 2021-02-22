@@ -1,4 +1,4 @@
-﻿using Main.Controllers.UserBO;
+﻿using Main.Controllers.UserManagementControllers;
 using Main.UserManagementForms;
 using Microsoft.Extensions.Logging;
 using System;
@@ -33,7 +33,7 @@ namespace Main
 
             _logger.LogInformation("HI");
 
-            MessageBox.Show(userInfo.Username);
+            MessageBox.Show(userInfo.EmployeeNumber);
 
             _mainUserMgnFrm.Show();
         }
