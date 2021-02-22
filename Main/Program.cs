@@ -14,6 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DataAccess.Data.EmployeeManagement.Contracts;
+using DataAccess.Data.EmployeeManagement.Implementations;
 
 namespace Main
 {
@@ -63,6 +65,21 @@ namespace Main
 
             // Data Access services
             services.AddTransient<IUserData, UserData>();
+
+            // Employee Management module: services:
+            services.AddTransient<IEmployeeAttendanceData, EmployeeAttendanceData>();
+            services.AddTransient<IEmployeeBenefitData, EmployeeBenefitData>();
+            services.AddTransient<IEmployeeData, EmployeeData>();
+            services.AddTransient<IEmployeeDeductionData, EmployeeDeductionData>();
+            services.AddTransient<IEmployeeLeaveData, EmployeeLeaveData>();
+            services.AddTransient<IEmployeePayslipBenefitData, EmployeePayslipBenefitData>();
+            services.AddTransient<IEmployeePayslipData, EmployeePayslipData>();
+            services.AddTransient<IEmployeePayslipDeductionData, EmployeePayslipDeductionData>();
+            services.AddTransient<IEmployeeSalaryRateData, EmployeeSalaryRateData>();
+            services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
+            services.AddTransient<IEmployeeShiftScheduleData, EmployeeShiftScheduleData>();
+            services.AddTransient<ILeaveTypeData, LeaveTypeData>();
+
 
             // Business logic controllers/services
             services.AddTransient<IUserController, UserController>();
