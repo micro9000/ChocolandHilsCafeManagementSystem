@@ -21,8 +21,8 @@ namespace DataAccess.Data.UserManagement.Implementations
 
         public UserModel GetUserByEmployeeNumber(string empNumber)
         {
-            string query = @"SELECT * FORM Users 
-                            WHERE isDeleted=False AND isActive=True AND employeeNumber@EmployeeNumber";
+            string query = @"SELECT * FROM Users 
+                            WHERE isDeleted=False AND isActive=True AND employeeNumber=@EmployeeNumber";
 
             return this.GetFirstOrDefault(query, new { EmployeeNumber = empNumber });
         }

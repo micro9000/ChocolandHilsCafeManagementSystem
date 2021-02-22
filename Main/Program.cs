@@ -93,9 +93,9 @@ namespace Main
 
 
             // forms
-            services.AddScoped<LoginFrm>();
+            services.AddScoped<MainFrm>();
             services.AddScoped<MainUserMgnFrm>();
-
+            services.AddScoped<LoginFrm>();
 
             //Add Serilog
             var log = new LoggerConfiguration()

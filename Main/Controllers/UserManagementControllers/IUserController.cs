@@ -1,5 +1,6 @@
 ﻿using DataAccess.Entities;
 using DataAccess.Entities.UserManagement;
+using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

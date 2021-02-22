@@ -18,7 +18,7 @@ namespace DataAccess.Entities.UserManagement
 
         [Write(false)]
         [Computed]
-        public List<UserRole> Roles { get; set; }
+        public List<UserRoleModel> Roles { get; set; }
 
         private bool isActive;
 

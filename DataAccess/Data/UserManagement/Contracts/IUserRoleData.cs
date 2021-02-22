@@ -10,5 +10,6 @@ namespace DataAccess.Data.UserManagement.Contracts
 {
     public interface IUserRoleData : IDataManagerCRUD<UserRoleModel>
     {
+        List<UserRoleModel> GetUserRoles(long userId);
     }
 }

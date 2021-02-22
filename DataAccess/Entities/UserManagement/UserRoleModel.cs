@@ -29,6 +29,17 @@ namespace DataAccess.Entities.UserManagement
             set { roleId = value; }
         }
 
+
+        private RoleModel role;
+
+        [Write(false)]
+        [Computed]
+        public RoleModel Role
+        {
+            get { return role; }
+            set { role = value; }
+        }
+
         private DateTime createdAt = DateTime.UtcNow;
 
         public DateTime CreatedAt

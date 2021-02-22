@@ -52,13 +52,18 @@ namespace Main
             this.TbxUsername.Name = "TbxUsername";
             this.TbxUsername.Size = new System.Drawing.Size(178, 23);
             this.TbxUsername.TabIndex = 1;
+            this.TbxUsername.Text = "20210001";
             // 
             // TbxPassword
             // 
             this.TbxPassword.Location = new System.Drawing.Point(74, 132);
             this.TbxPassword.Name = "TbxPassword";
+            this.TbxPassword.PasswordChar = '*';
             this.TbxPassword.Size = new System.Drawing.Size(178, 23);
             this.TbxPassword.TabIndex = 2;
+            this.TbxPassword.Text = "Welcome2021";
+            this.TbxPassword.UseSystemPasswordChar = true;
+            this.TbxPassword.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TbxPassword_KeyUp);
             // 
             // label1
             // 
@@ -82,7 +87,7 @@ namespace Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 255);
+            this.ClientSize = new System.Drawing.Size(347, 260);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TbxPassword);

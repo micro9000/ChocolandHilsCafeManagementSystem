@@ -15,27 +15,55 @@ namespace Main
     {
         private readonly ILogger<LoginFrm> _logger;
         private readonly IUserController _userController;
-        private readonly MainUserMgnFrm _mainUserMgnFrm;
+        private readonly Sessions _sessions;
+        private readonly MainFrm _mainFrm;
 
         public LoginFrm(ILogger<LoginFrm> logger,
                             IUserController userController,
-                            MainUserMgnFrm mainUserMgnFrm)
+                            Sessions sessions,
+                            MainFrm mainFrm)
         {
             InitializeComponent();
             _logger = logger;
             _userController = userController;
-            _mainUserMgnFrm = mainUserMgnFrm;
+            _sessions = sessions;
+            _mainFrm = mainFrm;
+        }
+
+
+        private void Login()
+        {
+            var signResults = _userController.SignIn(this.TbxUsername.Text, this.TbxPassword.Text);
+
+            if (signResults.IsSuccess)
+            {
+                _sessions.CurrentLoggedInUser = signResults.Data;
+                _mainFrm.Show();
+                this.Hide();
+            }
+            else
+            {
+                string messages = "";
+                foreach(var msg in signResults.Messages)
+                {
+                    messages += msg + " | ";
+                }
+                MessageBox.Show(messages);
+            }
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
         {
-            var userInfo = _userController.SignIn("Raniel", "password");
+            Login();
+        }
 
-            _logger.LogInformation("HI");
-
-            MessageBox.Show(userInfo.EmployeeNumber);
-
-            _mainUserMgnFrm.Show();
+        private void TbxPassword_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Login();
+                e.Handled = true;
+            }
         }
     }
 }
