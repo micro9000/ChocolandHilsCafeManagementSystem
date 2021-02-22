@@ -62,7 +62,9 @@ namespace Main
         {
             // settings
             services.Configure<DBConnectionSettings>(confBuilder.GetSection(nameof(DBConnectionSettings)));
-            services.AddTransient<IDbConnectionFactory, MySQLConnection>();
+            services.AddTransient<IDbConnectionFactory, MySQLConnection>(); // database settings, including connection string
+
+            services.AddSingleton<Sessions>(); // application state or session
 
             // Data Access services
             services.AddTransient<IUserData, UserData>();

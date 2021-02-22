@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Main
 {
-    public static class Sessions
+    public class Sessions
     {
-        public static UserModel CurrentLoggedInUser { get; set; }
-
-
+        public UserModel CurrentLoggedInUser { get; set; }
     }
 }
