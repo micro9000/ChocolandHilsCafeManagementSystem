@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS Employees(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+
 CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
@@ -200,4 +201,38 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+-- --------------------------------------------------------------------------------------
+-- User related tables:
+-- --------------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS Roles(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rolekey VARCHAR(50),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deleteAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS Users(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    employeeNumber CHAR(8) UNIQUE,
+	passwordSha512 VARCHAR(255),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deleteAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS UserRoles(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    userId BIGINT NOT NULL,
+    roleId INT NOT NULL,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deleteAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY (userId) REFERENCES Users(id),
+    FOREIGN KEY (roleId) REFERENCES Roles(id)
 )ENGINE=INNODB;
