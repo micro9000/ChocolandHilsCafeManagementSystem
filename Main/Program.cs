@@ -1,7 +1,6 @@
 using DapperGenericDataManager;
 using DataAccess;
 using DataAccess.Data.User;
-using Main.Controllers.UserBO;
 using Main.UserManagementForms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +15,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataAccess.Data.EmployeeManagement.Contracts;
 using DataAccess.Data.EmployeeManagement.Implementations;
+using DataAccess.Data.User.Contacts;
+using Main.Controllers.UserManagementControllers;
 
 namespace Main
 {

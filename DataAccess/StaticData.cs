@@ -11,7 +11,8 @@ namespace DataAccess
         public enum UserRole
         {
             normal,
-            admin
+            admin,
+            root
         }
 
         public enum EmployeeBenefitsPaySched

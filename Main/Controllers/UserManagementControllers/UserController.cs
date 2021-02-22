@@ -8,8 +8,10 @@ using DataAccess;
 using DataAccess.Data.User;
 using Microsoft.Extensions.Logging;
 using System.Windows.Forms;
+using DataAccess.Data.User.Contacts;
+using DataAccess.Entities.UserManagement;
 
-namespace Main.Controllers.UserBO
+namespace Main.Controllers.UserManagementControllers
 {
     public class UserController : IUserController
     {

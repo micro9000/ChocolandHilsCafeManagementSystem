@@ -1,5 +1,6 @@
 ﻿using DapperGenericDataManager;
-using DataAccess.Entities;
+using DataAccess.Data.User.Contacts;
+using DataAccess.Entities.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,8 @@ namespace DataAccess.Data.User
         public UserModel GetUserByUsername(string username)
         {
             return new UserModel {
-                Username = username,
-                Password = "test",
-                Role = StaticData.UserRole.normal
+                EmployeeNumber = username,
+                passwordSha512 = "test"
             };
         }
     }
