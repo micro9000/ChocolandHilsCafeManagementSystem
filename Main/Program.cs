@@ -86,6 +86,9 @@ namespace Main
             services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
             services.AddTransient<IEmployeeShiftScheduleData, EmployeeShiftScheduleData>();
             services.AddTransient<ILeaveTypeData, LeaveTypeData>();
+            services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
+            services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
+            services.AddTransient<IEmployeeGovtContributionData, EmployeeGovtContributionData>();
 
 
             // Business logic controllers/services

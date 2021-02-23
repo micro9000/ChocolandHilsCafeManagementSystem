@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS EmployeeShifts(
     deleteAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+-- RegularShift, 0830 - 1730, 8, 12:00NN, 1Hr
 
 -- DateTime dt = DateTime.Now;
 -- string time = dt.ToString("hh:mm:ss");
@@ -61,6 +62,27 @@ CREATE TABLE IF NOT EXISTS Employees(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+CREATE TABLE IF NOT EXISTS GovernmentAgencies(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    govtAgency VARCHAR(255),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deleteAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+
+CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    employeeNumber CHAR(8),
+    govtAgencyId INT NOT NULL,
+    employeeIdNumber VARCHAR(50),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deleteAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(govtAgencyId) REFERENCES GovernmentAgencies(id)
+)ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -128,6 +150,22 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 SELECT TIME_FORMAT("08:30:00", "%H") as hrs, TIME_FORMAT("08:30:00", "%i") as mins;
 SELECT TIME_FORMAT("17:30:00", "%H.%i");
 select TIMESTAMPDIFF(HOUR, '2015-12-16 18:00:00','2015-12-17 06:00:00');
+
+-- Government benefits (employee and employer contributions
+CREATE TABLE IF NOT EXISTS EmployeeGovtContributions(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    employeeNumber CHAR(8),
+    EmployeeGovtIdCardId BIGINT NOT NULL,
+    employeeContribution DECIMAL(5,2),
+    employerContribution DECIMAL(5,2),
+    totalContribution DECIMAL(5,2),
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    deleteAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(EmployeeGovtIdCardId) REFERENCES EmployeeGovtIdCards(id)
+)ENGINE=INNODB;
+
 
 -- possible enhancement:
 -- add employee type that will use to add additional benefits
@@ -215,7 +253,6 @@ CREATE TABLE IF NOT EXISTS Roles(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
-
 CREATE TABLE IF NOT EXISTS Users(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8) UNIQUE,
@@ -226,8 +263,6 @@ CREATE TABLE IF NOT EXISTS Users(
     deleteAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
-
-
 
 CREATE TABLE IF NOT EXISTS UserRoles(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -240,6 +275,11 @@ CREATE TABLE IF NOT EXISTS UserRoles(
     FOREIGN KEY (userId) REFERENCES Users(id),
     FOREIGN KEY (roleId) REFERENCES Roles(id)
 )ENGINE=INNODB;
+
+SELECT *
+FROM UserRoles AS UR
+JOIN Roles AS R ON R.id = UR.roleId
+WHERE UR.isDeleted=False AND UR.userId=1;
 
 -- testing data:
 INSERT INTO Roles (rolekey) VALUES ("normal"), ("admin"), ("root");
