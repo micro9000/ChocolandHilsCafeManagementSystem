@@ -35,7 +35,7 @@ if employee has under time of 15 mins, the deduction is 2.6047 * 15 mins = 39.07
 		breakTime: 12:00NN
 		breakTimeHrs: 1 or 0.5 (for 30 mins)
 		
-# EmployeesTable
+# Employees
 	- Add, Update, Delete -> avaibleble methods
 	- getByEmployeeNumber (string employeeNumber);
 	- getAllByDateHire (Datetime dateHire);
@@ -43,6 +43,15 @@ if employee has under time of 15 mins, the deduction is 2.6047 * 15 mins = 39.07
 	- search (string search);
 		valid columns: firstName, lastName, address, mobileNumber, emailAddress branchAssign, and sssNumber
 	
+
+# GovernmentAgencies
+	- Add, Update, Delete -> avaibleble methods is enough
+	
+# EmployeeGovtIdCards
+	- Add, Update, Delete -> avaibleble methods
+	- getByEmployeeNumber (string employeeNumber)
+	- getByGovtAgency (int govtAgencyId)
+	- getByGovtCardId (string employeeIdNumber)
 	
 # EmployeeSalaryRate
 	- Add, Update, Delete -> avaibleble methods
@@ -101,17 +110,43 @@ if employee has under time of 15 mins, the deduction is 2.6047 * 15 mins = 39.07
 	- getAllEmployeeWithUnderTimeByDateRange (Datetime startDate, Datetime endDate)
 	
 	
+# EmployeeGovtContributions
+	- Add, Update, Delete -> avaibleble methods
+	- getAllByEmployeeNumber(string employeeNumber)
 	
+# EmployeeBenefits
+	- Add, Update, Delete -> avaibleble methods
+	- getAllEnabled ()
+	- getByPaySched (Enum.Paysched paysched)
+	- getByPayMonth (int month) --> check if the payday is last payday of the month
 	
+# EmployeeDeductions
+	- Add, Update, Delete -> avaibleble methods
+	- getAllEnabled()
+
+# EmployeePayslips
+	- Add, Update, Delete -> avaibleble methods
+	- getByEmployeeNumberAndShiftDateRange (string employeeNumber, Datetime startShiftDate, Datetime endShiftDate)
+	- getAllByShiftDateRange (Datetime startShiftDate, Datetime endShiftDate)
+	- getByPayday (Datetime payDayDate)
+
+# EmployeePayslipBenefits
+	- Add, Update, Delete -> avaibleble methods
+	- getAllByPayslip (long payslipId)
+	- getAllByPayslipAndEmployeeNumber (long payslipId, string employeeNumber)
+
+# EmployeePayslipDeductions
+	- Add, Update, Delete -> avaibleble methods
+	- getAllByPayslip (long payslipId)
+	- getAllByPayslipAndEmployeeNumber (long payslipId, string employeeNumber)
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
+# Users
+	- Add, Update, Delete -> avaibleble methods
+	- getByEmployeeNumber(string employeeNumber)
+	- getAllActive ()
+	- getRoles (string employeeNumber)
+
 	
 	
 	

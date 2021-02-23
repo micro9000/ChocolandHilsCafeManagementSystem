@@ -155,7 +155,7 @@ select TIMESTAMPDIFF(HOUR, '2015-12-16 18:00:00','2015-12-17 06:00:00');
 CREATE TABLE IF NOT EXISTS EmployeeGovtContributions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
-    EmployeeGovtIdCardId BIGINT NOT NULL,
+    employeeGovtIdCardId BIGINT NOT NULL,
     employeeContribution DECIMAL(5,2),
     employerContribution DECIMAL(5,2),
     totalContribution DECIMAL(5,2),
@@ -230,15 +230,18 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
 
 -- employee deductions inventory per payday/payslip
 -- leave and absenses(Calculated from attendance) can be added on this
+-- government contributions
 CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    payslipId BIGINT,
     employeeNumber CHAR(8),
 	deductionTitle VARCHAR(255),
     amount DECIMAL(5,2),
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
 
 -- --------------------------------------------------------------------------------------
