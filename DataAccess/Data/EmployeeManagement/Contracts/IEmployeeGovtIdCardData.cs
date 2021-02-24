@@ -10,5 +10,10 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeeGovtIdCardData : IDataManagerCRUD<EmployeeGovtIdCardModel>
     {
+        List<EmployeeGovtIdCardModel> GetAllByEmployeeNumber(string employeeNumber);
+
+        List<EmployeeGovtIdCardModel> GetAllByGovtAgency(int govtAgencyId);
+
+        EmployeeGovtIdCardModel GetByEmployeeIdNumber(string employeeIdNumber);
     }
 }
