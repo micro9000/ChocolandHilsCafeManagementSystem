@@ -10,5 +10,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeeShiftData : IDataManagerCRUD<EmployeeShiftModel>
     {
+        List<EmployeeShiftModel> GetAllByIsActive(bool isActive);
     }
 }
