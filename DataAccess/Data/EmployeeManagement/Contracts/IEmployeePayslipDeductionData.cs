@@ -10,5 +10,7 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeePayslipDeductionData : IDataManagerCRUD<EmployeePayslipDeductionModel>
     {
+        List<EmployeePayslipDeductionModel> GetAllByPayslipId(long payslipId);
+        List<EmployeePayslipDeductionModel> GetAllByPayslipIdAndEmployeeNumber(long payslipId, string employeeNumber);
     }
 }
