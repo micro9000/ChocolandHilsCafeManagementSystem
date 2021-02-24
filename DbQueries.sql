@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
     govtAgencyId INT NOT NULL,
-    employeeIdNumber VARCHAR(50),
+    employeeIdNumber VARCHAR(50) UNIQUE,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     deleteAt DATETIME,
