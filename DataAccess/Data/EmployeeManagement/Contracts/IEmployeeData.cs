@@ -10,5 +10,8 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeeData : IDataManagerCRUD<EmployeeModel>
     {
+        EmployeeModel GetByEmployeeNumber(string employeeNumber);
+        List<EmployeeModel> GetAllByDateHire(DateTime dateHire);
+        List<EmployeeModel> Search(string search);
     }
 }

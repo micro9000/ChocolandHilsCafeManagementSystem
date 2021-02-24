@@ -18,5 +18,36 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<EmployeeModel> GetAllByDateHire(DateTime dateHire)
+        {
+            string query = @"SELECT * FROM Employees 
+                            WHERE isDeleted=false AND 
+                            dateHire BETWEEN @DateHire AND DATE_ADD(@DateHire, INTERVAL 1 DAY)";
+
+            return this.GetAll(query, new { DateHire = dateHire });
+        }
+
+        public EmployeeModel GetByEmployeeNumber(string employeeNumber)
+        {
+            string query = @"SELECT * FROM Employees 
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber";
+
+            return this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber });
+        }
+
+        public List<EmployeeModel> Search(string search)
+        {
+            string query = @"SELECT * FROM Employees
+                            WHERE isDeleted=false AND (
+                                firstName LIKE @Search OR
+                                lastName LIKE @Search OR
+                                address LIKE @Search OR
+                                mobileNumber LIKE @Search OR
+                                emailAddress LIKE @Search OR
+                                branchAssign LIKE @Search)";
+
+            return this.GetAll(query, new { Search = search });
+        }
     }
 }
