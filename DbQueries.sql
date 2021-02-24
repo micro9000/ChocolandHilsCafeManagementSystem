@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS EmployeeBenefits(
     benefitTitle VARCHAR(255),
     amount DECIMAL(5,2),
     isEnabled BOOLEAN DEFAULT True,
-    paysSched CHAR(10), -- MONTHLY (last pay day of the month), YEARLY, PAYDAY, SPECIFIC-MONTH-DAY
+    paySched CHAR(30), -- MONTHLY (last pay day of the month), YEARLY, PAYDAY, SPECIFIC-MONTH-DAY
     payMonth INT DEFAULT 0, -- nullable or empty, 1-12, only applicable to PER-YEAR and SPECIFIC-MONTH-DAY
     payDay INT DEFAULT 0, -- nullable or empty, 1-31
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -184,6 +184,8 @@ CREATE TABLE IF NOT EXISTS EmployeeBenefits(
     deleteAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+ALTER TABLE EmployeeBenefits
+MODIFY COLUMN paysSched CHAR(30);
 
 -- possible enhancement:
 -- add employee type that will use to add conditional/special deduction
