@@ -98,16 +98,6 @@ namespace DataAccess.Entities.EmployeeManagement
             set { dateHire = value; }
         }
 
-        private string sssNumber;
-
-        public string SSSNumber
-        {
-            get { return sssNumber; }
-            set { sssNumber = value; }
-        }
-
-
-
         private DateTime createdAt = DateTime.UtcNow;
 
         public DateTime CreatedAt
