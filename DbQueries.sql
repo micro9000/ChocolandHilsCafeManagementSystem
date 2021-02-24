@@ -7,7 +7,7 @@ USE ChocolandHilsCafeDb;
 -- if the employer decided to change/increase or decrease days on specific leave
 -- just add new entry to retain the current records and deactivate the old one
 CREATE TABLE IF NOT EXISTS LeaveTypes(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- change to INT
     leaveType VARCHAR(50),
     numberOfDays INT,
     isActive BOOLEAN DEFAULT False,
