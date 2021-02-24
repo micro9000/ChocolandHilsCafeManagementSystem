@@ -56,14 +56,14 @@ if employee has under time of 15 mins, the deduction is 2.6047 * 15 mins = 39.07
 # EmployeeSalaryRate
 	- Add, Update, Delete -> avaibleble methods
 	- getByEmployeeNumber(string employeeNumber)
-	- getBySalaryRateRange (decimal startSalary, decimal endSalary)
-	- getByMonthlyRateRange (decimal startSalary, decimal endSalary)
-	- getByDailyRateRange (decimal startSalary, decimal endSalary)
-	- getEmployeeLatestSalaryRate (string employeeNumber)
+	- *getBySalaryRateRange (decimal startSalary, decimal endSalary)
+	- *getByMonthlyRateRange (decimal startSalary, decimal endSalary)
+	- *getByDailyRateRange (decimal startSalary, decimal endSalary)
+	- *getEmployeeLatestSalaryRate (string employeeNumber)
 	
 # EmployeeShiftSchedules
 	- Add, Update, Delete -> avaibleble methods
-	- getByShift (long shiftId)
+	- getByShiftAndSchedDateRange (long shiftId, Datetime startDate, Datetime endDate)
 	- getAllByEmployeeNumber (string employeeNumber)
 	- getEmployeeSchedBySchedDate (string employeeNumber, Datetime startDate)
 	- getAllByEmployeeNumberAndSchedDateRange (string employeeNumber, Datetime startDate, Datetime endDate)
