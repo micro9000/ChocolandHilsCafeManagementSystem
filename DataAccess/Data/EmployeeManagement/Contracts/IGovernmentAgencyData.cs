@@ -10,5 +10,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IGovernmentAgencyData : IDataManagerCRUD<GovernmentAgencyModel>
     {
+        List<GovernmentAgencyModel> GetAllByIsDeleted(bool isDeleted);
     }
 }

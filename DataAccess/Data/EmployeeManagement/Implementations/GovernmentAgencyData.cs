@@ -18,5 +18,11 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<GovernmentAgencyModel> GetAllByIsDeleted(bool isDeleted)
+        {
+            string query = @"SELECT * FROM GovernmentAgencies WHERE isDeleted=@IsDeleted";
+            return this.GetAll(query, new { IsDeleted = isDeleted });
+        }
     }
 }
