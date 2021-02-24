@@ -10,5 +10,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface ILeaveTypeData : IDataManagerCRUD<LeaveTypeModel>
     {
+        List<LeaveTypeModel> GetAllByIsActive(bool isActive);
     }
 }
