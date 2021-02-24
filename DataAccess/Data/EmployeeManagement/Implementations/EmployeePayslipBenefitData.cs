@@ -18,5 +18,21 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<EmployeePayslipBenefitModel> GetAllByPayslipId(long payslipId)
+        {
+            string query = @"SELECT * FROM EmployeePayslipBenefits 
+                            WHERE isDeleted=false AND payslipId=@PayslipId";
+
+            return this.GetAll(query, new { PayslipId = payslipId });
+        }
+
+        public List<EmployeePayslipBenefitModel> GetAllByPayslipIdAndEmployeeNumber(long payslipId, string employeeNumber)
+        {
+            string query = @"SELECT * FROM EmployeePayslipBenefits 
+                            WHERE isDeleted=false AND payslipId=@PayslipId AND employeeNumber=@EmployeeNumber";
+
+            return this.GetAll(query, new { PayslipId = payslipId, EmployeeNumber = employeeNumber });
+        }
     }
 }
