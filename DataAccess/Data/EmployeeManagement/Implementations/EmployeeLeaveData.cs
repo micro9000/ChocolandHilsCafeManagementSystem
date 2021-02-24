@@ -18,5 +18,31 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<EmployeeLeaveModel> GetAllByEmployeeNumberAndLeaveId(string employeeNumber, long leaveId, int year)
+        {
+            string query = @"SELECT * FROM EmployeeLeaves
+                            WHERE isDeleted=false AND leaveId=@LeaveId AND
+                            employeeNumber=@EmployeeNumber AND currentYear=@Year";
+
+            return this.GetAll(query, new
+            {
+                LeaveId = leaveId,
+                EmployeeNumber = employeeNumber,
+                Year = year
+            });
+        }
+
+        public List<EmployeeLeaveModel> GetAllByEmployeeNumberAndYear(string employeeNumber, int year)
+        {
+            string query = @"SELECT * FROM EmployeeLeaves
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND currentYear=@Year";
+
+            return this.GetAll(query, new
+            {
+                EmployeeNumber = employeeNumber,
+                Year = year
+            });
+        }
     }
 }
