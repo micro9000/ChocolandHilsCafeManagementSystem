@@ -21,7 +21,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
         public List<LeaveTypeModel> GetAllByIsActive(bool isActive)
         {
-            string query = @"SELECT * FROM LeaveTypeModel WHERE isActive=@IsActive";
+            string query = @"SELECT * FROM LeaveTypeModel WHERE isDeleted=False AND isActive=@IsActive";
             return this.GetAll(query, new { IsActive = isActive });
         }
     }
