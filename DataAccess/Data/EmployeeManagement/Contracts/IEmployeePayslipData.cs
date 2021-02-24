@@ -10,5 +10,8 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeePayslipData : IDataManagerCRUD<EmployeePayslipModel>
     {
+        List<EmployeePayslipModel> GetAllByEmployeeNumberAndShiftDateRange(string employeeNumber, DateTime startShiftDate, DateTime endShiftDate);
+        List<EmployeePayslipModel> GetAllByShiftDateRange(DateTime startShiftDate, DateTime endShiftDate);
+        List<EmployeePayslipModel> GetAllByPaydayDate(DateTime paydayDate);
     }
 }

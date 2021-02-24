@@ -18,5 +18,41 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<EmployeePayslipModel> GetAllByEmployeeNumberAndShiftDateRange(string employeeNumber, DateTime startShiftDate, DateTime endShiftDate)
+        {
+            string query = @"SELECT * FROM EmployeePayslips
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND
+                            startShiftDate=@StartShiftDate AND 
+                            endShiftDate=@EndShiftDate";
+
+            return this.GetAll(query, new {
+                EmployeeNumber = employeeNumber,
+                StartShiftDate = startShiftDate,
+                EndShiftDate = endShiftDate
+            });
+        }
+
+        public List<EmployeePayslipModel> GetAllByPaydayDate(DateTime paydayDate)
+        {
+            string query = @"SELECT * FROM EmployeePayslips
+                            WHERE isDeleted=false AND payDate=@PaydayDate";
+
+            return this.GetAll(query, new { PaydayDate = paydayDate });
+        }
+
+        public List<EmployeePayslipModel> GetAllByShiftDateRange(DateTime startShiftDate, DateTime endShiftDate)
+        {
+            string query = @"SELECT * FROM EmployeePayslips
+                            WHERE isDeleted=false AND
+                            startShiftDate=@StartShiftDate AND 
+                            endShiftDate=@EndShiftDate";
+
+            return this.GetAll(query, new
+            {
+                StartShiftDate = startShiftDate,
+                EndShiftDate = endShiftDate
+            });
+        }
     }
 }
