@@ -18,5 +18,13 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<EmployeeGovtContributionModel> GetAllByEmployeeNumber(string employeeNumber)
+        {
+            string query = @"SELECT * FROM EmployeeGovtContributions
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber";
+
+            return this.GetAll(query, new { EmployeeNumber = employeeNumber });
+        }
     }
 }

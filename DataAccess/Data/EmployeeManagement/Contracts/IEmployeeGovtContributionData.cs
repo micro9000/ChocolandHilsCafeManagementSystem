@@ -10,5 +10,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeeGovtContributionData : IDataManagerCRUD<EmployeeGovtContributionModel>
     {
+        List<EmployeeGovtContributionModel> GetAllByEmployeeNumber(string employeeNumber);
     }
 }
