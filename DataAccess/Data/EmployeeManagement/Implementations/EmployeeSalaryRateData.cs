@@ -18,5 +18,14 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public EmployeeSalaryRateModel GetByEmployeeNumber(string employeeNumber)
+        {
+            string query = @"SELECT * FROM EmployeeSalaryRate
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber
+                            ORDER BY id DESC LIMIT 1";
+
+            return this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber });
+        }
     }
 }
