@@ -18,5 +18,11 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<LeaveTypeModel> GetAllByIsActive(bool isActive)
+        {
+            string query = @"SELECT * FROM LeaveTypeModel WHERE isActive=@IsActive";
+            return this.GetAll(query, new { IsActive = isActive });
+        }
     }
 }
