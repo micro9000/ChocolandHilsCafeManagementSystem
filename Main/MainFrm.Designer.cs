@@ -79,9 +79,9 @@ namespace Main
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.BtnUserLogout);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 509);
+            this.panel1.Location = new System.Drawing.Point(0, 518);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(220, 132);
+            this.panel1.Size = new System.Drawing.Size(220, 123);
             this.panel1.TabIndex = 0;
             // 
             // LblCurrentUserRoles
@@ -89,7 +89,7 @@ namespace Main
             this.LblCurrentUserRoles.AutoSize = true;
             this.LblCurrentUserRoles.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LblCurrentUserRoles.ForeColor = System.Drawing.Color.White;
-            this.LblCurrentUserRoles.Location = new System.Drawing.Point(63, 45);
+            this.LblCurrentUserRoles.Location = new System.Drawing.Point(63, 42);
             this.LblCurrentUserRoles.Name = "LblCurrentUserRoles";
             this.LblCurrentUserRoles.Size = new System.Drawing.Size(24, 21);
             this.LblCurrentUserRoles.TabIndex = 10;
@@ -100,7 +100,7 @@ namespace Main
             this.LblCurrentUserName.AutoSize = true;
             this.LblCurrentUserName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LblCurrentUserName.ForeColor = System.Drawing.Color.White;
-            this.LblCurrentUserName.Location = new System.Drawing.Point(63, 12);
+            this.LblCurrentUserName.Location = new System.Drawing.Point(63, 11);
             this.LblCurrentUserName.Name = "LblCurrentUserName";
             this.LblCurrentUserName.Size = new System.Drawing.Size(24, 21);
             this.LblCurrentUserName.TabIndex = 9;
@@ -111,7 +111,7 @@ namespace Main
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(12, 45);
+            this.label3.Location = new System.Drawing.Point(12, 42);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(51, 21);
             this.label3.TabIndex = 8;
@@ -122,7 +122,7 @@ namespace Main
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(12, 12);
+            this.label2.Location = new System.Drawing.Point(12, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 21);
             this.label2.TabIndex = 0;
@@ -141,10 +141,10 @@ namespace Main
             this.BtnUserLogout.ForeColor = System.Drawing.Color.White;
             this.BtnUserLogout.Image = ((System.Drawing.Image)(resources.GetObject("BtnUserLogout.Image")));
             this.BtnUserLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUserLogout.Location = new System.Drawing.Point(0, 82);
+            this.BtnUserLogout.Location = new System.Drawing.Point(0, 76);
             this.BtnUserLogout.Name = "BtnUserLogout";
             this.BtnUserLogout.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnUserLogout.Size = new System.Drawing.Size(220, 50);
+            this.BtnUserLogout.Size = new System.Drawing.Size(220, 47);
             this.BtnUserLogout.TabIndex = 7;
             this.BtnUserLogout.Text = "Sign-out";
             this.BtnUserLogout.UseVisualStyleBackColor = false;
@@ -163,10 +163,10 @@ namespace Main
             this.BtnSettingsSystem.ForeColor = System.Drawing.Color.White;
             this.BtnSettingsSystem.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettingsSystem.Image")));
             this.BtnSettingsSystem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSettingsSystem.Location = new System.Drawing.Point(0, 272);
+            this.BtnSettingsSystem.Location = new System.Drawing.Point(0, 255);
             this.BtnSettingsSystem.Name = "BtnSettingsSystem";
             this.BtnSettingsSystem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnSettingsSystem.Size = new System.Drawing.Size(220, 50);
+            this.BtnSettingsSystem.Size = new System.Drawing.Size(220, 47);
             this.BtnSettingsSystem.TabIndex = 6;
             this.BtnSettingsSystem.Text = "Settings";
             this.BtnSettingsSystem.UseVisualStyleBackColor = false;
@@ -184,10 +184,10 @@ namespace Main
             this.BtnSalesReportSystem.ForeColor = System.Drawing.Color.White;
             this.BtnSalesReportSystem.Image = ((System.Drawing.Image)(resources.GetObject("BtnSalesReportSystem.Image")));
             this.BtnSalesReportSystem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSalesReportSystem.Location = new System.Drawing.Point(0, 222);
+            this.BtnSalesReportSystem.Location = new System.Drawing.Point(0, 208);
             this.BtnSalesReportSystem.Name = "BtnSalesReportSystem";
             this.BtnSalesReportSystem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnSalesReportSystem.Size = new System.Drawing.Size(220, 50);
+            this.BtnSalesReportSystem.Size = new System.Drawing.Size(220, 47);
             this.BtnSalesReportSystem.TabIndex = 5;
             this.BtnSalesReportSystem.Text = "Sales Report";
             this.BtnSalesReportSystem.UseVisualStyleBackColor = false;
@@ -205,10 +205,10 @@ namespace Main
             this.BtnInventorySystem.ForeColor = System.Drawing.Color.White;
             this.BtnInventorySystem.Image = ((System.Drawing.Image)(resources.GetObject("BtnInventorySystem.Image")));
             this.BtnInventorySystem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnInventorySystem.Location = new System.Drawing.Point(0, 172);
+            this.BtnInventorySystem.Location = new System.Drawing.Point(0, 161);
             this.BtnInventorySystem.Name = "BtnInventorySystem";
             this.BtnInventorySystem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnInventorySystem.Size = new System.Drawing.Size(220, 50);
+            this.BtnInventorySystem.Size = new System.Drawing.Size(220, 47);
             this.BtnInventorySystem.TabIndex = 4;
             this.BtnInventorySystem.Text = "Inventory";
             this.BtnInventorySystem.UseVisualStyleBackColor = false;
@@ -226,10 +226,10 @@ namespace Main
             this.BtnPayrollSystem.ForeColor = System.Drawing.Color.White;
             this.BtnPayrollSystem.Image = ((System.Drawing.Image)(resources.GetObject("BtnPayrollSystem.Image")));
             this.BtnPayrollSystem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnPayrollSystem.Location = new System.Drawing.Point(0, 122);
+            this.BtnPayrollSystem.Location = new System.Drawing.Point(0, 114);
             this.BtnPayrollSystem.Name = "BtnPayrollSystem";
             this.BtnPayrollSystem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnPayrollSystem.Size = new System.Drawing.Size(220, 50);
+            this.BtnPayrollSystem.Size = new System.Drawing.Size(220, 47);
             this.BtnPayrollSystem.TabIndex = 3;
             this.BtnPayrollSystem.Text = "Payroll";
             this.BtnPayrollSystem.UseVisualStyleBackColor = false;
@@ -248,10 +248,10 @@ namespace Main
             this.BtnEmployeeManagementMenuItem.ForeColor = System.Drawing.Color.White;
             this.BtnEmployeeManagementMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("BtnEmployeeManagementMenuItem.Image")));
             this.BtnEmployeeManagementMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnEmployeeManagementMenuItem.Location = new System.Drawing.Point(0, 72);
+            this.BtnEmployeeManagementMenuItem.Location = new System.Drawing.Point(0, 67);
             this.BtnEmployeeManagementMenuItem.Name = "BtnEmployeeManagementMenuItem";
             this.BtnEmployeeManagementMenuItem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnEmployeeManagementMenuItem.Size = new System.Drawing.Size(220, 50);
+            this.BtnEmployeeManagementMenuItem.Size = new System.Drawing.Size(220, 47);
             this.BtnEmployeeManagementMenuItem.TabIndex = 2;
             this.BtnEmployeeManagementMenuItem.Text = "Employees";
             this.BtnEmployeeManagementMenuItem.UseVisualStyleBackColor = false;
@@ -264,7 +264,7 @@ namespace Main
             this.panelMainBanner.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelMainBanner.Location = new System.Drawing.Point(0, 0);
             this.panelMainBanner.Name = "panelMainBanner";
-            this.panelMainBanner.Size = new System.Drawing.Size(220, 72);
+            this.panelMainBanner.Size = new System.Drawing.Size(220, 67);
             this.panelMainBanner.TabIndex = 0;
             // 
             // label1
@@ -272,7 +272,7 @@ namespace Main
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(10, 23);
+            this.label1.Location = new System.Drawing.Point(10, 21);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(204, 30);
             this.label1.TabIndex = 0;
@@ -286,7 +286,7 @@ namespace Main
             this.panelSecondaryBanner.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelSecondaryBanner.Location = new System.Drawing.Point(220, 0);
             this.panelSecondaryBanner.Name = "panelSecondaryBanner";
-            this.panelSecondaryBanner.Size = new System.Drawing.Size(884, 72);
+            this.panelSecondaryBanner.Size = new System.Drawing.Size(884, 67);
             this.panelSecondaryBanner.TabIndex = 1;
             // 
             // button1
@@ -305,7 +305,7 @@ namespace Main
             this.button1.Location = new System.Drawing.Point(0, 0);
             this.button1.Name = "button1";
             this.button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.button1.Size = new System.Drawing.Size(95, 72);
+            this.button1.Size = new System.Drawing.Size(95, 67);
             this.button1.TabIndex = 7;
             this.button1.Text = "Home";
             this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -316,7 +316,7 @@ namespace Main
             this.LblRenderedFormTitle.AutoSize = true;
             this.LblRenderedFormTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.LblRenderedFormTitle.ForeColor = System.Drawing.Color.White;
-            this.LblRenderedFormTitle.Location = new System.Drawing.Point(117, 23);
+            this.LblRenderedFormTitle.Location = new System.Drawing.Point(117, 21);
             this.LblRenderedFormTitle.Name = "LblRenderedFormTitle";
             this.LblRenderedFormTitle.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.LblRenderedFormTitle.Size = new System.Drawing.Size(205, 30);
@@ -326,9 +326,9 @@ namespace Main
             // panelMainBody
             // 
             this.panelMainBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMainBody.Location = new System.Drawing.Point(220, 72);
+            this.panelMainBody.Location = new System.Drawing.Point(220, 67);
             this.panelMainBody.Name = "panelMainBody";
-            this.panelMainBody.Size = new System.Drawing.Size(884, 569);
+            this.panelMainBody.Size = new System.Drawing.Size(884, 574);
             this.panelMainBody.TabIndex = 2;
             // 
             // EmployeeManagementToolStrip
@@ -339,12 +339,13 @@ namespace Main
             // 
             // MainFrm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1104, 641);
             this.Controls.Add(this.panelMainBody);
             this.Controls.Add(this.panelSecondaryBanner);
             this.Controls.Add(this.panelSidebar);
+            this.Font = new System.Drawing.Font("Cambria", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "MainFrm";
             this.Text = "Admin form";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
