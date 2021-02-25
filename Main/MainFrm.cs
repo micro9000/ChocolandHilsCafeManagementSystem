@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Main.Forms.EmployeeManagementForms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,14 +14,16 @@ namespace Main
     public partial class MainFrm : Form
     {
         private readonly Sessions _sessions;
-
+        private readonly FrmMainEmployeeManagement _frmMainEmployeeManagement;
         private Button currentButton;
         private Form activeForm;
 
-        public MainFrm(Sessions sessions)
+        public MainFrm(Sessions sessions,
+                        FrmMainEmployeeManagement frmMainEmployeeManagement)
         {
             InitializeComponent();
             _sessions = sessions;
+            _frmMainEmployeeManagement = frmMainEmployeeManagement;
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -71,7 +74,7 @@ namespace Main
         private void OpenChildForm(Form childForm, object btnSender)
         {
             if (activeForm != null)
-                activeForm.Close();
+                activeForm.Hide();
 
             ActivateButton(btnSender);
 
@@ -94,7 +97,7 @@ namespace Main
 
         private void BtnEmployeeManagementMenuItem_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new Forms.EmployeeManagementForms.FrmMainEmployeeManagement(), sender);
+            OpenChildForm(_frmMainEmployeeManagement, sender);
         }
 
         private void BtnPayrollSystem_Click(object sender, EventArgs e)

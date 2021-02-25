@@ -18,6 +18,11 @@ using Main.Controllers.UserManagementControllers;
 using DataAccess.Data.UserManagement.Contracts;
 using DataAccess.Data.UserManagement.Implementations;
 using Shared.Helpers;
+using Main.Controllers.EmployeeManagementControllers.Validator;
+using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
+using Main.Controllers.EmployeeManagementControllers;
+using AutoMapper;
+using Main.Forms.EmployeeManagementForms;
 
 namespace Main
 {
@@ -62,6 +67,8 @@ namespace Main
 
         private static void ConfigureServices (ServiceCollection services, IConfigurationRoot confBuilder)
         {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+           
             // settings
             services.Configure<DBConnectionSettings>(confBuilder.GetSection(nameof(DBConnectionSettings)));
             services.AddTransient<IDbConnectionFactory, MySQLConnection>(); // database settings, including connection string
@@ -90,6 +97,10 @@ namespace Main
             services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
             services.AddTransient<IEmployeeGovtContributionData, EmployeeGovtContributionData>();
+            // Employee Management validators (Fluent validation)
+            services.AddTransient<EmployeeAddUpdateValidator>();
+            // Employee Management Controllers
+            services.AddTransient<IEmployeeController, EmployeeController>();
 
 
             // Business logic controllers/services
@@ -97,9 +108,14 @@ namespace Main
 
 
             // forms
-            services.AddScoped<MainFrm>();
-            services.AddScoped<MainUserMgnFrm>();
-            services.AddScoped<LoginFrm>();
+            services.AddTransient<MainFrm>();
+            services.AddTransient<MainUserMgnFrm>();
+            services.AddTransient<LoginFrm>();
+
+            // Employee Management forms
+            services.AddTransient<FrmMainEmployeeManagement>();
+            services.AddTransient<FrmAddUpdateEmployee>();
+
 
             //Add Serilog
             var log = new LoggerConfiguration()

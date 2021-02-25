@@ -23,9 +23,9 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             string query = @"SELECT COUNT(*) as count FROM Employees 
                             WHERE isDeleted=false AND 
-                            dateHire = @DateHire";
+                            YEAR(dateHire) = @YearHire";
 
-            return this.GetValue<long>(query, new { DateHire = dateHire });
+            return this.GetValue<long>(query, new { YearHire = dateHire.Year });
         }
 
         public List<EmployeeModel> GetAllByDateHire(DateTime dateHire)

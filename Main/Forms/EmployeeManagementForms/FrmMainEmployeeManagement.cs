@@ -12,10 +12,12 @@ namespace Main.Forms.EmployeeManagementForms
 {
     public partial class FrmMainEmployeeManagement : Form
     {
+        private readonly FrmAddUpdateEmployee _frmAddUpdateEmployee;
         private Form activeForm;
-        public FrmMainEmployeeManagement()
+        public FrmMainEmployeeManagement(FrmAddUpdateEmployee frmAddUpdateEmployee)
         {
             InitializeComponent();
+            _frmAddUpdateEmployee = frmAddUpdateEmployee;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -24,14 +26,14 @@ namespace Main.Forms.EmployeeManagementForms
 
             if (clickedItem != null && clickedItem.Name == "ToolStripItem_Add")
             {
-                this.OpenChildForm(new FrmAddUpdateEmployee(), sender);
+                this.OpenChildForm(_frmAddUpdateEmployee, sender);
             }
         }
 
         private void OpenChildForm(Form childForm, object btnSender)
         {
             if (activeForm != null)
-                activeForm.Close();
+                activeForm.Hide();
 
             activeForm = childForm;
             childForm.TopLevel = false;
