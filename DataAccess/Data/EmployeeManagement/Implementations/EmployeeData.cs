@@ -19,6 +19,15 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
+        public long GetCountByDateHire(DateTime dateHire)
+        {
+            string query = @"SELECT COUNT(*) as count FROM Employees 
+                            WHERE isDeleted=false AND 
+                            dateHire = @DateHire";
+
+            return this.GetValue<long>(query, new { DateHire = dateHire });
+        }
+
         public List<EmployeeModel> GetAllByDateHire(DateTime dateHire)
         {
             string query = @"SELECT * FROM Employees 
