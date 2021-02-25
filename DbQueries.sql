@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS EmployeeBenefits(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 ALTER TABLE EmployeeBenefits
-MODIFY COLUMN paysSched CHAR(30);
+ADD COLUMN paySched CHAR(30);
 
 -- possible enhancement:
 -- add employee type that will use to add conditional/special deduction

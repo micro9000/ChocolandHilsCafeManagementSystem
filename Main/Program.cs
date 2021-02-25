@@ -41,9 +41,10 @@ namespace Main
 
             using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {
-                var loginFrm = serviceProvider.GetRequiredService<LoginFrm>();
+                //var loginFrm = serviceProvider.GetRequiredService<LoginFrm>();
+                var mainFrm = serviceProvider.GetRequiredService<MainFrm>();
 
-                Application.Run(loginFrm);
+                Application.Run(mainFrm);
             }
         }
 
