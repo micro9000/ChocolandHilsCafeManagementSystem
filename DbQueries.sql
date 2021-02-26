@@ -1,5 +1,6 @@
 CREATE DATABASE ChocolandHilsCafeDb;
 USE ChocolandHilsCafeDb;
+
 -- https://www.khanacademy.org/math/cc-third-grade-math/imp-measurement-and-data/imp-mass/v/intuition-for-grams#:~:text=.%20...%E2%80%9D-,To%20convert%20grams%20to%20kilograms%2C%20divide%20by%201%2C000.,30%2C000%20grams%20is%2030%20kilograms.
 
 -- Employee management, attendance and payroll related tables:
@@ -11,8 +12,8 @@ CREATE TABLE IF NOT EXISTS LeaveTypes(
     leaveType VARCHAR(50),
     numberOfDays INT,
     isActive BOOLEAN DEFAULT False,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
@@ -26,8 +27,8 @@ CREATE TABLE IF NOT EXISTS EmployeeShifts(
     breakTime TIME,
     breakTimeHrs DECIMAL, -- 1 is hr, 0.5 is 30mins
     isActive BOOLEAN DEFAULT False,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
@@ -55,17 +56,22 @@ CREATE TABLE IF NOT EXISTS Employees(
     emailAddress VARCHAR(100),
     branchAssign VARCHAR(255),
     dateHire DATE NOT NULL,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM Employees;
+
+SELECT COUNT(*) as count FROM Employees 
+WHERE isDeleted=false AND YEAR(dateHire) = '2018';
+
 CREATE TABLE IF NOT EXISTS GovernmentAgencies(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     govtAgency VARCHAR(255),
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
@@ -76,8 +82,8 @@ CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
     employeeNumber CHAR(8),
     govtAgencyId INT NOT NULL,
     employeeIdNumber VARCHAR(50) UNIQUE,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(govtAgencyId) REFERENCES GovernmentAgencies(id)
@@ -91,8 +97,8 @@ CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
     dailyRate DECIMAL(5,2),
     increase DECIMAL DEFAULT 0,
     increaseDate DATE,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
@@ -104,8 +110,8 @@ CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
     employeeNumber CHAR(8),
     schedDate DATE,
     isPresent BOOLEAN DEFAULT false, -- flag that will update once the employee time in
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
@@ -119,8 +125,8 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
     numberOfDays DECIMAL, -- 1=day, 0.5 = halfday
     remainingDays DECIMAL, -- can leave whole day or halfday
     currentYear INT,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY (leaveId) REFERENCES LeaveTypes(id)
@@ -138,8 +144,8 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
     timeOut2 DATETIME, -- 
     lateMins DECIMAL, -- number of minutes
     underTimeMins DECIMAL, -- number of minutes
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(shiftSchedId) REFERENCES EmployeeShiftSchedules(id)
@@ -158,8 +164,8 @@ CREATE TABLE IF NOT EXISTS EmployeeGovtContributions(
     employeeContribution DECIMAL(5,2),
     employerContribution DECIMAL(5,2),
     totalContribution DECIMAL(5,2),
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(EmployeeGovtIdCardId) REFERENCES EmployeeGovtIdCards(id)
@@ -177,13 +183,11 @@ CREATE TABLE IF NOT EXISTS EmployeeBenefits(
     paySched CHAR(30), -- MONTHLY (last pay day of the month), YEARLY, PAYDAY, SPECIFIC-MONTH-DAY
     payMonth INT DEFAULT 0, -- nullable or empty, 1-12, only applicable to PER-YEAR and SPECIFIC-MONTH-DAY
     payDay INT DEFAULT 0, -- nullable or empty, 1-31
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
-ALTER TABLE EmployeeBenefits
-ADD COLUMN paySched CHAR(30);
 
 -- possible enhancement:
 -- add employee type that will use to add conditional/special deduction
@@ -193,8 +197,8 @@ CREATE TABLE IF NOT EXISTS EmployeeDeductions(
     deductionTitle VARCHAR(255),
     amount DECIMAL(5,2),
     isEnabled BOOLEAN DEFAULT True,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
@@ -209,8 +213,8 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
     benefitsTotal DECIMAL(5,2),
     deducationTotal DECIMAL(5,2),
     totalIncome DECIMAL(5,2),
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
@@ -222,8 +226,8 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
     employeeNumber CHAR(8),
 	benefitTitle VARCHAR(255),
     amount DECIMAL(5,2),
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
@@ -238,8 +242,8 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
     employeeNumber CHAR(8),
 	deductionTitle VARCHAR(255),
     amount DECIMAL(5,2),
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
@@ -251,8 +255,8 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
 CREATE TABLE IF NOT EXISTS Roles(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     rolekey VARCHAR(50),
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
@@ -262,8 +266,8 @@ CREATE TABLE IF NOT EXISTS Users(
     employeeNumber CHAR(8) UNIQUE,
 	passwordSha512 VARCHAR(255),
     isActive BOOLEAN DEFAULT True,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
@@ -272,8 +276,8 @@ CREATE TABLE IF NOT EXISTS UserRoles(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userId BIGINT NOT NULL,
     roleId INT NOT NULL,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY (userId) REFERENCES Users(id),
