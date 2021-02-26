@@ -50,8 +50,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.LeaveCategoryStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemGovernment = new System.Windows.Forms.ToolStripMenuItem();
             this.AgenciesStirpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panelSecondaryBanner = new System.Windows.Forms.Panel();
-            this.LblRenderedFormTitle = new System.Windows.Forms.Label();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.FileLeaveSchedStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GovtIdsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +61,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStripEmployeeManagement.SuspendLayout();
             this.EmployeeMenuItemsMenuStrip.SuspendLayout();
-            this.panelSecondaryBanner.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuStripEmployeeManagement
@@ -94,6 +91,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_GovtIds,
             this.ToolStripItem_FileLeave});
             this.EmployeeMenuItemsMenuStrip.Name = "EmployeeMenuItems";
+            this.EmployeeMenuItemsMenuStrip.OwnerItem = this.MenuItemEmployee;
             this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(159, 92);
             this.EmployeeMenuItemsMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.EmployeeMenuItemsMenuStrip_ItemClicked);
             // 
@@ -212,37 +210,13 @@ namespace Main.Forms.EmployeeManagementForms
             this.AgenciesStirpMenuItem.Size = new System.Drawing.Size(122, 22);
             this.AgenciesStirpMenuItem.Text = "Agencies";
             // 
-            // panelSecondaryBanner
-            // 
-            this.panelSecondaryBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.panelSecondaryBanner.Controls.Add(this.LblRenderedFormTitle);
-            this.panelSecondaryBanner.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelSecondaryBanner.Location = new System.Drawing.Point(0, 24);
-            this.panelSecondaryBanner.Name = "panelSecondaryBanner";
-            this.panelSecondaryBanner.Size = new System.Drawing.Size(800, 50);
-            this.panelSecondaryBanner.TabIndex = 4;
-            // 
-            // LblRenderedFormTitle
-            // 
-            this.LblRenderedFormTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LblRenderedFormTitle.AutoSize = true;
-            this.LblRenderedFormTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LblRenderedFormTitle.ForeColor = System.Drawing.Color.White;
-            this.LblRenderedFormTitle.Location = new System.Drawing.Point(12, 11);
-            this.LblRenderedFormTitle.Name = "LblRenderedFormTitle";
-            this.LblRenderedFormTitle.Size = new System.Drawing.Size(155, 21);
-            this.LblRenderedFormTitle.TabIndex = 0;
-            this.LblRenderedFormTitle.Text = "Rendered form title";
-            // 
             // panelContainer
             // 
             this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContainer.Location = new System.Drawing.Point(0, 74);
+            this.panelContainer.Location = new System.Drawing.Point(0, 24);
             this.panelContainer.Name = "panelContainer";
             this.panelContainer.Padding = new System.Windows.Forms.Padding(10);
-            this.panelContainer.Size = new System.Drawing.Size(800, 376);
+            this.panelContainer.Size = new System.Drawing.Size(800, 426);
             this.panelContainer.TabIndex = 5;
             // 
             // FileLeaveSchedStripMenuItem
@@ -299,7 +273,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panelContainer);
-            this.Controls.Add(this.panelSecondaryBanner);
             this.Controls.Add(this.MenuStripEmployeeManagement);
             this.MainMenuStrip = this.MenuStripEmployeeManagement;
             this.Name = "FrmMainEmployeeManagement";
@@ -307,8 +280,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.MenuStripEmployeeManagement.ResumeLayout(false);
             this.MenuStripEmployeeManagement.PerformLayout();
             this.EmployeeMenuItemsMenuStrip.ResumeLayout(false);
-            this.panelSecondaryBanner.ResumeLayout(false);
-            this.panelSecondaryBanner.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -318,8 +289,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.MenuStrip MenuStripEmployeeManagement;
         private System.Windows.Forms.ToolStripMenuItem MenuItemEmployee;
         private System.Windows.Forms.ToolStripMenuItem MenuItemWorkSchedules;
-        private System.Windows.Forms.Panel panelSecondaryBanner;
-        private System.Windows.Forms.Label LblRenderedFormTitle;
         private System.Windows.Forms.Panel panelContainer;
         private System.Windows.Forms.ToolStripMenuItem MenuItemPayroll;
         private System.Windows.Forms.ToolStripMenuItem ShiftsStripMenuItem;

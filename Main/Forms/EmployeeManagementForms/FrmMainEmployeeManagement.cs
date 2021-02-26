@@ -58,6 +58,19 @@ namespace Main.Forms.EmployeeManagementForms
             this.panelContainer.Controls.Add(userControlToDisplay);
         }
 
+
+        private void DisplayEmployeeListUserControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var userControlToDisplay = new DisplayEmployeeListUserControl();
+            userControlToDisplay.Dock = DockStyle.Fill;
+            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+            //userControlToDisplay.Anchor = AnchorStyles.None;
+
+            this.panelContainer.Controls.Add(userControlToDisplay);
+        }
+
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripItem clickedItem = e.ClickedItem;
@@ -71,7 +84,7 @@ namespace Main.Forms.EmployeeManagementForms
             }
             else if (clickedItem != null && clickedItem.Name == "ToolStripItem_List")
             {
-               
+                DisplayEmployeeListUserControl();
             }
         }
 
