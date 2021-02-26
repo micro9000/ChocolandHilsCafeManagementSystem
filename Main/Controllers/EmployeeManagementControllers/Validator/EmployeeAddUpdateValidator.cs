@@ -1,4 +1,4 @@
-﻿using DataAccess.Entities.EmployeeManagement;
+﻿using EntitiesShared.EmployeeManagement;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\EmployeeManagementUserControls\EmployeeManagementUserControls.csproj" />
+    <ProjectReference Include="..\EntitiesShared\EntitiesShared.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
@@ -31,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="FormModels\" />
+    <Folder Include="Forms\EmployeeManagementForms\CustomModels\" />
   </ItemGroup>
 
   <ItemGroup>

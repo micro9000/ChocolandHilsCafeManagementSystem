@@ -1,4 +1,4 @@
-﻿using DataAccess.Entities.UserManagement;
+﻿using EntitiesShared.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;

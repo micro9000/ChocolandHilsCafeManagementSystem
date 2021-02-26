@@ -5,20 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Entities.EmployeeManagement
+namespace EntitiesShared.EmployeeManagement
 {
     [Table("EmployeeLeaves")]
-    public class EmployeeLeaveModel
+    public class EmployeeLeaveModel : BaseModel
     {
-        private long id;
-
-        [Key]
-        public long Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
         private long leaveId;
 
         public long LeaveId
@@ -60,38 +51,6 @@ namespace DataAccess.Entities.EmployeeManagement
         {
             get { return currentYear; }
             set { currentYear = value; }
-        }
-
-        private DateTime createdAt = DateTime.UtcNow;
-
-        public DateTime CreatedAt
-        {
-            get { return createdAt; }
-            set { createdAt = value; }
-        }
-
-        private DateTime updatedAt = DateTime.UtcNow;
-
-        public DateTime UpdatedAt
-        {
-            get { return updatedAt; }
-            set { updatedAt = value; }
-        }
-
-        private DateTime? deletedAt;
-
-        public DateTime? DeletedAt
-        {
-            get { return deletedAt; }
-            set { deletedAt = value; }
-        }
-
-        private bool isDeleted;
-
-        public bool IsDeleted
-        {
-            get { return isDeleted; }
-            set { isDeleted = value; }
         }
     }
 }

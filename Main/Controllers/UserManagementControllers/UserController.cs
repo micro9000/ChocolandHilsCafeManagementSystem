@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using DataAccess.Entities.UserManagement;
 using DataAccess.Data.UserManagement.Contracts;
 using Shared.Helpers;
 using Shared.ResponseModels;
+using EntitiesShared.UserManagement;
 
 namespace Main.Controllers.UserManagementControllers
 {

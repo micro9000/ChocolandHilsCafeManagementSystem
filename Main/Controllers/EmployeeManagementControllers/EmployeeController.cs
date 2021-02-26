@@ -1,5 +1,4 @@
 ﻿using DataAccess.Data.EmployeeManagement.Contracts;
-using DataAccess.Entities.EmployeeManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Controllers.EmployeeManagementControllers.Validator;
 using Microsoft.Extensions.Logging;
@@ -12,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentValidation.Results;
 using AutoMapper;
+using EntitiesShared.EmployeeManagement;
 
 namespace Main.Controllers.EmployeeManagementControllers
 {

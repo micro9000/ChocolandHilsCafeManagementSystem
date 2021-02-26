@@ -1,6 +1,5 @@
-﻿using DataAccess.Entities.EmployeeManagement;
+﻿using EntitiesShared.EmployeeManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
-using Main.Forms.EmployeeManagementForms.CustomModels;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -19,9 +18,10 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly ILogger<FrmAddUpdateEmployee> _logger;
         private readonly IEmployeeController _employeeController;
 
-        private List<AddUpdateRecentActions> recentActions = new List<AddUpdateRecentActions>();
+        //private List<AddUpdateRecentActions> recentActions = new List<AddUpdateRecentActions>();
 
-        public FrmAddUpdateEmployee(ILogger<FrmAddUpdateEmployee> logger, 
+        public FrmAddUpdateEmployee(ILogger<FrmAddUpdateEmployee> logger,
+                                
                                 IEmployeeController employeeController)
         {
             InitializeComponent();
@@ -66,27 +66,6 @@ namespace Main.Forms.EmployeeManagementForms
 
             if (saveResults.IsSuccess)
             {
-                if (isNewEmployee)
-                {
-                    recentActions.Add(new AddUpdateRecentActions { 
-                        Action = "ADD",
-                        EmployeeName = $"{saveResults.Data.FirstName} {saveResults.Data.LastName}",
-                        EmployeeNumber = saveResults.Data.EmployeeNumber,
-                        DateAndTime = DateTime.Now
-                    });
-                    DisplayRecentChanges();
-                }
-                else
-                {
-                    recentActions.Add(new AddUpdateRecentActions
-                    {
-                        Action = "UPDATE",
-                        EmployeeName = $"{saveResults.Data.FirstName} {saveResults.Data.LastName}",
-                        EmployeeNumber = saveResults.Data.EmployeeNumber,
-                        DateAndTime = DateTime.Now
-                    });
-                    DisplayRecentChanges();
-                }
 
                 MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -111,18 +90,18 @@ namespace Main.Forms.EmployeeManagementForms
         }
 
 
-        private void DisplayRecentChanges()
-        {
-            int row = 0;
-            foreach(var log in this.recentActions)
-            {
-                row = DataGdVwRecentActions.Rows.Add();
-                DataGdVwRecentActions.Rows[row].Cells[0].Value = log.Action;
-                DataGdVwRecentActions.Rows[row].Cells[1].Value = log.EmployeeNumber;
-                DataGdVwRecentActions.Rows[row].Cells[2].Value = log.EmployeeName;
-                DataGdVwRecentActions.Rows[row].Cells[3].Value = log.DateAndTime.ToLongDateString();
-            }
-        }
+        //private void DisplayRecentChanges()
+        //{
+        //    int row = 0;
+        //    foreach(var log in this.recentActions)
+        //    {
+        //        row = DataGdVwRecentActions.Rows.Add();
+        //        DataGdVwRecentActions.Rows[row].Cells[0].Value = log.Action;
+        //        DataGdVwRecentActions.Rows[row].Cells[1].Value = log.EmployeeNumber;
+        //        DataGdVwRecentActions.Rows[row].Cells[2].Value = log.EmployeeName;
+        //        DataGdVwRecentActions.Rows[row].Cells[3].Value = log.DateAndTime.ToLongDateString();
+        //    }
+        //}
 
         private void RBtnNew_CheckedChanged(object sender, EventArgs e)
         {

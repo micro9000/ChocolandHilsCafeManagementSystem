@@ -1,4 +1,4 @@
-﻿using DataAccess.Entities.EmployeeManagement;
+﻿using EntitiesShared.EmployeeManagement;
 using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
