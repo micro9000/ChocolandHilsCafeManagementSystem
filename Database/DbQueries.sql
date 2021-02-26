@@ -61,6 +61,8 @@ CREATE TABLE IF NOT EXISTS Employees(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+ALTER TABLE Employees
+ADD COLUMN empNumYear CHAR(4);
 
 SELECT * FROM Employees;
 

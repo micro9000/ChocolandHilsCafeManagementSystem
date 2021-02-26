@@ -61,6 +61,7 @@ namespace Main.Controllers.EmployeeManagementControllers
                 {
                     DateTime dateHire = input.DateHire == DateTime.MinValue ? DateTime.Now : input.DateHire;
                     input.EmployeeNumber = this.GenerateNewEmployeeNumber(dateHire);
+                    input.EmpNumYear = input.DateHire.Year.ToString();
                 }
 
                 ValidationResult validatorResult = _employeeAddUpdateValidator.Validate(input);
@@ -131,7 +132,7 @@ namespace Main.Controllers.EmployeeManagementControllers
 
         public string GenerateNewEmployeeNumber (DateTime dateHire)
         {
-            long numberOfEmployeesWithTheSameDateHire = _employeeData.GetCountByDateHire(dateHire);
+            long numberOfEmployeesWithTheSameDateHire = _employeeData.GetCountByEmpNumYear(dateHire);
             numberOfEmployeesWithTheSameDateHire = numberOfEmployeesWithTheSameDateHire > 0 ? 
                                                     numberOfEmployeesWithTheSameDateHire + 1 
                                                     : 1;

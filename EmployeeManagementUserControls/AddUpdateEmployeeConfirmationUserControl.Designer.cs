@@ -39,7 +39,7 @@ namespace EmployeeManagementUserControls
             this.LblLastName = new System.Windows.Forms.Label();
             this.LblFirstName = new System.Windows.Forms.Label();
             this.LblEmployeeNumber = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.LblMessage = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -49,6 +49,7 @@ namespace EmployeeManagementUserControls
             this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.BtnBackToForm = new System.Windows.Forms.Button();
             this.PanelAddUpdateEmployee.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +65,7 @@ namespace EmployeeManagementUserControls
             this.PanelAddUpdateEmployee.Controls.Add(this.LblLastName);
             this.PanelAddUpdateEmployee.Controls.Add(this.LblFirstName);
             this.PanelAddUpdateEmployee.Controls.Add(this.LblEmployeeNumber);
-            this.PanelAddUpdateEmployee.Controls.Add(this.label10);
+            this.PanelAddUpdateEmployee.Controls.Add(this.LblMessage);
             this.PanelAddUpdateEmployee.Controls.Add(this.label9);
             this.PanelAddUpdateEmployee.Controls.Add(this.label8);
             this.PanelAddUpdateEmployee.Controls.Add(this.label3);
@@ -74,9 +75,9 @@ namespace EmployeeManagementUserControls
             this.PanelAddUpdateEmployee.Controls.Add(this.label5);
             this.PanelAddUpdateEmployee.Controls.Add(this.label2);
             this.PanelAddUpdateEmployee.Controls.Add(this.label6);
-            this.PanelAddUpdateEmployee.Location = new System.Drawing.Point(11, 11);
+            this.PanelAddUpdateEmployee.Location = new System.Drawing.Point(11, 53);
             this.PanelAddUpdateEmployee.Name = "PanelAddUpdateEmployee";
-            this.PanelAddUpdateEmployee.Size = new System.Drawing.Size(630, 433);
+            this.PanelAddUpdateEmployee.Size = new System.Drawing.Size(588, 421);
             this.PanelAddUpdateEmployee.TabIndex = 17;
             // 
             // LblHireDate
@@ -178,16 +179,16 @@ namespace EmployeeManagementUserControls
             this.LblEmployeeNumber.TabIndex = 20;
             this.LblEmployeeNumber.Text = "2021XXXX";
             // 
-            // label10
+            // LblMessage
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(158, 10);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(281, 25);
-            this.label10.TabIndex = 19;
-            this.label10.Text = "Successfully add new employee";
+            this.LblMessage.AutoSize = true;
+            this.LblMessage.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblMessage.ForeColor = System.Drawing.Color.White;
+            this.LblMessage.Location = new System.Drawing.Point(158, 10);
+            this.LblMessage.Name = "LblMessage";
+            this.LblMessage.Size = new System.Drawing.Size(281, 25);
+            this.LblMessage.TabIndex = 19;
+            this.LblMessage.Text = "Successfully add new employee";
             // 
             // label9
             // 
@@ -288,13 +289,29 @@ namespace EmployeeManagementUserControls
             this.label6.TabIndex = 12;
             this.label6.Text = "Email";
             // 
+            // BtnBackToForm
+            // 
+            this.BtnBackToForm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnBackToForm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnBackToForm.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnBackToForm.ForeColor = System.Drawing.Color.White;
+            this.BtnBackToForm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnBackToForm.Location = new System.Drawing.Point(11, 9);
+            this.BtnBackToForm.Name = "BtnBackToForm";
+            this.BtnBackToForm.Size = new System.Drawing.Size(60, 38);
+            this.BtnBackToForm.TabIndex = 40;
+            this.BtnBackToForm.Text = "<<";
+            this.BtnBackToForm.UseVisualStyleBackColor = false;
+            this.BtnBackToForm.Click += new System.EventHandler(this.BtnBackToForm_Click);
+            // 
             // AddUpdateEmployeeConfirmationUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.BtnBackToForm);
             this.Controls.Add(this.PanelAddUpdateEmployee);
             this.Name = "AddUpdateEmployeeConfirmationUserControl";
-            this.Size = new System.Drawing.Size(653, 456);
+            this.Size = new System.Drawing.Size(611, 487);
             this.PanelAddUpdateEmployee.ResumeLayout(false);
             this.PanelAddUpdateEmployee.PerformLayout();
             this.ResumeLayout(false);
@@ -313,7 +330,7 @@ namespace EmployeeManagementUserControls
         private System.Windows.Forms.Label LblLastName;
         private System.Windows.Forms.Label LblFirstName;
         public System.Windows.Forms.Label LblEmployeeNumber;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label LblMessage;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label3;
@@ -323,5 +340,6 @@ namespace EmployeeManagementUserControls
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button BtnBackToForm;
     }
 }

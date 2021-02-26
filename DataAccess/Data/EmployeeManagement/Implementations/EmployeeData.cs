@@ -19,11 +19,11 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public long GetCountByDateHire(DateTime dateHire)
+        public long GetCountByEmpNumYear(DateTime dateHire)
         {
             string query = @"SELECT COUNT(*) as count FROM Employees 
                             WHERE isDeleted=false AND 
-                            YEAR(dateHire) = @YearHire";
+                            empNumYear = @YearHire";
 
             return this.GetValue<long>(query, new { YearHire = dateHire.Year });
         }

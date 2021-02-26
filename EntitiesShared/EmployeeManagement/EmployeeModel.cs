@@ -18,6 +18,15 @@ namespace EntitiesShared.EmployeeManagement
             set { employeeNumber = value; }
         }
 
+        private string empNumYear;
+
+        public string EmpNumYear
+        {
+            get { return empNumYear; }
+            set { empNumYear = value; }
+        }
+
+
 
         private string firstName;
 

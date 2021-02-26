@@ -114,7 +114,6 @@ namespace Main
 
             // Employee Management forms
             services.AddTransient<FrmMainEmployeeManagement>();
-            services.AddTransient<FrmAddUpdateEmployee>();
 
 
             //Add Serilog
