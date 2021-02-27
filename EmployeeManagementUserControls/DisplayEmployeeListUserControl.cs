@@ -57,47 +57,36 @@ namespace EmployeeManagementUserControls
 
                 this.DGVEmployees.Columns[1].Name = "Fullname";
                 this.DGVEmployees.Columns[1].HeaderText = "Fullname";
-                this.DGVEmployees.Columns[1].Visible = true;
 
                 this.DGVEmployees.Columns[2].Name = "EmpAddress";
                 this.DGVEmployees.Columns[2].HeaderText = "Address";
-                this.DGVEmployees.Columns[3].Visible = true;
 
                 this.DGVEmployees.Columns[3].Name = "DateOfBirth";
                 this.DGVEmployees.Columns[3].HeaderText = "Date of birth";
-                this.DGVEmployees.Columns[3].Visible = true;
 
                 this.DGVEmployees.Columns[4].Name = "MobileNumber";
                 this.DGVEmployees.Columns[4].HeaderText = "Mobile #";
-                this.DGVEmployees.Columns[4].Visible = true;
 
                 this.DGVEmployees.Columns[5].Name = "EmailAddress";
                 this.DGVEmployees.Columns[5].HeaderText = "Email";
-                this.DGVEmployees.Columns[5].Visible = true;
 
                 this.DGVEmployees.Columns[6].Name = "BranchAssign";
                 this.DGVEmployees.Columns[6].HeaderText = "Branch Assign";
-                this.DGVEmployees.Columns[6].Visible = true;
 
                 this.DGVEmployees.Columns[7].Name = "DateHire";
                 this.DGVEmployees.Columns[7].HeaderText = "Date hire";
-                this.DGVEmployees.Columns[7].Visible = true;
 
                 this.DGVEmployees.Columns[8].Name = "CreatedAt";
                 this.DGVEmployees.Columns[8].HeaderText = "Created At";
-                this.DGVEmployees.Columns[8].Visible = true;
 
                 this.DGVEmployees.Columns[9].Name = "UpdatedAt";
                 this.DGVEmployees.Columns[9].HeaderText = "Updated At";
-                this.DGVEmployees.Columns[9].Visible = true;
 
-                DataGridViewButtonColumn btnViewEmployeeDetails = new DataGridViewButtonColumn();
-                btnViewEmployeeDetails.HeaderText = "View details";
-                btnViewEmployeeDetails.Name = "BtnViewEmployeeDetails";
-                btnViewEmployeeDetails.Text = "View details";
-                btnViewEmployeeDetails.FlatStyle = FlatStyle.Standard;
-                btnViewEmployeeDetails.UseColumnTextForButtonValue = true;
-                this.DGVEmployees.Columns.Add(btnViewEmployeeDetails);
+                DataGridViewImageColumn btnViewDetailsImg = new DataGridViewImageColumn();
+                btnViewDetailsImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnViewDetailsImg.Image = Image.FromFile("./Resouces/view-details-24.png");
+                this.DGVEmployees.Columns.Add(btnViewDetailsImg);
+
 
                 foreach (var employee in Employees)
                 {
@@ -128,7 +117,7 @@ namespace EmployeeManagementUserControls
 
         private void DGVEmployees_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 11 && e.RowIndex > -1)
+            if (e.ColumnIndex == 10 && e.RowIndex > -1)
             {
                 if (DGVEmployees.CurrentRow != null)
                 {
@@ -138,26 +127,45 @@ namespace EmployeeManagementUserControls
             }
         }
 
+        private void DGVEmployees_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 10 && e.RowIndex > -1)
+            {
+                DGVEmployees.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                DGVEmployees.Cursor = Cursors.Default;
+            }
+        }
+
         private void SetDGVEmployeesFontAndColors()
         {
             this.DGVEmployees.BackgroundColor = Color.White;
             this.DGVEmployees.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVEmployees.DefaultCellStyle.ForeColor = Color.White;
-            this.DGVEmployees.DefaultCellStyle.BackColor = Color.FromArgb(99, 99, 138);
-            this.DGVEmployees.DefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 64);
-            this.DGVEmployees.DefaultCellStyle.SelectionBackColor = Color.WhiteSmoke;
+            //this.DGVEmployees.DefaultCellStyle.ForeColor = Color.White;
+            //this.DGVEmployees.DefaultCellStyle.BackColor = Color.FromArgb(99, 99, 138);
+            //this.DGVEmployees.DefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 64);
+            //this.DGVEmployees.DefaultCellStyle.SelectionBackColor = Color.WhiteSmoke;
 
-            //this.DGVEmployees.RowHeadersVisible = false;
+            this.DGVEmployees.RowHeadersVisible = false;
+            this.DGVEmployees.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVEmployees.AllowUserToResizeRows = false;
             this.DGVEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             this.DGVEmployees.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVEmployees.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
-            this.DGVEmployees.ColumnHeadersDefaultCellStyle.BackColor = Color.WhiteSmoke;
-            this.DGVEmployees.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 64);
-            this.DGVEmployees.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.WhiteSmoke;
+            //this.DGVEmployees.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            //this.DGVEmployees.ColumnHeadersDefaultCellStyle.BackColor = Color.WhiteSmoke;
+            //this.DGVEmployees.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 64);
+            //this.DGVEmployees.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.WhiteSmoke;
+
+
+            this.DGVEmployees.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVEmployees.MultiSelect = false;
 
             this.DGVEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DGVEmployees.ColumnHeadersHeight = 30;
         }
+
     }
 }

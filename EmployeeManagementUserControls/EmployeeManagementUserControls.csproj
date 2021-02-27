@@ -9,4 +9,19 @@
     <ProjectReference Include="..\EntitiesShared\EntitiesShared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resouces\checkbox-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resouces\edit-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resouces\remove-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resouces\view-details-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

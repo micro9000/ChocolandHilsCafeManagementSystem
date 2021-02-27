@@ -16,7 +16,7 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
         /// <param name="input"></param>
         /// <returns>EntityResult<EmployeeModel></returns>
         EntityResult<EmployeeModel> Save(EmployeeModel input, bool isNewEmployee);
-        EmployeeModel GetByEmployeeNumber(string employeeNumber);
+        EntityResult<EmployeeModel> GetByEmployeeNumber(string employeeNumber);
         ListOfEntityResult<EmployeeModel> GetAll();
         ListOfEntityResult<EmployeeModel> Search(string searchString);
         ListOfEntityResult<EmployeeModel> GetByDateHire(DateTime dateHire);

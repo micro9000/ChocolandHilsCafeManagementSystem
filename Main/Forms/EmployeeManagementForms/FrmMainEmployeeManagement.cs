@@ -18,16 +18,18 @@ namespace Main.Forms.EmployeeManagementForms
     {
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
         private readonly IEmployeeController _employeeController;
+        private readonly ILeaveTypeController _leaveTypeController;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
-                                IEmployeeController employeeController)
+                                IEmployeeController employeeController,
+                                ILeaveTypeController leaveTypeController)
         {
             InitializeComponent();
             _logger = logger;
             _employeeController = employeeController;
+            _leaveTypeController = leaveTypeController;
         }
 
-        #region On Employee menu items click
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             ToolStripItem clickedItem = e.ClickedItem;
@@ -42,7 +44,15 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
-        #endregion On Employee menu items click
+        private void PayrollMenuItems_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem clickedItem = e.ClickedItem;
+
+            if (clickedItem != null && clickedItem.Name == "LeaveTypesStripMenuItem")
+            {
+                DisplayLeaveTypesUserControl();
+            }
+        }
 
         // --------------------------------------------------------------------------------------
         #region Add/Update employee confirmation user control related methods event handlers
@@ -118,7 +128,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             AddUpdateEmployeeUserControl addUpdateEmployeeObj = (AddUpdateEmployeeUserControl)sender;
             var employeeDetails = this._employeeController.GetByEmployeeNumber(addUpdateEmployeeObj.EmployeeNumber);
-            addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails);
+            addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails.Data);
         }
         #endregion Add/Update employee user control related methods and event handlers
 
@@ -151,6 +161,108 @@ namespace Main.Forms.EmployeeManagementForms
 
             // TODO: Use this method to display all information related to the employee
         }
+        #endregion
+
+
+        // --------------------------------------------------------------------------------------
+        #region Leave types user control related methods and event handlers
+
+        private void DisplayLeaveTypesUserControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var userControlToDisplay = new LeaveTypesCRUDUserControl();
+            userControlToDisplay.Dock = DockStyle.Fill;
+            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+            //userControlToDisplay.Anchor = AnchorStyles.None;
+
+            userControlToDisplay.LeaveTypes = _leaveTypeController.GetAll().Data;
+            userControlToDisplay.LeaveTypeSaved += HandleLeaveTypeSaved;
+
+            userControlToDisplay.PropertySelectedLeaveTypeIdToUpdateChanged += OnLeaveTypeSelectToUpdate;
+            userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
+
+            //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
+            //userControlToDisplay.DisplayEmployeeList();
+
+            //userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
+
+            this.panelContainer.Controls.Add(userControlToDisplay);
+        }
+
+
+        private void HandleLeaveTypeSaved(object sender, EventArgs e)
+        {
+            LeaveTypesCRUDUserControl userControlObj = (LeaveTypesCRUDUserControl)sender;
+
+            var saveResults = _leaveTypeController.Save(userControlObj.LeaveTypeToAddUpdate, userControlObj.IsSaveNew);
+            string resultMessages = "";
+            foreach (var msg in saveResults.Messages)
+            {
+                resultMessages += msg + "\n";
+            }
+
+            if (saveResults.IsSuccess)
+            {
+                MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                userControlObj.ResetForm();
+                userControlObj.LeaveTypes = _leaveTypeController.GetAll().Data;
+                userControlObj.DisplayLeaveTypeList();
+
+                //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
+
+                //DisplayAddUpdateEmployeeConfirmationUserControl(saveResults.Data, msg);
+            }
+            else
+            {
+                MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void OnLeaveTypeSelectToUpdate(object sender, PropertyChangedEventArgs e)
+        {
+            LeaveTypesCRUDUserControl userControlObj = (LeaveTypesCRUDUserControl)sender;
+            var selectedLeaveTypeId = userControlObj.SelectedLeaveTypeToUpdateId;
+            if (long.TryParse(selectedLeaveTypeId, out long leaveTypeId))
+            {
+                userControlObj.LeaveTypeToAddUpdate = _leaveTypeController.GetById(leaveTypeId).Data;
+                userControlObj.DisplaySelectedLeaveType();
+            }
+        }
+
+        private void OnLeaveTypeSelectToDelete(object sender, PropertyChangedEventArgs e)
+        {
+            LeaveTypesCRUDUserControl userControlObj = (LeaveTypesCRUDUserControl)sender;
+            var selectedLeaveTypeId = userControlObj.SelectedLeaveTypeToDeleteId;
+            if (long.TryParse(selectedLeaveTypeId, out long leaveTypeId))
+            {
+                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                
+                if (res == DialogResult.OK)
+                {
+                    var deleteResults = _leaveTypeController.Delete(leaveTypeId);
+                    string resultMessages = "";
+                    foreach (var msg in deleteResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (deleteResults.IsSuccess)
+                    {
+                        MessageBox.Show(resultMessages, "Delete leave type", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        userControlObj.ResetForm();
+                        userControlObj.LeaveTypes = _leaveTypeController.GetAll().Data;
+                        userControlObj.DisplayLeaveTypeList();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Save leave type", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                
+            }
+        }
+
         #endregion
     }
 }

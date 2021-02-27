@@ -19,10 +19,10 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public List<LeaveTypeModel> GetAllByIsActive(bool isActive)
+        public List<LeaveTypeModel> GetAllNotDeleted()
         {
-            string query = @"SELECT * FROM LeaveTypeModel WHERE isDeleted=False AND isActive=@IsActive";
-            return this.GetAll(query, new { IsActive = isActive });
+            string query = "SELECT * FROM LeaveTypes WHERE isDeleted=False";
+            return this.GetAll(query);
         }
     }
 }

@@ -97,9 +97,15 @@ namespace Main
             services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
             services.AddTransient<IEmployeeGovtContributionData, EmployeeGovtContributionData>();
+
+
             // Employee Management validators (Fluent validation)
+            services.AddTransient<LeaveTypeAddUpdateValidator>();
             services.AddTransient<EmployeeAddUpdateValidator>();
+
+
             // Employee Management Controllers
+            services.AddTransient<ILeaveTypeController, LeaveTypeController>();
             services.AddTransient<IEmployeeController, EmployeeController>();
 
 

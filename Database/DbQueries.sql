@@ -11,12 +11,16 @@ CREATE TABLE IF NOT EXISTS LeaveTypes(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- change to INT
     leaveType VARCHAR(50),
     numberOfDays INT,
-    isActive BOOLEAN DEFAULT False,
+    isActive BOOLEAN DEFAULT True,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+SELECT * FROM LeaveTypes;
+
+SELECT * FROM LeaveTypes WHERE isDeleted=False AND isActive=true;
 
 CREATE TABLE IF NOT EXISTS EmployeeShifts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

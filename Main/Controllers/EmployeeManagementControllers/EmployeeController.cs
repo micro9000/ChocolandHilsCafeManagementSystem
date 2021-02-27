@@ -34,9 +34,23 @@ namespace Main.Controllers.EmployeeManagementControllers
         }
 
 
-        public EmployeeModel GetByEmployeeNumber(string employeeNumber)
+        public EntityResult<EmployeeModel> GetByEmployeeNumber(string employeeNumber)
         {
-            return _employeeData.GetByEmployeeNumber(employeeNumber);
+            var results = new EntityResult<EmployeeModel>();
+            try
+            {
+                var employee = _employeeData.GetByEmployeeNumber(employeeNumber);
+                results.IsSuccess = true;
+                results.Messages.Add("Successfully retrieve all employee data");
+                results.Data = employee;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
         }
 
         public ListOfEntityResult<EmployeeModel> GetAll()
@@ -60,7 +74,21 @@ namespace Main.Controllers.EmployeeManagementControllers
 
         public ListOfEntityResult<EmployeeModel> GetByDateHire(DateTime dateHire)
         {
-            throw new NotImplementedException();
+            var results = new ListOfEntityResult<EmployeeModel>();
+            try
+            {
+                var employees = _employeeData.GetAllByDateHire(dateHire);
+                results.IsSuccess = true;
+                results.Messages.Add("Successfully retrieve all employee data");
+                results.Data = employees;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
         }
 
         public EntityResult<EmployeeModel> Save(EmployeeModel input, bool isNewEmployee)
@@ -98,6 +126,11 @@ namespace Main.Controllers.EmployeeManagementControllers
                         results.IsSuccess = true;
                         results.Messages.Add("Successfully add new employee");
                         results.Data = employeeDetails;
+                    }
+                    else
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add("Unable to add new employee, kindly check system logs for possible errors.");
                     }
                 }
                 else
@@ -138,7 +171,21 @@ namespace Main.Controllers.EmployeeManagementControllers
 
         public ListOfEntityResult<EmployeeModel> Search(string searchString)
         {
-            throw new NotImplementedException();
+            var results = new ListOfEntityResult<EmployeeModel>();
+            try
+            {
+                var employees = _employeeData.Search(searchString);
+                results.IsSuccess = true;
+                results.Messages.Add("Successfully retrieve all employee data");
+                results.Data = employees;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
         }
 
 

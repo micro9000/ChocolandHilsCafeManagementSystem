@@ -181,6 +181,7 @@ namespace EmployeeManagementUserControls
             this.DGVEmployees.Size = new System.Drawing.Size(1506, 544);
             this.DGVEmployees.TabIndex = 0;
             this.DGVEmployees.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployees_CellClick);
+            this.DGVEmployees.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployees_CellMouseEnter);
             // 
             // DisplayEmployeeListUserControl
             // 
