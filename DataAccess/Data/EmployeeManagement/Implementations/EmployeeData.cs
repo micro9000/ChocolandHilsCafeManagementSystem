@@ -19,6 +19,13 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
+        public List<EmployeeModel> GetAllNotDeleted()
+        {
+            string query = @"SELECT * FROM Employees WHERE isDeleted=false";
+
+            return this.GetAll(query);
+        }
+
         public long GetCountByEmpNumYear(DateTime dateHire)
         {
             string query = @"SELECT COUNT(*) as count FROM Employees 

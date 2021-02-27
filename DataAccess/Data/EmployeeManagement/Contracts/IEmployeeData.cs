@@ -10,6 +10,7 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeeData : IDataManagerCRUD<EmployeeModel>
     {
+        List<EmployeeModel> GetAllNotDeleted();
         long GetCountByEmpNumYear(DateTime dateHire);
         EmployeeModel GetByEmployeeNumber(string employeeNumber);
         List<EmployeeModel> GetAllByDateHire(DateTime dateHire);

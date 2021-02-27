@@ -25,24 +25,27 @@ namespace Main.Forms.EmployeeManagementForms
             InitializeComponent();
             _logger = logger;
             _employeeController = employeeController;
-            //_frmAddUpdateEmployee = frmAddUpdateEmployee;
         }
 
-        private void DisplayAddUpdateEmployeeUserControl()
+        #region On Employee menu items click
+        private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            this.panelContainer.Controls.Clear();
+            ToolStripItem clickedItem = e.ClickedItem;
 
-            var userControlToDisplay = new AddUpdateEmployeeUserControl();
-            //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
-            userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            userControlToDisplay.Anchor = AnchorStyles.None;
-
-            // event added
-            userControlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
-            userControlToDisplay.PropertyChanged += this.OnEmployeeNumberEnter;
-
-            this.panelContainer.Controls.Add(userControlToDisplay);
+            if (clickedItem != null && clickedItem.Name == "ToolStripItem_Add")
+            {
+                DisplayAddUpdateEmployeeUserControl();
+            }
+            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_List")
+            {
+                DisplayEmployeeListUserControl();
+            }
         }
+
+        #endregion On Employee menu items click
+
+        // --------------------------------------------------------------------------------------
+        #region Add/Update employee confirmation user control related methods event handlers
 
         public void DisplayAddUpdateEmployeeConfirmationUserControl(EmployeeModel employeeDetails, string msg)
         {
@@ -58,39 +61,31 @@ namespace Main.Forms.EmployeeManagementForms
             this.panelContainer.Controls.Add(userControlToDisplay);
         }
 
+        private void HandleBackToForm(object sender, EventArgs e)
+        {
+            DisplayAddUpdateEmployeeUserControl();
+        }
 
-        private void DisplayEmployeeListUserControl()
+        #endregion Add/Update employee confirmation user control related methods event handlers
+
+
+        // --------------------------------------------------------------------------------------
+        #region Add/Update employee user control related methods and event handlers
+
+        private void DisplayAddUpdateEmployeeUserControl()
         {
             this.panelContainer.Controls.Clear();
 
-            var userControlToDisplay = new DisplayEmployeeListUserControl();
-            userControlToDisplay.Dock = DockStyle.Fill;
-            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            //userControlToDisplay.Anchor = AnchorStyles.None;
+            var userControlToDisplay = new AddUpdateEmployeeUserControl();
+            //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
+            userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+            userControlToDisplay.Anchor = AnchorStyles.None;
+
+            // event added
+            userControlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
+            userControlToDisplay.PropertyChanged += this.OnEmployeeNumberEnter;
 
             this.panelContainer.Controls.Add(userControlToDisplay);
-        }
-
-        private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            ToolStripItem clickedItem = e.ClickedItem;
-
-            if (clickedItem != null && clickedItem.Name == "ToolStripItem_Add")
-            {
-
-                //this.OpenChildForm(_frmAddUpdateEmployee, sender);
-
-                DisplayAddUpdateEmployeeUserControl();
-            }
-            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_List")
-            {
-                DisplayEmployeeListUserControl();
-            }
-        }
-
-        private void HandleBackToForm (object sender, EventArgs e)
-        {
-            DisplayAddUpdateEmployeeUserControl();
         }
 
         private void HandleEmployeeSaved(object sender, EventArgs e)
@@ -119,12 +114,43 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
-
         private void OnEmployeeNumberEnter(object sender, PropertyChangedEventArgs e)
         {
             AddUpdateEmployeeUserControl addUpdateEmployeeObj = (AddUpdateEmployeeUserControl)sender;
             var employeeDetails = this._employeeController.GetByEmployeeNumber(addUpdateEmployeeObj.EmployeeNumber);
             addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails);
         }
+        #endregion Add/Update employee user control related methods and event handlers
+
+
+        // --------------------------------------------------------------------------------------
+        #region Employee list user control related methods and event handlers
+
+        private void DisplayEmployeeListUserControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var userControlToDisplay = new DisplayEmployeeListUserControl();
+            userControlToDisplay.Dock = DockStyle.Fill;
+            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+            //userControlToDisplay.Anchor = AnchorStyles.None;
+
+            userControlToDisplay.Employees = this._employeeController.GetAll().Data;
+            userControlToDisplay.DisplayEmployeeList();
+
+            userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
+
+            this.panelContainer.Controls.Add(userControlToDisplay);
+        }
+
+        private void OnEmployeeViewDetails (object sender, PropertyChangedEventArgs e)
+        {
+            DisplayEmployeeListUserControl employeeListUserControlObj = (DisplayEmployeeListUserControl)sender;
+            var selectedEmployeeNumber = employeeListUserControlObj.SelectedEmployeeNumber;
+            MessageBox.Show(selectedEmployeeNumber);
+
+            // TODO: Use this method to display all information related to the employee
+        }
+        #endregion
     }
 }

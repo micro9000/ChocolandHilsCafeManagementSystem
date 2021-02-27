@@ -41,7 +41,21 @@ namespace Main.Controllers.EmployeeManagementControllers
 
         public ListOfEntityResult<EmployeeModel> GetAll()
         {
-            throw new NotImplementedException();
+            var results = new ListOfEntityResult<EmployeeModel>();
+            try
+            {
+                var employees = _employeeData.GetAllNotDeleted();
+                results.IsSuccess = true;
+                results.Messages.Add("Successfully retrieve all employee data");
+                results.Data = employees;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
         }
 
         public ListOfEntityResult<EmployeeModel> GetByDateHire(DateTime dateHire)
