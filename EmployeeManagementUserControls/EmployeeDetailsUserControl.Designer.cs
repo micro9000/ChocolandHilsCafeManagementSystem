@@ -60,9 +60,9 @@ namespace EmployeeManagementUserControls
             this.panelSidebar.Controls.Add(this.BtnViewEmployeeAttendance);
             this.panelSidebar.Controls.Add(this.BtnViewPersonalInformation);
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSidebar.Location = new System.Drawing.Point(0, 61);
+            this.panelSidebar.Location = new System.Drawing.Point(0, 94);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(205, 628);
+            this.panelSidebar.Size = new System.Drawing.Size(205, 595);
             this.panelSidebar.TabIndex = 8;
             // 
             // BtnViewEmployeePayslipHistory
@@ -138,7 +138,7 @@ namespace EmployeeManagementUserControls
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(205, 61);
+            this.panel1.Size = new System.Drawing.Size(205, 94);
             this.panel1.TabIndex = 7;
             // 
             // button1
