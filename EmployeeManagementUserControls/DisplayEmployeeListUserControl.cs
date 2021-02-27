@@ -34,6 +34,27 @@ namespace EmployeeManagementUserControls
             }
         }
 
+        public event EventHandler SearchStringEnter;
+        public event EventHandler ReloadEmployeeList;
+
+        protected virtual void OnSearchStringEnter(EventArgs e)
+        {
+            SearchStringEnter?.Invoke(this, e);
+        }
+
+        protected virtual void OnReloadEmployeeList(EventArgs e)
+        {
+            ReloadEmployeeList?.Invoke(this, e);
+        }
+
+        private SearchEmployeeParameters searchEmployeeParameters = new SearchEmployeeParameters();
+
+        public SearchEmployeeParameters SearchEmployeeParameters
+        {
+            get { return searchEmployeeParameters; }
+            set { searchEmployeeParameters = value; }
+        }
+
 
 
         private List<EmployeeModel> employees;
@@ -49,6 +70,7 @@ namespace EmployeeManagementUserControls
         {
             if (Employees != null)
             {
+                this.DGVEmployees.Rows.Clear();
                 this.DGVEmployees.ColumnCount = 10;
 
                 this.DGVEmployees.Columns[0].Name = "EmployeeNumber";
@@ -84,7 +106,7 @@ namespace EmployeeManagementUserControls
 
                 DataGridViewImageColumn btnViewDetailsImg = new DataGridViewImageColumn();
                 btnViewDetailsImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                btnViewDetailsImg.Image = Image.FromFile("./Resouces/view-details-24.png");
+                btnViewDetailsImg.Image = Image.FromFile("./Resources/view-details-24.png");
                 this.DGVEmployees.Columns.Add(btnViewDetailsImg);
 
 
@@ -167,5 +189,29 @@ namespace EmployeeManagementUserControls
             this.DGVEmployees.ColumnHeadersHeight = 30;
         }
 
+        private void TbxSearchString_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true; 
+                SearchEmployeeParameters.SearchString = this.TbxSearchString.Text;
+                OnSearchStringEnter(EventArgs.Empty);
+            }
+        }
+
+        private void BtnReloadEmployees_Click(object sender, EventArgs e)
+        {
+            OnReloadEmployeeList(EventArgs.Empty);
+        }
+    }
+
+
+    public class SearchEmployeeParameters
+    {
+        public string SearchString { get; set; }
+
+        //public DateTime DateHire { get; set; }
+
+        //public DateTime DateOfBirth { get; set; }
     }
 }

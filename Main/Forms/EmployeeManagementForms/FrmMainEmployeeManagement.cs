@@ -148,19 +148,47 @@ namespace Main.Forms.EmployeeManagementForms
             userControlToDisplay.Employees = this._employeeController.GetAll().Data;
             userControlToDisplay.DisplayEmployeeList();
 
-            userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
+            userControlToDisplay.PropertyChanged += OnEmployeeViewDetails; // when view details button click
+            userControlToDisplay.SearchStringEnter += this.OnSearchStringEnter; // when Search button click
+            userControlToDisplay.ReloadEmployeeList += this.OnReloadEmployeeList; // when button reload click
 
             this.panelContainer.Controls.Add(userControlToDisplay);
         }
 
+        // when view details button click
         private void OnEmployeeViewDetails (object sender, PropertyChangedEventArgs e)
         {
             DisplayEmployeeListUserControl employeeListUserControlObj = (DisplayEmployeeListUserControl)sender;
             var selectedEmployeeNumber = employeeListUserControlObj.SelectedEmployeeNumber;
             MessageBox.Show(selectedEmployeeNumber);
 
+            this.panelContainer.Controls.Clear();
+
+            var employeeDetailsUserControl = new EmployeeDetailsUserControl();
+            employeeDetailsUserControl.Dock = DockStyle.Fill;
+
+            this.panelContainer.Controls.Add(employeeDetailsUserControl);
+
             // TODO: Use this method to display all information related to the employee
         }
+
+        // when search string key up == enter
+        private void OnSearchStringEnter(object sender, EventArgs e)
+        {
+            DisplayEmployeeListUserControl employeeListUserControlObj = (DisplayEmployeeListUserControl)sender;
+            var searchParams = employeeListUserControlObj.SearchEmployeeParameters;
+            employeeListUserControlObj.Employees = this._employeeController.Search(searchParams.SearchString).Data;
+            employeeListUserControlObj.DisplayEmployeeList();
+        }
+
+        // when button reload click
+        private void OnReloadEmployeeList(object sender, EventArgs e)
+        {
+            DisplayEmployeeListUserControl employeeListUserControlObj = (DisplayEmployeeListUserControl)sender;
+            employeeListUserControlObj.Employees = this._employeeController.GetAll().Data;
+            employeeListUserControlObj.DisplayEmployeeList();
+        }
+
         #endregion
 
 

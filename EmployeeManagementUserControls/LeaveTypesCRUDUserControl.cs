@@ -160,16 +160,18 @@ namespace EmployeeManagementUserControls
                 this.DGVLeaveTypes.Columns[5].Name = "UpdateAtDate";
                 this.DGVLeaveTypes.Columns[5].HeaderText = "Updated At";
 
+                // Update button
                 DataGridViewImageColumn btnUpdateLeaveTypeImg = new DataGridViewImageColumn();
                 //btnUpdateLeaveTypeImg.Name = "";
                 btnUpdateLeaveTypeImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                btnUpdateLeaveTypeImg.Image = Image.FromFile("./Resouces/edit-24.png");
+                btnUpdateLeaveTypeImg.Image = Image.FromFile("./Resources/edit-24.png");
                 this.DGVLeaveTypes.Columns.Add(btnUpdateLeaveTypeImg);
 
+                // Delete button
                 DataGridViewImageColumn btnDeleteLeaveTypeImg = new DataGridViewImageColumn();
                 //btnDeleteLeaveTypeImg.Name = "";
                 btnDeleteLeaveTypeImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                btnDeleteLeaveTypeImg.Image = Image.FromFile("./Resouces/remove-24.png");
+                btnDeleteLeaveTypeImg.Image = Image.FromFile("./Resources/remove-24.png");
                 this.DGVLeaveTypes.Columns.Add(btnDeleteLeaveTypeImg);
 
 
