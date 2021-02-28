@@ -93,8 +93,8 @@ namespace Main.Forms.EmployeeManagementForms
 
             var userControlToDisplay = new AddUpdateEmployeeUserControl();
             //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
-            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            //userControlToDisplay.Anchor = AnchorStyles.None;
+            userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+            userControlToDisplay.Anchor = AnchorStyles.None;
 
             // event added
             userControlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
@@ -133,7 +133,21 @@ namespace Main.Forms.EmployeeManagementForms
         {
             AddUpdateEmployeeUserControl addUpdateEmployeeObj = (AddUpdateEmployeeUserControl)sender;
             var employeeDetails = this._employeeController.GetByEmployeeNumber(addUpdateEmployeeObj.EmployeeNumber);
-            addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails.Data);
+            if (employeeDetails != null && employeeDetails.IsSuccess && employeeDetails.Data != null)
+            {
+                addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails.Data);
+                addUpdateEmployeeObj.MoveToNextTabSaveEmployeeDetails();
+            }
+            else
+            {
+                string resultMessages = "";
+                foreach (var msg in employeeDetails.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+                MessageBox.Show(resultMessages, "Search employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            
         }
         #endregion
 

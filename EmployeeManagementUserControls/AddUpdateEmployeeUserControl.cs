@@ -53,8 +53,6 @@ namespace EmployeeManagementUserControls
             }
         }
 
-
-
         public AddUpdateEmployeeUserControl()
         {
             InitializeComponent();
@@ -70,9 +68,7 @@ namespace EmployeeManagementUserControls
             this.TbxAddress.Text = "";
             this.TbxBranchAssign.Text = "";
             this.TbxEmail.Text = "";
-
-            this.RBtnNew.Checked = false;
-            this.RBtnUpdate.Checked = false;
+            this.TbxEmployeeNumber.Text = "";
         }
 
 
@@ -88,24 +84,16 @@ namespace EmployeeManagementUserControls
                 this.TbxAddress.Text = employeeDetails.Address;
                 this.TbxBranchAssign.Text = employeeDetails.BranchAssign;
                 this.TbxEmail.Text = employeeDetails.EmailAddress;
-
-                this.RBtnNew.Checked = false;
-                this.RBtnUpdate.Checked = true;
             }
-            else
-            {
-                MessageBox.Show("Employee details not found!", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-
         }
 
         private void BtnSaveEmployee_Click(object sender, EventArgs e)
         {
-            if (this.RBtnUpdate.Checked == false && this.RBtnNew.Checked == false)
-            {
-                MessageBox.Show("Kindly choose action.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
+            //if (this.RBtnUpdate.Checked == false && this.RBtnNew.Checked == false)
+            //{
+            //    MessageBox.Show("Kindly choose action.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    return;
+            //}
 
             Employee = new EmployeeModel
             {
@@ -119,45 +107,87 @@ namespace EmployeeManagementUserControls
                 EmailAddress = this.TbxEmail.Text
             };
 
-            if (this.RBtnUpdate.Checked)
-            {
-                this.IsNew = false;
-                Employee.EmployeeNumber = this.TbxEmployeeNumber.Text;
-            }
+            //if (this.RBtnUpdate.Checked)
+            //{
+            //    this.IsNew = false;
+            //    Employee.EmployeeNumber = this.TbxEmployeeNumber.Text;
+            //}
 
             OnEmployeeSaved(EventArgs.Empty);
         }
 
-        private void RBtnUpdate_CheckedChanged(object sender, EventArgs e)
+        public void MoveToNextTabSaveEmployeeDetails()
         {
-            RadioButton rb = sender as RadioButton;
-
-            if (rb != null && rb.Checked)
-            {
-                this.IsNew = false;
-                TbxEmployeeNumber.Enabled = true;
-            }
+            TabControlSaveEmployeeDetails.SelectedIndex = (TabControlSaveEmployeeDetails.SelectedIndex + 1 < TabControlSaveEmployeeDetails.TabCount) ?
+                             TabControlSaveEmployeeDetails.SelectedIndex + 1 : TabControlSaveEmployeeDetails.SelectedIndex;
         }
 
-        private void RBtnNew_CheckedChanged(object sender, EventArgs e)
+        private void BtnActionAddNewEmployee_Click(object sender, EventArgs e)
         {
-            RadioButton rb = sender as RadioButton;
+            this.employeeNumber = "";
+            this.LblActionForEmployeeDetails.Text = "Add new employee";
+            this.GBoxSearchEmployee.Visible = false;
 
-            if (rb != null && rb.Checked)
-            {
-                this.IsNew = true;
-                TbxEmployeeNumber.Enabled = false;
-            }
+            this.BtnCancelUpdateEmployee.Visible = true;
+
+            this.IsNew = true;
+            this.ClearForm();
+            MoveToNextTabSaveEmployeeDetails();
         }
 
-        private void TbxEmployeeNumber_KeyUp(object sender, KeyEventArgs e)
+        private void BtnActionUpdateEmployeeDetails_Click(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.Handled = true;
-                this.EmployeeNumber = TbxEmployeeNumber.Text;
-            }
+            this.LblActionForEmployeeDetails.Text = "Update employee details";
+            this.GBoxSearchEmployee.Visible = true;
+            this.BtnCancelUpdateEmployee.Visible= true;
+            this.ClearForm();
+            this.IsNew = false;
         }
+
+        private void BtnActionSearchEmployeeByEmployeeNumber_Click(object sender, EventArgs e)
+        {
+            this.EmployeeNumber = TbxEmployeeNumber.Text;
+        }
+
+        private void BtnCancelUpdateEmployee_Click(object sender, EventArgs e)
+        {
+            this.GBoxSearchEmployee.Visible = false;
+            this.BtnCancelUpdateEmployee.Visible = false;
+            this.ClearForm();
+            this.IsNew = true;
+            TabControlSaveEmployeeDetails.SelectedIndex = 0;
+        }
+
+        //private void TbxEmployeeNumber_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    if (e.KeyCode == Keys.Enter)
+        //    {
+        //        e.Handled = true;
+        //        this.EmployeeNumber = TbxEmployeeNumber.Text;
+        //    }
+        //}
+
+        //private void RBtnUpdate_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    RadioButton rb = sender as RadioButton;
+
+        //    if (rb != null && rb.Checked)
+        //    {
+        //        this.IsNew = false;
+        //        TbxEmployeeNumber.Enabled = true;
+        //    }
+        //}
+
+        //private void RBtnNew_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    RadioButton rb = sender as RadioButton;
+
+        //    if (rb != null && rb.Checked)
+        //    {
+        //        this.IsNew = true;
+        //        TbxEmployeeNumber.Enabled = false;
+        //    }
+        //}
     }
 
 

@@ -40,9 +40,17 @@ namespace Main.Controllers.EmployeeManagementControllers
             try
             {
                 var employee = _employeeData.GetByEmployeeNumber(employeeNumber);
-                results.IsSuccess = true;
-                results.Messages.Add("Successfully retrieve all employee data");
-                results.Data = employee;
+                if (employee != null)
+                {
+                    results.IsSuccess = true;
+                    results.Messages.Add("Successfully retrieve all employee data");
+                    results.Data = employee;
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Employee details not found.");
+                }
             }
             catch (Exception ex)
             {
