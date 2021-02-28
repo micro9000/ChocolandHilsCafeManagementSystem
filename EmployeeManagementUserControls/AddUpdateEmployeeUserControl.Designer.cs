@@ -55,14 +55,26 @@ namespace EmployeeManagementUserControls
             this.BtnActionSearchEmployeeByEmployeeNumber = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.EmployeeBasicInfo = new System.Windows.Forms.TabPage();
+            this.BtnMoveToNextTab = new System.Windows.Forms.Button();
             this.EmployeeGovtIds = new System.Windows.Forms.TabPage();
+            this.BtnAddNewEmpGovtId = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.CboxGovtAgencies = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.TboxEmpIdNumber = new System.Windows.Forms.TextBox();
+            this.ListViewEmpGovtIdCards = new System.Windows.Forms.ListView();
+            this.GovtAgency = new System.Windows.Forms.ColumnHeader();
+            this.CardNumber = new System.Windows.Forms.ColumnHeader();
             this.EmployeeSalaryRateTab = new System.Windows.Forms.TabPage();
+            this.TabActionResult = new System.Windows.Forms.TabPage();
             this.LblActionForEmployeeDetails = new System.Windows.Forms.Label();
             this.BtnCancelUpdateEmployee = new System.Windows.Forms.Button();
+            this.CardIsExisting = new System.Windows.Forms.ColumnHeader();
             this.TabControlSaveEmployeeDetails.SuspendLayout();
             this.SaveEmployeeAction.SuspendLayout();
             this.GBoxSearchEmployee.SuspendLayout();
             this.EmployeeBasicInfo.SuspendLayout();
+            this.EmployeeGovtIds.SuspendLayout();
             this.SuspendLayout();
             // 
             // TbxEmployeeNumber
@@ -159,7 +171,7 @@ namespace EmployeeManagementUserControls
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(313, 24);
+            this.label8.Location = new System.Drawing.Point(324, 24);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(73, 20);
             this.label8.TabIndex = 36;
@@ -169,7 +181,7 @@ namespace EmployeeManagementUserControls
             // 
             this.DTPicHireDate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.DTPicHireDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DTPicHireDate.Location = new System.Drawing.Point(313, 52);
+            this.DTPicHireDate.Location = new System.Drawing.Point(324, 52);
             this.DTPicHireDate.Name = "DTPicHireDate";
             this.DTPicHireDate.Size = new System.Drawing.Size(265, 27);
             this.DTPicHireDate.TabIndex = 30;
@@ -179,7 +191,7 @@ namespace EmployeeManagementUserControls
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(313, 85);
+            this.label3.Location = new System.Drawing.Point(324, 85);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(62, 20);
             this.label3.TabIndex = 29;
@@ -189,7 +201,7 @@ namespace EmployeeManagementUserControls
             // 
             this.TbxAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbxAddress.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TbxAddress.Location = new System.Drawing.Point(313, 113);
+            this.TbxAddress.Location = new System.Drawing.Point(324, 113);
             this.TbxAddress.Multiline = true;
             this.TbxAddress.Name = "TbxAddress";
             this.TbxAddress.Size = new System.Drawing.Size(265, 78);
@@ -200,7 +212,7 @@ namespace EmployeeManagementUserControls
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(313, 196);
+            this.label7.Location = new System.Drawing.Point(324, 196);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(101, 20);
             this.label7.TabIndex = 35;
@@ -210,7 +222,7 @@ namespace EmployeeManagementUserControls
             // 
             this.TbxBranchAssign.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbxBranchAssign.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TbxBranchAssign.Location = new System.Drawing.Point(313, 224);
+            this.TbxBranchAssign.Location = new System.Drawing.Point(324, 224);
             this.TbxBranchAssign.Multiline = true;
             this.TbxBranchAssign.Name = "TbxBranchAssign";
             this.TbxBranchAssign.Size = new System.Drawing.Size(265, 83);
@@ -243,7 +255,7 @@ namespace EmployeeManagementUserControls
             this.BtnSaveEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnSaveEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveEmployee.Location = new System.Drawing.Point(469, 490);
+            this.BtnSaveEmployee.Location = new System.Drawing.Point(468, 513);
             this.BtnSaveEmployee.Name = "BtnSaveEmployee";
             this.BtnSaveEmployee.Size = new System.Drawing.Size(134, 48);
             this.BtnSaveEmployee.TabIndex = 37;
@@ -257,6 +269,7 @@ namespace EmployeeManagementUserControls
             this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeeBasicInfo);
             this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeeGovtIds);
             this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeeSalaryRateTab);
+            this.TabControlSaveEmployeeDetails.Controls.Add(this.TabActionResult);
             this.TabControlSaveEmployeeDetails.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TabControlSaveEmployeeDetails.Location = new System.Drawing.Point(0, 52);
             this.TabControlSaveEmployeeDetails.Name = "TabControlSaveEmployeeDetails";
@@ -349,6 +362,7 @@ namespace EmployeeManagementUserControls
             // 
             // EmployeeBasicInfo
             // 
+            this.EmployeeBasicInfo.Controls.Add(this.BtnMoveToNextTab);
             this.EmployeeBasicInfo.Controls.Add(this.label8);
             this.EmployeeBasicInfo.Controls.Add(this.TbxEmail);
             this.EmployeeBasicInfo.Controls.Add(this.label6);
@@ -373,8 +387,29 @@ namespace EmployeeManagementUserControls
             this.EmployeeBasicInfo.Text = "Basic Information";
             this.EmployeeBasicInfo.UseVisualStyleBackColor = true;
             // 
+            // BtnMoveToNextTab
+            // 
+            this.BtnMoveToNextTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnMoveToNextTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnMoveToNextTab.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnMoveToNextTab.ForeColor = System.Drawing.Color.White;
+            this.BtnMoveToNextTab.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnMoveToNextTab.Location = new System.Drawing.Point(502, 336);
+            this.BtnMoveToNextTab.Name = "BtnMoveToNextTab";
+            this.BtnMoveToNextTab.Size = new System.Drawing.Size(87, 30);
+            this.BtnMoveToNextTab.TabIndex = 43;
+            this.BtnMoveToNextTab.Text = "Next";
+            this.BtnMoveToNextTab.UseVisualStyleBackColor = false;
+            this.BtnMoveToNextTab.Click += new System.EventHandler(this.BtnMoveToNextTab_Click);
+            // 
             // EmployeeGovtIds
             // 
+            this.EmployeeGovtIds.Controls.Add(this.BtnAddNewEmpGovtId);
+            this.EmployeeGovtIds.Controls.Add(this.label11);
+            this.EmployeeGovtIds.Controls.Add(this.CboxGovtAgencies);
+            this.EmployeeGovtIds.Controls.Add(this.label9);
+            this.EmployeeGovtIds.Controls.Add(this.TboxEmpIdNumber);
+            this.EmployeeGovtIds.Controls.Add(this.ListViewEmpGovtIdCards);
             this.EmployeeGovtIds.Location = new System.Drawing.Point(4, 30);
             this.EmployeeGovtIds.Name = "EmployeeGovtIds";
             this.EmployeeGovtIds.Padding = new System.Windows.Forms.Padding(3);
@@ -382,6 +417,92 @@ namespace EmployeeManagementUserControls
             this.EmployeeGovtIds.TabIndex = 1;
             this.EmployeeGovtIds.Text = "Govt. Ids";
             this.EmployeeGovtIds.UseVisualStyleBackColor = true;
+            // 
+            // BtnAddNewEmpGovtId
+            // 
+            this.BtnAddNewEmpGovtId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnAddNewEmpGovtId.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnAddNewEmpGovtId.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnAddNewEmpGovtId.ForeColor = System.Drawing.Color.White;
+            this.BtnAddNewEmpGovtId.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnAddNewEmpGovtId.Location = new System.Drawing.Point(434, 43);
+            this.BtnAddNewEmpGovtId.Name = "BtnAddNewEmpGovtId";
+            this.BtnAddNewEmpGovtId.Size = new System.Drawing.Size(87, 30);
+            this.BtnAddNewEmpGovtId.TabIndex = 44;
+            this.BtnAddNewEmpGovtId.Text = "Add";
+            this.BtnAddNewEmpGovtId.UseVisualStyleBackColor = false;
+            this.BtnAddNewEmpGovtId.Click += new System.EventHandler(this.BtnAddNewEmpGovtId_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label11.ForeColor = System.Drawing.Color.Black;
+            this.label11.Location = new System.Drawing.Point(11, 21);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(58, 20);
+            this.label11.TabIndex = 25;
+            this.label11.Text = "Agency";
+            // 
+            // CboxGovtAgencies
+            // 
+            this.CboxGovtAgencies.FormattingEnabled = true;
+            this.CboxGovtAgencies.Location = new System.Drawing.Point(11, 44);
+            this.CboxGovtAgencies.Name = "CboxGovtAgencies";
+            this.CboxGovtAgencies.Size = new System.Drawing.Size(213, 29);
+            this.CboxGovtAgencies.TabIndex = 24;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label9.ForeColor = System.Drawing.Color.Black;
+            this.label9.Location = new System.Drawing.Point(230, 23);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(37, 20);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "ID #";
+            // 
+            // TboxEmpIdNumber
+            // 
+            this.TboxEmpIdNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TboxEmpIdNumber.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TboxEmpIdNumber.Location = new System.Drawing.Point(230, 46);
+            this.TboxEmpIdNumber.Name = "TboxEmpIdNumber";
+            this.TboxEmpIdNumber.Size = new System.Drawing.Size(182, 27);
+            this.TboxEmpIdNumber.TabIndex = 23;
+            // 
+            // ListViewEmpGovtIdCards
+            // 
+            this.ListViewEmpGovtIdCards.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ListViewEmpGovtIdCards.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.GovtAgency,
+            this.CardNumber,
+            this.CardIsExisting});
+            this.ListViewEmpGovtIdCards.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ListViewEmpGovtIdCards.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ListViewEmpGovtIdCards.FullRowSelect = true;
+            this.ListViewEmpGovtIdCards.GridLines = true;
+            this.ListViewEmpGovtIdCards.HideSelection = false;
+            this.ListViewEmpGovtIdCards.Location = new System.Drawing.Point(3, 108);
+            this.ListViewEmpGovtIdCards.Name = "ListViewEmpGovtIdCards";
+            this.ListViewEmpGovtIdCards.Size = new System.Drawing.Size(607, 287);
+            this.ListViewEmpGovtIdCards.TabIndex = 1;
+            this.ListViewEmpGovtIdCards.UseCompatibleStateImageBehavior = false;
+            this.ListViewEmpGovtIdCards.View = System.Windows.Forms.View.Details;
+            this.ListViewEmpGovtIdCards.SelectedIndexChanged += new System.EventHandler(this.ListViewEmpGovtIdCards_SelectedIndexChanged);
+            // 
+            // GovtAgency
+            // 
+            this.GovtAgency.Name = "GovtAgency";
+            this.GovtAgency.Text = "Agency";
+            this.GovtAgency.Width = 150;
+            // 
+            // CardNumber
+            // 
+            this.CardNumber.Name = "CardNumber";
+            this.CardNumber.Text = "Card #";
+            this.CardNumber.Width = 150;
             // 
             // EmployeeSalaryRateTab
             // 
@@ -391,6 +512,15 @@ namespace EmployeeManagementUserControls
             this.EmployeeSalaryRateTab.TabIndex = 2;
             this.EmployeeSalaryRateTab.Text = "Salary Rate";
             this.EmployeeSalaryRateTab.UseVisualStyleBackColor = true;
+            // 
+            // TabActionResult
+            // 
+            this.TabActionResult.Location = new System.Drawing.Point(4, 30);
+            this.TabActionResult.Name = "TabActionResult";
+            this.TabActionResult.Size = new System.Drawing.Size(613, 398);
+            this.TabActionResult.TabIndex = 4;
+            this.TabActionResult.Text = "Result";
+            this.TabActionResult.UseVisualStyleBackColor = true;
             // 
             // LblActionForEmployeeDetails
             // 
@@ -410,7 +540,7 @@ namespace EmployeeManagementUserControls
             this.BtnCancelUpdateEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelUpdateEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnCancelUpdateEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdateEmployee.Location = new System.Drawing.Point(329, 490);
+            this.BtnCancelUpdateEmployee.Location = new System.Drawing.Point(328, 513);
             this.BtnCancelUpdateEmployee.Name = "BtnCancelUpdateEmployee";
             this.BtnCancelUpdateEmployee.Size = new System.Drawing.Size(134, 48);
             this.BtnCancelUpdateEmployee.TabIndex = 43;
@@ -418,6 +548,12 @@ namespace EmployeeManagementUserControls
             this.BtnCancelUpdateEmployee.UseVisualStyleBackColor = false;
             this.BtnCancelUpdateEmployee.Visible = false;
             this.BtnCancelUpdateEmployee.Click += new System.EventHandler(this.BtnCancelUpdateEmployee_Click);
+            // 
+            // CardIsExisting
+            // 
+            this.CardIsExisting.Name = "CardIsExisting";
+            this.CardIsExisting.Text = "";
+            this.CardIsExisting.Width = 100;
             // 
             // AddUpdateEmployeeUserControl
             // 
@@ -432,13 +568,16 @@ namespace EmployeeManagementUserControls
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "AddUpdateEmployeeUserControl";
             this.Padding = new System.Windows.Forms.Padding(10);
-            this.Size = new System.Drawing.Size(617, 542);
+            this.Size = new System.Drawing.Size(617, 569);
+            this.Load += new System.EventHandler(this.AddUpdateEmployeeUserControl_Load);
             this.TabControlSaveEmployeeDetails.ResumeLayout(false);
             this.SaveEmployeeAction.ResumeLayout(false);
             this.GBoxSearchEmployee.ResumeLayout(false);
             this.GBoxSearchEmployee.PerformLayout();
             this.EmployeeBasicInfo.ResumeLayout(false);
             this.EmployeeBasicInfo.PerformLayout();
+            this.EmployeeGovtIds.ResumeLayout(false);
+            this.EmployeeGovtIds.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -475,5 +614,16 @@ namespace EmployeeManagementUserControls
         private System.Windows.Forms.Button BtnActionAddNewEmployee;
         private System.Windows.Forms.Label LblActionForEmployeeDetails;
         private System.Windows.Forms.Button BtnCancelUpdateEmployee;
+        private System.Windows.Forms.Button BtnMoveToNextTab;
+        private System.Windows.Forms.TabPage TabActionResult;
+        private System.Windows.Forms.ListView ListViewEmpGovtIdCards;
+        public System.Windows.Forms.ColumnHeader GovtAgency;
+        private System.Windows.Forms.ColumnHeader CardNumber;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox CboxGovtAgencies;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox TboxEmpIdNumber;
+        private System.Windows.Forms.Button BtnAddNewEmpGovtId;
+        private System.Windows.Forms.ColumnHeader CardIsExisting;
     }
 }

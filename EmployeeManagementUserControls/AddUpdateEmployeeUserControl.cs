@@ -1,4 +1,5 @@
-﻿using EntitiesShared.EmployeeManagement;
+﻿using EmployeeManagementUserControls.CustomModels;
+using EntitiesShared.EmployeeManagement;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,16 @@ namespace EmployeeManagementUserControls
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+
+        private List<GovernmentAgencyModel> govtAgencies;
+
+        public List<GovernmentAgencyModel> GovtAgencies
+        {
+            get { return govtAgencies; }
+            set { govtAgencies = value; }
+        }
+
+
         private EmployeeModel employee;
 
         public EmployeeModel Employee
@@ -22,6 +33,15 @@ namespace EmployeeManagementUserControls
             get { return employee; }
             set { employee = value; }
         }
+
+        private List<EmployeeGovtIdCardTempModel> employeeGovtIdCards = new List<EmployeeGovtIdCardTempModel>();
+
+        public List<EmployeeGovtIdCardTempModel> EmployeeGovtIdCards
+        {
+            get { return employeeGovtIdCards; }
+            set { employeeGovtIdCards = value; }
+        }
+
 
 
         private bool isNew;
@@ -58,6 +78,23 @@ namespace EmployeeManagementUserControls
             InitializeComponent();
         }
 
+
+        private void AddUpdateEmployeeUserControl_Load(object sender, EventArgs e)
+        {
+            // Govt. agencies load in combo box
+            if (this.GovtAgencies != null)
+            {
+                ComboboxItem item;
+                foreach (var agency in this.GovtAgencies)
+                {
+                    item = new ComboboxItem();
+                    item.Text = agency.GovtAgency;
+                    item.Value = agency.Id;
+                    this.CboxGovtAgencies.Items.Add(item);
+                }
+            }
+        }
+
         public void ClearForm()
         {
             this.TbxFirstName.Text = "";
@@ -69,6 +106,7 @@ namespace EmployeeManagementUserControls
             this.TbxBranchAssign.Text = "";
             this.TbxEmail.Text = "";
             this.TbxEmployeeNumber.Text = "";
+            this.CboxGovtAgencies.SelectedIndex = -1;
         }
 
 
@@ -107,11 +145,10 @@ namespace EmployeeManagementUserControls
                 EmailAddress = this.TbxEmail.Text
             };
 
-            //if (this.RBtnUpdate.Checked)
-            //{
-            //    this.IsNew = false;
-            //    Employee.EmployeeNumber = this.TbxEmployeeNumber.Text;
-            //}
+            if (this.IsNew == false)
+            {
+                Employee.EmployeeNumber = this.TbxEmployeeNumber.Text;
+            }
 
             OnEmployeeSaved(EventArgs.Empty);
         }
@@ -157,6 +194,104 @@ namespace EmployeeManagementUserControls
             this.IsNew = true;
             TabControlSaveEmployeeDetails.SelectedIndex = 0;
         }
+
+        private void BtnMoveToNextTab_Click(object sender, EventArgs e)
+        {
+            MoveToNextTabSaveEmployeeDetails();
+        }
+
+        private void DisplayAddedNewGovtIds()
+        {
+            this.ListViewEmpGovtIdCards.Items.Clear();
+
+            if (EmployeeGovtIds != null)
+            {
+                foreach (var govtId in EmployeeGovtIdCards)
+                {
+                    var row = new string[] { 
+                        govtId.EmployeeGovtIdCard.GovernmentAgency.GovtAgency, 
+                        govtId.EmployeeGovtIdCard.EmployeeIdNumber,
+                        (govtId.IsExisting ? "EXISTING" : "NEW")
+                    };
+
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = govtId;
+
+                    this.ListViewEmpGovtIdCards.Items.Add(listViewItem);
+                }
+            }
+        }
+
+        private void BtnAddNewEmpGovtId_Click(object sender, EventArgs e)
+        {
+            string empGovtIdNumber = this.TboxEmpIdNumber.Text;
+            if (this.CboxGovtAgencies.SelectedIndex >= 0 && string.IsNullOrEmpty(empGovtIdNumber) == false)
+            {
+                var selectedGovtAgency = this.CboxGovtAgencies.SelectedItem as ComboboxItem;
+
+                if (selectedGovtAgency != null)
+                {
+                    int selectedGovtAgencyId = int.Parse(selectedGovtAgency.Value.ToString());
+
+                    var addedNewGovtId = EmployeeGovtIdCards.Where(x => 
+                                            x.EmployeeGovtIdCard.GovtAgencyId == selectedGovtAgencyId).FirstOrDefault();
+
+                    var tmpEmployeeGovtIdCard = new EmployeeGovtIdCardTempModel
+                    {
+                        IsExisting = false,
+                        IsNeedToUpdate = false,
+                        EmployeeGovtIdCard = new EmployeeGovtIdCardModel
+                        {
+                            EmployeeIdNumber = empGovtIdNumber,
+                            GovtAgencyId = selectedGovtAgencyId,
+                            GovernmentAgency = new GovernmentAgencyModel
+                            {
+                                // add temporary object to get the name or title of the govt. agency
+                                GovtAgency = selectedGovtAgency.Text.ToString()
+                            }
+                        }
+                    };
+
+                    if (addedNewGovtId == null)
+                    {
+                        // if completely new id, just add it
+                        EmployeeGovtIdCards.Add(tmpEmployeeGovtIdCard);
+                    }
+                    else if (addedNewGovtId != null)
+                    {
+                        if (addedNewGovtId.IsExisting)
+                        {
+                            // if existing in our database, we just need to update
+                            // the employee govt. id number
+                            addedNewGovtId.IsNeedToUpdate = true;
+                            addedNewGovtId.EmployeeGovtIdCard.EmployeeIdNumber = empGovtIdNumber;
+                        }
+                        else
+                        {
+                            // if new id, we need to replace
+                            EmployeeGovtIdCards.Remove(addedNewGovtId);
+                            EmployeeGovtIdCards.Add(tmpEmployeeGovtIdCard);
+                        }
+                    }
+
+                    DisplayAddedNewGovtIds();
+                }
+            }
+        }
+
+        private void ListViewEmpGovtIdCards_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ListViewEmpGovtIdCards.SelectedItems.Count > 0)
+            {
+                EmployeeGovtIdCardTempModel selectedEmpGovtId = ListViewEmpGovtIdCards.SelectedItems[0].Tag as EmployeeGovtIdCardTempModel;
+                if (selectedEmpGovtId != null)
+                {
+                    MessageBox.Show($"{selectedEmpGovtId.EmployeeGovtIdCard.EmployeeIdNumber} {selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId}");
+                }
+            }
+            
+        }
+
 
         //private void TbxEmployeeNumber_KeyUp(object sender, KeyEventArgs e)
         //{

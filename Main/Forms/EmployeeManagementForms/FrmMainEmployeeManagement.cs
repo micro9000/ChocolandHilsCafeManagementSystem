@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DataAccess.Data.EmployeeManagement.Contracts;
 using EmployeeManagementUserControls;
 using EntitiesShared.EmployeeManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
@@ -17,15 +18,18 @@ namespace Main.Forms.EmployeeManagementForms
     public partial class FrmMainEmployeeManagement : Form
     {
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
+        private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeController _employeeController;
         private readonly ILeaveTypeController _leaveTypeController;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
+                                IGovernmentAgencyData governmentAgencyData,
                                 IEmployeeController employeeController,
                                 ILeaveTypeController leaveTypeController)
         {
             InitializeComponent();
             _logger = logger;
+            _governmentAgencyData = governmentAgencyData;
             _employeeController = employeeController;
             _leaveTypeController = leaveTypeController;
         }
@@ -95,6 +99,9 @@ namespace Main.Forms.EmployeeManagementForms
             //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
             userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
             userControlToDisplay.Anchor = AnchorStyles.None;
+
+            userControlToDisplay.GovtAgencies = _governmentAgencyData.GetAllByIsDeleted(false);
+            // TODO: add the existing emp. govt. ids from our database and use the CustomModels -> EmployeeGovtIdCardTempModel.cs
 
             // event added
             userControlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
