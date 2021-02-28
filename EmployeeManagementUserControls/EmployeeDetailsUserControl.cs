@@ -27,6 +27,11 @@ namespace EmployeeManagementUserControls
             get { return employeeDetails; }
             set { employeeDetails = value; }
         }
+        
+        private void EmployeeDetailsUserControl_Load(object sender, EventArgs e)
+        {
+            DisplayPersonalInformation();
+        }
 
         private void DisableButton()
         {
@@ -53,18 +58,23 @@ namespace EmployeeManagementUserControls
             }
         }
 
-        private void BtnViewPersonalInformation_Click(object sender, EventArgs e)
+
+        private void DisplayPersonalInformation()
         {
             this.PnlEmployeeInfoContainer.Controls.Clear();
 
-            ActivateButton(sender);
-
             var userControlToDisplay = new EmployeePersonalInfoUserControl();
-            userControlToDisplay.Dock = DockStyle.Fill;
+            //userControlToDisplay.Dock = DockStyle.Fill;
             //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
             //userControlToDisplay.Anchor = AnchorStyles.None;
 
             this.PnlEmployeeInfoContainer.Controls.Add(userControlToDisplay);
+        }
+
+        private void BtnViewPersonalInformation_Click(object sender, EventArgs e)
+        {
+            ActivateButton(sender);
+            DisplayPersonalInformation();
         }
 
         private void BtnViewEmployeeAttendance_Click(object sender, EventArgs e)
@@ -74,7 +84,7 @@ namespace EmployeeManagementUserControls
             ActivateButton(sender);
 
             var userControlToDisplay = new EmployeeAttendanceHistoryUserControl();
-            userControlToDisplay.Dock = DockStyle.Fill;
+            //userControlToDisplay.Dock = DockStyle.Fill;
             //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
             //userControlToDisplay.Anchor = AnchorStyles.None;
 
@@ -88,11 +98,12 @@ namespace EmployeeManagementUserControls
             ActivateButton(sender);
 
             var userControlToDisplay = new EmployeePayslipHistoryUserControl();
-            userControlToDisplay.Dock = DockStyle.Fill;
+            //userControlToDisplay.Dock = DockStyle.Fill;
             //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
             //userControlToDisplay.Anchor = AnchorStyles.None;
 
             this.PnlEmployeeInfoContainer.Controls.Add(userControlToDisplay);
         }
+
     }
 }

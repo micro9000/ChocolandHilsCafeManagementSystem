@@ -35,6 +35,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.EmployeeMenuItemsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ToolStripItem_Add = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_List = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripItem_Details = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_GovtIds = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_FileLeave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemPayroll = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,11 +91,12 @@ namespace Main.Forms.EmployeeManagementForms
             this.EmployeeMenuItemsMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripItem_Add,
             this.ToolStripItem_List,
+            this.ToolStripItem_Details,
             this.ToolStripItem_GovtIds,
             this.ToolStripItem_FileLeave});
             this.EmployeeMenuItemsMenuStrip.Name = "EmployeeMenuItems";
             this.EmployeeMenuItemsMenuStrip.OwnerItem = this.MenuItemEmployee;
-            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(159, 92);
+            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(159, 114);
             this.EmployeeMenuItemsMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.EmployeeMenuItemsMenuStrip_ItemClicked);
             // 
             // ToolStripItem_Add
@@ -108,6 +110,12 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_List.Name = "ToolStripItem_List";
             this.ToolStripItem_List.Size = new System.Drawing.Size(158, 22);
             this.ToolStripItem_List.Text = "List";
+            // 
+            // ToolStripItem_Details
+            // 
+            this.ToolStripItem_Details.Name = "ToolStripItem_Details";
+            this.ToolStripItem_Details.Size = new System.Drawing.Size(158, 22);
+            this.ToolStripItem_Details.Text = "Details";
             // 
             // ToolStripItem_GovtIds
             // 
@@ -222,6 +230,8 @@ namespace Main.Forms.EmployeeManagementForms
             // 
             // panelContainer
             // 
+            this.panelContainer.AutoScroll = true;
+            this.panelContainer.BackColor = System.Drawing.Color.White;
             this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContainer.Location = new System.Drawing.Point(0, 24);
             this.panelContainer.Name = "panelContainer";
@@ -328,5 +338,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ToolStripMenuItem DeductionStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SalaryStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LeaveTypesStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripItem_Details;
     }
 }

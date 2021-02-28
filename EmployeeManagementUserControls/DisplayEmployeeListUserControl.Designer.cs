@@ -32,12 +32,12 @@ namespace EmployeeManagementUserControls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DisplayEmployeeListUserControl));
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.BtnReloadEmployees = new System.Windows.Forms.Button();
             this.TbxSearchString = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.DGVEmployees = new System.Windows.Forms.DataGridView();
-            this.BtnReloadEmployees = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -61,16 +61,33 @@ namespace EmployeeManagementUserControls
             this.panel3.Controls.Add(this.TbxSearchString);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel3.Location = new System.Drawing.Point(462, 0);
+            this.panel3.Location = new System.Drawing.Point(915, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1044, 75);
+            this.panel3.Size = new System.Drawing.Size(591, 75);
             this.panel3.TabIndex = 43;
+            // 
+            // BtnReloadEmployees
+            // 
+            this.BtnReloadEmployees.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.BtnReloadEmployees.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnReloadEmployees.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnReloadEmployees.ForeColor = System.Drawing.Color.White;
+            this.BtnReloadEmployees.Image = ((System.Drawing.Image)(resources.GetObject("BtnReloadEmployees.Image")));
+            this.BtnReloadEmployees.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnReloadEmployees.Location = new System.Drawing.Point(35, 13);
+            this.BtnReloadEmployees.Name = "BtnReloadEmployees";
+            this.BtnReloadEmployees.Size = new System.Drawing.Size(89, 47);
+            this.BtnReloadEmployees.TabIndex = 24;
+            this.BtnReloadEmployees.Text = "Reload";
+            this.BtnReloadEmployees.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BtnReloadEmployees.UseVisualStyleBackColor = false;
+            this.BtnReloadEmployees.Click += new System.EventHandler(this.BtnReloadEmployees_Click);
             // 
             // TbxSearchString
             // 
             this.TbxSearchString.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbxSearchString.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TbxSearchString.Location = new System.Drawing.Point(694, 24);
+            this.TbxSearchString.Location = new System.Drawing.Point(239, 24);
             this.TbxSearchString.Name = "TbxSearchString";
             this.TbxSearchString.Size = new System.Drawing.Size(331, 27);
             this.TbxSearchString.TabIndex = 23;
@@ -81,7 +98,7 @@ namespace EmployeeManagementUserControls
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(625, 30);
+            this.label1.Location = new System.Drawing.Point(170, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 20);
             this.label1.TabIndex = 22;
@@ -112,6 +129,7 @@ namespace EmployeeManagementUserControls
             // 
             this.DGVEmployees.AllowUserToAddRows = false;
             this.DGVEmployees.AllowUserToDeleteRows = false;
+            this.DGVEmployees.BackgroundColor = System.Drawing.Color.White;
             this.DGVEmployees.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVEmployees.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DGVEmployees.Location = new System.Drawing.Point(0, 0);
@@ -122,23 +140,6 @@ namespace EmployeeManagementUserControls
             this.DGVEmployees.TabIndex = 0;
             this.DGVEmployees.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployees_CellClick);
             this.DGVEmployees.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployees_CellMouseEnter);
-            // 
-            // BtnReloadEmployees
-            // 
-            this.BtnReloadEmployees.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.BtnReloadEmployees.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnReloadEmployees.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnReloadEmployees.ForeColor = System.Drawing.Color.White;
-            this.BtnReloadEmployees.Image = ((System.Drawing.Image)(resources.GetObject("BtnReloadEmployees.Image")));
-            this.BtnReloadEmployees.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnReloadEmployees.Location = new System.Drawing.Point(490, 13);
-            this.BtnReloadEmployees.Name = "BtnReloadEmployees";
-            this.BtnReloadEmployees.Size = new System.Drawing.Size(89, 47);
-            this.BtnReloadEmployees.TabIndex = 24;
-            this.BtnReloadEmployees.Text = "Reload";
-            this.BtnReloadEmployees.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BtnReloadEmployees.UseVisualStyleBackColor = false;
-            this.BtnReloadEmployees.Click += new System.EventHandler(this.BtnReloadEmployees_Click);
             // 
             // DisplayEmployeeListUserControl
             // 

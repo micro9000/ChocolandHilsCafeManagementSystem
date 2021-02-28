@@ -182,11 +182,11 @@ namespace EmployeeManagementUserControls
             // LblMessage
             // 
             this.LblMessage.AutoSize = true;
-            this.LblMessage.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LblMessage.ForeColor = System.Drawing.Color.White;
+            this.LblMessage.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblMessage.ForeColor = System.Drawing.Color.Black;
             this.LblMessage.Location = new System.Drawing.Point(158, 10);
             this.LblMessage.Name = "LblMessage";
-            this.LblMessage.Size = new System.Drawing.Size(281, 25);
+            this.LblMessage.Size = new System.Drawing.Size(258, 19);
             this.LblMessage.TabIndex = 19;
             this.LblMessage.Text = "Successfully add new employee";
             // 

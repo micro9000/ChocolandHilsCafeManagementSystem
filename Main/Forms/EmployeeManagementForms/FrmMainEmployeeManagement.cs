@@ -36,11 +36,18 @@ namespace Main.Forms.EmployeeManagementForms
 
             if (clickedItem != null && clickedItem.Name == "ToolStripItem_Add")
             {
+                // Add/update form
                 DisplayAddUpdateEmployeeUserControl();
             }
             else if (clickedItem != null && clickedItem.Name == "ToolStripItem_List")
             {
+                // Employees list
                 DisplayEmployeeListUserControl();
+            }
+            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_Details")
+            {
+                // Employee Details
+                DisplayEmployeeDetailsUserControl();
             }
         }
 
@@ -54,15 +61,14 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
-        // --------------------------------------------------------------------------------------
         #region Add/Update employee confirmation user control related methods event handlers
 
         public void DisplayAddUpdateEmployeeConfirmationUserControl(EmployeeModel employeeDetails, string msg)
         {
             this.panelContainer.Controls.Clear();
             var userControlToDisplay = new AddUpdateEmployeeConfirmationUserControl();
-            userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            userControlToDisplay.Anchor = AnchorStyles.None;
+            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+            //userControlToDisplay.Anchor = AnchorStyles.None;
 
             userControlToDisplay.BtnBackToFormClick += HandleBackToForm;
 
@@ -76,10 +82,9 @@ namespace Main.Forms.EmployeeManagementForms
             DisplayAddUpdateEmployeeUserControl();
         }
 
-        #endregion Add/Update employee confirmation user control related methods event handlers
+        #endregion
 
 
-        // --------------------------------------------------------------------------------------
         #region Add/Update employee user control related methods and event handlers
 
         private void DisplayAddUpdateEmployeeUserControl()
@@ -88,8 +93,8 @@ namespace Main.Forms.EmployeeManagementForms
 
             var userControlToDisplay = new AddUpdateEmployeeUserControl();
             //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
-            userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            userControlToDisplay.Anchor = AnchorStyles.None;
+            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+            //userControlToDisplay.Anchor = AnchorStyles.None;
 
             // event added
             userControlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
@@ -130,10 +135,9 @@ namespace Main.Forms.EmployeeManagementForms
             var employeeDetails = this._employeeController.GetByEmployeeNumber(addUpdateEmployeeObj.EmployeeNumber);
             addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails.Data);
         }
-        #endregion Add/Update employee user control related methods and event handlers
+        #endregion
 
 
-        // --------------------------------------------------------------------------------------
         #region Employee list user control related methods and event handlers
 
         private void DisplayEmployeeListUserControl()
@@ -192,7 +196,6 @@ namespace Main.Forms.EmployeeManagementForms
         #endregion
 
 
-        // --------------------------------------------------------------------------------------
         #region Leave types user control related methods and event handlers
 
         private void DisplayLeaveTypesUserControl()
@@ -291,6 +294,31 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
+        #endregion
+
+        #region Employee Details user control related methods and event handlers
+        private void DisplayEmployeeDetailsUserControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var userControlToDisplay = new EmployeeDetailsUserControl();
+            userControlToDisplay.Dock = DockStyle.Fill;
+            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+            //userControlToDisplay.Anchor = AnchorStyles.None;
+
+            //userControlToDisplay.LeaveTypes = _leaveTypeController.GetAll().Data;
+            //userControlToDisplay.LeaveTypeSaved += HandleLeaveTypeSaved;
+
+            //userControlToDisplay.PropertySelectedLeaveTypeIdToUpdateChanged += OnLeaveTypeSelectToUpdate;
+            //userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
+
+            //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
+            //userControlToDisplay.DisplayEmployeeList();
+
+            //userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
+
+            this.panelContainer.Controls.Add(userControlToDisplay);
+        }
         #endregion
     }
 }

@@ -36,18 +36,21 @@ namespace EmployeeManagementUserControls
             this.BtnViewEmployeeAttendance = new System.Windows.Forms.Button();
             this.BtnViewPersonalInformation = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BtnSaveEmployee = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.TbxAgency = new System.Windows.Forms.TextBox();
             this.PnlEmployeeInfoContainer = new System.Windows.Forms.Panel();
             this.panelsidebarparent.SuspendLayout();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelsidebarparent
             // 
             this.panelsidebarparent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
             this.panelsidebarparent.Controls.Add(this.panelSidebar);
-            this.panelsidebarparent.Controls.Add(this.panel1);
             this.panelsidebarparent.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelsidebarparent.Location = new System.Drawing.Point(0, 0);
             this.panelsidebarparent.Name = "panelsidebarparent";
@@ -60,9 +63,9 @@ namespace EmployeeManagementUserControls
             this.panelSidebar.Controls.Add(this.BtnViewEmployeeAttendance);
             this.panelSidebar.Controls.Add(this.BtnViewPersonalInformation);
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSidebar.Location = new System.Drawing.Point(0, 94);
+            this.panelSidebar.Location = new System.Drawing.Point(0, 0);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(205, 595);
+            this.panelSidebar.Size = new System.Drawing.Size(205, 689);
             this.panelSidebar.TabIndex = 8;
             // 
             // BtnViewEmployeePayslipHistory
@@ -133,55 +136,90 @@ namespace EmployeeManagementUserControls
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.groupBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Location = new System.Drawing.Point(205, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(205, 94);
-            this.panel1.TabIndex = 7;
+            this.panel1.Size = new System.Drawing.Size(1077, 112);
+            this.panel1.TabIndex = 1;
             // 
-            // button1
+            // groupBox1
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(0, 0);
-            this.button1.Name = "button1";
-            this.button1.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.button1.Size = new System.Drawing.Size(205, 38);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Back";
-            this.button1.UseVisualStyleBackColor = false;
+            this.groupBox1.Controls.Add(this.BtnSaveEmployee);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.TbxAgency);
+            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.groupBox1.Location = new System.Drawing.Point(6, 14);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(649, 77);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Search";
+            // 
+            // BtnSaveEmployee
+            // 
+            this.BtnSaveEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnSaveEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSaveEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnSaveEmployee.ForeColor = System.Drawing.Color.White;
+            this.BtnSaveEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSaveEmployee.Location = new System.Drawing.Point(472, 28);
+            this.BtnSaveEmployee.Name = "BtnSaveEmployee";
+            this.BtnSaveEmployee.Size = new System.Drawing.Size(115, 31);
+            this.BtnSaveEmployee.TabIndex = 39;
+            this.BtnSaveEmployee.Text = "Search";
+            this.BtnSaveEmployee.UseVisualStyleBackColor = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(27, 31);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(137, 21);
+            this.label1.TabIndex = 26;
+            this.label1.Text = "Employee number";
+            // 
+            // TbxAgency
+            // 
+            this.TbxAgency.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TbxAgency.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TbxAgency.Location = new System.Drawing.Point(168, 30);
+            this.TbxAgency.Name = "TbxAgency";
+            this.TbxAgency.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.TbxAgency.Size = new System.Drawing.Size(298, 29);
+            this.TbxAgency.TabIndex = 25;
             // 
             // PnlEmployeeInfoContainer
             // 
+            this.PnlEmployeeInfoContainer.AutoScroll = true;
+            this.PnlEmployeeInfoContainer.AutoSize = true;
+            this.PnlEmployeeInfoContainer.BackColor = System.Drawing.Color.White;
+            this.PnlEmployeeInfoContainer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PnlEmployeeInfoContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlEmployeeInfoContainer.Location = new System.Drawing.Point(205, 0);
+            this.PnlEmployeeInfoContainer.Location = new System.Drawing.Point(205, 112);
             this.PnlEmployeeInfoContainer.Name = "PnlEmployeeInfoContainer";
-            this.PnlEmployeeInfoContainer.Size = new System.Drawing.Size(1077, 689);
-            this.PnlEmployeeInfoContainer.TabIndex = 3;
+            this.PnlEmployeeInfoContainer.Size = new System.Drawing.Size(1077, 577);
+            this.PnlEmployeeInfoContainer.TabIndex = 2;
             // 
             // EmployeeDetailsUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.PnlEmployeeInfoContainer);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelsidebarparent);
             this.Name = "EmployeeDetailsUserControl";
             this.Size = new System.Drawing.Size(1282, 689);
+            this.Load += new System.EventHandler(this.EmployeeDetailsUserControl_Load);
             this.panelsidebarparent.ResumeLayout(false);
             this.panelSidebar.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -190,10 +228,13 @@ namespace EmployeeManagementUserControls
         private System.Windows.Forms.Panel panelsidebarparent;
         private System.Windows.Forms.Button BtnViewPersonalInformation;
         private System.Windows.Forms.Panel panelSidebar;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button BtnViewEmployeePayslipHistory;
         private System.Windows.Forms.Button BtnViewEmployeeAttendance;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel PnlEmployeeInfoContainer;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox TbxAgency;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button BtnSaveEmployee;
     }
 }

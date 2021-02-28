@@ -37,9 +37,8 @@ namespace EmployeeManagementUserControls
 
         private void EmployeePersonalInfoUserControl_Load(object sender, EventArgs e)
         {
-            this.PnlDetailsContainer.Location = new Point(this.ClientSize.Width / 2 - this.PnlDetailsContainer.Size.Width / 2, this.ClientSize.Height / 2 - this.PnlDetailsContainer.Size.Height / 2);
-            this.PnlDetailsContainer.Anchor = AnchorStyles.None;
-
+            //this.PnlDetailsContainer.Location = new Point(this.ClientSize.Width / 2 - this.PnlDetailsContainer.Size.Width / 2, this.ClientSize.Height / 2 - this.PnlDetailsContainer.Size.Height / 2);
+            //this.PnlDetailsContainer.Anchor = AnchorStyles.None;
 
             EmployeeGovtIdCards.Add(new EmployeeGovtIdCardModel {
                 EmployeeNumber = "20200001",
