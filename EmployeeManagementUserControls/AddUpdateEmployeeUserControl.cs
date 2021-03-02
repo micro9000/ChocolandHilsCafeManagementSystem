@@ -43,6 +43,15 @@ namespace EmployeeManagementUserControls
         }
 
 
+        private EmployeeSalaryRateModel employeeSalary = new EmployeeSalaryRateModel();
+
+        public EmployeeSalaryRateModel EmployeeSalary
+        {
+            get { return employeeSalary = new EmployeeSalaryRateModel(); }
+            set { employeeSalary = value; }
+        }
+
+
 
         private bool isNew;
 
@@ -126,11 +135,15 @@ namespace EmployeeManagementUserControls
             this.TbxAddress.Text = "";
             this.TbxBranchAssign.Text = "";
             this.TbxEmail.Text = "";
+            this.TbxEmpPosition.Text = "";
             this.TbxEmployeeNumber.Text = "";
             this.CboxGovtAgencies.SelectedIndex = -1;
 
             this.TboxEmpIdNumber.Text = "";
 
+            this.TbxSalaryRate.Text = "";
+            this.TboxHalfMonthRate.Text = "";
+            this.TbxDailySalaryRate.Text = "";
 
             this.GBoxSearchEmployee.Visible = false;
             this.BtnCancelUpdateEmployee.Visible = false;
@@ -141,6 +154,9 @@ namespace EmployeeManagementUserControls
             this.BtnActionUpdateEmployeeDetails.Enabled = true;
             this.BtnCancelUpdateEmployee.Visible = true;
             this.ListViewEmpGovtIdCards.Items.Clear();
+
+            this.BtnUndoToDelete.Visible = false;
+            this.BtnDeleteEmpIdCard.Visible = false;
 
             this.EmployeeGovtIdCards = new List<EmployeeGovtIdCardTempModel>();
             
@@ -159,6 +175,7 @@ namespace EmployeeManagementUserControls
                 this.TbxAddress.Text = employeeDetails.Address;
                 this.TbxBranchAssign.Text = employeeDetails.BranchAssign;
                 this.TbxEmail.Text = employeeDetails.EmailAddress;
+                this.TbxEmpPosition.Text = employeeDetails.Position;
 
                 DisplayEmployeeGovtIds();
             }
@@ -170,6 +187,8 @@ namespace EmployeeManagementUserControls
 
             if (EmployeeGovtIdCards != null)
             {
+                this.BtnDeleteEmpIdCard.Visible = true;
+
                 foreach (var govtId in EmployeeGovtIdCards)
                 {
                     if (govtId.EmployeeGovtIdCard != null)
@@ -177,7 +196,8 @@ namespace EmployeeManagementUserControls
                         var row = new string[] {
                             govtId.EmployeeGovtIdCard.GovernmentAgency != null ? govtId.EmployeeGovtIdCard.GovernmentAgency.GovtAgency : "",
                             govtId.EmployeeGovtIdCard.EmployeeIdNumber,
-                            (govtId.IsExisting ? "EXISTING" : "NEW")
+                            (govtId.IsExisting ? "EXISTING" : "NEW"),
+                            govtId.EmployeeGovtIdCard.IsDeleted ? "To Delete" : ""
                         };
 
                         var listViewItem = new ListViewItem(row);
@@ -208,13 +228,43 @@ namespace EmployeeManagementUserControls
                 DateHire = this.DTPicHireDate.Value,
                 Address = this.TbxAddress.Text,
                 BranchAssign = this.TbxBranchAssign.Text,
-                EmailAddress = this.TbxEmail.Text
+                EmailAddress = this.TbxEmail.Text,
+                Position = this.TbxEmpPosition.Text
             };
 
             if (this.IsNew == false)
             {
                 Employee.EmployeeNumber = this.TbxEmployeeNumber.Text;
             }
+
+
+            decimal salaryRate = 0;
+            decimal halfMonthSalaryRate = 0;
+            decimal dailySalaryRate = 0;
+
+            if (decimal.TryParse(this.TbxSalaryRate.Text, out salaryRate) == false)
+            {
+                MessageBox.Show("Invalid salary rate", "Convert salary to decimal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (decimal.TryParse(this.TboxHalfMonthRate.Text, out halfMonthSalaryRate) == false)
+            {
+                MessageBox.Show("Invalid half month rate", "Convert half month to decimal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (decimal.TryParse(this.TbxDailySalaryRate.Text, out dailySalaryRate) == false)
+            {
+                MessageBox.Show("Invalid daily salary rate", "Convert daily salary to decimal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            EmployeeSalary = new EmployeeSalaryRateModel { 
+                SalaryRate = salaryRate,
+                HalfMonthRate = halfMonthSalaryRate,
+                DailyRate = dailySalaryRate
+            };
 
             OnEmployeeSaved(EventArgs.Empty);
         }
@@ -259,14 +309,7 @@ namespace EmployeeManagementUserControls
         {
             this.ClearForm();
         }
-
-        private void BtnMoveToNextTab_Click(object sender, EventArgs e)
-        {
-            MoveToNextTabSaveEmployeeDetails();
-        }
-
         
-
         private void BtnAddNewEmpGovtId_Click(object sender, EventArgs e)
         {
             string empGovtIdNumber = this.TboxEmpIdNumber.Text;
@@ -327,6 +370,35 @@ namespace EmployeeManagementUserControls
             }
         }
 
+        private void BtnDeleteEmpIdCard_Click(object sender, EventArgs e)
+        {
+            if (ListViewEmpGovtIdCards.SelectedItems.Count > 0)
+            {
+                EmployeeGovtIdCardTempModel selectedEmpGovtId = ListViewEmpGovtIdCards.SelectedItems[0].Tag as EmployeeGovtIdCardTempModel;
+                if (selectedEmpGovtId != null)
+                {
+                    var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
+                                            x.EmployeeGovtIdCard.GovtAgencyId == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId).FirstOrDefault();
+
+                    if (addedNewGovtId != null)
+                    {
+                        if (addedNewGovtId.IsExisting == false)
+                        {
+                            EmployeeGovtIdCards.Remove(addedNewGovtId);
+                        }
+                        else
+                        {
+                            addedNewGovtId.EmployeeGovtIdCard.IsDeleted = true;
+                            addedNewGovtId.EmployeeGovtIdCard.DeletedAt = DateTime.Now;
+                        }
+                    }
+
+                    this.DisplayEmployeeGovtIds();
+                }
+            }
+        }
+
+
         private void ListViewEmpGovtIdCards_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ListViewEmpGovtIdCards.SelectedItems.Count > 0)
@@ -334,16 +406,54 @@ namespace EmployeeManagementUserControls
                 EmployeeGovtIdCardTempModel selectedEmpGovtId = ListViewEmpGovtIdCards.SelectedItems[0].Tag as EmployeeGovtIdCardTempModel;
                 if (selectedEmpGovtId != null)
                 {
-                    MessageBox.Show($"{selectedEmpGovtId.EmployeeGovtIdCard.EmployeeIdNumber} {selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId}");
+                    var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
+                                            x.EmployeeGovtIdCard.GovtAgencyId == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId).FirstOrDefault();
+
+
+                    if (addedNewGovtId.EmployeeGovtIdCard.IsDeleted == true)
+                    {
+                        this.BtnUndoToDelete.Visible = true;
+                    }
+                    else
+                    {
+                        this.BtnUndoToDelete.Visible = false;
+                    }
+                }
+                else
+                {
+                    this.BtnUndoToDelete.Visible = false;
                 }
             }
-            
+            else
+            {
+                this.BtnUndoToDelete.Visible = false;
+            }
+        }
+
+        private void BtnUndoToDelete_Click(object sender, EventArgs e)
+        {
+            if (ListViewEmpGovtIdCards.SelectedItems.Count > 0)
+            {
+                EmployeeGovtIdCardTempModel selectedEmpGovtId = ListViewEmpGovtIdCards.SelectedItems[0].Tag as EmployeeGovtIdCardTempModel;
+                if (selectedEmpGovtId != null)
+                {
+                    var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
+                                            x.EmployeeGovtIdCard.GovtAgencyId == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId).FirstOrDefault();
+
+                    addedNewGovtId.EmployeeGovtIdCard.IsDeleted = false;
+                    addedNewGovtId.EmployeeGovtIdCard.DeletedAt = null;
+
+                    this.BtnUndoToDelete.Visible = false;
+                    this.DisplayEmployeeGovtIds();
+                }
+            }
         }
 
         private void TabControlSaveEmployeeDetails_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
+
 
 
         //private void TbxEmployeeNumber_KeyUp(object sender, KeyEventArgs e)

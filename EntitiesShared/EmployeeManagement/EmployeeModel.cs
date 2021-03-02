@@ -78,6 +78,14 @@ namespace EntitiesShared.EmployeeManagement
             set { emailAddress = value; }
         }
 
+        private string position;
+
+        public string Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
 
         private string branchAssign;
 

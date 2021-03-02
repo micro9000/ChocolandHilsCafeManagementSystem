@@ -25,18 +25,21 @@ namespace Main.Controllers.EmployeeManagementControllers
         private readonly EmployeeAddUpdateValidator _employeeAddUpdateValidator;
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeeGovtIdCardData _employeeGovtIdCardData;
+        private readonly IEmployeeSalaryRateData _employeeSalaryRateData;
 
         public EmployeeController(ILogger<LoginFrm> logger,
                                 IMapper mapper,
                                 EmployeeAddUpdateValidator employeeAddUpdateValidator,
                                 IEmployeeData employeeData,
-                                IEmployeeGovtIdCardData employeeGovtIdCardData)
+                                IEmployeeGovtIdCardData employeeGovtIdCardData,
+                                IEmployeeSalaryRateData employeeSalaryRateData)
         {
             _logger = logger;
             _mapper = mapper;
             _employeeAddUpdateValidator = employeeAddUpdateValidator;
             _employeeData = employeeData;
             _employeeGovtIdCardData = employeeGovtIdCardData;
+            _employeeSalaryRateData = employeeSalaryRateData;
         }
 
 
@@ -287,6 +290,19 @@ namespace Main.Controllers.EmployeeManagementControllers
                 results.IsSuccess = true;
                 results.Data = GetAllEmployeeIdCardsMapToCustomModel(employeeNumber);
             }
+
+            return results;
+        }
+
+
+        public EntityResult<EmployeeSalaryRateModel> SaveEmployeeSalaryRate(EmployeeSalaryRateModel salaryRate, string employeeNumber)
+        {
+
+            var results = new EntityResult<EmployeeSalaryRateModel>();
+            results.IsSuccess = false;
+
+
+
 
             return results;
         }

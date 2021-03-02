@@ -36,7 +36,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_Add = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_List = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_Details = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripItem_GovtIds = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_FileLeave = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemPayroll = new System.Windows.Forms.ToolStripMenuItem();
             this.PayrollMenuItems = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -48,8 +47,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.LeaveTypesStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemWorkSchedules = new System.Windows.Forms.ToolStripMenuItem();
             this.ShiftsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.LeaveCategoryStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EmployeeShiftSchedulesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemGovernment = new System.Windows.Forms.ToolStripMenuItem();
             this.AgenciesStirpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContainer = new System.Windows.Forms.Panel();
@@ -92,41 +90,34 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_Add,
             this.ToolStripItem_List,
             this.ToolStripItem_Details,
-            this.ToolStripItem_GovtIds,
             this.ToolStripItem_FileLeave});
             this.EmployeeMenuItemsMenuStrip.Name = "EmployeeMenuItems";
             this.EmployeeMenuItemsMenuStrip.OwnerItem = this.MenuItemEmployee;
-            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(159, 114);
+            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(138, 92);
             this.EmployeeMenuItemsMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.EmployeeMenuItemsMenuStrip_ItemClicked);
             // 
             // ToolStripItem_Add
             // 
             this.ToolStripItem_Add.Name = "ToolStripItem_Add";
-            this.ToolStripItem_Add.Size = new System.Drawing.Size(158, 22);
-            this.ToolStripItem_Add.Text = "Add";
+            this.ToolStripItem_Add.Size = new System.Drawing.Size(137, 22);
+            this.ToolStripItem_Add.Text = "Save Details";
             // 
             // ToolStripItem_List
             // 
             this.ToolStripItem_List.Name = "ToolStripItem_List";
-            this.ToolStripItem_List.Size = new System.Drawing.Size(158, 22);
+            this.ToolStripItem_List.Size = new System.Drawing.Size(137, 22);
             this.ToolStripItem_List.Text = "List";
             // 
             // ToolStripItem_Details
             // 
             this.ToolStripItem_Details.Name = "ToolStripItem_Details";
-            this.ToolStripItem_Details.Size = new System.Drawing.Size(158, 22);
-            this.ToolStripItem_Details.Text = "Details";
-            // 
-            // ToolStripItem_GovtIds
-            // 
-            this.ToolStripItem_GovtIds.Name = "ToolStripItem_GovtIds";
-            this.ToolStripItem_GovtIds.Size = new System.Drawing.Size(158, 22);
-            this.ToolStripItem_GovtIds.Text = "Government Ids";
+            this.ToolStripItem_Details.Size = new System.Drawing.Size(137, 22);
+            this.ToolStripItem_Details.Text = "View Details";
             // 
             // ToolStripItem_FileLeave
             // 
             this.ToolStripItem_FileLeave.Name = "ToolStripItem_FileLeave";
-            this.ToolStripItem_FileLeave.Size = new System.Drawing.Size(158, 22);
+            this.ToolStripItem_FileLeave.Size = new System.Drawing.Size(137, 22);
             this.ToolStripItem_FileLeave.Text = "File leave";
             // 
             // MenuItemPayroll
@@ -190,8 +181,7 @@ namespace Main.Forms.EmployeeManagementForms
             // 
             this.MenuItemWorkSchedules.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ShiftsStripMenuItem,
-            this.toolStripMenuItem1,
-            this.LeaveCategoryStripMenuItem});
+            this.EmployeeShiftSchedulesMenuItem});
             this.MenuItemWorkSchedules.Name = "MenuItemWorkSchedules";
             this.MenuItemWorkSchedules.Size = new System.Drawing.Size(103, 20);
             this.MenuItemWorkSchedules.Text = "Work Schedules";
@@ -202,17 +192,11 @@ namespace Main.Forms.EmployeeManagementForms
             this.ShiftsStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.ShiftsStripMenuItem.Text = "Shifts";
             // 
-            // toolStripMenuItem1
+            // EmployeeShiftSchedulesMenuItem
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(207, 22);
-            this.toolStripMenuItem1.Text = "Employee shift schedules";
-            // 
-            // LeaveCategoryStripMenuItem
-            // 
-            this.LeaveCategoryStripMenuItem.Name = "LeaveCategoryStripMenuItem";
-            this.LeaveCategoryStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.LeaveCategoryStripMenuItem.Text = "Leave category";
+            this.EmployeeShiftSchedulesMenuItem.Name = "EmployeeShiftSchedulesMenuItem";
+            this.EmployeeShiftSchedulesMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.EmployeeShiftSchedulesMenuItem.Text = "Employee shift schedules";
             // 
             // MenuItemGovernment
             // 
@@ -311,10 +295,8 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ToolStripMenuItem MenuItemEmployee;
         private System.Windows.Forms.ToolStripMenuItem MenuItemWorkSchedules;
         private System.Windows.Forms.Panel panelContainer;
-        private System.Windows.Forms.ToolStripMenuItem MenuItemPayroll;
         private System.Windows.Forms.ToolStripMenuItem ShiftsStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem LeaveCategoryStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem EmployeeShiftSchedulesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MenuItemGovernment;
         private System.Windows.Forms.ToolStripMenuItem AgenciesStirpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LeaveTypeStripMenuItem;
@@ -329,15 +311,15 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ContextMenuStrip EmployeeMenuItemsMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItem_Add;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItem_List;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripItem_GovtIds;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItem_FileLeave;
         private System.Windows.Forms.ContextMenuStrip PayrollMenuItems;
         private System.Windows.Forms.ToolStripMenuItem AttendanceStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PayslipStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem BenefisStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DeductionStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SalaryStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LeaveTypesStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItem_Details;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemPayroll;
+        private System.Windows.Forms.ToolStripMenuItem SalaryStripMenuItem;
     }
 }
