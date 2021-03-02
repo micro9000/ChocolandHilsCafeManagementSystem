@@ -52,7 +52,8 @@ namespace EmployeeManagementUserControls
             set { isNew = value; }
         }
 
-        
+
+
         public event EventHandler EmployeeSaved;
         protected virtual void OnEmployeeSaved (EventArgs e)
         {
@@ -79,6 +80,19 @@ namespace EmployeeManagementUserControls
         }
 
 
+        public static void EnableTab(TabPage page, bool enable)
+        {
+            EnableControls(page.Controls, enable);
+        }
+        private static void EnableControls(Control.ControlCollection ctls, bool enable)
+        {
+            foreach (Control ctl in ctls)
+            {
+                ctl.Enabled = enable;
+                EnableControls(ctl.Controls, enable);
+            }
+        }
+
         private void AddUpdateEmployeeUserControl_Load(object sender, EventArgs e)
         {
             // Govt. agencies load in combo box
@@ -93,10 +107,17 @@ namespace EmployeeManagementUserControls
                     this.CboxGovtAgencies.Items.Add(item);
                 }
             }
+
+
         }
 
         public void ClearForm()
         {
+            this.employeeNumber = "";
+            this.IsNew = true;
+
+
+            this.LblActionForEmployeeDetails.Text = "Add new employee";
             this.TbxFirstName.Text = "";
             this.TbxLastName.Text = "";
             this.DTPicBirthDate.Value = DateTime.Now;
@@ -107,6 +128,22 @@ namespace EmployeeManagementUserControls
             this.TbxEmail.Text = "";
             this.TbxEmployeeNumber.Text = "";
             this.CboxGovtAgencies.SelectedIndex = -1;
+
+            this.TboxEmpIdNumber.Text = "";
+
+
+            this.GBoxSearchEmployee.Visible = false;
+            this.BtnCancelUpdateEmployee.Visible = false;
+
+            TabControlSaveEmployeeDetails.SelectedIndex = 0;
+
+            this.BtnActionAddNewEmployee.Enabled = true;
+            this.BtnActionUpdateEmployeeDetails.Enabled = true;
+            this.BtnCancelUpdateEmployee.Visible = true;
+            this.ListViewEmpGovtIdCards.Items.Clear();
+
+            this.EmployeeGovtIdCards = new List<EmployeeGovtIdCardTempModel>();
+            
         }
 
 
@@ -122,6 +159,35 @@ namespace EmployeeManagementUserControls
                 this.TbxAddress.Text = employeeDetails.Address;
                 this.TbxBranchAssign.Text = employeeDetails.BranchAssign;
                 this.TbxEmail.Text = employeeDetails.EmailAddress;
+
+                DisplayEmployeeGovtIds();
+            }
+        }
+
+        private void DisplayEmployeeGovtIds()
+        {
+            this.ListViewEmpGovtIdCards.Items.Clear();
+
+            if (EmployeeGovtIdCards != null)
+            {
+                foreach (var govtId in EmployeeGovtIdCards)
+                {
+                    if (govtId.EmployeeGovtIdCard != null)
+                    {
+                        var row = new string[] {
+                            govtId.EmployeeGovtIdCard.GovernmentAgency != null ? govtId.EmployeeGovtIdCard.GovernmentAgency.GovtAgency : "",
+                            govtId.EmployeeGovtIdCard.EmployeeIdNumber,
+                            (govtId.IsExisting ? "EXISTING" : "NEW")
+                        };
+
+                        var listViewItem = new ListViewItem(row);
+                        listViewItem.Tag = govtId;
+
+                        this.ListViewEmpGovtIdCards.Items.Add(listViewItem);
+                    }
+
+                    
+                }
             }
         }
 
@@ -161,24 +227,27 @@ namespace EmployeeManagementUserControls
 
         private void BtnActionAddNewEmployee_Click(object sender, EventArgs e)
         {
-            this.employeeNumber = "";
             this.LblActionForEmployeeDetails.Text = "Add new employee";
-            this.GBoxSearchEmployee.Visible = false;
-
-            this.BtnCancelUpdateEmployee.Visible = true;
-
-            this.IsNew = true;
             this.ClearForm();
+            this.BtnCancelUpdateEmployee.Visible = true;
+            this.BtnActionUpdateEmployeeDetails.Enabled = false;
+
+            // if update, disable the update employee button, 
+            //the user needs to click cancel in order to choose update employee
             MoveToNextTabSaveEmployeeDetails();
         }
 
         private void BtnActionUpdateEmployeeDetails_Click(object sender, EventArgs e)
         {
             this.LblActionForEmployeeDetails.Text = "Update employee details";
-            this.GBoxSearchEmployee.Visible = true;
-            this.BtnCancelUpdateEmployee.Visible= true;
             this.ClearForm();
             this.IsNew = false;
+            this.GBoxSearchEmployee.Visible = true;
+            this.BtnCancelUpdateEmployee.Visible = true;
+
+            // if update, disable the add employee button, 
+            //the user needs to click cancel in order to choose add new
+            this.BtnActionAddNewEmployee.Enabled = false;
         }
 
         private void BtnActionSearchEmployeeByEmployeeNumber_Click(object sender, EventArgs e)
@@ -188,11 +257,7 @@ namespace EmployeeManagementUserControls
 
         private void BtnCancelUpdateEmployee_Click(object sender, EventArgs e)
         {
-            this.GBoxSearchEmployee.Visible = false;
-            this.BtnCancelUpdateEmployee.Visible = false;
             this.ClearForm();
-            this.IsNew = true;
-            TabControlSaveEmployeeDetails.SelectedIndex = 0;
         }
 
         private void BtnMoveToNextTab_Click(object sender, EventArgs e)
@@ -200,27 +265,7 @@ namespace EmployeeManagementUserControls
             MoveToNextTabSaveEmployeeDetails();
         }
 
-        private void DisplayAddedNewGovtIds()
-        {
-            this.ListViewEmpGovtIdCards.Items.Clear();
-
-            if (EmployeeGovtIds != null)
-            {
-                foreach (var govtId in EmployeeGovtIdCards)
-                {
-                    var row = new string[] { 
-                        govtId.EmployeeGovtIdCard.GovernmentAgency.GovtAgency, 
-                        govtId.EmployeeGovtIdCard.EmployeeIdNumber,
-                        (govtId.IsExisting ? "EXISTING" : "NEW")
-                    };
-
-                    var listViewItem = new ListViewItem(row);
-                    listViewItem.Tag = govtId;
-
-                    this.ListViewEmpGovtIdCards.Items.Add(listViewItem);
-                }
-            }
-        }
+        
 
         private void BtnAddNewEmpGovtId_Click(object sender, EventArgs e)
         {
@@ -242,6 +287,9 @@ namespace EmployeeManagementUserControls
                         IsNeedToUpdate = false,
                         EmployeeGovtIdCard = new EmployeeGovtIdCardModel
                         {
+                            // we can't add the employee number on this code
+                            // I assume that every transaction is add new employee, and we will wait for the employee number to generate
+                            // I will add the employee number in EmployeeController.cs
                             EmployeeIdNumber = empGovtIdNumber,
                             GovtAgencyId = selectedGovtAgencyId,
                             GovernmentAgency = new GovernmentAgencyModel
@@ -274,7 +322,7 @@ namespace EmployeeManagementUserControls
                         }
                     }
 
-                    DisplayAddedNewGovtIds();
+                    DisplayEmployeeGovtIds();
                 }
             }
         }
@@ -290,6 +338,11 @@ namespace EmployeeManagementUserControls
                 }
             }
             
+        }
+
+        private void TabControlSaveEmployeeDetails_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
 

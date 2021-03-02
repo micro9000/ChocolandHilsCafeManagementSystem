@@ -1,4 +1,5 @@
-﻿using EntitiesShared.EmployeeManagement;
+﻿using EmployeeManagementUserControls.CustomModels;
+using EntitiesShared.EmployeeManagement;
 using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,9 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
 {
     public interface IEmployeeController
     {
-        /// <summary>
-        /// Will insert new or update existing employee record
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns>EntityResult<EmployeeModel></returns>
-        EntityResult<EmployeeModel> Save(EmployeeModel input, bool isNewEmployee);
+        EntityResult<EmployeeDetailsModel> SaveEmployeeDetails(bool isNewEmployee, EmployeeModel employee, List<EmployeeGovtIdCardTempModel> idCards);
+        List<EmployeeGovtIdCardTempModel> GetAllEmployeeIdCardsMapToCustomModel(string employeeNumber);
+
         EntityResult<EmployeeModel> GetByEmployeeNumber(string employeeNumber);
         ListOfEntityResult<EmployeeModel> GetAll();
         ListOfEntityResult<EmployeeModel> Search(string searchString);

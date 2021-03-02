@@ -67,19 +67,19 @@ namespace Main.Forms.EmployeeManagementForms
 
         #region Add/Update employee confirmation user control related methods event handlers
 
-        public void DisplayAddUpdateEmployeeConfirmationUserControl(EmployeeModel employeeDetails, string msg)
-        {
-            this.panelContainer.Controls.Clear();
-            var userControlToDisplay = new AddUpdateEmployeeConfirmationUserControl();
-            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            //userControlToDisplay.Anchor = AnchorStyles.None;
+        //public void DisplayAddUpdateEmployeeConfirmationUserControl(EmployeeModel employeeDetails, string msg)
+        //{
+        //    this.panelContainer.Controls.Clear();
+        //    var userControlToDisplay = new AddUpdateEmployeeConfirmationUserControl();
+        //    //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
+        //    //userControlToDisplay.Anchor = AnchorStyles.None;
 
-            userControlToDisplay.BtnBackToFormClick += HandleBackToForm;
+        //    userControlToDisplay.BtnBackToFormClick += HandleBackToForm;
 
-            userControlToDisplay.DisplayEmployeeDetails(employeeDetails, msg);
+        //    userControlToDisplay.DisplayEmployeeDetails(employeeDetails, msg);
 
-            this.panelContainer.Controls.Add(userControlToDisplay);
-        }
+        //    this.panelContainer.Controls.Add(userControlToDisplay);
+        //}
 
         private void HandleBackToForm(object sender, EventArgs e)
         {
@@ -114,7 +114,10 @@ namespace Main.Forms.EmployeeManagementForms
         {
             AddUpdateEmployeeUserControl addUpdateEmployeeObj = (AddUpdateEmployeeUserControl)sender;
 
-            var saveResults = _employeeController.Save(addUpdateEmployeeObj.Employee, addUpdateEmployeeObj.IsNew);
+            var saveResults = _employeeController.SaveEmployeeDetails(addUpdateEmployeeObj.IsNew,
+                                                                      addUpdateEmployeeObj.Employee,
+                                                                       addUpdateEmployeeObj.EmployeeGovtIdCards);
+
             string resultMessages = "";
             foreach (var msg in saveResults.Messages)
             {
@@ -126,9 +129,9 @@ namespace Main.Forms.EmployeeManagementForms
                 MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 addUpdateEmployeeObj.ClearForm();
 
-                string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
+                //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
 
-                DisplayAddUpdateEmployeeConfirmationUserControl(saveResults.Data, msg);
+                //DisplayAddUpdateEmployeeConfirmationUserControl(saveResults.Data, msg);
             }
             else
             {
@@ -142,6 +145,7 @@ namespace Main.Forms.EmployeeManagementForms
             var employeeDetails = this._employeeController.GetByEmployeeNumber(addUpdateEmployeeObj.EmployeeNumber);
             if (employeeDetails != null && employeeDetails.IsSuccess && employeeDetails.Data != null)
             {
+                addUpdateEmployeeObj.EmployeeGovtIdCards = _employeeController.GetAllEmployeeIdCardsMapToCustomModel(employeeDetails.Data.EmployeeNumber);
                 addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails.Data);
                 addUpdateEmployeeObj.MoveToNextTabSaveEmployeeDetails();
             }
@@ -261,9 +265,6 @@ namespace Main.Forms.EmployeeManagementForms
                 userControlObj.LeaveTypes = _leaveTypeController.GetAll().Data;
                 userControlObj.DisplayLeaveTypeList();
 
-                //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
-
-                //DisplayAddUpdateEmployeeConfirmationUserControl(saveResults.Data, msg);
             }
             else
             {
