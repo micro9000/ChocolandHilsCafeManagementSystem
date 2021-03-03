@@ -11,10 +11,15 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
 {
     public interface IEmployeeController
     {
-        EntityResult<EmployeeDetailsModel> SaveEmployeeDetails(bool isNewEmployee, EmployeeModel employee, List<EmployeeGovtIdCardTempModel> idCards);
+        EntityResult<EmployeeDetailsModel> SaveEmployeeDetails(bool isNewEmployee, 
+                                                                EmployeeModel employee, 
+                                                                List<EmployeeGovtIdCardTempModel> idCards,
+                                                                EmployeeSalaryRateModel salaryRate);
+        EntityResult<EmployeeModel> GetByEmployeeNumber(string employeeNumber);
         List<EmployeeGovtIdCardTempModel> GetAllEmployeeIdCardsMapToCustomModel(string employeeNumber);
 
-        EntityResult<EmployeeModel> GetByEmployeeNumber(string employeeNumber);
+        EntityResult<EmployeeSalaryRateModel> GetEmployeeSalaryRateByEmployeeNumber(string employeeNumber);
+
         ListOfEntityResult<EmployeeModel> GetAll();
         ListOfEntityResult<EmployeeModel> Search(string searchString);
         ListOfEntityResult<EmployeeModel> GetByDateHire(DateTime dateHire);

@@ -23,6 +23,7 @@ namespace Main.Controllers.EmployeeManagementControllers
         private readonly ILogger<LoginFrm> _logger;
         private readonly IMapper _mapper;
         private readonly EmployeeAddUpdateValidator _employeeAddUpdateValidator;
+        private readonly EmployeeSalaryRateAddUpdateValidator _employeeSalaryRateValidator;
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeeGovtIdCardData _employeeGovtIdCardData;
         private readonly IEmployeeSalaryRateData _employeeSalaryRateData;
@@ -30,6 +31,7 @@ namespace Main.Controllers.EmployeeManagementControllers
         public EmployeeController(ILogger<LoginFrm> logger,
                                 IMapper mapper,
                                 EmployeeAddUpdateValidator employeeAddUpdateValidator,
+                                EmployeeSalaryRateAddUpdateValidator employeeSalaryRateValidator,
                                 IEmployeeData employeeData,
                                 IEmployeeGovtIdCardData employeeGovtIdCardData,
                                 IEmployeeSalaryRateData employeeSalaryRateData)
@@ -37,6 +39,7 @@ namespace Main.Controllers.EmployeeManagementControllers
             _logger = logger;
             _mapper = mapper;
             _employeeAddUpdateValidator = employeeAddUpdateValidator;
+            _employeeSalaryRateValidator = employeeSalaryRateValidator;
             _employeeData = employeeData;
             _employeeGovtIdCardData = employeeGovtIdCardData;
             _employeeSalaryRateData = employeeSalaryRateData;
@@ -109,7 +112,10 @@ namespace Main.Controllers.EmployeeManagementControllers
         }
 
 
-        public EntityResult<EmployeeDetailsModel> SaveEmployeeDetails(bool isNewEmployee, EmployeeModel employee, List<EmployeeGovtIdCardTempModel> idCards)
+        public EntityResult<EmployeeDetailsModel> SaveEmployeeDetails(bool isNewEmployee, 
+                                                                        EmployeeModel employee, 
+                                                                        List<EmployeeGovtIdCardTempModel> idCards,
+                                                                        EmployeeSalaryRateModel salaryRate)
         {
             var results = new EntityResult<EmployeeDetailsModel>();
             results.Data = new EmployeeDetailsModel();
@@ -136,6 +142,18 @@ namespace Main.Controllers.EmployeeManagementControllers
                     {
                         string errs = "";
                         foreach (var err in saveBasicInfoResults.Messages)
+                        {
+                            errs += err + "\n";
+                        }
+                        throw new ScopeTransactionException(errs);
+                    }
+
+                    var saveEmployeeSalaryRate = this.SaveEmployeeSalaryRate(salaryRate, saveBasicInfoResults.Data.EmployeeNumber);
+
+                    if (saveEmployeeSalaryRate.IsSuccess == false)
+                    {
+                        string errs = "";
+                        foreach (var err in saveEmployeeSalaryRate.Messages)
                         {
                             errs += err + "\n";
                         }
@@ -175,11 +193,11 @@ namespace Main.Controllers.EmployeeManagementControllers
                 input.EmpNumYear = input.DateHire.Year.ToString();
             }
 
-            ValidationResult validatorResult = _employeeAddUpdateValidator.Validate(input);
+            ValidationResult validationResult = _employeeAddUpdateValidator.Validate(input);
 
-            if (!validatorResult.IsValid)
+            if (!validationResult.IsValid)
             {
-                foreach (var failure in validatorResult.Errors)
+                foreach (var failure in validationResult.Errors)
                 {
                     results.Messages.Add("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
                 }
@@ -253,6 +271,28 @@ namespace Main.Controllers.EmployeeManagementControllers
             return employeeIdCards;
         }
 
+
+        public EntityResult<EmployeeSalaryRateModel> GetEmployeeSalaryRateByEmployeeNumber(string employeeNumber)
+        {
+            var results = new EntityResult<EmployeeSalaryRateModel>();
+
+            try
+            {
+                var salaryRate = _employeeSalaryRateData.GetByEmployeeNumber(employeeNumber);
+                results.IsSuccess = true;
+                results.Messages.Add("Successfully retrieve employee salary rate.");
+                results.Data = salaryRate;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
+        }
+
+
         private ListOfEntityResult<EmployeeGovtIdCardTempModel> SaveEmployeeGovtIdCards(List<EmployeeGovtIdCardTempModel> idCards, string employeeNumber)
         {
             var results = new ListOfEntityResult<EmployeeGovtIdCardTempModel>();
@@ -295,14 +335,59 @@ namespace Main.Controllers.EmployeeManagementControllers
         }
 
 
-        public EntityResult<EmployeeSalaryRateModel> SaveEmployeeSalaryRate(EmployeeSalaryRateModel salaryRate, string employeeNumber)
+        private EntityResult<EmployeeSalaryRateModel> SaveEmployeeSalaryRate(EmployeeSalaryRateModel salaryRate, string employeeNumber)
         {
 
             var results = new EntityResult<EmployeeSalaryRateModel>();
             results.IsSuccess = false;
 
 
+            ValidationResult validationResult = _employeeSalaryRateValidator.Validate(salaryRate);
 
+            if (!validationResult.IsValid)
+            {
+                foreach (var failure in validationResult.Errors)
+                {
+                    results.Messages.Add("Property " + failure.PropertyName + " failed validation. Error was: " + failure.ErrorMessage);
+                }
+                results.IsSuccess = false;
+                return results;
+            }
+
+            var existingSalaryRate = _employeeSalaryRateData.GetByEmployeeNumber(employeeNumber);
+
+            if (existingSalaryRate == null)
+            {
+                salaryRate.EmployeeNumber = employeeNumber;
+
+                if (_employeeSalaryRateData.Add(salaryRate) > 0)
+                {
+                    existingSalaryRate = _employeeSalaryRateData.GetByEmployeeNumber(employeeNumber);
+                    results.IsSuccess = true;
+                    results.Messages.Add("Successfully save employee salary rate.");
+                    results.Data = existingSalaryRate;
+                }
+                else
+                {
+                    throw new Exception("Unable to save employee salary rate, kindly check system logs for possible errors.");
+                }
+            }
+            else
+            {
+                _mapper.Map(salaryRate, existingSalaryRate);
+
+                if (_employeeSalaryRateData.Update(existingSalaryRate) == true)
+                {
+                    results.IsSuccess = true;
+                    results.Messages.Add("Successfully save employee salary rate.");
+                    results.Data = existingSalaryRate;
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("No changes made on employee salary rate.");
+                }
+            }
 
             return results;
         }

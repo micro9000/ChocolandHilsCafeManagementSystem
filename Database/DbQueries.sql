@@ -103,9 +103,9 @@ SELECT * FROM EmployeeGovtIdCards;
 CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
-    salaryRate DECIMAL(5,2),
-    halfMonthRate DECIMAL(5,2),
-    dailyRate DECIMAL(5,2),
+    salaryRate DECIMAL(9,2),
+    halfMonthRate DECIMAL(9,2),
+    dailyRate DECIMAL(9,2),
     increase DECIMAL DEFAULT 0,
     increaseDate DATE,
     createdAt DATETIME DEFAULT NOW(),

@@ -36,6 +36,15 @@ namespace EntitiesShared.EmployeeManagement
             set { firstName = value; }
         }
 
+        private string middleName;
+
+        public string MiddleName
+        {
+            get { return middleName; }
+            set { middleName = value; }
+        }
+
+
         private string lastName;
 
         public string LastName

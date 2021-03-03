@@ -116,7 +116,7 @@ namespace EmployeeManagementUserControls
                     row.CreateCells(DGVEmployees);
 
                     row.Cells[0].Value = employee.EmployeeNumber;
-                    row.Cells[1].Value = $"{employee.FirstName} {employee.LastName}";
+                    row.Cells[1].Value = $" {employee.LastName.ToUpper()} {employee.FirstName}, {employee.MiddleName}";
                     row.Cells[2].Value = employee.Address;
                     row.Cells[3].Value = employee.BirthDate.ToShortDateString();
                     row.Cells[4].Value = employee.MobileNumber;

@@ -116,7 +116,8 @@ namespace Main.Forms.EmployeeManagementForms
 
             var saveResults = _employeeController.SaveEmployeeDetails(addUpdateEmployeeObj.IsNew,
                                                                       addUpdateEmployeeObj.Employee,
-                                                                       addUpdateEmployeeObj.EmployeeGovtIdCards);
+                                                                       addUpdateEmployeeObj.EmployeeGovtIdCards,
+                                                                       addUpdateEmployeeObj.EmployeeSalary);
 
             string resultMessages = "";
             foreach (var msg in saveResults.Messages)
@@ -143,9 +144,11 @@ namespace Main.Forms.EmployeeManagementForms
         {
             AddUpdateEmployeeUserControl addUpdateEmployeeObj = (AddUpdateEmployeeUserControl)sender;
             var employeeDetails = this._employeeController.GetByEmployeeNumber(addUpdateEmployeeObj.EmployeeNumber);
+
             if (employeeDetails != null && employeeDetails.IsSuccess && employeeDetails.Data != null)
             {
                 addUpdateEmployeeObj.EmployeeGovtIdCards = _employeeController.GetAllEmployeeIdCardsMapToCustomModel(employeeDetails.Data.EmployeeNumber);
+                addUpdateEmployeeObj.EmployeeSalary = _employeeController.GetEmployeeSalaryRateByEmployeeNumber(employeeDetails.Data.EmployeeNumber).Data;
                 addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails.Data);
                 addUpdateEmployeeObj.MoveToNextTabSaveEmployeeDetails();
             }

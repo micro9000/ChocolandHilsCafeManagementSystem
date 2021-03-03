@@ -56,6 +56,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         {
             string query = @"SELECT * FROM Employees
                             WHERE isDeleted=false AND (
+                                employeeNumber LIKE @Search OR
                                 firstName LIKE @Search OR
                                 lastName LIKE @Search OR
                                 address LIKE @Search OR
@@ -63,7 +64,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                                 emailAddress LIKE @Search OR
                                 branchAssign LIKE @Search)";
 
-            return this.GetAll(query, new { Search = search });
+            return this.GetAll(query, new { Search = "%" + search + "%" });
         }
     }
 }

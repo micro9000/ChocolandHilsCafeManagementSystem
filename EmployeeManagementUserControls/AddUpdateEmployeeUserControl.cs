@@ -43,11 +43,11 @@ namespace EmployeeManagementUserControls
         }
 
 
-        private EmployeeSalaryRateModel employeeSalary = new EmployeeSalaryRateModel();
+        private EmployeeSalaryRateModel employeeSalary;
 
         public EmployeeSalaryRateModel EmployeeSalary
         {
-            get { return employeeSalary = new EmployeeSalaryRateModel(); }
+            get { return employeeSalary; }
             set { employeeSalary = value; }
         }
 
@@ -129,6 +129,7 @@ namespace EmployeeManagementUserControls
             this.LblActionForEmployeeDetails.Text = "Add new employee";
             this.TbxFirstName.Text = "";
             this.TbxLastName.Text = "";
+            this.TbxMiddleInitial.Text = "";
             this.DTPicBirthDate.Value = DateTime.Now;
             this.TbxMobileNumber.Text = "";
             this.DTPicHireDate.Value = DateTime.Now;
@@ -169,6 +170,7 @@ namespace EmployeeManagementUserControls
             {
                 this.TbxFirstName.Text = employeeDetails.FirstName;
                 this.TbxLastName.Text = employeeDetails.LastName;
+                this.TbxMiddleInitial.Text = employeeDetails.MiddleName;
                 this.DTPicBirthDate.Value = employeeDetails.BirthDate;
                 this.TbxMobileNumber.Text = employeeDetails.MobileNumber;
                 this.DTPicHireDate.Value = employeeDetails.DateHire;
@@ -178,6 +180,7 @@ namespace EmployeeManagementUserControls
                 this.TbxEmpPosition.Text = employeeDetails.Position;
 
                 DisplayEmployeeGovtIds();
+                DisplayEmployeeSalaryRate();
             }
         }
 
@@ -211,6 +214,17 @@ namespace EmployeeManagementUserControls
             }
         }
 
+
+        private void DisplayEmployeeSalaryRate()
+        {
+            if (this.EmployeeSalary != null)
+            {
+                this.TbxSalaryRate.Text = this.EmployeeSalary.SalaryRate.ToString();
+                this.TboxHalfMonthRate.Text = this.EmployeeSalary.HalfMonthRate.ToString();
+                this.TbxDailySalaryRate.Text = this.EmployeeSalary.DailyRate.ToString();
+            }
+        }
+
         private void BtnSaveEmployee_Click(object sender, EventArgs e)
         {
             //if (this.RBtnUpdate.Checked == false && this.RBtnNew.Checked == false)
@@ -223,6 +237,7 @@ namespace EmployeeManagementUserControls
             {
                 FirstName = this.TbxFirstName.Text,
                 LastName = this.TbxLastName.Text,
+                MiddleName = this.TbxMiddleInitial.Text,
                 BirthDate = this.DTPicBirthDate.Value,
                 MobileNumber = this.TbxMobileNumber.Text,
                 DateHire = this.DTPicHireDate.Value,
@@ -277,10 +292,10 @@ namespace EmployeeManagementUserControls
 
         private void BtnActionAddNewEmployee_Click(object sender, EventArgs e)
         {
-            this.LblActionForEmployeeDetails.Text = "Add new employee";
             this.ClearForm();
             this.BtnCancelUpdateEmployee.Visible = true;
             this.BtnActionUpdateEmployeeDetails.Enabled = false;
+            this.LblActionForEmployeeDetails.Text = "Add new employee";
 
             // if update, disable the update employee button, 
             //the user needs to click cancel in order to choose update employee
@@ -289,11 +304,11 @@ namespace EmployeeManagementUserControls
 
         private void BtnActionUpdateEmployeeDetails_Click(object sender, EventArgs e)
         {
-            this.LblActionForEmployeeDetails.Text = "Update employee details";
             this.ClearForm();
             this.IsNew = false;
             this.GBoxSearchEmployee.Visible = true;
             this.BtnCancelUpdateEmployee.Visible = true;
+            this.LblActionForEmployeeDetails.Text = "Update employee details";
 
             // if update, disable the add employee button, 
             //the user needs to click cancel in order to choose add new

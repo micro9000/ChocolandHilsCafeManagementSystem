@@ -102,6 +102,7 @@ namespace Main
             // Employee Management validators (Fluent validation)
             services.AddTransient<LeaveTypeAddUpdateValidator>();
             services.AddTransient<EmployeeAddUpdateValidator>();
+            services.AddTransient<EmployeeSalaryRateAddUpdateValidator>();
 
 
             // Employee Management Controllers
