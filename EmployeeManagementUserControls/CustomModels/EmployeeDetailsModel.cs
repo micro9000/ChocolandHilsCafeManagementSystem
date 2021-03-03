@@ -9,16 +9,16 @@ namespace EmployeeManagementUserControls.CustomModels
 {
     public class EmployeeDetailsModel
     {
-        private EmployeeModel employee = new EmployeeModel();
+        private EmployeeModel employee;
 
         public EmployeeModel Employee
         {
-            get { return employee = new EmployeeModel(); }
+            get { return employee; }
             set { employee = value; }
         }
 
 
-        private List<EmployeeGovtIdCardTempModel> employeeGovtIdCards = new List<EmployeeGovtIdCardTempModel>();
+        private List<EmployeeGovtIdCardTempModel> employeeGovtIdCards;
 
         public List<EmployeeGovtIdCardTempModel> EmployeeGovtIdCards
         {
@@ -27,7 +27,7 @@ namespace EmployeeManagementUserControls.CustomModels
         }
 
 
-        private EmployeeSalaryRateModel employeeSalary = new EmployeeSalaryRateModel();
+        private EmployeeSalaryRateModel employeeSalary;
 
         public EmployeeSalaryRateModel EmployeeSalary
         {

@@ -167,6 +167,7 @@ namespace Main.Controllers.EmployeeManagementControllers
 
                     results.Data.Employee = saveBasicInfoResults.Data; // Employee basic details
                     results.Data.EmployeeGovtIdCards = saveEmployeeGovtIdCards.Data; // Employee govt. id cards
+                    results.Data.EmployeeSalary = saveEmployeeSalaryRate.Data;
 
                     transaction.Complete();
                 }
@@ -407,6 +408,28 @@ namespace Main.Controllers.EmployeeManagementControllers
             {
                 _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
                 results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
+        }
+
+
+
+        public EntityResult<EmployeeDetailsModel> GetEmployeeFullInformations(string employeeNumber)
+        {
+            var results = new EntityResult<EmployeeDetailsModel>();
+            results.Data = new EmployeeDetailsModel();
+
+            try
+            {
+                results.Data.Employee = this._employeeData.GetByEmployeeNumber(employeeNumber);
+                results.Data.EmployeeGovtIdCards = this.GetAllEmployeeIdCardsMapToCustomModel(employeeNumber);
+                results.Data.EmployeeSalary = this.GetEmployeeSalaryRateByEmployeeNumber(employeeNumber).Data;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer. \n" + ex.Message);
             }
 
             return results;

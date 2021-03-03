@@ -24,6 +24,8 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
         ListOfEntityResult<EmployeeModel> Search(string searchString);
         ListOfEntityResult<EmployeeModel> GetByDateHire(DateTime dateHire);
 
+        EntityResult<EmployeeDetailsModel> GetEmployeeFullInformations(string employeeNumber);
+
         string GenerateNewEmployeeNumber(DateTime dateHire);
     }
 }

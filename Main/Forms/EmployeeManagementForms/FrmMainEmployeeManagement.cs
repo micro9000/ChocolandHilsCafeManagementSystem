@@ -334,7 +334,7 @@ namespace Main.Forms.EmployeeManagementForms
             //userControlToDisplay.LeaveTypes = _leaveTypeController.GetAll().Data;
             //userControlToDisplay.LeaveTypeSaved += HandleLeaveTypeSaved;
 
-            //userControlToDisplay.PropertySelectedLeaveTypeIdToUpdateChanged += OnLeaveTypeSelectToUpdate;
+            userControlToDisplay.EmployeeNumberPropertyChanged += OnViewEmployeeDetails;
             //userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
 
             //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
@@ -344,6 +344,19 @@ namespace Main.Forms.EmployeeManagementForms
 
             this.panelContainer.Controls.Add(userControlToDisplay);
         }
+
+        private void OnViewEmployeeDetails(object sender, PropertyChangedEventArgs e)
+        {
+            EmployeeDetailsUserControl employeeDetailsControlObj = (EmployeeDetailsUserControl)sender;
+            var EmployeeNumber = employeeDetailsControlObj.EmployeeNumber;
+            MessageBox.Show(EmployeeNumber);
+
+            employeeDetailsControlObj.EmployeeFullInformations = this._employeeController.GetEmployeeFullInformations(EmployeeNumber).Data;
+            employeeDetailsControlObj.DisplayAllEmployeeInformations();
+
+        }
+
+
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿using EntitiesShared.EmployeeManagement.DisplayModels;
+﻿using EmployeeManagementUserControls.CustomModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,95 +15,107 @@ namespace EmployeeManagementUserControls
     {
         private Button currentButton;
 
+        public event PropertyChangedEventHandler EmployeeNumberPropertyChanged;
+        private string employeeNumber;
+
+        public string EmployeeNumber
+        {
+            get { return employeeNumber; }
+            set
+            {
+                employeeNumber = value;
+                if (EmployeeNumberPropertyChanged != null)
+                {
+                    EmployeeNumberPropertyChanged(this, new PropertyChangedEventArgs(EmployeeNumber));
+                }
+            }
+        }
+
+
+        private EmployeeDetailsModel employeeFullInformations = new EmployeeDetailsModel();
+
+        public EmployeeDetailsModel EmployeeFullInformations
+        {
+            get { return employeeFullInformations; }
+            set { employeeFullInformations = value; }
+        }
+
+
         public EmployeeDetailsUserControl()
         {
             InitializeComponent();
         }
-
-        private EmployeeDetailsModel employeeDetails;
-
-        public EmployeeDetailsModel EmployeeDetails
-        {
-            get { return employeeDetails; }
-            set { employeeDetails = value; }
-        }
         
         private void EmployeeDetailsUserControl_Load(object sender, EventArgs e)
         {
-            DisplayPersonalInformation();
         }
 
-        private void DisableButton()
+        private void BtnSaveEmployee_Click(object sender, EventArgs e)
         {
-            foreach (Control previousBtn in panelSidebar.Controls)
+            if (string.IsNullOrEmpty(this.TboxSearchEmployeeNumber.Text) == false)
             {
-                if (previousBtn.GetType() == typeof(Button))
-                {
-                    previousBtn.BackColor = Color.Transparent;
-                }
+                this.EmployeeNumber = this.TboxSearchEmployeeNumber.Text;
             }
         }
 
-        private void ActivateButton(object btnSender)
+        public void DisplayAllEmployeeInformations()
         {
-            if (btnSender != null)
+            DisplayEmployeePersonalDetails();
+            DisplayEmployeeGovtIds();
+            DisplaySalaryRate();
+        }
+
+        private void DisplayEmployeePersonalDetails()
+        {
+            if (this.EmployeeFullInformations != null && this.EmployeeFullInformations.Employee != null)
             {
-                if (currentButton != (Button)btnSender)
-                {
-                    DisableButton();
-                    currentButton = (Button)btnSender;
-                    currentButton.BackColor = Color.FromArgb(42, 42, 64);
-                    //btnCloseChildForm.Visible = true;
-                }
+                var empDetails = this.EmployeeFullInformations.Employee;
+
+                this.LblFullname.Text = $"{empDetails.LastName.ToUpper()} {empDetails.FirstName}, {empDetails.LastName}";
+                this.LblAddress.Text = empDetails.Address;
+                this.LblBirthdate.Text = empDetails.BirthDate.ToShortDateString();
+
+                var timeSpan = DateTime.Now - empDetails.BirthDate;
+                int age = new DateTime(timeSpan.Ticks).Year - 1;
+                this.LblAge.Text = age.ToString();
+
+                this.LblContactNumber.Text = empDetails.MobileNumber;
+                this.LblEmail.Text = empDetails.EmailAddress;
+
+                this.LblDateHire.Text = empDetails.DateHire.ToShortDateString();
+                this.LblPosition.Text = empDetails.Position;
+                this.LblBranchAssign.Text = empDetails.BranchAssign;
             }
         }
 
-
-        private void DisplayPersonalInformation()
+        private void DisplayEmployeeGovtIds()
         {
-            this.PnlEmployeeInfoContainer.Controls.Clear();
+            if (this.EmployeeFullInformations != null && this.EmployeeFullInformations.EmployeeGovtIdCards != null)
+            {
+                var idCards = this.EmployeeFullInformations.EmployeeGovtIdCards.Select(x => x.EmployeeGovtIdCard).ToList();
 
-            var userControlToDisplay = new EmployeePersonalInfoUserControl();
-            //userControlToDisplay.Dock = DockStyle.Fill;
-            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            //userControlToDisplay.Anchor = AnchorStyles.None;
+                foreach (var card in idCards)
+                {
+                    var row = new string[] { card.EmployeeNumber, card.EmployeeIdNumber };
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = card;
 
-            this.PnlEmployeeInfoContainer.Controls.Add(userControlToDisplay);
+                    ListViewEmpGovtIdCards.Items.Add(listViewItem);
+                }
+            }
+
         }
 
-        private void BtnViewPersonalInformation_Click(object sender, EventArgs e)
+        private void DisplaySalaryRate()
         {
-            ActivateButton(sender);
-            DisplayPersonalInformation();
+            if (this.EmployeeFullInformations != null && this.EmployeeFullInformations.EmployeeSalary != null)
+            {
+                var empSalary = this.EmployeeFullInformations.EmployeeSalary;
+
+                this.LblSalaryRate.Text = empSalary.SalaryRate.ToString();
+                this.LblHalfMonthSalaryRate.Text = empSalary.HalfMonthRate.ToString();
+                this.LblDailyRate.Text = empSalary.DailyRate.ToString();
+            }
         }
-
-        private void BtnViewEmployeeAttendance_Click(object sender, EventArgs e)
-        {
-            this.PnlEmployeeInfoContainer.Controls.Clear();
-
-            ActivateButton(sender);
-
-            var userControlToDisplay = new EmployeeAttendanceHistoryUserControl();
-            //userControlToDisplay.Dock = DockStyle.Fill;
-            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            //userControlToDisplay.Anchor = AnchorStyles.None;
-
-            this.PnlEmployeeInfoContainer.Controls.Add(userControlToDisplay);
-        }
-
-        private void BtnViewEmployeePayslipHistory_Click(object sender, EventArgs e)
-        {
-            this.PnlEmployeeInfoContainer.Controls.Clear();
-
-            ActivateButton(sender);
-
-            var userControlToDisplay = new EmployeePayslipHistoryUserControl();
-            //userControlToDisplay.Dock = DockStyle.Fill;
-            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            //userControlToDisplay.Anchor = AnchorStyles.None;
-
-            this.PnlEmployeeInfoContainer.Controls.Add(userControlToDisplay);
-        }
-
     }
 }

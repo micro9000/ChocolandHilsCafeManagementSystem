@@ -57,37 +57,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing.Common" name="System.Drawing.Common, Version=5.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-  <data name="BtnViewEmployeePayslipHistory.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAOFJREFUSEvt
-        lDEOAUEYRleUEi4gcQEKTqJ0DUQ0Eo1CRNSuQOFEOhfgAIw3O98odvyF0YmXvGSz83xkg+L3cM7VcIjz
-        D/WvqWnGhmiHuWw1Y0N0C20WV83YKMxGMzbqIhc8hkt3wHXFDfrmhWZs1EX8eD9cup6SF9yrY/wAJTqy
-        UZeNZmzURf6PKEVd5P+IUtRlo5kUzto4K6sv0FwKZ4uQfIfmUjgbh8Q1dcuEZhrSBPvflMMBPnCPLd1+
-        C+ddvGOVk5L3ECzRv0kOZ+xoyobIf+8nWP1RWa5whA1N/BRF8QREJ4BwDp29WwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="BtnViewEmployeeAttendance.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABGdBTUEAALGPC/xhBQAAATxJREFUSEvt
-        lkFOw0AQBK28J7dwIuEO4hscAInf8oLAhR/kAqbb1K5iKcrsOMsJSmo5O+7psR1vlOEfM47jvfQutXKQ
-        nmhfjkLeprh2vtAzEcuYonI8SJ+Sh78Qk8dJGei5fLgaU9B2+XA1paBtQsvlw9WQgraKSo+SB1vtb7vM
-        WXa0VlQrww+UYpzUE2Jj8HeD2Bj83SA2Bn+GrXQlvUobaSdViI3Bb65ZHwedqm2orTj6IiquNYHfbFnf
-        /CwnTtV8p2XoinXF9SbwZ+h+x634sZfv2Mfjp/Grg89CbAz+bhAbg38pH9JsSxEbg9+0bqeCh645X18w
-        r5vAb1q3U/kBKUPXki9iwrUm8GeYtpPR59lQw6kY/Bk8yHdszYYaYmPwd4PYGHmzf2/PsSc2RuY7qcfw
-        vXRL7J9mGL4BA0oZccBZRyoAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="BtnViewPersonalInformation.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABGdBTUEAALGPC/xhBQAAAYpJREFUSEvt
-        lr1KA0EURhPzAgoGrLXwGVLaiJ1EO+MDBJ/A3r9GLMTaztoiRdTkMVQstIogaicSK1nPzHwp1t0kN2TH
-        ygMHMnfudy9hQ9hSbJIkmcFtWVY5Plo4oKFyfFg2/WKCi3iGD/iJb3iJy2rJwF0ZG7jlPqtsh9A6fmEe
-        L7iD82ovBgYuofuG4+jhgmIezjfosk2V7BA6RSv7ink4d0I5uVfJDiH3TK3cKubhXA/lpK2SHULDnm0e
-        H4p5OB+EcrKnkh1CryFr4vfiq1BO6irZIdQOWRNdxTycB4+po5IdQq2QNdFSzMO5ie5Xfa2SHULPaKWn
-        2PQw7CTMNHGsWDEwsBvmjmTy5zgOhq6F2SNZVXuxMPgozM9lV21x0JIMuo6H9mTQdRyYvxnW5LKhtmJg
-        YAVX8AK/cRjuzvW43orik0O4huf4jpPiMi5b07jx0FzFwR97EbhZVY3Ph4Y5fHLdBfOIs1qThctD3xaH
-        1JtJCi7vQk8UUm8mKbjsh54o9LXmn7+kVPoB67Nwn/70zh0AAAAASUVORK5CYII=
-</value>
-  </data>
 </root>
