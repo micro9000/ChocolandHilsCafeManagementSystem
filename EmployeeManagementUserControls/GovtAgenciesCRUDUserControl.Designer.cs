@@ -30,7 +30,7 @@ namespace EmployeeManagementUserControls
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.GBoxLeaveTypeForm = new System.Windows.Forms.GroupBox();
+            this.GBoxGovtAgencyForm = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.BtnCancelUpdate = new System.Windows.Forms.Button();
             this.TbxAgency = new System.Windows.Forms.TextBox();
@@ -38,14 +38,14 @@ namespace EmployeeManagementUserControls
             this.label2 = new System.Windows.Forms.Label();
             this.DGVGovernmentAgencies = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
-            this.GBoxLeaveTypeForm.SuspendLayout();
+            this.GBoxGovtAgencyForm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVGovernmentAgencies)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.panel1.Controls.Add(this.GBoxLeaveTypeForm);
+            this.panel1.Controls.Add(this.GBoxGovtAgencyForm);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -54,19 +54,19 @@ namespace EmployeeManagementUserControls
             this.panel1.Size = new System.Drawing.Size(327, 653);
             this.panel1.TabIndex = 1;
             // 
-            // GBoxLeaveTypeForm
+            // GBoxGovtAgencyForm
             // 
-            this.GBoxLeaveTypeForm.Controls.Add(this.label9);
-            this.GBoxLeaveTypeForm.Controls.Add(this.BtnCancelUpdate);
-            this.GBoxLeaveTypeForm.Controls.Add(this.TbxAgency);
-            this.GBoxLeaveTypeForm.Controls.Add(this.BtnSaveAgency);
-            this.GBoxLeaveTypeForm.ForeColor = System.Drawing.Color.White;
-            this.GBoxLeaveTypeForm.Location = new System.Drawing.Point(11, 98);
-            this.GBoxLeaveTypeForm.Name = "GBoxLeaveTypeForm";
-            this.GBoxLeaveTypeForm.Size = new System.Drawing.Size(299, 221);
-            this.GBoxLeaveTypeForm.TabIndex = 47;
-            this.GBoxLeaveTypeForm.TabStop = false;
-            this.GBoxLeaveTypeForm.Text = "Add New";
+            this.GBoxGovtAgencyForm.Controls.Add(this.label9);
+            this.GBoxGovtAgencyForm.Controls.Add(this.BtnCancelUpdate);
+            this.GBoxGovtAgencyForm.Controls.Add(this.TbxAgency);
+            this.GBoxGovtAgencyForm.Controls.Add(this.BtnSaveAgency);
+            this.GBoxGovtAgencyForm.ForeColor = System.Drawing.Color.White;
+            this.GBoxGovtAgencyForm.Location = new System.Drawing.Point(11, 98);
+            this.GBoxGovtAgencyForm.Name = "GBoxGovtAgencyForm";
+            this.GBoxGovtAgencyForm.Size = new System.Drawing.Size(299, 221);
+            this.GBoxGovtAgencyForm.TabIndex = 47;
+            this.GBoxGovtAgencyForm.TabStop = false;
+            this.GBoxGovtAgencyForm.Text = "Add New";
             // 
             // label9
             // 
@@ -117,6 +117,7 @@ namespace EmployeeManagementUserControls
             this.BtnSaveAgency.TabIndex = 2;
             this.BtnSaveAgency.Text = "Save";
             this.BtnSaveAgency.UseVisualStyleBackColor = false;
+            this.BtnSaveAgency.Click += new System.EventHandler(this.BtnSaveAgency_Click);
             // 
             // label2
             // 
@@ -153,8 +154,8 @@ namespace EmployeeManagementUserControls
             this.Load += new System.EventHandler(this.GovtAgenciesCRUDUserControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.GBoxLeaveTypeForm.ResumeLayout(false);
-            this.GBoxLeaveTypeForm.PerformLayout();
+            this.GBoxGovtAgencyForm.ResumeLayout(false);
+            this.GBoxGovtAgencyForm.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVGovernmentAgencies)).EndInit();
             this.ResumeLayout(false);
 
@@ -163,7 +164,7 @@ namespace EmployeeManagementUserControls
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.GroupBox GBoxLeaveTypeForm;
+        private System.Windows.Forms.GroupBox GBoxGovtAgencyForm;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button BtnCancelUpdate;
         private System.Windows.Forms.TextBox TbxAgency;
