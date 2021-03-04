@@ -48,8 +48,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.MenuItemWorkSchedules = new System.Windows.Forms.ToolStripMenuItem();
             this.ShiftsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EmployeeShiftSchedulesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemGovernment = new System.Windows.Forms.ToolStripMenuItem();
-            this.AgenciesStirpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.FileLeaveSchedStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GovtIdsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,8 +67,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.MenuStripEmployeeManagement.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItemEmployee,
             this.MenuItemPayroll,
-            this.MenuItemWorkSchedules,
-            this.MenuItemGovernment});
+            this.MenuItemWorkSchedules});
             this.MenuStripEmployeeManagement.Location = new System.Drawing.Point(0, 0);
             this.MenuStripEmployeeManagement.Name = "MenuStripEmployeeManagement";
             this.MenuStripEmployeeManagement.Size = new System.Drawing.Size(800, 24);
@@ -198,20 +195,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.EmployeeShiftSchedulesMenuItem.Size = new System.Drawing.Size(207, 22);
             this.EmployeeShiftSchedulesMenuItem.Text = "Employee shift schedules";
             // 
-            // MenuItemGovernment
-            // 
-            this.MenuItemGovernment.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AgenciesStirpMenuItem});
-            this.MenuItemGovernment.Name = "MenuItemGovernment";
-            this.MenuItemGovernment.Size = new System.Drawing.Size(85, 20);
-            this.MenuItemGovernment.Text = "Government";
-            // 
-            // AgenciesStirpMenuItem
-            // 
-            this.AgenciesStirpMenuItem.Name = "AgenciesStirpMenuItem";
-            this.AgenciesStirpMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.AgenciesStirpMenuItem.Text = "Agencies";
-            // 
             // panelContainer
             // 
             this.panelContainer.AutoScroll = true;
@@ -297,8 +280,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.Panel panelContainer;
         private System.Windows.Forms.ToolStripMenuItem ShiftsStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem EmployeeShiftSchedulesMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem MenuItemGovernment;
-        private System.Windows.Forms.ToolStripMenuItem AgenciesStirpMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LeaveTypeStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FileLeaveSchedStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem GovtIdsStripMenuItem;

@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using EntitiesShared.OtherDataManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;

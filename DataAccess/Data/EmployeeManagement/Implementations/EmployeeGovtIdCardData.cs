@@ -1,5 +1,6 @@
 ﻿using DapperGenericDataManager;
 using DataAccess.Data.EmployeeManagement.Contracts;
+using DataAccess.Data.OtherDataManagement.Contracts;
 using EntitiesShared.EmployeeManagement;
 using System;
 using System.Collections.Generic;

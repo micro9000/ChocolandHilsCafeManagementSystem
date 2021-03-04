@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using FluentValidation.Results;
 using AutoMapper;
 using EntitiesShared.EmployeeManagement;
-using EmployeeManagementUserControls.CustomModels;
 using System.Transactions;
 using Shared.CustomExceptions;
+using EntitiesShared.EmployeeManagement.Models;
 
 namespace Main.Controllers.EmployeeManagementControllers
 {

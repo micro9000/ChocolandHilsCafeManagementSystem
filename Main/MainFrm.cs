@@ -1,4 +1,6 @@
 ﻿using Main.Forms.EmployeeManagementForms;
+using Main.Forms.OtherDataForms;
+using Main.Forms.PayrollForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,15 +17,21 @@ namespace Main
     {
         private readonly Sessions _sessions;
         private readonly FrmMainEmployeeManagement _frmMainEmployeeManagement;
+        private readonly FrmOtherData _frmOtherData;
+        private readonly FrmPayroll _payrollForm;
         private Button currentButton;
         private Form activeForm;
 
         public MainFrm(Sessions sessions,
-                        FrmMainEmployeeManagement frmMainEmployeeManagement)
+                        FrmMainEmployeeManagement frmMainEmployeeManagement,
+                        FrmOtherData frmOtherData,
+                        FrmPayroll payrollForm)
         {
             InitializeComponent();
             _sessions = sessions;
             _frmMainEmployeeManagement = frmMainEmployeeManagement;
+            _frmOtherData = frmOtherData;
+            _payrollForm = payrollForm;
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -102,7 +110,12 @@ namespace Main
 
         private void BtnPayrollSystem_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new UserManagementForms.MainUserMgnFrm(), sender);
+            OpenChildForm(_payrollForm, sender);
+        }
+
+        private void BtnOtherData_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(_frmOtherData, sender);
         }
     }
 }

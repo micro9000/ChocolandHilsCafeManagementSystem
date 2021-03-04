@@ -1,5 +1,5 @@
-﻿using EmployeeManagementUserControls.CustomModels;
-using EntitiesShared.EmployeeManagement;
+﻿using EntitiesShared.EmployeeManagement;
+using EntitiesShared.EmployeeManagement.Models;
 using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;

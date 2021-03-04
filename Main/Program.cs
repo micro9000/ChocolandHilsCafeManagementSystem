@@ -23,6 +23,13 @@ using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Controllers.EmployeeManagementControllers;
 using AutoMapper;
 using Main.Forms.EmployeeManagementForms;
+using Main.Forms.OtherDataForms;
+using Main.Forms.PayrollForms;
+using Main.Controllers.OtherDataController.Validator;
+using Main.Controllers.OtherDataController;
+using Main.Controllers.OtherDataController.ControllerInterface;
+using DataAccess.Data.OtherDataManagement.Contracts;
+using DataAccess.Data.OtherDataManagement.Implementations;
 
 namespace Main
 {
@@ -93,22 +100,29 @@ namespace Main
             services.AddTransient<IEmployeeSalaryRateData, EmployeeSalaryRateData>();
             services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
             services.AddTransient<IEmployeeShiftScheduleData, EmployeeShiftScheduleData>();
-            services.AddTransient<ILeaveTypeData, LeaveTypeData>();
-            services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
             services.AddTransient<IEmployeeGovtContributionData, EmployeeGovtContributionData>();
 
+            // Other data management
+            services.AddTransient<ILeaveTypeData, LeaveTypeData>();
+            services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
 
-            // Employee Management validators (Fluent validation)
-            services.AddTransient<LeaveTypeAddUpdateValidator>();
+
+            // Employee Management
+            // validator
             services.AddTransient<EmployeeAddUpdateValidator>();
             services.AddTransient<EmployeeSalaryRateAddUpdateValidator>();
-
-
-            // Employee Management Controllers
-            services.AddTransient<ILeaveTypeController, LeaveTypeController>();
+            // controllers
             services.AddTransient<IEmployeeController, EmployeeController>();
 
+
+            // Other Data:
+            // validator
+            services.AddTransient<LeaveTypeAddUpdateValidator>();
+            services.AddTransient<GovernmentAgencyAddUpdateValidator>();
+            // Controllers
+            services.AddTransient<ILeaveTypeController, LeaveTypeController>();
+            services.AddTransient<IGovernmentController, GovernmentController>();
 
             // Business logic controllers/services
             services.AddTransient<IUserController, UserController>();
@@ -121,6 +135,11 @@ namespace Main
 
             // Employee Management forms
             services.AddTransient<FrmMainEmployeeManagement>();
+
+            // Other data form
+            services.AddTransient<FrmOtherData>();
+
+            services.AddTransient<FrmPayroll>();
 
 
             //Add Serilog

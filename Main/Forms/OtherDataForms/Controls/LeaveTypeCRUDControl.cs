@@ -10,13 +10,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EmployeeManagementUserControls
+namespace Main.Forms.OtherDataForms.Controls
 {
-    public partial class LeaveTypesCRUDUserControl : UserControl
+    public partial class LeaveTypeCRUDControl : UserControl
     {
-        public LeaveTypesCRUDUserControl()
+        public LeaveTypeCRUDControl()
         {
             InitializeComponent();
+        }
+
+        private void LeaveTypeCRUDControl_Load(object sender, EventArgs e)
+        {
+
+            SetDGVLeaveTypesFontAndColors();
+            DisplayLeaveTypeList();
         }
 
         private List<LeaveTypeModel> leaveTypes = new List<LeaveTypeModel>();
@@ -36,7 +43,7 @@ namespace EmployeeManagementUserControls
         }
 
         // assume, default transaction is save new
-        public bool IsSaveNew { get; set; } = true; 
+        public bool IsSaveNew { get; set; } = true;
 
         // Event handler for saving leave type
         public event EventHandler LeaveTypeSaved;
@@ -79,13 +86,6 @@ namespace EmployeeManagementUserControls
             }
         }
 
-        private void LeaveTypesCRUDUserControl_Load(object sender, EventArgs e)
-        {
-            SetDGVLeaveTypesFontAndColors();
-            DisplayLeaveTypeList();
-        }
-
-
         public void ResetForm()
         {
             this.TbxLeaveType.Text = "";
@@ -101,7 +101,8 @@ namespace EmployeeManagementUserControls
 
         public void DisplaySelectedLeaveType()
         {
-            if (this.LeaveTypeToAddUpdate != null) {
+            if (this.LeaveTypeToAddUpdate != null)
+            {
                 this.CboxDisable.Checked = this.LeaveTypeToAddUpdate.IsActive ? false : true;
                 this.TbxLeaveType.Text = this.LeaveTypeToAddUpdate.LeaveType;
                 this.TboxNumberOfDays.Text = this.LeaveTypeToAddUpdate.NumberOfDays.ToString();
@@ -274,7 +275,5 @@ namespace EmployeeManagementUserControls
             this.DGVLeaveTypes.ColumnHeadersHeight = 30;
         }
 
-
     }
 }
-

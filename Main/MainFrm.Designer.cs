@@ -49,6 +49,7 @@ namespace Main
             this.LblRenderedFormTitle = new System.Windows.Forms.Label();
             this.panelMainBody = new System.Windows.Forms.Panel();
             this.EmployeeManagementToolStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.BtnOtherData = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelMainBanner.SuspendLayout();
@@ -58,6 +59,7 @@ namespace Main
             // panelSidebar
             // 
             this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.panelSidebar.Controls.Add(this.BtnOtherData);
             this.panelSidebar.Controls.Add(this.panel1);
             this.panelSidebar.Controls.Add(this.BtnSettingsSystem);
             this.panelSidebar.Controls.Add(this.BtnSalesReportSystem);
@@ -337,6 +339,28 @@ namespace Main
             this.EmployeeManagementToolStrip.Size = new System.Drawing.Size(200, 22);
             this.EmployeeManagementToolStrip.Text = "Employee Management";
             // 
+            // BtnOtherData
+            // 
+            this.BtnOtherData.BackColor = System.Drawing.Color.Transparent;
+            this.BtnOtherData.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnOtherData.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnOtherData.FlatAppearance.BorderSize = 0;
+            this.BtnOtherData.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnOtherData.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnOtherData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnOtherData.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnOtherData.ForeColor = System.Drawing.Color.White;
+            this.BtnOtherData.Image = ((System.Drawing.Image)(resources.GetObject("BtnOtherData.Image")));
+            this.BtnOtherData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnOtherData.Location = new System.Drawing.Point(0, 302);
+            this.BtnOtherData.Name = "BtnOtherData";
+            this.BtnOtherData.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.BtnOtherData.Size = new System.Drawing.Size(220, 47);
+            this.BtnOtherData.TabIndex = 7;
+            this.BtnOtherData.Text = "Others";
+            this.BtnOtherData.UseVisualStyleBackColor = false;
+            this.BtnOtherData.Click += new System.EventHandler(this.BtnOtherData_Click);
+            // 
             // MainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -383,5 +407,6 @@ namespace Main
         private System.Windows.Forms.Button BtnUserLogout;
         private System.Windows.Forms.Label LblRenderedFormTitle;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnOtherData;
     }
 }

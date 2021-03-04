@@ -8,9 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataAccess.Data.EmployeeManagement.Contracts;
-using EmployeeManagementUserControls;
+using DataAccess.Data.OtherDataManagement.Contracts;
 using EntitiesShared.EmployeeManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
+using Main.Forms.EmployeeManagementForms.Controls;
 using Microsoft.Extensions.Logging;
 
 namespace Main.Forms.EmployeeManagementForms
@@ -20,18 +21,15 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeController _employeeController;
-        private readonly ILeaveTypeController _leaveTypeController;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                 IGovernmentAgencyData governmentAgencyData,
-                                IEmployeeController employeeController,
-                                ILeaveTypeController leaveTypeController)
+                                IEmployeeController employeeController)
         {
             InitializeComponent();
             _logger = logger;
             _governmentAgencyData = governmentAgencyData;
             _employeeController = employeeController;
-            _leaveTypeController = leaveTypeController;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -59,9 +57,8 @@ namespace Main.Forms.EmployeeManagementForms
         {
             ToolStripItem clickedItem = e.ClickedItem;
 
-            if (clickedItem != null && clickedItem.Name == "LeaveTypesStripMenuItem")
+            if (clickedItem != null && clickedItem.Name == "")
             {
-                DisplayLeaveTypesUserControl();
             }
         }
 
@@ -95,29 +92,29 @@ namespace Main.Forms.EmployeeManagementForms
         {
             this.panelContainer.Controls.Clear();
 
-            var userControlToDisplay = new AddUpdateEmployeeUserControl();
+            var controlToDisplay = new EmployeeDetailsCRUDControl();
             //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
-            userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            userControlToDisplay.Anchor = AnchorStyles.None;
+            controlToDisplay.Location = new Point(this.ClientSize.Width / 2 - controlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - controlToDisplay.Size.Height / 2);
+            controlToDisplay.Anchor = AnchorStyles.None;
 
-            userControlToDisplay.GovtAgencies = _governmentAgencyData.GetAllByIsDeleted(false);
+            controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
             // TODO: add the existing emp. govt. ids from our database and use the CustomModels -> EmployeeGovtIdCardTempModel.cs
 
             // event added
-            userControlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
-            userControlToDisplay.PropertyChanged += this.OnEmployeeNumberEnter;
+            controlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
+            controlToDisplay.PropertyChanged += this.OnEmployeeNumberEnter;
 
-            this.panelContainer.Controls.Add(userControlToDisplay);
+            this.panelContainer.Controls.Add(controlToDisplay);
         }
 
         private void HandleEmployeeSaved(object sender, EventArgs e)
         {
-            AddUpdateEmployeeUserControl addUpdateEmployeeObj = (AddUpdateEmployeeUserControl)sender;
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
 
-            var saveResults = _employeeController.SaveEmployeeDetails(addUpdateEmployeeObj.IsNew,
-                                                                      addUpdateEmployeeObj.Employee,
-                                                                       addUpdateEmployeeObj.EmployeeGovtIdCards,
-                                                                       addUpdateEmployeeObj.EmployeeSalary);
+            var saveResults = _employeeController.SaveEmployeeDetails(employeeCRUDControlObj.IsNew,
+                                                                      employeeCRUDControlObj.Employee,
+                                                                       employeeCRUDControlObj.EmployeeGovtIdCards,
+                                                                       employeeCRUDControlObj.EmployeeSalary);
 
             string resultMessages = "";
             foreach (var msg in saveResults.Messages)
@@ -128,7 +125,7 @@ namespace Main.Forms.EmployeeManagementForms
             if (saveResults.IsSuccess)
             {
                 MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                addUpdateEmployeeObj.ClearForm();
+                employeeCRUDControlObj.ClearForm();
 
                 //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
 
@@ -142,15 +139,15 @@ namespace Main.Forms.EmployeeManagementForms
 
         private void OnEmployeeNumberEnter(object sender, PropertyChangedEventArgs e)
         {
-            AddUpdateEmployeeUserControl addUpdateEmployeeObj = (AddUpdateEmployeeUserControl)sender;
-            var employeeDetails = this._employeeController.GetByEmployeeNumber(addUpdateEmployeeObj.EmployeeNumber);
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            var employeeDetails = this._employeeController.GetByEmployeeNumber(employeeCRUDControlObj.EmployeeNumber);
 
             if (employeeDetails != null && employeeDetails.IsSuccess && employeeDetails.Data != null)
             {
-                addUpdateEmployeeObj.EmployeeGovtIdCards = _employeeController.GetAllEmployeeIdCardsMapToCustomModel(employeeDetails.Data.EmployeeNumber);
-                addUpdateEmployeeObj.EmployeeSalary = _employeeController.GetEmployeeSalaryRateByEmployeeNumber(employeeDetails.Data.EmployeeNumber).Data;
-                addUpdateEmployeeObj.DisplayEmployeeDetails(employeeDetails.Data);
-                addUpdateEmployeeObj.MoveToNextTabSaveEmployeeDetails();
+                employeeCRUDControlObj.EmployeeGovtIdCards = _employeeController.GetAllEmployeeIdCardsMapToCustomModel(employeeDetails.Data.EmployeeNumber);
+                employeeCRUDControlObj.EmployeeSalary = _employeeController.GetEmployeeSalaryRateByEmployeeNumber(employeeDetails.Data.EmployeeNumber).Data;
+                employeeCRUDControlObj.DisplayEmployeeDetails(employeeDetails.Data);
+                employeeCRUDControlObj.MoveToNextTabSaveEmployeeDetails();
             }
             else
             {
@@ -172,34 +169,34 @@ namespace Main.Forms.EmployeeManagementForms
         {
             this.panelContainer.Controls.Clear();
 
-            var userControlToDisplay = new DisplayEmployeeListUserControl();
-            userControlToDisplay.Dock = DockStyle.Fill;
+            var employeeListControlObj = new EmployeeListControl();
+            employeeListControlObj.Dock = DockStyle.Fill;
             //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
             //userControlToDisplay.Anchor = AnchorStyles.None;
 
-            userControlToDisplay.Employees = this._employeeController.GetAll().Data;
-            userControlToDisplay.DisplayEmployeeList();
+            employeeListControlObj.Employees = this._employeeController.GetAll().Data;
+            employeeListControlObj.DisplayEmployeeList();
 
-            userControlToDisplay.PropertyChanged += OnEmployeeViewDetails; // when view details button click
-            userControlToDisplay.SearchStringEnter += this.OnSearchStringEnter; // when Search button click
-            userControlToDisplay.ReloadEmployeeList += this.OnReloadEmployeeList; // when button reload click
+            employeeListControlObj.PropertyChanged += OnEmployeeViewDetails; // when view details button click
+            employeeListControlObj.SearchStringEnter += this.OnSearchStringEnter; // when Search button click
+            employeeListControlObj.ReloadEmployeeList += this.OnReloadEmployeeList; // when button reload click
 
-            this.panelContainer.Controls.Add(userControlToDisplay);
+            this.panelContainer.Controls.Add(employeeListControlObj);
         }
 
         // when view details button click
         private void OnEmployeeViewDetails (object sender, PropertyChangedEventArgs e)
         {
-            DisplayEmployeeListUserControl employeeListUserControlObj = (DisplayEmployeeListUserControl)sender;
-            var selectedEmployeeNumber = employeeListUserControlObj.SelectedEmployeeNumber;
+            EmployeeListControl employeeListControlObj = (EmployeeListControl)sender;
+            var selectedEmployeeNumber = employeeListControlObj.SelectedEmployeeNumber;
             MessageBox.Show(selectedEmployeeNumber);
 
             this.panelContainer.Controls.Clear();
 
-            var employeeDetailsUserControl = new EmployeeDetailsUserControl();
-            employeeDetailsUserControl.Dock = DockStyle.Fill;
+            var employeeDetailsControl = new EmployeeDetailsControl();
+            employeeDetailsControl.Dock = DockStyle.Fill;
 
-            this.panelContainer.Controls.Add(employeeDetailsUserControl);
+            this.panelContainer.Controls.Add(employeeDetailsControl);
 
             // TODO: Use this method to display all information related to the employee
         }
@@ -207,134 +204,36 @@ namespace Main.Forms.EmployeeManagementForms
         // when search string key up == enter
         private void OnSearchStringEnter(object sender, EventArgs e)
         {
-            DisplayEmployeeListUserControl employeeListUserControlObj = (DisplayEmployeeListUserControl)sender;
-            var searchParams = employeeListUserControlObj.SearchEmployeeParameters;
-            employeeListUserControlObj.Employees = this._employeeController.Search(searchParams.SearchString).Data;
-            employeeListUserControlObj.DisplayEmployeeList();
+            EmployeeListControl employeeListControlObj = (EmployeeListControl)sender;
+            var searchParams = employeeListControlObj.SearchEmployeeParameters;
+            employeeListControlObj.Employees = this._employeeController.Search(searchParams.SearchString).Data;
+            employeeListControlObj.DisplayEmployeeList();
         }
 
         // when button reload click
         private void OnReloadEmployeeList(object sender, EventArgs e)
         {
-            DisplayEmployeeListUserControl employeeListUserControlObj = (DisplayEmployeeListUserControl)sender;
-            employeeListUserControlObj.Employees = this._employeeController.GetAll().Data;
-            employeeListUserControlObj.DisplayEmployeeList();
+            EmployeeListControl employeeListControlObj = (EmployeeListControl)sender;
+            employeeListControlObj.Employees = this._employeeController.GetAll().Data;
+            employeeListControlObj.DisplayEmployeeList();
         }
 
         #endregion
 
 
-        #region Leave types user control related methods and event handlers
-
-        private void DisplayLeaveTypesUserControl()
-        {
-            this.panelContainer.Controls.Clear();
-
-            var userControlToDisplay = new LeaveTypesCRUDUserControl();
-            userControlToDisplay.Dock = DockStyle.Fill;
-            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            //userControlToDisplay.Anchor = AnchorStyles.None;
-
-            userControlToDisplay.LeaveTypes = _leaveTypeController.GetAll().Data;
-            userControlToDisplay.LeaveTypeSaved += HandleLeaveTypeSaved;
-
-            userControlToDisplay.PropertySelectedLeaveTypeIdToUpdateChanged += OnLeaveTypeSelectToUpdate;
-            userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
-
-            //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
-            //userControlToDisplay.DisplayEmployeeList();
-
-            //userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
-
-            this.panelContainer.Controls.Add(userControlToDisplay);
-        }
-
-
-        private void HandleLeaveTypeSaved(object sender, EventArgs e)
-        {
-            LeaveTypesCRUDUserControl userControlObj = (LeaveTypesCRUDUserControl)sender;
-
-            var saveResults = _leaveTypeController.Save(userControlObj.LeaveTypeToAddUpdate, userControlObj.IsSaveNew);
-            string resultMessages = "";
-            foreach (var msg in saveResults.Messages)
-            {
-                resultMessages += msg + "\n";
-            }
-
-            if (saveResults.IsSuccess)
-            {
-                MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                userControlObj.ResetForm();
-                userControlObj.LeaveTypes = _leaveTypeController.GetAll().Data;
-                userControlObj.DisplayLeaveTypeList();
-
-            }
-            else
-            {
-                MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void OnLeaveTypeSelectToUpdate(object sender, PropertyChangedEventArgs e)
-        {
-            LeaveTypesCRUDUserControl userControlObj = (LeaveTypesCRUDUserControl)sender;
-            var selectedLeaveTypeId = userControlObj.SelectedLeaveTypeToUpdateId;
-            if (long.TryParse(selectedLeaveTypeId, out long leaveTypeId))
-            {
-                userControlObj.LeaveTypeToAddUpdate = _leaveTypeController.GetById(leaveTypeId).Data;
-                userControlObj.DisplaySelectedLeaveType();
-            }
-        }
-
-        private void OnLeaveTypeSelectToDelete(object sender, PropertyChangedEventArgs e)
-        {
-            LeaveTypesCRUDUserControl userControlObj = (LeaveTypesCRUDUserControl)sender;
-            var selectedLeaveTypeId = userControlObj.SelectedLeaveTypeToDeleteId;
-            if (long.TryParse(selectedLeaveTypeId, out long leaveTypeId))
-            {
-                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
-                
-                if (res == DialogResult.OK)
-                {
-                    var deleteResults = _leaveTypeController.Delete(leaveTypeId);
-                    string resultMessages = "";
-                    foreach (var msg in deleteResults.Messages)
-                    {
-                        resultMessages += msg + "\n";
-                    }
-
-                    if (deleteResults.IsSuccess)
-                    {
-                        MessageBox.Show(resultMessages, "Delete leave type", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        userControlObj.ResetForm();
-                        userControlObj.LeaveTypes = _leaveTypeController.GetAll().Data;
-                        userControlObj.DisplayLeaveTypeList();
-                    }
-                    else
-                    {
-                        MessageBox.Show(resultMessages, "Save leave type", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                }
-                
-            }
-        }
-
-        #endregion
 
         #region Employee Details user control related methods and event handlers
         private void DisplayEmployeeDetailsUserControl()
         {
             this.panelContainer.Controls.Clear();
 
-            var userControlToDisplay = new EmployeeDetailsUserControl();
-            userControlToDisplay.Dock = DockStyle.Fill;
+            var employeeDetailsControlObj = new EmployeeDetailsControl();
+            employeeDetailsControlObj.Dock = DockStyle.Fill;
             //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
             //userControlToDisplay.Anchor = AnchorStyles.None;
 
-            //userControlToDisplay.LeaveTypes = _leaveTypeController.GetAll().Data;
-            //userControlToDisplay.LeaveTypeSaved += HandleLeaveTypeSaved;
 
-            userControlToDisplay.EmployeeNumberPropertyChanged += OnViewEmployeeDetails;
+            employeeDetailsControlObj.EmployeeNumberPropertyChanged += OnViewEmployeeDetails;
             //userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
 
             //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
@@ -342,14 +241,13 @@ namespace Main.Forms.EmployeeManagementForms
 
             //userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
 
-            this.panelContainer.Controls.Add(userControlToDisplay);
+            this.panelContainer.Controls.Add(employeeDetailsControlObj);
         }
 
         private void OnViewEmployeeDetails(object sender, PropertyChangedEventArgs e)
         {
-            EmployeeDetailsUserControl employeeDetailsControlObj = (EmployeeDetailsUserControl)sender;
+            EmployeeDetailsControl employeeDetailsControlObj = (EmployeeDetailsControl)sender;
             var EmployeeNumber = employeeDetailsControlObj.EmployeeNumber;
-            MessageBox.Show(EmployeeNumber);
 
             employeeDetailsControlObj.EmployeeFullInformations = this._employeeController.GetEmployeeFullInformations(EmployeeNumber).Data;
             employeeDetailsControlObj.DisplayAllEmployeeInformations();
