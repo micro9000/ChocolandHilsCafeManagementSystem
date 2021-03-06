@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     leaveId BIGINT NOT NULL,
     employeeNumber CHAR(8),
+    reason TEXT,
     startDate DATE,
     endDate DATE,
     numberOfDays DECIMAL, -- 1=day, 0.5 = halfday

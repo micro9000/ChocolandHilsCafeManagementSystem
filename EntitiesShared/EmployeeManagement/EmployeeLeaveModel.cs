@@ -27,6 +27,14 @@ namespace EntitiesShared.EmployeeManagement
             set { employeeNumber = value; }
         }
 
+        private string reason;
+
+        public string Reason
+        {
+            get { return reason; }
+            set { reason = value; }
+        }
+
 
         private decimal numberOfDays;
 
