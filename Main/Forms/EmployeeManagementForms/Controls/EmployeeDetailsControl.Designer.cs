@@ -104,6 +104,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TimeIn = new System.Windows.Forms.ColumnHeader();
             this.Timeout = new System.Windows.Forms.ColumnHeader();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.LblEmployeeShiftSchedule = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.TabPagePayslipHistory.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -385,27 +387,27 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // LblEmail
             // 
             this.LblEmail.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblEmail.Location = new System.Drawing.Point(195, 210);
+            this.LblEmail.Location = new System.Drawing.Point(757, 112);
             this.LblEmail.Name = "LblEmail";
-            this.LblEmail.Size = new System.Drawing.Size(467, 32);
+            this.LblEmail.Size = new System.Drawing.Size(254, 32);
             this.LblEmail.TabIndex = 11;
             this.LblEmail.Text = "-";
             // 
             // LblContactNumber
             // 
             this.LblContactNumber.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblContactNumber.Location = new System.Drawing.Point(195, 176);
+            this.LblContactNumber.Location = new System.Drawing.Point(757, 71);
             this.LblContactNumber.Name = "LblContactNumber";
-            this.LblContactNumber.Size = new System.Drawing.Size(467, 25);
+            this.LblContactNumber.Size = new System.Drawing.Size(254, 25);
             this.LblContactNumber.TabIndex = 10;
             this.LblContactNumber.Text = "-";
             // 
             // LblAge
             // 
             this.LblAge.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblAge.Location = new System.Drawing.Point(195, 143);
+            this.LblAge.Location = new System.Drawing.Point(757, 38);
             this.LblAge.Name = "LblAge";
-            this.LblAge.Size = new System.Drawing.Size(467, 23);
+            this.LblAge.Size = new System.Drawing.Size(254, 23);
             this.LblAge.TabIndex = 9;
             this.LblAge.Text = "-";
             // 
@@ -414,7 +416,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LblBirthdate.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LblBirthdate.Location = new System.Drawing.Point(195, 111);
             this.LblBirthdate.Name = "LblBirthdate";
-            this.LblBirthdate.Size = new System.Drawing.Size(467, 20);
+            this.LblBirthdate.Size = new System.Drawing.Size(278, 20);
             this.LblBirthdate.TabIndex = 8;
             this.LblBirthdate.Text = "-";
             // 
@@ -424,7 +426,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LblAddress.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LblAddress.Location = new System.Drawing.Point(195, 69);
             this.LblAddress.Name = "LblAddress";
-            this.LblAddress.Size = new System.Drawing.Size(467, 43);
+            this.LblAddress.Size = new System.Drawing.Size(365, 43);
             this.LblAddress.TabIndex = 7;
             this.LblAddress.Text = "-";
             // 
@@ -433,7 +435,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LblFullname.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LblFullname.Location = new System.Drawing.Point(195, 38);
             this.LblFullname.Name = "LblFullname";
-            this.LblFullname.Size = new System.Drawing.Size(467, 30);
+            this.LblFullname.Size = new System.Drawing.Size(372, 30);
             this.LblFullname.TabIndex = 6;
             this.LblFullname.Text = "-";
             // 
@@ -441,7 +443,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label6.Location = new System.Drawing.Point(18, 210);
+            this.label6.Location = new System.Drawing.Point(580, 113);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(52, 19);
             this.label6.TabIndex = 5;
@@ -451,7 +453,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(18, 177);
+            this.label5.Location = new System.Drawing.Point(580, 77);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(84, 19);
             this.label5.TabIndex = 4;
@@ -461,7 +463,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(18, 147);
+            this.label4.Location = new System.Drawing.Point(580, 42);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(42, 19);
             this.label4.TabIndex = 3;
@@ -481,7 +483,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(18, 70);
+            this.label2.Location = new System.Drawing.Point(18, 77);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(70, 19);
             this.label2.TabIndex = 1;
@@ -841,6 +843,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.White;
+            this.groupBox2.Controls.Add(this.LblEmployeeShiftSchedule);
+            this.groupBox2.Controls.Add(this.label25);
             this.groupBox2.Controls.Add(this.LblEmail);
             this.groupBox2.Controls.Add(this.LblContactNumber);
             this.groupBox2.Controls.Add(this.LblAge);
@@ -920,6 +924,25 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1080, 583);
             this.panel3.TabIndex = 5;
+            // 
+            // LblEmployeeShiftSchedule
+            // 
+            this.LblEmployeeShiftSchedule.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblEmployeeShiftSchedule.Location = new System.Drawing.Point(195, 169);
+            this.LblEmployeeShiftSchedule.Name = "LblEmployeeShiftSchedule";
+            this.LblEmployeeShiftSchedule.Size = new System.Drawing.Size(278, 20);
+            this.LblEmployeeShiftSchedule.TabIndex = 13;
+            this.LblEmployeeShiftSchedule.Text = "-";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label25.Location = new System.Drawing.Point(18, 170);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(114, 19);
+            this.label25.TabIndex = 12;
+            this.label25.Text = "Shift scheduel";
             // 
             // EmployeeDetailsControl
             // 
@@ -1030,5 +1053,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ColumnHeader TimeIn;
         private System.Windows.Forms.ColumnHeader Timeout;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label LblEmployeeShiftSchedule;
+        private System.Windows.Forms.Label label25;
     }
 }

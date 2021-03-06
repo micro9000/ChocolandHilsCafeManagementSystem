@@ -78,6 +78,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.LblDateHire.Text = empDetails.DateHire.ToShortDateString();
                 this.LblPosition.Text = empDetails.Position;
                 this.LblBranchAssign.Text = empDetails.BranchAssign;
+
+                this.LblEmployeeShiftSchedule.Text = empDetails.Shift.Shift;
             }
         }
 
