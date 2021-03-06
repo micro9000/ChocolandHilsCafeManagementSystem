@@ -56,23 +56,22 @@ CREATE TABLE IF NOT EXISTS Employees(
     employeeNumber CHAR(8) UNIQUE, -- 20210001, 02, 03 (will always change the first 4 numbers, based on current year
 	firstName VARCHAR(100),
     lastName VARCHAR(100),
+    middleName VARCHAR(100),
     address VARCHAR(255),
     birthdate DATE,
     mobileNumber VARCHAR(100),
     emailAddress VARCHAR(100),
     branchAssign VARCHAR(255),
     dateHire DATE NOT NULL,
+    empNumYear CHAR(4),
+    position VARCHAR(50),
+    shiftId BIGINT NOT NULL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
-ALTER TABLE Employees
-ADD COLUMN empNumYear CHAR(4);
-ALTER TABLE Employees
-ADD COLUMN position VARCHAR(50);
-ALTER TABLE Employees
-ADD COLUMN middleName VARCHAR(100);
 
 SELECT * FROM Employees;
 
