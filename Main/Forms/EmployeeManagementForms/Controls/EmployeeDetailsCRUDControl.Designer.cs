@@ -446,6 +446,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.ListViewEmpGovtIdCards.TabIndex = 1;
             this.ListViewEmpGovtIdCards.UseCompatibleStateImageBehavior = false;
             this.ListViewEmpGovtIdCards.View = System.Windows.Forms.View.Details;
+            this.ListViewEmpGovtIdCards.SelectedIndexChanged += new System.EventHandler(this.ListViewEmpGovtIdCards_SelectedIndexChanged);
             // 
             // GovtAgency
             // 

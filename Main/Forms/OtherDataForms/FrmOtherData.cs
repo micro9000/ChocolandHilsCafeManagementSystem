@@ -74,7 +74,7 @@ namespace Main.Forms.OtherDataForms
                 MessageBox.Show(resultMessages, "Save agency details", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 agencyControllerObj.ResetForm();
                 agencyControllerObj.GovernmentAgencies = _governmentController.GetAll().Data;
-                agencyControllerObj.DisplaySelectedGovernmentAgency();
+                agencyControllerObj.DisplayGovernmentAgencyList();
             }
             else
             {
@@ -90,7 +90,7 @@ namespace Main.Forms.OtherDataForms
             if (long.TryParse(selectedAgencyId, out long agencyId))
             {
                 agencyControlObj.GovernmentAgencyToAddUpdate = _governmentController.GetById(agencyId).Data;
-                agencyControlObj.DisplayGovernmentAgencyList();
+                agencyControlObj.DisplaySelectedGovernmentAgency();
             }
         }
 
