@@ -269,6 +269,9 @@ namespace Main.Forms.EmployeeManagementForms
             {
                 // CRUD form
                 DisplayWorkScheduleShiftsCRUDControl();
+            }else if (clickedItem != null && clickedItem.Name == "EmpWorkShiftScheds")
+            {
+                DisplayEmployeeWorkShiftScheduleMgmntControl();
             }
         }
 
@@ -371,6 +374,25 @@ namespace Main.Forms.EmployeeManagementForms
                     }
                 }
             }
+        }
+
+
+        public void DisplayEmployeeWorkShiftScheduleMgmntControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var manageEmpWorkScheduleControlObj = new ManageEmpWorkScheduleControl();
+            //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
+            manageEmpWorkScheduleControlObj.Location = new Point(this.ClientSize.Width / 2 - manageEmpWorkScheduleControlObj.Size.Width / 2, this.ClientSize.Height / 2 - manageEmpWorkScheduleControlObj.Size.Height / 2);
+            manageEmpWorkScheduleControlObj.Anchor = AnchorStyles.None;
+
+            //manageEmpWorkScheduleControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
+
+            //manageEmpWorkScheduleControlObj.EmployeeShiftSaved += HandleWorkShiftSaved;
+            //manageEmpWorkScheduleControlObj.PropSelectedEmpShiftIdToUpdateChanged += OnShiftSelectedToUpdate;
+            //manageEmpWorkScheduleControlObj.PropSelectedEmpShiftIdToDeleteChanged += OnShiftSelectedToDelete;
+
+            this.panelContainer.Controls.Add(manageEmpWorkScheduleControlObj);
         }
     }
 }

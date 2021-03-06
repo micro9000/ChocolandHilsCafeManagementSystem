@@ -1,4 +1,5 @@
 ﻿using EntitiesShared.EmployeeManagement;
+using EntitiesShared.EmployeeManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             get { return employees; }
             set { employees = value; }
+        }
+
+        private List<EmployeeWorkShiftScheduleModel> employeeShiftSchedule;
+
+        public List<EmployeeWorkShiftScheduleModel> EmployeeShiftSchedule
+        {
+            get { return employeeShiftSchedule; }
+            set { employeeShiftSchedule = value; }
         }
 
 
@@ -55,7 +64,21 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void BtnGenerateEmployeeWorkSched_Click(object sender, EventArgs e)
         {
+            var startWorkDate = this.DPickerWorkStartDate.Value;
+            var endWorkDate = this.DPickerWorkEndDate.Value;
 
+            if (startWorkDate < DateTime.Now)
+            {
+                startWorkDate = DateTime.Now;
+            }
+
+            if (this.Employees != null)
+            {
+                foreach(var employee in this.Employees)
+                {
+
+                }
+            }
         }
     }
 }

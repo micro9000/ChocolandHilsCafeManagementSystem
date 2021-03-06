@@ -57,6 +57,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.EmpWorkShiftScheds = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStripEmployeeManagement.SuspendLayout();
             this.EmployeeMenuItemsMenuStrip.SuspendLayout();
             this.PayrollMenuItems.SuspendLayout();
@@ -185,18 +186,18 @@ namespace Main.Forms.EmployeeManagementForms
             // WorkSchedulesMenItems
             // 
             this.WorkSchedulesMenItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.WorkShiftsMenItem});
+            this.WorkShiftsMenItem,
+            this.EmpWorkShiftScheds});
             this.WorkSchedulesMenItems.Name = "WorkSchedulesMenItems";
-            this.WorkSchedulesMenItems.OwnerItem = this.MenuItemWorkSchedules;
             this.WorkSchedulesMenItems.ShowImageMargin = false;
-            this.WorkSchedulesMenItems.Size = new System.Drawing.Size(79, 26);
+            this.WorkSchedulesMenItems.Size = new System.Drawing.Size(186, 48);
             this.WorkSchedulesMenItems.Text = "Work Schedules";
             this.WorkSchedulesMenItems.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.WorkSchedulesMenItems_ItemClicked);
             // 
             // WorkShiftsMenItem
             // 
             this.WorkShiftsMenItem.Name = "WorkShiftsMenItem";
-            this.WorkShiftsMenItem.Size = new System.Drawing.Size(78, 22);
+            this.WorkShiftsMenItem.Size = new System.Drawing.Size(185, 22);
             this.WorkShiftsMenItem.Text = "Shifts";
             // 
             // panelContainer
@@ -258,6 +259,12 @@ namespace Main.Forms.EmployeeManagementForms
             this.toolStripMenuItem5.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem5.Text = "File leave schedule";
             // 
+            // EmpWorkShiftScheds
+            // 
+            this.EmpWorkShiftScheds.Name = "EmpWorkShiftScheds";
+            this.EmpWorkShiftScheds.Size = new System.Drawing.Size(185, 22);
+            this.EmpWorkShiftScheds.Text = "Employee work schedules";
+            // 
             // FrmMainEmployeeManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -307,5 +314,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ToolStripMenuItem SalaryStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip WorkSchedulesMenItems;
         private System.Windows.Forms.ToolStripMenuItem WorkShiftsMenItem;
+        private System.Windows.Forms.ToolStripMenuItem EmpWorkShiftScheds;
     }
 }

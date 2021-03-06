@@ -32,6 +32,5 @@ namespace EntitiesShared.EmployeeManagement.Models
             set { endSchedDate = value; }
         }
 
-
     }
 }
