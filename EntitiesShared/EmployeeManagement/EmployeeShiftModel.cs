@@ -20,21 +20,23 @@ namespace EntitiesShared.EmployeeManagement
 
         // create new class that will inherit this class
 
-        private string startTime;
+        private DateTime startTime;
 
-        public string StartTime
+        public DateTime StartTime
         {
             get { return startTime; }
             set { startTime = value; }
         }
 
-        private string endTime;
 
-        public string EndTime
+        private DateTime endTime;
+
+        public DateTime EndTime
         {
             get { return endTime; }
             set { endTime = value; }
         }
+
 
         private decimal numberOfHrs;
 
@@ -44,9 +46,9 @@ namespace EntitiesShared.EmployeeManagement
             set { numberOfHrs = value; }
         }
 
-        private string breakTime;
+        private DateTime breakTime;
 
-        public string BreakTime
+        public DateTime BreakTime
         {
             get { return breakTime; }
             set { breakTime = value; }

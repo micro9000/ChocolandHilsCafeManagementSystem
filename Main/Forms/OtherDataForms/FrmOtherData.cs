@@ -114,14 +114,14 @@ namespace Main.Forms.OtherDataForms
 
                     if (deleteResults.IsSuccess)
                     {
-                        MessageBox.Show(resultMessages, "Delete leave type", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(resultMessages, "Delete Govt. agency", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         agencyControlObj.ResetForm();
                         agencyControlObj.GovernmentAgencies = _governmentController.GetAll().Data;
                         agencyControlObj.DisplayGovernmentAgencyList();
                     }
                     else
                     {
-                        MessageBox.Show(resultMessages, "Save leave type", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(resultMessages, "Delete Govt. agency", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }

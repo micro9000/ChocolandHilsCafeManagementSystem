@@ -112,8 +112,10 @@ namespace Main
             // validator
             services.AddTransient<EmployeeAddUpdateValidator>();
             services.AddTransient<EmployeeSalaryRateAddUpdateValidator>();
+            services.AddTransient<EmployeeShiftAddUpdateValidator>();
             // controllers
             services.AddTransient<IEmployeeController, EmployeeController>();
+            services.AddTransient<IWorkShiftController, WorkShiftController>();
 
 
             // Other Data:

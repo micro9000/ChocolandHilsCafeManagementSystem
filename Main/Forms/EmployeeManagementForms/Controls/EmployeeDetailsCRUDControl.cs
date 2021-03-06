@@ -460,7 +460,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                                             x.EmployeeGovtIdCard.GovtAgencyId == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId).FirstOrDefault();
 
                     addedNewGovtId.EmployeeGovtIdCard.IsDeleted = false;
-                    addedNewGovtId.EmployeeGovtIdCard.DeletedAt = null;
+                    addedNewGovtId.EmployeeGovtIdCard.DeletedAt = DateTime.MinValue;
 
                     this.BtnUndoToDelete.Visible = false;
                     this.DisplayEmployeeGovtIds();

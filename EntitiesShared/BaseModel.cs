@@ -34,9 +34,9 @@ namespace EntitiesShared
             set { updatedAt = value; }
         }
 
-        private DateTime? deletedAt;
+        private DateTime deletedAt;
 
-        public DateTime? DeletedAt
+        public DateTime DeletedAt
         {
             get { return deletedAt; }
             set { deletedAt = value; }

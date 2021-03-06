@@ -19,10 +19,10 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public List<EmployeeShiftModel> GetAllByIsActive (bool isActive)
+        public List<EmployeeShiftModel> GetAllNotDeleted ()
         {
-            string query = @"SELECT * FROM EmployeeShifts WHERE isDeleted=false AND isActive=@IsActive";
-            return this.GetAll(query, new { IsActive = isActive });
+            string query = @"SELECT * FROM EmployeeShifts WHERE isDeleted=false";
+            return this.GetAll(query);
         }
     }
 }

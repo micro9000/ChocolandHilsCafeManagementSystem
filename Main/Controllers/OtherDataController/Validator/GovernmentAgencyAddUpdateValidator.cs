@@ -12,6 +12,7 @@ namespace Main.Controllers.OtherDataController.Validator
     {
         public GovernmentAgencyAddUpdateValidator()
         {
+            this.CascadeMode = CascadeMode.Stop;
             RuleFor(x => x.GovtAgency).NotEmpty();
         }
     }

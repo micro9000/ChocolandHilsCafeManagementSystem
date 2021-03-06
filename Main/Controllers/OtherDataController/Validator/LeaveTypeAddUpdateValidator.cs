@@ -12,6 +12,7 @@ namespace Main.Controllers.OtherDataController.Validator
     {
         public LeaveTypeAddUpdateValidator()
         {
+            this.CascadeMode = CascadeMode.Stop;
             RuleFor(x => x.LeaveType).NotEmpty();
             RuleFor(x => x.NumberOfDays).NotEmpty().NotEqual(0);
         }

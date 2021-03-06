@@ -25,10 +25,10 @@ SELECT * FROM LeaveTypes WHERE isDeleted=False AND isActive=true;
 CREATE TABLE IF NOT EXISTS EmployeeShifts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     shift VARCHAR(50),
-    startTime TIME,
-    endTime TIME,
+    startTime DATETIME,
+    endTime DATETIME,
     numberOfHrs DECIMAL(5,2), -- can be 7.5 hrs
-    breakTime TIME,
+    breakTime DATETIME,
     breakTimeHrs DECIMAL(5,2), -- 1 is hr, 0.5 is 30mins
     isActive BOOLEAN DEFAULT False,
     createdAt DATETIME DEFAULT NOW(),

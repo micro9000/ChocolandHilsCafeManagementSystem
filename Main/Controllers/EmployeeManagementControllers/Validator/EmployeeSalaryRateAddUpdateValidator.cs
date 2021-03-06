@@ -12,6 +12,7 @@ namespace Main.Controllers.EmployeeManagementControllers.Validator
     {
         public EmployeeSalaryRateAddUpdateValidator()
         {
+            this.CascadeMode = CascadeMode.Stop;
             RuleFor(x => x.SalaryRate).GreaterThan(0);
             RuleFor(x => x.HalfMonthRate).GreaterThan(0);
             RuleFor(x => x.DailyRate).GreaterThan(0);

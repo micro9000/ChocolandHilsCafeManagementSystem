@@ -21,15 +21,18 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeController _employeeController;
+        private readonly IWorkShiftController _workShiftController;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                 IGovernmentAgencyData governmentAgencyData,
-                                IEmployeeController employeeController)
+                                IEmployeeController employeeController,
+                                IWorkShiftController workShiftController)
         {
             InitializeComponent();
             _logger = logger;
             _governmentAgencyData = governmentAgencyData;
             _employeeController = employeeController;
+            _workShiftController = workShiftController;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -256,5 +259,117 @@ namespace Main.Forms.EmployeeManagementForms
 
 
         #endregion
+
+        private void WorkSchedulesMenItems_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem clickedItem = e.ClickedItem;
+
+            if (clickedItem != null && clickedItem.Name == "WorkShiftsMenItem")
+            {
+                // CRUD form
+                DisplayWorkScheduleShiftsCRUDControl();
+            }
+        }
+
+        public void DisplayWorkScheduleShiftsCRUDControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var workShiftsCRUDControlObj = new WorkShiftCRUDControl();
+            //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
+            workShiftsCRUDControlObj.Location = new Point(this.ClientSize.Width / 2 - workShiftsCRUDControlObj.Size.Width / 2, this.ClientSize.Height / 2 - workShiftsCRUDControlObj.Size.Height / 2);
+            workShiftsCRUDControlObj.Anchor = AnchorStyles.None;
+
+            workShiftsCRUDControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
+
+            workShiftsCRUDControlObj.EmployeeShiftSaved += HandleWorkShiftSaved;
+            workShiftsCRUDControlObj.PropSelectedEmpShiftIdToUpdateChanged += OnShiftSelectedToUpdate;
+            workShiftsCRUDControlObj.PropSelectedEmpShiftIdToDeleteChanged += OnShiftSelectedToDelete;
+
+            this.panelContainer.Controls.Add(workShiftsCRUDControlObj);
+        }
+
+        private void HandleWorkShiftSaved (object sender, EventArgs e)
+        {
+            WorkShiftCRUDControl workShiftsCRUDControlObj = (WorkShiftCRUDControl)sender;
+
+            var saveWorkShift = workShiftsCRUDControlObj.EmployeeShiftToAddUpdate;
+            bool isNew = workShiftsCRUDControlObj.IsSaveNew;
+
+            if (saveWorkShift != null)
+            {
+                var saveResults = _workShiftController.Save(saveWorkShift, isNew);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    workShiftsCRUDControlObj.ResetForm();
+
+                    workShiftsCRUDControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
+                    workShiftsCRUDControlObj.DisplayWorkShiftList();
+
+                    //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
+
+                    //DisplayAddUpdateEmployeeConfirmationUserControl(saveResults.Data, msg);
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void OnShiftSelectedToUpdate(object sender, PropertyChangedEventArgs e)
+        {
+            WorkShiftCRUDControl workShiftsCRUDControlObj = (WorkShiftCRUDControl)sender;
+            var selectedShiftId = workShiftsCRUDControlObj.SelectedEmpShiftIdToUpdate;
+
+            if (long.TryParse(selectedShiftId, out long shiftId))
+            {
+                workShiftsCRUDControlObj.EmployeeShiftToAddUpdate = _workShiftController.GetById(shiftId).Data;
+                workShiftsCRUDControlObj.DisplaySelectedShift();
+            }
+
+        }
+
+        private void OnShiftSelectedToDelete(object sender, PropertyChangedEventArgs e)
+        {
+            WorkShiftCRUDControl workShiftsCRUDControlObj = (WorkShiftCRUDControl)sender;
+            var selectedShiftId = workShiftsCRUDControlObj.SelectedEmpShiftIdToDelete;
+
+            if (long.TryParse(selectedShiftId, out long shiftId))
+            {
+                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (res == DialogResult.OK)
+                {
+                    var deleteResults = _workShiftController.Delete(shiftId);
+
+                    string resultMessages = "";
+                    foreach (var msg in deleteResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (deleteResults.IsSuccess)
+                    {
+                        MessageBox.Show(resultMessages, "Delete shift.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        workShiftsCRUDControlObj.ResetForm();
+                        workShiftsCRUDControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
+                        workShiftsCRUDControlObj.DisplayWorkShiftList();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Delete shift", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+        }
     }
 }

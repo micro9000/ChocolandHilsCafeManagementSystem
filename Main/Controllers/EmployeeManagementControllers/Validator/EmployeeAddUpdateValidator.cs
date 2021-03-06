@@ -12,6 +12,7 @@ namespace Main.Controllers.EmployeeManagementControllers.Validator
     {
         public EmployeeAddUpdateValidator()
         {
+            this.CascadeMode = CascadeMode.Stop;
             RuleFor(e => e.EmployeeNumber).NotEmpty();
             RuleFor(e => e.FirstName).NotEmpty();
             RuleFor(e => e.LastName).NotEmpty();
