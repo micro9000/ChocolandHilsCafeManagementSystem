@@ -48,6 +48,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.MenuItemWorkSchedules = new System.Windows.Forms.ToolStripMenuItem();
             this.WorkSchedulesMenItems = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.WorkShiftsMenItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EmpWorkShiftScheds = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.FileLeaveSchedStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GovtIdsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +58,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.EmpWorkShiftScheds = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStripEmployeeManagement.SuspendLayout();
             this.EmployeeMenuItemsMenuStrip.SuspendLayout();
             this.PayrollMenuItems.SuspendLayout();
@@ -200,6 +200,12 @@ namespace Main.Forms.EmployeeManagementForms
             this.WorkShiftsMenItem.Size = new System.Drawing.Size(185, 22);
             this.WorkShiftsMenItem.Text = "Shifts";
             // 
+            // EmpWorkShiftScheds
+            // 
+            this.EmpWorkShiftScheds.Name = "EmpWorkShiftScheds";
+            this.EmpWorkShiftScheds.Size = new System.Drawing.Size(185, 22);
+            this.EmpWorkShiftScheds.Text = "Employee work schedules";
+            // 
             // panelContainer
             // 
             this.panelContainer.AutoScroll = true;
@@ -258,12 +264,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
             this.toolStripMenuItem5.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem5.Text = "File leave schedule";
-            // 
-            // EmpWorkShiftScheds
-            // 
-            this.EmpWorkShiftScheds.Name = "EmpWorkShiftScheds";
-            this.EmpWorkShiftScheds.Size = new System.Drawing.Size(185, 22);
-            this.EmpWorkShiftScheds.Text = "Employee work schedules";
             // 
             // FrmMainEmployeeManagement
             // 
