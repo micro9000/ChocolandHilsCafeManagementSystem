@@ -78,6 +78,24 @@ SELECT * FROM Employees;
 SELECT COUNT(*) as count FROM Employees 
 WHERE isDeleted=false AND YEAR(dateHire) = '2018';
 
+SELECT * 
+FROM Employees AS EMP
+JOIN EmployeeShifts AS SHIFT ON EMP.shiftId=SHIFT.id
+WHERE isDeleted=false;
+
+SELECT * 
+FROM Employees AS EMP
+JOIN EmployeeShifts AS SHIFT ON EMP.shiftId=SHIFT.id
+WHERE EMP.isDeleted=false AND (
+EMP.employeeNumber LIKE @Search OR
+EMP.firstName LIKE @Search OR
+EMP.lastName LIKE @Search OR
+EMP.address LIKE @Search OR
+EMP.mobileNumber LIKE @Search OR
+EMP.emailAddress LIKE @Search OR
+EMP.branchAssign LIKE @Search);
+
+
 CREATE TABLE IF NOT EXISTS GovernmentAgencies(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     govtAgency VARCHAR(255),

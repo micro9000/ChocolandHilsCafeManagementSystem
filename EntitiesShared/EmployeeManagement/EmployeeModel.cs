@@ -104,7 +104,6 @@ namespace EntitiesShared.EmployeeManagement
             set { branchAssign = value; }
         }
 
-
         private DateTime dateHire;
 
         public DateTime DateHire
@@ -112,5 +111,26 @@ namespace EntitiesShared.EmployeeManagement
             get { return dateHire; }
             set { dateHire = value; }
         }
+
+        private long shiftId;
+
+        public long ShiftId
+        {
+            get { return shiftId; }
+            set { shiftId = value; }
+        }
+
+        private EmployeeShiftModel shift;
+
+        [Write(false)]
+        [Computed]
+        public EmployeeShiftModel Shift
+        {
+            get { return shift; }
+            set { shift = value; }
+        }
+
+
+
     }
 }

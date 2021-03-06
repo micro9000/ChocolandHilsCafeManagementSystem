@@ -257,6 +257,15 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             //    MessageBox.Show("Kindly choose action.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             //    return;
             //}
+            var selectedWorkShift = this.CBoxShifts.SelectedItem as ComboboxItem;
+
+            if (selectedWorkShift == null)
+            {
+                MessageBox.Show("Kindly choose emplooyee shift.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            long selectedWorkShiftId = long.Parse(selectedWorkShift.Value.ToString());
 
             Employee = new EmployeeModel
             {
@@ -269,7 +278,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 Address = this.TbxAddress.Text,
                 BranchAssign = this.TbxBranchAssign.Text,
                 EmailAddress = this.TbxEmail.Text,
-                Position = this.TbxEmpPosition.Text
+                Position = this.TbxEmpPosition.Text,
+                ShiftId = selectedWorkShiftId
             };
 
             if (this.IsNew == false)
