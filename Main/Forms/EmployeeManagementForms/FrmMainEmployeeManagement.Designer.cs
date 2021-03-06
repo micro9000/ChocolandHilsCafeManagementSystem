@@ -198,7 +198,7 @@ namespace Main.Forms.EmployeeManagementForms
             // panelContainer
             // 
             this.panelContainer.AutoScroll = true;
-            this.panelContainer.BackColor = System.Drawing.Color.White;
+            this.panelContainer.BackColor = System.Drawing.SystemColors.Control;
             this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContainer.Location = new System.Drawing.Point(0, 24);
             this.panelContainer.Name = "panelContainer";

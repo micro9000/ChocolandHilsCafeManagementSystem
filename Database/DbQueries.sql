@@ -27,15 +27,16 @@ CREATE TABLE IF NOT EXISTS EmployeeShifts(
     shift VARCHAR(50),
     startTime TIME,
     endTime TIME,
-    numberOfHrs DECIMAL, -- can be 7.5 hrs
+    numberOfHrs DECIMAL(5,2), -- can be 7.5 hrs
     breakTime TIME,
-    breakTimeHrs DECIMAL, -- 1 is hr, 0.5 is 30mins
+    breakTimeHrs DECIMAL(5,2), -- 1 is hr, 0.5 is 30mins
     isActive BOOLEAN DEFAULT False,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
 -- RegularShift, 0830 - 1730, 8, 12:00NN, 1Hr
 
 -- DateTime dt = DateTime.Now;
@@ -69,6 +70,8 @@ ALTER TABLE Employees
 ADD COLUMN empNumYear CHAR(4);
 ALTER TABLE Employees
 ADD COLUMN position VARCHAR(50);
+ALTER TABLE Employees
+ADD COLUMN middleName VARCHAR(100);
 
 SELECT * FROM Employees;
 
@@ -116,6 +119,10 @@ CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
 
 SELECT * FROM EmployeeSalaryRate;
 
+SELECT * FROM EmployeeSalaryRate
+WHERE isDeleted=false AND employeeNumber='20190001'
+ORDER BY id DESC LIMIT 1;
+
 CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     shiftId BIGINT NOT NULL,
@@ -128,6 +135,7 @@ CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
+
 -- SELECT DATE_ADD("2017-06-15", INTERVAL 10 HOUR); 
 
 CREATE TABLE IF NOT EXISTS EmployeeLeaves(
@@ -162,7 +170,6 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(shiftSchedId) REFERENCES EmployeeShiftSchedules(id)
 )ENGINE=INNODB;
-
 
 SELECT TIME_FORMAT("08:30:00", "%H") as hrs, TIME_FORMAT("08:30:00", "%i") as mins;
 SELECT TIME_FORMAT("17:30:00", "%H.%i");

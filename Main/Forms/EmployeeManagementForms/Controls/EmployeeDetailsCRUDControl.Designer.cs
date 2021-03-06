@@ -72,7 +72,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TbxDailySalaryRate = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.BtnCancelUpdateEmployee = new System.Windows.Forms.Button();
-            this.LblActionForEmployeeDetails = new System.Windows.Forms.Label();
             this.TbxEmployeeNumber = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.TabControlSaveEmployeeDetails = new System.Windows.Forms.TabControl();
@@ -82,6 +81,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GBoxSearchEmployee = new System.Windows.Forms.GroupBox();
             this.BtnActionSearchEmployeeByEmployeeNumber = new System.Windows.Forms.Button();
             this.BtnSaveEmployee = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.LblActionForEmployeeDetails = new System.Windows.Forms.Label();
             this.EmployeeBasicInfo.SuspendLayout();
             this.EmployeeGovtIds.SuspendLayout();
             this.EmployeeSalaryRateTab.SuspendLayout();
@@ -89,6 +90,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TabControlSaveEmployeeDetails.SuspendLayout();
             this.SaveEmployeeAction.SuspendLayout();
             this.GBoxSearchEmployee.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // EmployeeBasicInfo
@@ -564,7 +566,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnCancelUpdateEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelUpdateEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnCancelUpdateEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdateEmployee.Location = new System.Drawing.Point(415, 548);
+            this.BtnCancelUpdateEmployee.Location = new System.Drawing.Point(416, 608);
             this.BtnCancelUpdateEmployee.Name = "BtnCancelUpdateEmployee";
             this.BtnCancelUpdateEmployee.Size = new System.Drawing.Size(134, 48);
             this.BtnCancelUpdateEmployee.TabIndex = 47;
@@ -572,17 +574,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnCancelUpdateEmployee.UseVisualStyleBackColor = false;
             this.BtnCancelUpdateEmployee.Visible = false;
             this.BtnCancelUpdateEmployee.Click += new System.EventHandler(this.BtnCancelUpdateEmployee_Click);
-            // 
-            // LblActionForEmployeeDetails
-            // 
-            this.LblActionForEmployeeDetails.AutoSize = true;
-            this.LblActionForEmployeeDetails.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblActionForEmployeeDetails.ForeColor = System.Drawing.Color.Black;
-            this.LblActionForEmployeeDetails.Location = new System.Drawing.Point(8, 10);
-            this.LblActionForEmployeeDetails.Name = "LblActionForEmployeeDetails";
-            this.LblActionForEmployeeDetails.Size = new System.Drawing.Size(195, 32);
-            this.LblActionForEmployeeDetails.TabIndex = 46;
-            this.LblActionForEmployeeDetails.Text = "Employee details";
             // 
             // TbxEmployeeNumber
             // 
@@ -611,7 +602,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeeGovtIds);
             this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeeSalaryRateTab);
             this.TabControlSaveEmployeeDetails.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TabControlSaveEmployeeDetails.Location = new System.Drawing.Point(4, 54);
+            this.TabControlSaveEmployeeDetails.Location = new System.Drawing.Point(5, 114);
             this.TabControlSaveEmployeeDetails.Name = "TabControlSaveEmployeeDetails";
             this.TabControlSaveEmployeeDetails.SelectedIndex = 0;
             this.TabControlSaveEmployeeDetails.Size = new System.Drawing.Size(689, 492);
@@ -696,7 +687,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnSaveEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveEmployee.Location = new System.Drawing.Point(555, 548);
+            this.BtnSaveEmployee.Location = new System.Drawing.Point(556, 608);
             this.BtnSaveEmployee.Name = "BtnSaveEmployee";
             this.BtnSaveEmployee.Size = new System.Drawing.Size(134, 48);
             this.BtnSaveEmployee.TabIndex = 44;
@@ -704,16 +695,39 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveEmployee.UseVisualStyleBackColor = false;
             this.BtnSaveEmployee.Click += new System.EventHandler(this.BtnSaveEmployee_Click);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.panel1.Controls.Add(this.LblActionForEmployeeDetails);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.panel1.Size = new System.Drawing.Size(696, 94);
+            this.panel1.TabIndex = 48;
+            // 
+            // LblActionForEmployeeDetails
+            // 
+            this.LblActionForEmployeeDetails.AutoSize = true;
+            this.LblActionForEmployeeDetails.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblActionForEmployeeDetails.ForeColor = System.Drawing.Color.White;
+            this.LblActionForEmployeeDetails.Location = new System.Drawing.Point(9, 28);
+            this.LblActionForEmployeeDetails.Name = "LblActionForEmployeeDetails";
+            this.LblActionForEmployeeDetails.Size = new System.Drawing.Size(157, 25);
+            this.LblActionForEmployeeDetails.TabIndex = 43;
+            this.LblActionForEmployeeDetails.Text = "Employee details";
+            // 
             // EmployeeDetailsCRUDControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.BtnCancelUpdateEmployee);
-            this.Controls.Add(this.LblActionForEmployeeDetails);
             this.Controls.Add(this.TabControlSaveEmployeeDetails);
             this.Controls.Add(this.BtnSaveEmployee);
             this.Name = "EmployeeDetailsCRUDControl";
-            this.Size = new System.Drawing.Size(696, 606);
+            this.Size = new System.Drawing.Size(696, 719);
             this.EmployeeBasicInfo.ResumeLayout(false);
             this.EmployeeBasicInfo.PerformLayout();
             this.EmployeeGovtIds.ResumeLayout(false);
@@ -725,8 +739,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.SaveEmployeeAction.ResumeLayout(false);
             this.GBoxSearchEmployee.ResumeLayout(false);
             this.GBoxSearchEmployee.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -775,7 +790,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.TextBox TbxDailySalaryRate;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button BtnCancelUpdateEmployee;
-        private System.Windows.Forms.Label LblActionForEmployeeDetails;
         private System.Windows.Forms.TextBox TbxEmployeeNumber;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TabControl TabControlSaveEmployeeDetails;
@@ -785,5 +799,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.GroupBox GBoxSearchEmployee;
         private System.Windows.Forms.Button BtnActionSearchEmployeeByEmployeeNumber;
         private System.Windows.Forms.Button BtnSaveEmployee;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label LblActionForEmployeeDetails;
     }
 }
