@@ -37,22 +37,21 @@ namespace EntitiesShared.EmployeeManagement
             set { employeeNumber = value; }
         }
 
-        private DateTime schedDate;
+        private DateTime startSchedDate;
 
-        public DateTime SchedDate
+        public DateTime StartSchedDate
         {
-            get { return schedDate; }
-            set { schedDate = value; }
+            get { return startSchedDate; }
+            set { startSchedDate = value; }
         }
 
+        private DateTime endSchedDate;
 
-        private bool isPresent;
-
-        // flag that will update once the employee time in
-        public bool IsPresent
+        public DateTime EndSchedDate
         {
-            get { return isPresent; }
-            set { isPresent = value; }
+            get { return endSchedDate; }
+            set { endSchedDate = value; }
         }
+
     }
 }
