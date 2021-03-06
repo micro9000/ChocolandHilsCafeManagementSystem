@@ -101,6 +101,7 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.Anchor = AnchorStyles.None;
 
             controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
+            controlToDisplay.WorkShifts = _workShiftController.GetAll().Data;
             // TODO: add the existing emp. govt. ids from our database and use the CustomModels -> EmployeeGovtIdCardTempModel.cs
 
             // event added

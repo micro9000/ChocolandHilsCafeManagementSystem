@@ -30,12 +30,13 @@ CREATE TABLE IF NOT EXISTS EmployeeShifts(
     numberOfHrs DECIMAL(5,2), -- can be 7.5 hrs
     breakTime DATETIME,
     breakTimeHrs DECIMAL(5,2), -- 1 is hr, 0.5 is 30mins
-    isActive BOOLEAN DEFAULT False,
+    isActive BOOLEAN DEFAULT True,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
 
 -- RegularShift, 0830 - 1730, 8, 12:00NN, 1Hr
 
@@ -136,12 +137,16 @@ CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
 
+SELECT * FROM EmployeeShiftSchedules;
+
 -- SELECT DATE_ADD("2017-06-15", INTERVAL 10 HOUR); 
 
 CREATE TABLE IF NOT EXISTS EmployeeLeaves(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     leaveId BIGINT NOT NULL,
     employeeNumber CHAR(8),
+    startDate DATE,
+    endDate DATE,
     numberOfDays DECIMAL, -- 1=day, 0.5 = halfday
     remainingDays DECIMAL, -- can leave whole day or halfday
     currentYear INT,

@@ -33,6 +33,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
+        private List<EmployeeShiftModel> workShifts;
+
+        public List<EmployeeShiftModel> WorkShifts
+        {
+            get { return workShifts; }
+            set { workShifts = value; }
+        }
+
+
+
         private EmployeeModel employee;
 
         public EmployeeModel Employee
@@ -105,7 +115,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
-        private void AddUpdateEmployeeUserControl_Load(object sender, EventArgs e)
+
+        private void EmployeeDetailsCRUDControl_Load(object sender, EventArgs e)
         {
             // Govt. agencies load in combo box
             if (this.GovtAgencies != null)
@@ -120,7 +131,18 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 }
             }
 
-
+            // Work shifts load in combo box
+            if (this.WorkShifts != null)
+            {
+                ComboboxItem item;
+                foreach (var shift in this.WorkShifts)
+                {
+                    item = new ComboboxItem();
+                    item.Text = $"{shift.Shift} - from {shift.StartTime.ToShortTimeString()} to {shift.EndTime.ToShortTimeString()}";
+                    item.Value = shift.Id;
+                    this.CBoxShifts.Items.Add(item);
+                }
+            }
         }
 
         public void ClearForm()
@@ -468,41 +490,5 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
-        private void TabControlSaveEmployeeDetails_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-        //private void TbxEmployeeNumber_KeyUp(object sender, KeyEventArgs e)
-        //{
-        //    if (e.KeyCode == Keys.Enter)
-        //    {
-        //        e.Handled = true;
-        //        this.EmployeeNumber = TbxEmployeeNumber.Text;
-        //    }
-        //}
-
-        //private void RBtnUpdate_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    RadioButton rb = sender as RadioButton;
-
-        //    if (rb != null && rb.Checked)
-        //    {
-        //        this.IsNew = false;
-        //        TbxEmployeeNumber.Enabled = true;
-        //    }
-        //}
-
-        //private void RBtnNew_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    RadioButton rb = sender as RadioButton;
-
-        //    if (rb != null && rb.Checked)
-        //    {
-        //        this.IsNew = true;
-        //        TbxEmployeeNumber.Enabled = false;
-        //    }
-        //}
     }
 }
