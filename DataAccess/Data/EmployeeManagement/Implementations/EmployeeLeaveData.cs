@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
+using EntitiesShared.OtherDataManagement;
 
 namespace DataAccess.Data.EmployeeManagement.Implementations
 {
@@ -21,28 +23,87 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
         public List<EmployeeLeaveModel> GetAllByEmployeeNumberAndLeaveId(string employeeNumber, long leaveId, int year)
         {
-            string query = @"SELECT * FROM EmployeeLeaves
-                            WHERE isDeleted=false AND leaveId=@LeaveId AND
-                            employeeNumber=@EmployeeNumber AND currentYear=@Year";
+            string query = @"SELECT * FROM EmployeeLeaves AS EL
+                            JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
+                            WHERE EL.isDeleted=false AND EL.leaveId=@LeaveId AND
+                            EL.employeeNumber=@EmployeeNumber AND EL.currentYear=@Year
+                            ORDER BY EL.id DESC";
 
-            return this.GetAll(query, new
+            List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
             {
-                LeaveId = leaveId,
-                EmployeeNumber = employeeNumber,
-                Year = year
-            });
+                results = conn.Query<EmployeeLeaveModel, LeaveTypeModel, EmployeeLeaveModel>(query,
+                        (EL, LT) => {
+                            EL.LeaveType = LT;
+                            return EL;
+                        }, new
+                        {
+                            LeaveId = leaveId,
+                            EmployeeNumber = employeeNumber,
+                            Year = year
+                        }).ToList();
+                conn.Close();
+            }
+
+            return results;
         }
 
         public List<EmployeeLeaveModel> GetAllByEmployeeNumberAndYear(string employeeNumber, int year)
         {
-            string query = @"SELECT * FROM EmployeeLeaves
-                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND currentYear=@Year";
+            string query = @"SELECT * 
+                            FROM EmployeeLeaves AS EL
+                            JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
+                            WHERE EL.isDeleted=false AND EL.employeeNumber=@EmployeeNumber AND EL.currentYear=@Year
+                            ORDER BY EL.id DESC";
 
-            return this.GetAll(query, new
+            List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
             {
-                EmployeeNumber = employeeNumber,
-                Year = year
-            });
+                results = conn.Query<EmployeeLeaveModel, LeaveTypeModel, EmployeeLeaveModel>(query,
+                        (EL, LT) => {
+                            EL.LeaveType = LT;
+                            return EL;
+                        }, new
+                        {
+                            EmployeeNumber = employeeNumber,
+                            Year = year
+                        }).ToList();
+                conn.Close();
+            }
+
+            return results;
+
+        }
+
+
+        public List<EmployeeLeaveModel> GetAllByEmployeeNumberAndDateRange(string employeeNumber, int year)
+        {
+            string query = @"SELECT * 
+                            FROM EmployeeLeaves AS EL
+                            JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
+                            WHERE EL.isDeleted=false AND EL.employeeNumber=@EmployeeNumber AND EL.currentYear=@Year
+                            ORDER BY EL.id DESC";
+
+            List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeLeaveModel, LeaveTypeModel, EmployeeLeaveModel>(query,
+                        (EL, LT) => {
+                            EL.LeaveType = LT;
+                            return EL;
+                        }, new
+                        {
+                            EmployeeNumber = employeeNumber,
+                            Year = year
+                        }).ToList();
+                conn.Close();
+            }
+
+            return results;
+
         }
     }
 }

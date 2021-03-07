@@ -189,6 +189,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.WorkShiftsMenItem,
             this.EmpWorkShiftScheds});
             this.WorkSchedulesMenItems.Name = "WorkSchedulesMenItems";
+            this.WorkSchedulesMenItems.OwnerItem = this.MenuItemWorkSchedules;
             this.WorkSchedulesMenItems.ShowImageMargin = false;
             this.WorkSchedulesMenItems.Size = new System.Drawing.Size(186, 48);
             this.WorkSchedulesMenItems.Text = "Work Schedules";

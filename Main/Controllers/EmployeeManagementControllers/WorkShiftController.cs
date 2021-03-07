@@ -16,12 +16,12 @@ namespace Main.Controllers.EmployeeManagementControllers
 {
     public class WorkShiftController : IWorkShiftController
     {
-        private readonly ILogger<LoginFrm> _logger;
+        private readonly ILogger<WorkShiftController> _logger;
         private readonly IMapper _mapper;
         private readonly IEmployeeShiftData _employeeShiftData;
         private readonly EmployeeShiftAddUpdateValidator _employeeShiftAddUpdateValidator;
 
-        public WorkShiftController(ILogger<LoginFrm> logger,
+        public WorkShiftController(ILogger<WorkShiftController> logger,
                                 IMapper mapper,
                                 IEmployeeShiftData employeeShiftData,
                                 EmployeeShiftAddUpdateValidator employeeShiftAddUpdateValidator)

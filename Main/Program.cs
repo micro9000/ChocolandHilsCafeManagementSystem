@@ -113,9 +113,11 @@ namespace Main
             services.AddTransient<EmployeeAddUpdateValidator>();
             services.AddTransient<EmployeeSalaryRateAddUpdateValidator>();
             services.AddTransient<EmployeeShiftAddUpdateValidator>();
+            services.AddTransient<EmployeeLeaveAddUpdateValidator>();
             // controllers
             services.AddTransient<IEmployeeController, EmployeeController>();
             services.AddTransient<IWorkShiftController, WorkShiftController>();
+            services.AddTransient<IEmployeeLeaveController, EmployeeLeaveController>();
 
 
             // Other Data:

@@ -11,6 +11,7 @@ using DataAccess.Data.EmployeeManagement.Contracts;
 using DataAccess.Data.OtherDataManagement.Contracts;
 using EntitiesShared.EmployeeManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
+using Main.Controllers.OtherDataController.ControllerInterface;
 using Main.Forms.EmployeeManagementForms.Controls;
 using Microsoft.Extensions.Logging;
 
@@ -20,19 +21,28 @@ namespace Main.Forms.EmployeeManagementForms
     {
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
         private readonly IGovernmentAgencyData _governmentAgencyData;
+        private readonly IEmployeeLeaveData _employeeLeaveData;
         private readonly IEmployeeController _employeeController;
         private readonly IWorkShiftController _workShiftController;
+        private readonly ILeaveTypeController _leaveTypeController;
+        private readonly IEmployeeLeaveController _employeeLeaveController;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                 IGovernmentAgencyData governmentAgencyData,
+                                IEmployeeLeaveData employeeLeaveData,
                                 IEmployeeController employeeController,
-                                IWorkShiftController workShiftController)
+                                IWorkShiftController workShiftController,
+                                ILeaveTypeController leaveTypeController,
+                                IEmployeeLeaveController employeeLeaveController)
         {
             InitializeComponent();
             _logger = logger;
             _governmentAgencyData = governmentAgencyData;
+            _employeeLeaveData = employeeLeaveData;
             _employeeController = employeeController;
             _workShiftController = workShiftController;
+            _leaveTypeController = leaveTypeController;
+            _employeeLeaveController = employeeLeaveController;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -46,13 +56,16 @@ namespace Main.Forms.EmployeeManagementForms
             }
             else if (clickedItem != null && clickedItem.Name == "ToolStripItem_List")
             {
-                // Employees list
                 DisplayEmployeeListUserControl();
             }
             else if (clickedItem != null && clickedItem.Name == "ToolStripItem_Details")
             {
-                // Employee Details
                 DisplayEmployeeDetailsUserControl();
+            }
+            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_FileLeave")
+            {
+                // Employee Leave management
+                DisplayEmployeeLeaveManagementControl();
             }
         }
 
@@ -393,6 +406,158 @@ namespace Main.Forms.EmployeeManagementForms
             //manageEmpWorkScheduleControlObj.PropSelectedEmpShiftIdToDeleteChanged += OnShiftSelectedToDelete;
 
             this.panelContainer.Controls.Add(manageEmpWorkScheduleControlObj);
+        }
+
+
+        private void DisplayEmployeeLeaveManagementControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var employeeLeaveManagementControlObj = new EmployeeLeaveManagementControl();
+            //employeeLeaveManagementControlObj.Dock = DockStyle.Fill;
+            employeeLeaveManagementControlObj.Location = new Point(this.ClientSize.Width / 2 - employeeLeaveManagementControlObj.Size.Width / 2, this.ClientSize.Height / 2 - employeeLeaveManagementControlObj.Size.Height / 2);
+            employeeLeaveManagementControlObj.Anchor = AnchorStyles.None;
+
+            employeeLeaveManagementControlObj.EmployeeLeaveSaved += HandleSaveEmployeeLeave;
+            employeeLeaveManagementControlObj.DeleteEmployeeLeave += HandleDeleteEmployeeLeave;
+            employeeLeaveManagementControlObj.FilterEmployeeLeave += HandleFilterEmployeeLeaveHistory;
+
+            employeeLeaveManagementControlObj.PropSelectedEmpShiftIdToUpdateChanged += OnSearchByEmployeeNumberLeaves;
+            employeeLeaveManagementControlObj.EmployeeRemainingLeaveFetch += HandleSearchingEmployeeRemainingLeaveCounts;
+            employeeLeaveManagementControlObj.LeaveTypes = _leaveTypeController.GetAll().Data;
+            //userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
+
+            //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
+            //userControlToDisplay.DisplayEmployeeList();
+
+            //userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
+
+            this.panelContainer.Controls.Add(employeeLeaveManagementControlObj);
+        }
+
+        private void OnSearchByEmployeeNumberLeaves(object sender, PropertyChangedEventArgs e)
+        {
+            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
+            var employeeNumber = employeeLeaveManagementControlObj.EmployeeNumber;
+
+            if (string.IsNullOrEmpty(employeeNumber) == false)
+            {
+                employeeLeaveManagementControlObj.Employee = _employeeController.GetByEmployeeNumber(employeeNumber).Data;
+                employeeLeaveManagementControlObj.DisplaySearchEmployee();
+
+                // search all leave by employee
+                employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, DateTime.Now.Year);
+                employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
+            }
+        }
+
+        private void HandleSearchingEmployeeRemainingLeaveCounts(object sender, EventArgs e)
+        {
+            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
+            var selectedLeaveType = employeeLeaveManagementControlObj.SelectedLeaveType;
+            var employeeNumber = employeeLeaveManagementControlObj.EmployeeNumber;
+
+            if (selectedLeaveType != null && string.IsNullOrEmpty(employeeNumber) == false)
+            {
+                var empLeavesBySelectedLeave = _employeeLeaveData.GetAllByEmployeeNumberAndLeaveId(employeeNumber, selectedLeaveType.Id, DateTime.Now.Year);
+                
+                if (empLeavesBySelectedLeave != null && empLeavesBySelectedLeave.Count > 0)
+                {
+                    var lastEmpLeave = empLeavesBySelectedLeave.LastOrDefault();
+                    decimal remainingLeave = lastEmpLeave.RemainingDays;
+                    employeeLeaveManagementControlObj.DisplayEmpRemainingLeaveCount(remainingLeave);
+                }
+                else
+                {
+                    employeeLeaveManagementControlObj.DisplayEmpRemainingLeaveCount(selectedLeaveType.NumberOfDays);
+                }
+            }
+        }
+
+        private void HandleSaveEmployeeLeave(object sender, EventArgs e)
+        {
+            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
+            var newEmployeeLeave = employeeLeaveManagementControlObj.NewEmployeeLeave;
+
+            if (newEmployeeLeave != null)
+            {
+                // for now, the transaction is always new
+                var saveResults = _employeeLeaveController.Save(newEmployeeLeave, true);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save employee leave details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    employeeLeaveManagementControlObj.ResetForm();
+
+                    // search all leave by employee
+                    employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(newEmployeeLeave.EmployeeNumber, DateTime.Now.Year);
+                    employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
+
+                    //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
+
+                    //DisplayAddUpdateEmployeeConfirmationUserControl(saveResults.Data, msg);
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void HandleDeleteEmployeeLeave(object sender, EventArgs e)
+        {
+            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
+            var employeeNumber = employeeLeaveManagementControlObj.EmployeeNumber;
+            var selectedEmployeeLeaveId = employeeLeaveManagementControlObj.EmployeeLeaveId;
+
+            if (string.IsNullOrEmpty(employeeNumber) == false && selectedEmployeeLeaveId > 0)
+            {
+                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (res == DialogResult.OK)
+                {
+                    var saveResults = _employeeLeaveController.Delete(selectedEmployeeLeaveId, employeeNumber);
+
+                    string resultMessages = "";
+                    foreach (var msg in saveResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (saveResults.IsSuccess)
+                    {
+                        MessageBox.Show(resultMessages, "Delete employee leave details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // search all leave by employee
+                        employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, DateTime.Now.Year);
+                        employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+        }
+
+
+        private void HandleFilterEmployeeLeaveHistory(object sender, EventArgs e)
+        {
+            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
+            var employeeNumber = employeeLeaveManagementControlObj.EmployeeNumber;
+            var year = employeeLeaveManagementControlObj.FilterEmployeeLeaveHistoryYear;
+
+            if (string.IsNullOrEmpty(employeeNumber) == false)
+            {
+                // search all leave by employee
+                employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, year);
+                employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
+            }
         }
     }
 }

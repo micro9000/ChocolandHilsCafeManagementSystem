@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using EntitiesShared.OtherDataManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,16 @@ namespace EntitiesShared.EmployeeManagement
             set { leaveId = value; }
         }
 
+        private LeaveTypeModel leaveType;
+
+        [Write(false)]
+        [Computed]
+        public LeaveTypeModel LeaveType
+        {
+            get { return leaveType; }
+            set { leaveType = value; }
+        }
+
 
         private string employeeNumber;
 
@@ -33,6 +44,23 @@ namespace EntitiesShared.EmployeeManagement
         {
             get { return reason; }
             set { reason = value; }
+        }
+
+
+        private DateTime startDate;
+
+        public DateTime StartDate
+        {
+            get { return startDate; }
+            set { startDate = value; }
+        }
+
+        private DateTime endDate;
+
+        public DateTime EndDate
+        {
+            get { return endDate; }
+            set { endDate = value; }
         }
 
 
