@@ -73,17 +73,17 @@ CREATE TABLE IF NOT EXISTS EmployeeShiftDays(
     FOREIGN KEY (shiftId) REFERENCES EmployeeShifts (id)
 )ENGINE=INNODB;
 
-SELECT * FROM ShiftDays;
+SELECT * FROM EmployeeShiftDays;
 
 CREATE TABLE IF NOT EXISTS Holidays(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     holiday VARCHAR(255),
-    holidayDate DATE,
+    dayNum INT,
+    monthAbbr CHAR(3),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY (shiftId) REFERENCES EmployeeShifts (id)
+    isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
 

@@ -49,6 +49,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.WorkSchedulesMenItems = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.WorkShiftsMenItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EmpWorkShiftScheds = new System.Windows.Forms.ToolStripMenuItem();
+            this.HolidaysMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.FileLeaveSchedStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GovtIdsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -187,11 +188,11 @@ namespace Main.Forms.EmployeeManagementForms
             // 
             this.WorkSchedulesMenItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.WorkShiftsMenItem,
-            this.EmpWorkShiftScheds});
+            this.EmpWorkShiftScheds,
+            this.HolidaysMenuItem});
             this.WorkSchedulesMenItems.Name = "WorkSchedulesMenItems";
-            this.WorkSchedulesMenItems.OwnerItem = this.MenuItemWorkSchedules;
             this.WorkSchedulesMenItems.ShowImageMargin = false;
-            this.WorkSchedulesMenItems.Size = new System.Drawing.Size(186, 48);
+            this.WorkSchedulesMenItems.Size = new System.Drawing.Size(186, 70);
             this.WorkSchedulesMenItems.Text = "Work Schedules";
             this.WorkSchedulesMenItems.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.WorkSchedulesMenItems_ItemClicked);
             // 
@@ -206,6 +207,12 @@ namespace Main.Forms.EmployeeManagementForms
             this.EmpWorkShiftScheds.Name = "EmpWorkShiftScheds";
             this.EmpWorkShiftScheds.Size = new System.Drawing.Size(185, 22);
             this.EmpWorkShiftScheds.Text = "Employee work schedules";
+            // 
+            // HolidaysMenuItem
+            // 
+            this.HolidaysMenuItem.Name = "HolidaysMenuItem";
+            this.HolidaysMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.HolidaysMenuItem.Text = "Holidays";
             // 
             // panelContainer
             // 
@@ -316,5 +323,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ContextMenuStrip WorkSchedulesMenItems;
         private System.Windows.Forms.ToolStripMenuItem WorkShiftsMenItem;
         private System.Windows.Forms.ToolStripMenuItem EmpWorkShiftScheds;
+        private System.Windows.Forms.ToolStripMenuItem HolidaysMenuItem;
     }
 }

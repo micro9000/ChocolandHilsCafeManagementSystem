@@ -55,8 +55,17 @@ namespace Main
             {
                 //var loginFrm = serviceProvider.GetRequiredService<LoginFrm>();
                 var mainFrm = serviceProvider.GetRequiredService<MainFrm>();
+                var logger = serviceProvider.GetRequiredService<ILogger<MainFrm>>();
 
-                Application.Run(mainFrm);
+                try
+                {
+                    Application.Run(mainFrm);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    logger.LogError($"{ex.Message} {ex.StackTrace}");
+                }
             }
         }
 
@@ -89,6 +98,7 @@ namespace Main
             services.AddTransient<IUserRoleData, UserRoleData>();
 
             // Employee Management module: services:
+            services.AddTransient<IHolidayData, HolidayData>();
             services.AddTransient<IEmployeeAttendanceData, EmployeeAttendanceData>();
             services.AddTransient<IEmployeeBenefitData, EmployeeBenefitData>();
             services.AddTransient<IEmployeeData, EmployeeData>();
@@ -115,10 +125,12 @@ namespace Main
             services.AddTransient<EmployeeSalaryRateAddUpdateValidator>();
             services.AddTransient<EmployeeShiftAddUpdateValidator>();
             services.AddTransient<EmployeeLeaveAddUpdateValidator>();
+            services.AddTransient<HolidayAddUpdateValidator>();
             // controllers
             services.AddTransient<IEmployeeController, EmployeeController>();
             services.AddTransient<IWorkShiftController, WorkShiftController>();
             services.AddTransient<IEmployeeLeaveController, EmployeeLeaveController>();
+            services.AddTransient<IHolidayController, HolidayController>();
 
 
             // Other Data:

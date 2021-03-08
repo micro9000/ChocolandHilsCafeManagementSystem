@@ -27,6 +27,8 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IWorkShiftController _workShiftController;
         private readonly ILeaveTypeController _leaveTypeController;
         private readonly IEmployeeLeaveController _employeeLeaveController;
+        private readonly IHolidayController _holidayController;
+        private readonly IHolidayData _holidayData;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                 IGovernmentAgencyData governmentAgencyData,
@@ -35,7 +37,9 @@ namespace Main.Forms.EmployeeManagementForms
                                 IEmployeeController employeeController,
                                 IWorkShiftController workShiftController,
                                 ILeaveTypeController leaveTypeController,
-                                IEmployeeLeaveController employeeLeaveController)
+                                IEmployeeLeaveController employeeLeaveController,
+                                IHolidayController holidayController,
+                                IHolidayData holidayData)
         {
             InitializeComponent();
             _logger = logger;
@@ -46,6 +50,8 @@ namespace Main.Forms.EmployeeManagementForms
             _workShiftController = workShiftController;
             _leaveTypeController = leaveTypeController;
             _employeeLeaveController = employeeLeaveController;
+            _holidayController = holidayController;
+            _holidayData = holidayData;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -288,6 +294,10 @@ namespace Main.Forms.EmployeeManagementForms
             }else if (clickedItem != null && clickedItem.Name == "EmpWorkShiftScheds")
             {
                 DisplayEmployeeWorkShiftScheduleMgmntControl();
+            }
+            else if (clickedItem != null && clickedItem.Name == "HolidaysMenuItem")
+            {
+                DisplayHolidayCRUDControl();
             }
         }
 
@@ -549,7 +559,7 @@ namespace Main.Forms.EmployeeManagementForms
                     }
                     else
                     {
-                        MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(resultMessages, "Delete employee leave details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
@@ -567,6 +577,90 @@ namespace Main.Forms.EmployeeManagementForms
                 // search all leave by employee
                 employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, year);
                 employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
+            }
+        }
+
+        public void DisplayHolidayCRUDControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var holidayCRUDControlObj = new HolidayCRUDControl();
+            //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
+            holidayCRUDControlObj.Location = new Point(this.ClientSize.Width / 2 - holidayCRUDControlObj.Size.Width / 2, this.ClientSize.Height / 2 - holidayCRUDControlObj.Size.Height / 2);
+            holidayCRUDControlObj.Anchor = AnchorStyles.None;
+
+            holidayCRUDControlObj.Holidays = _holidayData.GetAllNotDeleted();
+            holidayCRUDControlObj.DisplayHolidays();
+
+            holidayCRUDControlObj.HolidaySaved += HandleSaveHoliday;
+            holidayCRUDControlObj.HolidayDelete += HandleDeleteHoliday;
+
+            this.panelContainer.Controls.Add(holidayCRUDControlObj);
+        }
+
+
+        private void HandleSaveHoliday(object sender, EventArgs e)
+        {
+            HolidayCRUDControl holidayCRUDControlObj = (HolidayCRUDControl)sender;
+            var newHolidayDetails = holidayCRUDControlObj.NewHolidayToAdd;
+
+            if (newHolidayDetails != null)
+            {
+                // for now, the transaction is always new holiday
+                var saveResults = _holidayController.Save(newHolidayDetails, true);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save employee leave details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    holidayCRUDControlObj.ResetForm();
+
+                    holidayCRUDControlObj.Holidays = _holidayData.GetAllNotDeleted();
+                    holidayCRUDControlObj.DisplayHolidays();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void HandleDeleteHoliday(object sender, EventArgs e)
+        {
+            HolidayCRUDControl holidayCRUDControlObj = (HolidayCRUDControl)sender;
+            long holidayIdToDelete = holidayCRUDControlObj.HolidayIdToDelete;
+
+            if (holidayIdToDelete > 0)
+            {
+                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (res == DialogResult.OK)
+                {
+                    var saveResults = _holidayController.Delete(holidayIdToDelete);
+
+                    string resultMessages = "";
+                    foreach (var msg in saveResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (saveResults.IsSuccess)
+                    {
+                        MessageBox.Show(resultMessages, "Delete holiday details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        holidayCRUDControlObj.Holidays = _holidayData.GetAllNotDeleted();
+                        holidayCRUDControlObj.DisplayHolidays();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Delete holiday details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
             }
         }
     }
