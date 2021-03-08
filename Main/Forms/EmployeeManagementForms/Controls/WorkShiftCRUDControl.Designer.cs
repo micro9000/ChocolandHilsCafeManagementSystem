@@ -33,6 +33,15 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label2 = new System.Windows.Forms.Label();
             this.DTPickerShiftStartTime = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.GroupPanelShiftDays = new System.Windows.Forms.GroupBox();
+            this.CBoxSunday = new System.Windows.Forms.CheckBox();
+            this.CBoxSaturday = new System.Windows.Forms.CheckBox();
+            this.CBoxFriday = new System.Windows.Forms.CheckBox();
+            this.CBoxThursday = new System.Windows.Forms.CheckBox();
+            this.CBoxWednesday = new System.Windows.Forms.CheckBox();
+            this.CBoxMonday = new System.Windows.Forms.CheckBox();
+            this.CBoxTuesday = new System.Windows.Forms.CheckBox();
+            this.TboxShiftNumberOfHrs = new System.Windows.Forms.NumericUpDown();
             this.CBoxBreakTimes = new System.Windows.Forms.ComboBox();
             this.CboxDisable = new System.Windows.Forms.CheckBox();
             this.BtnCancelUpdate = new System.Windows.Forms.Button();
@@ -45,11 +54,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label9 = new System.Windows.Forms.Label();
             this.TboxShiftTitle = new System.Windows.Forms.TextBox();
             this.DGVWorkShifts = new System.Windows.Forms.DataGridView();
-            this.TboxShiftNumberOfHrs = new System.Windows.Forms.NumericUpDown();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVWorkShifts)).BeginInit();
+            this.GroupPanelShiftDays.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TboxShiftNumberOfHrs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVWorkShifts)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -78,7 +87,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.DTPickerShiftStartTime.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.DTPickerShiftStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.DTPickerShiftStartTime.Location = new System.Drawing.Point(152, 95);
+            this.DTPickerShiftStartTime.Location = new System.Drawing.Point(216, 95);
             this.DTPickerShiftStartTime.Name = "DTPickerShiftStartTime";
             this.DTPickerShiftStartTime.ShowUpDown = true;
             this.DTPickerShiftStartTime.Size = new System.Drawing.Size(162, 29);
@@ -86,6 +95,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.GroupPanelShiftDays);
             this.groupBox1.Controls.Add(this.TboxShiftNumberOfHrs);
             this.groupBox1.Controls.Add(this.CBoxBreakTimes);
             this.groupBox1.Controls.Add(this.CboxDisable);
@@ -101,15 +111,117 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox1.Controls.Add(this.DTPickerShiftStartTime);
             this.groupBox1.Location = new System.Drawing.Point(11, 117);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(347, 368);
+            this.groupBox1.Size = new System.Drawing.Size(390, 438);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add new";
             // 
+            // GroupPanelShiftDays
+            // 
+            this.GroupPanelShiftDays.Controls.Add(this.CBoxSunday);
+            this.GroupPanelShiftDays.Controls.Add(this.CBoxSaturday);
+            this.GroupPanelShiftDays.Controls.Add(this.CBoxFriday);
+            this.GroupPanelShiftDays.Controls.Add(this.CBoxThursday);
+            this.GroupPanelShiftDays.Controls.Add(this.CBoxWednesday);
+            this.GroupPanelShiftDays.Controls.Add(this.CBoxMonday);
+            this.GroupPanelShiftDays.Controls.Add(this.CBoxTuesday);
+            this.GroupPanelShiftDays.Location = new System.Drawing.Point(6, 278);
+            this.GroupPanelShiftDays.Name = "GroupPanelShiftDays";
+            this.GroupPanelShiftDays.Size = new System.Drawing.Size(378, 74);
+            this.GroupPanelShiftDays.TabIndex = 52;
+            this.GroupPanelShiftDays.TabStop = false;
+            this.GroupPanelShiftDays.Text = "Choose days";
+            // 
+            // CBoxSunday
+            // 
+            this.CBoxSunday.AutoSize = true;
+            this.CBoxSunday.Location = new System.Drawing.Point(318, 32);
+            this.CBoxSunday.Name = "CBoxSunday";
+            this.CBoxSunday.Size = new System.Drawing.Size(46, 19);
+            this.CBoxSunday.TabIndex = 56;
+            this.CBoxSunday.Tag = "Sun-7";
+            this.CBoxSunday.Text = "Sun";
+            this.CBoxSunday.UseVisualStyleBackColor = true;
+            // 
+            // CBoxSaturday
+            // 
+            this.CBoxSaturday.AutoSize = true;
+            this.CBoxSaturday.Location = new System.Drawing.Point(270, 32);
+            this.CBoxSaturday.Name = "CBoxSaturday";
+            this.CBoxSaturday.Size = new System.Drawing.Size(42, 19);
+            this.CBoxSaturday.TabIndex = 55;
+            this.CBoxSaturday.Tag = "Sat-6";
+            this.CBoxSaturday.Text = "Sat";
+            this.CBoxSaturday.UseVisualStyleBackColor = true;
+            // 
+            // CBoxFriday
+            // 
+            this.CBoxFriday.AutoSize = true;
+            this.CBoxFriday.Location = new System.Drawing.Point(225, 32);
+            this.CBoxFriday.Name = "CBoxFriday";
+            this.CBoxFriday.Size = new System.Drawing.Size(39, 19);
+            this.CBoxFriday.TabIndex = 54;
+            this.CBoxFriday.Tag = "Fri-5";
+            this.CBoxFriday.Text = "Fri";
+            this.CBoxFriday.UseVisualStyleBackColor = true;
+            // 
+            // CBoxThursday
+            // 
+            this.CBoxThursday.AutoSize = true;
+            this.CBoxThursday.Location = new System.Drawing.Point(173, 32);
+            this.CBoxThursday.Name = "CBoxThursday";
+            this.CBoxThursday.Size = new System.Drawing.Size(46, 19);
+            this.CBoxThursday.TabIndex = 53;
+            this.CBoxThursday.Tag = "Thu-4";
+            this.CBoxThursday.Text = "Thu";
+            this.CBoxThursday.UseVisualStyleBackColor = true;
+            // 
+            // CBoxWednesday
+            // 
+            this.CBoxWednesday.AutoSize = true;
+            this.CBoxWednesday.Location = new System.Drawing.Point(117, 32);
+            this.CBoxWednesday.Name = "CBoxWednesday";
+            this.CBoxWednesday.Size = new System.Drawing.Size(50, 19);
+            this.CBoxWednesday.TabIndex = 52;
+            this.CBoxWednesday.Tag = "Wed-3";
+            this.CBoxWednesday.Text = "Wed";
+            this.CBoxWednesday.UseVisualStyleBackColor = true;
+            // 
+            // CBoxMonday
+            // 
+            this.CBoxMonday.AutoSize = true;
+            this.CBoxMonday.Location = new System.Drawing.Point(9, 32);
+            this.CBoxMonday.Name = "CBoxMonday";
+            this.CBoxMonday.Size = new System.Drawing.Size(51, 19);
+            this.CBoxMonday.TabIndex = 50;
+            this.CBoxMonday.Tag = "Mon-1";
+            this.CBoxMonday.Text = "Mon";
+            this.CBoxMonday.UseVisualStyleBackColor = true;
+            // 
+            // CBoxTuesday
+            // 
+            this.CBoxTuesday.AutoSize = true;
+            this.CBoxTuesday.Location = new System.Drawing.Point(66, 32);
+            this.CBoxTuesday.Name = "CBoxTuesday";
+            this.CBoxTuesday.Size = new System.Drawing.Size(45, 19);
+            this.CBoxTuesday.TabIndex = 51;
+            this.CBoxTuesday.Tag = "Tue-2";
+            this.CBoxTuesday.Text = "Tue";
+            this.CBoxTuesday.UseVisualStyleBackColor = true;
+            // 
+            // TboxShiftNumberOfHrs
+            // 
+            this.TboxShiftNumberOfHrs.DecimalPlaces = 2;
+            this.TboxShiftNumberOfHrs.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TboxShiftNumberOfHrs.Location = new System.Drawing.Point(216, 136);
+            this.TboxShiftNumberOfHrs.Name = "TboxShiftNumberOfHrs";
+            this.TboxShiftNumberOfHrs.Size = new System.Drawing.Size(162, 29);
+            this.TboxShiftNumberOfHrs.TabIndex = 8;
+            // 
             // CBoxBreakTimes
             // 
             this.CBoxBreakTimes.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.CBoxBreakTimes.Location = new System.Drawing.Point(152, 225);
+            this.CBoxBreakTimes.Location = new System.Drawing.Point(216, 225);
             this.CBoxBreakTimes.Name = "CBoxBreakTimes";
             this.CBoxBreakTimes.Size = new System.Drawing.Size(162, 29);
             this.CBoxBreakTimes.TabIndex = 8;
@@ -118,7 +230,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.CboxDisable.AutoSize = true;
             this.CboxDisable.ForeColor = System.Drawing.Color.Black;
-            this.CboxDisable.Location = new System.Drawing.Point(152, 22);
+            this.CboxDisable.Location = new System.Drawing.Point(216, 22);
             this.CboxDisable.Name = "CboxDisable";
             this.CboxDisable.Size = new System.Drawing.Size(64, 19);
             this.CboxDisable.TabIndex = 49;
@@ -128,12 +240,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // BtnCancelUpdate
             // 
-            this.BtnCancelUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnCancelUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(67)))), ((int)(((byte)(67)))));
             this.BtnCancelUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnCancelUpdate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelUpdate.ForeColor = System.Drawing.Color.White;
             this.BtnCancelUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdate.Location = new System.Drawing.Point(199, 307);
+            this.BtnCancelUpdate.Location = new System.Drawing.Point(142, 371);
             this.BtnCancelUpdate.Name = "BtnCancelUpdate";
             this.BtnCancelUpdate.Size = new System.Drawing.Size(115, 47);
             this.BtnCancelUpdate.TabIndex = 48;
@@ -160,7 +272,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveWorkShift.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveWorkShift.ForeColor = System.Drawing.Color.White;
             this.BtnSaveWorkShift.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveWorkShift.Location = new System.Drawing.Point(78, 307);
+            this.BtnSaveWorkShift.Location = new System.Drawing.Point(263, 371);
             this.BtnSaveWorkShift.Name = "BtnSaveWorkShift";
             this.BtnSaveWorkShift.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveWorkShift.TabIndex = 47;
@@ -194,7 +306,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.DTPickerShiftBreaktime.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.DTPickerShiftBreaktime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.DTPickerShiftBreaktime.Location = new System.Drawing.Point(152, 182);
+            this.DTPickerShiftBreaktime.Location = new System.Drawing.Point(216, 182);
             this.DTPickerShiftBreaktime.Name = "DTPickerShiftBreaktime";
             this.DTPickerShiftBreaktime.ShowUpDown = true;
             this.DTPickerShiftBreaktime.Size = new System.Drawing.Size(162, 29);
@@ -225,7 +337,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // TboxShiftTitle
             // 
             this.TboxShiftTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TboxShiftTitle.Location = new System.Drawing.Point(152, 50);
+            this.TboxShiftTitle.Location = new System.Drawing.Point(216, 50);
             this.TboxShiftTitle.Name = "TboxShiftTitle";
             this.TboxShiftTitle.Size = new System.Drawing.Size(162, 29);
             this.TboxShiftTitle.TabIndex = 6;
@@ -235,22 +347,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVWorkShifts.AllowUserToAddRows = false;
             this.DGVWorkShifts.AllowUserToDeleteRows = false;
             this.DGVWorkShifts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVWorkShifts.Location = new System.Drawing.Point(381, 117);
+            this.DGVWorkShifts.Location = new System.Drawing.Point(407, 117);
             this.DGVWorkShifts.Name = "DGVWorkShifts";
             this.DGVWorkShifts.ReadOnly = true;
             this.DGVWorkShifts.RowTemplate.Height = 25;
-            this.DGVWorkShifts.Size = new System.Drawing.Size(801, 211);
+            this.DGVWorkShifts.Size = new System.Drawing.Size(775, 211);
             this.DGVWorkShifts.TabIndex = 7;
             this.DGVWorkShifts.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVWorkShifts_CellClick);
-            // 
-            // TboxShiftNumberOfHrs
-            // 
-            this.TboxShiftNumberOfHrs.DecimalPlaces = 2;
-            this.TboxShiftNumberOfHrs.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TboxShiftNumberOfHrs.Location = new System.Drawing.Point(152, 136);
-            this.TboxShiftNumberOfHrs.Name = "TboxShiftNumberOfHrs";
-            this.TboxShiftNumberOfHrs.Size = new System.Drawing.Size(162, 29);
-            this.TboxShiftNumberOfHrs.TabIndex = 8;
             // 
             // WorkShiftCRUDControl
             // 
@@ -261,14 +364,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
             this.Name = "WorkShiftCRUDControl";
-            this.Size = new System.Drawing.Size(1199, 495);
+            this.Size = new System.Drawing.Size(1199, 576);
             this.Load += new System.EventHandler(this.WorkShiftCRUDControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVWorkShifts)).EndInit();
+            this.GroupPanelShiftDays.ResumeLayout(false);
+            this.GroupPanelShiftDays.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TboxShiftNumberOfHrs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVWorkShifts)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -292,5 +397,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.CheckBox CboxDisable;
         private System.Windows.Forms.ComboBox CBoxBreakTimes;
         private System.Windows.Forms.NumericUpDown TboxShiftNumberOfHrs;
+        private System.Windows.Forms.GroupBox GroupPanelShiftDays;
+        private System.Windows.Forms.CheckBox CBoxSunday;
+        private System.Windows.Forms.CheckBox CBoxSaturday;
+        private System.Windows.Forms.CheckBox CBoxFriday;
+        private System.Windows.Forms.CheckBox CBoxThursday;
+        private System.Windows.Forms.CheckBox CBoxWednesday;
+        private System.Windows.Forms.CheckBox CBoxMonday;
+        private System.Windows.Forms.CheckBox CBoxTuesday;
     }
 }

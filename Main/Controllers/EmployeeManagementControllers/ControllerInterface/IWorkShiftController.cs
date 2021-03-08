@@ -10,7 +10,7 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
 {
     public interface IWorkShiftController
     {
-        EntityResult<EmployeeShiftModel> Save(EmployeeShiftModel input, bool isNew);
+        EntityResult<EmployeeShiftModel> Save(EmployeeShiftModel input, List<EmployeeShiftDayModel> shiftDays, bool isNew);
         EntityResult<string> Delete(long shiftId);
 
         EntityResult<EmployeeShiftModel> GetById(long Id);

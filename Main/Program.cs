@@ -99,6 +99,7 @@ namespace Main
             services.AddTransient<IEmployeePayslipDeductionData, EmployeePayslipDeductionData>();
             services.AddTransient<IEmployeeSalaryRateData, EmployeeSalaryRateData>();
             services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
+            services.AddTransient<IEmployeeShiftDayData, EmployeeShiftDayData>();
             services.AddTransient<IEmployeeShiftScheduleData, EmployeeShiftScheduleData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
             services.AddTransient<IEmployeeGovtContributionData, EmployeeGovtContributionData>();

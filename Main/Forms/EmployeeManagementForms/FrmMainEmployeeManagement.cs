@@ -22,6 +22,7 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
+        private readonly IEmployeeShiftDayData _employeeShiftDayData;
         private readonly IEmployeeController _employeeController;
         private readonly IWorkShiftController _workShiftController;
         private readonly ILeaveTypeController _leaveTypeController;
@@ -30,6 +31,7 @@ namespace Main.Forms.EmployeeManagementForms
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                 IGovernmentAgencyData governmentAgencyData,
                                 IEmployeeLeaveData employeeLeaveData,
+                                IEmployeeShiftDayData employeeShiftDayData,
                                 IEmployeeController employeeController,
                                 IWorkShiftController workShiftController,
                                 ILeaveTypeController leaveTypeController,
@@ -39,6 +41,7 @@ namespace Main.Forms.EmployeeManagementForms
             _logger = logger;
             _governmentAgencyData = governmentAgencyData;
             _employeeLeaveData = employeeLeaveData;
+            _employeeShiftDayData = employeeShiftDayData;
             _employeeController = employeeController;
             _workShiftController = workShiftController;
             _leaveTypeController = leaveTypeController;
@@ -311,11 +314,12 @@ namespace Main.Forms.EmployeeManagementForms
             WorkShiftCRUDControl workShiftsCRUDControlObj = (WorkShiftCRUDControl)sender;
 
             var saveWorkShift = workShiftsCRUDControlObj.EmployeeShiftToAddUpdate;
+            var shiftDays = workShiftsCRUDControlObj.EmployeeShiftDaysToAddUpdate;
             bool isNew = workShiftsCRUDControlObj.IsSaveNew;
 
             if (saveWorkShift != null)
             {
-                var saveResults = _workShiftController.Save(saveWorkShift, isNew);
+                var saveResults = _workShiftController.Save(saveWorkShift, shiftDays, isNew);
 
                 string resultMessages = "";
                 foreach (var msg in saveResults.Messages)
@@ -349,8 +353,14 @@ namespace Main.Forms.EmployeeManagementForms
 
             if (long.TryParse(selectedShiftId, out long shiftId))
             {
-                workShiftsCRUDControlObj.EmployeeShiftToAddUpdate = _workShiftController.GetById(shiftId).Data;
-                workShiftsCRUDControlObj.DisplaySelectedShift();
+                var selectedShift = _workShiftController.GetById(shiftId).Data;
+                if (selectedShift != null)
+                {
+                    workShiftsCRUDControlObj.EmployeeShiftToAddUpdate = selectedShift;
+                    workShiftsCRUDControlObj.EmployeeShiftDaysToAddUpdate = _employeeShiftDayData.GetByShiftId(selectedShift.Id);
+                    workShiftsCRUDControlObj.DisplaySelectedShift();
+                }
+                
             }
 
         }

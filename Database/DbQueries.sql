@@ -37,6 +37,12 @@ CREATE TABLE IF NOT EXISTS EmployeeShifts(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM EmployeeShifts;
+
+-- ADD SHIFT DAYS
+-- Late Time allowance
+-- maximum hrs for overtime
+-- overtime rate
 
 -- RegularShift, 0830 - 1730, 8, 12:00NN, 1Hr
 
@@ -50,6 +56,36 @@ SELECT TIME_FORMAT(startTime, "%H") as startDateHrs, TIME_FORMAT(startTime, "%i"
 FROM EmployeeShifts;
 
 select * from EmployeeShifts;
+
+-- for improvement on the future
+    -- get the number of hrs from EmployeeShifts table
+    -- the user can edit hrs for specific day
+    
+CREATE TABLE IF NOT EXISTS EmployeeShiftDays(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    shiftId BIGINT NOT NULL,
+    dayName CHAR(3),
+    orderNum INT,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY (shiftId) REFERENCES EmployeeShifts (id)
+)ENGINE=INNODB;
+
+SELECT * FROM ShiftDays;
+
+CREATE TABLE IF NOT EXISTS Holidays(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    holiday VARCHAR(255),
+    holidayDate DATE,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY (shiftId) REFERENCES EmployeeShifts (id)
+)ENGINE=INNODB;
+
 
 CREATE TABLE IF NOT EXISTS Employees(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -65,7 +101,7 @@ CREATE TABLE IF NOT EXISTS Employees(
     dateHire DATE NOT NULL,
     empNumYear CHAR(4),
     position VARCHAR(50),
-    shiftId BIGINT NOT NULL,
+    shiftId BIGINT NOT NULL, -- tentative 
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,

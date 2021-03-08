@@ -26,6 +26,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             SetDGVWorkShiftsFontAndColors();
             DisplayWorkShiftList();
+
+            //var culture = CultureInfo.CurrentCulture;
+            //var abbr = culture.DateTimeFormat.GetAbbreviatedDayName(DateTime.Now.DayOfWeek);
+
         }
 
         List<ComboboxItem> BreakTimeHrsItems = new List<ComboboxItem> {
@@ -57,6 +61,17 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             get { return employeeShiftToAddUpdate; }
             set { employeeShiftToAddUpdate = value; }
         }
+
+
+        private List<EmployeeShiftDayModel> employeeShiftDaysToAddUpdate = new List<EmployeeShiftDayModel>();
+
+        public List<EmployeeShiftDayModel> EmployeeShiftDaysToAddUpdate
+        {
+            get { return employeeShiftDaysToAddUpdate; }
+            set { employeeShiftDaysToAddUpdate = value; }
+        }
+
+
 
         public bool IsSaveNew { get; set; } = true;
 
@@ -123,6 +138,17 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
+        public void ResetShiftDaysCheckBoxes()
+        {
+            foreach (var daysCheckBoxControl in this.GroupPanelShiftDays.Controls)
+            {
+                if (daysCheckBoxControl is CheckBox)
+                {
+                    ((CheckBox)daysCheckBoxControl).Checked = false;
+                }
+            }
+        }
+
         public void ResetForm()
         {
             this.IsSaveNew = true;
@@ -132,6 +158,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DTPickerShiftBreaktime.Value = DateTime.Now;
             this.CBoxBreakTimes.SelectedIndex = -1;
             this.CboxDisable.Checked = false;
+            ResetShiftDaysCheckBoxes();
         }
 
         private void BtnCancelUpdate_Click(object sender, EventArgs e)
@@ -146,6 +173,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         public void DisplaySelectedShift()
         {
+            ResetShiftDaysCheckBoxes();
             if (this.EmployeeShiftToAddUpdate != null)
             {
                 this.TboxShiftTitle.Text = this.EmployeeShiftToAddUpdate.Shift;
@@ -158,6 +186,26 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.CBoxBreakTimes.SelectedIndex = index;
 
                 this.CboxDisable.Checked = this.EmployeeShiftToAddUpdate.IsActive == false;
+
+                // Display shift days
+                if (this.employeeShiftDaysToAddUpdate != null)
+                {
+                    foreach (var shiftDay in this.employeeShiftDaysToAddUpdate)
+                    {
+                        string dayNameTag = $"{shiftDay.DayName}-{shiftDay.OrderNum}";
+
+                        foreach (var daysCheckBoxControl in this.GroupPanelShiftDays.Controls)
+                        {
+                            if (daysCheckBoxControl is CheckBox)
+                            {
+                                if (((CheckBox)daysCheckBoxControl).Tag.ToString() == dayNameTag)
+                                {
+                                    ((CheckBox)daysCheckBoxControl).Checked = true;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -210,6 +258,64 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         //}
 
 
+        private void CollectCheckedDays()
+        {
+            foreach (var daysCheckBoxControl in this.GroupPanelShiftDays.Controls)
+            {
+                if (daysCheckBoxControl is CheckBox)
+                {
+                    var dayCheckbox = (CheckBox)daysCheckBoxControl;
+
+                    // MON-1, TUE-2, etc.
+                    // see checkbox tag in form design
+                    string dayTag = dayCheckbox.Tag as string;
+                    string[] dayNumAndOrderNum = dayTag.Trim().Split('-');
+
+                    string dayName = dayNumAndOrderNum[0];
+                    int dayOrderNum = int.Parse(dayNumAndOrderNum[1]);
+
+                    // if on updating
+                    // check if the dayname is already in the list
+                    // if already added and the checkbox is unchecked, then that means the user wants to delete the dayname
+
+                    if (this.IsSaveNew == false)
+                    {
+                        var shiftDayInTheList = EmployeeShiftDaysToAddUpdate.Where(x => x.DayName == dayName && x.OrderNum == dayOrderNum).FirstOrDefault();
+
+                        if (shiftDayInTheList != null && dayCheckbox.Checked == false)
+                        {
+                            shiftDayInTheList.IsDeleted = true;
+                            shiftDayInTheList.DeletedAt = DateTime.Now;
+                            shiftDayInTheList.IsNeedToUpdate = true;
+                        }
+
+                        if (shiftDayInTheList == null && dayCheckbox.Checked == true)
+                        {
+                            EmployeeShiftDaysToAddUpdate.Add(new EmployeeShiftDayModel
+                            {
+                                DayName = dayName,
+                                OrderNum = dayOrderNum,
+                                IsNeedToAdd = true
+                            }); ;
+                        }
+                    }
+                    else
+                    {
+                        if (dayCheckbox.Checked)
+                        {
+                            EmployeeShiftDaysToAddUpdate.Add(new EmployeeShiftDayModel
+                            {
+                                DayName = dayName,
+                                OrderNum = dayOrderNum
+                            });
+                        }
+                    }
+
+                }
+            }
+        }
+
+
         private void BtnSaveWorkShift_Click(object sender, EventArgs e)
         {
             var shiftStartTime = this.DTPickerShiftStartTime.Value;
@@ -221,6 +327,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             var shiftEndTime = shiftStartTime.AddHours(wholePartFrmHr);
             shiftEndTime = shiftEndTime.AddMinutes(fractionPartFrmHr);
 
+            CollectCheckedDays();
 
             var employeeShift = new EmployeeShiftModel
             {
