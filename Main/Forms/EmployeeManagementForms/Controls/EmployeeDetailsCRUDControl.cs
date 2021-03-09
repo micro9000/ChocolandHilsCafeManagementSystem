@@ -32,17 +32,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             set { govtAgencies = value; }
         }
 
-
-        private List<EmployeeShiftModel> workShifts;
-
-        public List<EmployeeShiftModel> WorkShifts
-        {
-            get { return workShifts; }
-            set { workShifts = value; }
-        }
-
-
-
         private EmployeeModel employee;
 
         public EmployeeModel Employee
@@ -128,19 +117,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     item.Text = agency.GovtAgency;
                     item.Value = agency.Id;
                     this.CboxGovtAgencies.Items.Add(item);
-                }
-            }
-
-            // Work shifts load in combo box
-            if (this.WorkShifts != null)
-            {
-                ComboboxItem item;
-                foreach (var shift in this.WorkShifts)
-                {
-                    item = new ComboboxItem();
-                    item.Text = $"{shift.Shift} - from {shift.StartTime.ToShortTimeString()} to {shift.EndTime.ToShortTimeString()}";
-                    item.Value = shift.Id;
-                    this.CBoxShifts.Items.Add(item);
                 }
             }
         }
@@ -257,15 +233,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             //    MessageBox.Show("Kindly choose action.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             //    return;
             //}
-            var selectedWorkShift = this.CBoxShifts.SelectedItem as ComboboxItem;
-
-            if (selectedWorkShift == null)
-            {
-                MessageBox.Show("Kindly choose emplooyee shift.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
-            long selectedWorkShiftId = long.Parse(selectedWorkShift.Value.ToString());
 
             Employee = new EmployeeModel
             {
@@ -278,8 +245,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 Address = this.TbxAddress.Text,
                 BranchAssign = this.TbxBranchAssign.Text,
                 EmailAddress = this.TbxEmail.Text,
-                Position = this.TbxEmpPosition.Text,
-                ShiftId = selectedWorkShiftId
+                Position = this.TbxEmpPosition.Text
             };
 
             if (this.IsNew == false)

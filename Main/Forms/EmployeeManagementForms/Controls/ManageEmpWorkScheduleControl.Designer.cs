@@ -31,8 +31,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.DGVGeneratedWorkSchedules = new System.Windows.Forms.DataGridView();
+            this.DGVEmployeeList = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.BtnCancelUpdate = new System.Windows.Forms.Button();
+            this.DGVShiftList = new System.Windows.Forms.DataGridView();
+            this.BtnSaveEmployeeShiftSchedule = new System.Windows.Forms.Button();
             this.GroupPanelShiftDays = new System.Windows.Forms.GroupBox();
             this.CBoxSunday = new System.Windows.Forms.CheckBox();
             this.CBoxSaturday = new System.Windows.Forms.CheckBox();
@@ -41,14 +44,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxWednesday = new System.Windows.Forms.CheckBox();
             this.CBoxMonday = new System.Windows.Forms.CheckBox();
             this.CBoxTuesday = new System.Windows.Forms.CheckBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.BtnCancelUpdate = new System.Windows.Forms.Button();
-            this.BtnSaveWorkShift = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVGeneratedWorkSchedules)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeList)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVShiftList)).BeginInit();
             this.GroupPanelShiftDays.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -73,29 +73,74 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label2.TabIndex = 43;
             this.label2.Text = "Employee work schedule management";
             // 
-            // DGVGeneratedWorkSchedules
+            // DGVEmployeeList
             // 
-            this.DGVGeneratedWorkSchedules.AllowUserToAddRows = false;
-            this.DGVGeneratedWorkSchedules.AllowUserToDeleteRows = false;
-            this.DGVGeneratedWorkSchedules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVGeneratedWorkSchedules.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DGVGeneratedWorkSchedules.Location = new System.Drawing.Point(433, 94);
-            this.DGVGeneratedWorkSchedules.Name = "DGVGeneratedWorkSchedules";
-            this.DGVGeneratedWorkSchedules.ReadOnly = true;
-            this.DGVGeneratedWorkSchedules.RowTemplate.Height = 25;
-            this.DGVGeneratedWorkSchedules.Size = new System.Drawing.Size(802, 527);
-            this.DGVGeneratedWorkSchedules.TabIndex = 7;
+            this.DGVEmployeeList.AllowUserToAddRows = false;
+            this.DGVEmployeeList.AllowUserToDeleteRows = false;
+            this.DGVEmployeeList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVEmployeeList.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DGVEmployeeList.Location = new System.Drawing.Point(528, 94);
+            this.DGVEmployeeList.Name = "DGVEmployeeList";
+            this.DGVEmployeeList.RowTemplate.Height = 25;
+            this.DGVEmployeeList.Size = new System.Drawing.Size(707, 527);
+            this.DGVEmployeeList.TabIndex = 7;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.dataGridView1);
+            this.groupBox2.Controls.Add(this.BtnCancelUpdate);
+            this.groupBox2.Controls.Add(this.DGVShiftList);
+            this.groupBox2.Controls.Add(this.BtnSaveEmployeeShiftSchedule);
             this.groupBox2.Controls.Add(this.GroupPanelShiftDays);
             this.groupBox2.Location = new System.Drawing.Point(22, 100);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(395, 394);
+            this.groupBox2.Size = new System.Drawing.Size(489, 507);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Shifts";
+            // 
+            // BtnCancelUpdate
+            // 
+            this.BtnCancelUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(67)))), ((int)(((byte)(67)))));
+            this.BtnCancelUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCancelUpdate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnCancelUpdate.ForeColor = System.Drawing.Color.White;
+            this.BtnCancelUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCancelUpdate.Location = new System.Drawing.Point(181, 391);
+            this.BtnCancelUpdate.Name = "BtnCancelUpdate";
+            this.BtnCancelUpdate.Size = new System.Drawing.Size(115, 47);
+            this.BtnCancelUpdate.TabIndex = 50;
+            this.BtnCancelUpdate.Text = "Cancel";
+            this.BtnCancelUpdate.UseVisualStyleBackColor = false;
+            this.BtnCancelUpdate.Visible = false;
+            // 
+            // DGVShiftList
+            // 
+            this.DGVShiftList.AllowUserToAddRows = false;
+            this.DGVShiftList.AllowUserToDeleteRows = false;
+            this.DGVShiftList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVShiftList.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DGVShiftList.Location = new System.Drawing.Point(3, 19);
+            this.DGVShiftList.Name = "DGVShiftList";
+            this.DGVShiftList.ReadOnly = true;
+            this.DGVShiftList.RowTemplate.Height = 25;
+            this.DGVShiftList.Size = new System.Drawing.Size(483, 244);
+            this.DGVShiftList.TabIndex = 53;
+            this.DGVShiftList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVShiftList_CellClick);
+            // 
+            // BtnSaveEmployeeShiftSchedule
+            // 
+            this.BtnSaveEmployeeShiftSchedule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnSaveEmployeeShiftSchedule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSaveEmployeeShiftSchedule.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnSaveEmployeeShiftSchedule.ForeColor = System.Drawing.Color.White;
+            this.BtnSaveEmployeeShiftSchedule.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSaveEmployeeShiftSchedule.Location = new System.Drawing.Point(319, 391);
+            this.BtnSaveEmployeeShiftSchedule.Name = "BtnSaveEmployeeShiftSchedule";
+            this.BtnSaveEmployeeShiftSchedule.Size = new System.Drawing.Size(115, 47);
+            this.BtnSaveEmployeeShiftSchedule.TabIndex = 49;
+            this.BtnSaveEmployeeShiftSchedule.Text = "Save";
+            this.BtnSaveEmployeeShiftSchedule.UseVisualStyleBackColor = false;
+            this.BtnSaveEmployeeShiftSchedule.Click += new System.EventHandler(this.BtnSaveEmployeeShiftSchedule_Click);
             // 
             // GroupPanelShiftDays
             // 
@@ -106,7 +151,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GroupPanelShiftDays.Controls.Add(this.CBoxWednesday);
             this.GroupPanelShiftDays.Controls.Add(this.CBoxMonday);
             this.GroupPanelShiftDays.Controls.Add(this.CBoxTuesday);
-            this.GroupPanelShiftDays.Location = new System.Drawing.Point(6, 314);
+            this.GroupPanelShiftDays.Location = new System.Drawing.Point(56, 293);
             this.GroupPanelShiftDays.Name = "GroupPanelShiftDays";
             this.GroupPanelShiftDays.Size = new System.Drawing.Size(378, 74);
             this.GroupPanelShiftDays.TabIndex = 52;
@@ -116,7 +161,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxSunday
             // 
             this.CBoxSunday.AutoSize = true;
-            this.CBoxSunday.Enabled = false;
             this.CBoxSunday.Location = new System.Drawing.Point(318, 32);
             this.CBoxSunday.Name = "CBoxSunday";
             this.CBoxSunday.Size = new System.Drawing.Size(46, 19);
@@ -128,7 +172,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxSaturday
             // 
             this.CBoxSaturday.AutoSize = true;
-            this.CBoxSaturday.Enabled = false;
             this.CBoxSaturday.Location = new System.Drawing.Point(270, 32);
             this.CBoxSaturday.Name = "CBoxSaturday";
             this.CBoxSaturday.Size = new System.Drawing.Size(42, 19);
@@ -140,7 +183,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxFriday
             // 
             this.CBoxFriday.AutoSize = true;
-            this.CBoxFriday.Enabled = false;
             this.CBoxFriday.Location = new System.Drawing.Point(225, 32);
             this.CBoxFriday.Name = "CBoxFriday";
             this.CBoxFriday.Size = new System.Drawing.Size(39, 19);
@@ -152,7 +194,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxThursday
             // 
             this.CBoxThursday.AutoSize = true;
-            this.CBoxThursday.Enabled = false;
             this.CBoxThursday.Location = new System.Drawing.Point(173, 32);
             this.CBoxThursday.Name = "CBoxThursday";
             this.CBoxThursday.Size = new System.Drawing.Size(46, 19);
@@ -164,7 +205,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxWednesday
             // 
             this.CBoxWednesday.AutoSize = true;
-            this.CBoxWednesday.Enabled = false;
             this.CBoxWednesday.Location = new System.Drawing.Point(117, 32);
             this.CBoxWednesday.Name = "CBoxWednesday";
             this.CBoxWednesday.Size = new System.Drawing.Size(50, 19);
@@ -176,7 +216,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxMonday
             // 
             this.CBoxMonday.AutoSize = true;
-            this.CBoxMonday.Enabled = false;
             this.CBoxMonday.Location = new System.Drawing.Point(9, 32);
             this.CBoxMonday.Name = "CBoxMonday";
             this.CBoxMonday.Size = new System.Drawing.Size(51, 19);
@@ -188,7 +227,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxTuesday
             // 
             this.CBoxTuesday.AutoSize = true;
-            this.CBoxTuesday.Enabled = false;
             this.CBoxTuesday.Location = new System.Drawing.Point(66, 32);
             this.CBoxTuesday.Name = "CBoxTuesday";
             this.CBoxTuesday.Size = new System.Drawing.Size(45, 19);
@@ -197,64 +235,25 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxTuesday.Text = "Tue";
             this.CBoxTuesday.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 19);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(389, 244);
-            this.dataGridView1.TabIndex = 53;
-            // 
-            // BtnCancelUpdate
-            // 
-            this.BtnCancelUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(67)))), ((int)(((byte)(67)))));
-            this.BtnCancelUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnCancelUpdate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnCancelUpdate.ForeColor = System.Drawing.Color.White;
-            this.BtnCancelUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdate.Location = new System.Drawing.Point(181, 535);
-            this.BtnCancelUpdate.Name = "BtnCancelUpdate";
-            this.BtnCancelUpdate.Size = new System.Drawing.Size(115, 47);
-            this.BtnCancelUpdate.TabIndex = 50;
-            this.BtnCancelUpdate.Text = "Cancel";
-            this.BtnCancelUpdate.UseVisualStyleBackColor = false;
-            this.BtnCancelUpdate.Visible = false;
-            // 
-            // BtnSaveWorkShift
-            // 
-            this.BtnSaveWorkShift.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnSaveWorkShift.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnSaveWorkShift.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnSaveWorkShift.ForeColor = System.Drawing.Color.White;
-            this.BtnSaveWorkShift.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveWorkShift.Location = new System.Drawing.Point(302, 535);
-            this.BtnSaveWorkShift.Name = "BtnSaveWorkShift";
-            this.BtnSaveWorkShift.Size = new System.Drawing.Size(115, 47);
-            this.BtnSaveWorkShift.TabIndex = 49;
-            this.BtnSaveWorkShift.Text = "Save";
-            this.BtnSaveWorkShift.UseVisualStyleBackColor = false;
-            // 
             // ManageEmpWorkScheduleControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.BtnCancelUpdate);
-            this.Controls.Add(this.BtnSaveWorkShift);
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.DGVGeneratedWorkSchedules);
+            this.Controls.Add(this.DGVEmployeeList);
             this.Controls.Add(this.panel1);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "ManageEmpWorkScheduleControl";
             this.Size = new System.Drawing.Size(1235, 621);
             this.Load += new System.EventHandler(this.ManageEmpWorkScheduleControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVGeneratedWorkSchedules)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeList)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVShiftList)).EndInit();
             this.GroupPanelShiftDays.ResumeLayout(false);
             this.GroupPanelShiftDays.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -263,7 +262,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridView DGVGeneratedWorkSchedules;
+        private System.Windows.Forms.DataGridView DGVEmployeeList;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox GroupPanelShiftDays;
         private System.Windows.Forms.CheckBox CBoxSunday;
@@ -273,8 +272,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.CheckBox CBoxWednesday;
         private System.Windows.Forms.CheckBox CBoxMonday;
         private System.Windows.Forms.CheckBox CBoxTuesday;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView DGVShiftList;
         private System.Windows.Forms.Button BtnCancelUpdate;
-        private System.Windows.Forms.Button BtnSaveWorkShift;
+        private System.Windows.Forms.Button BtnSaveEmployeeShiftSchedule;
     }
 }

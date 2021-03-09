@@ -10,6 +10,7 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeeShiftData : IDataManagerCRUD<EmployeeShiftModel>
     {
+        EmployeeShiftModel GetById(long id);
         List<EmployeeShiftModel> GetAllNotDeleted();
     }
 }

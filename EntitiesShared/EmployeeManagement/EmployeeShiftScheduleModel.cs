@@ -53,5 +53,15 @@ namespace EntitiesShared.EmployeeManagement
             set { endSchedDate = value; }
         }
 
+
+        private bool isDone;
+
+        public bool IsDone
+        {
+            get { return isDone; }
+            set { isDone = value; }
+        }
+
+
     }
 }

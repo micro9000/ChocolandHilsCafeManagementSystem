@@ -25,8 +25,8 @@ SELECT * FROM LeaveTypes WHERE isDeleted=False AND isActive=true;
 CREATE TABLE IF NOT EXISTS EmployeeShifts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     shift VARCHAR(50),
-    startTime DATETIME,
-    endTime DATETIME,
+    startTime DATETIME, -- we just need the time (ignore the date)
+    endTime DATETIME, -- same with this column
     numberOfHrs DECIMAL(5,2), -- can be 7.5 hrs
     breakTime DATETIME,
     breakTimeHrs DECIMAL(5,2), -- 1 is hr, 0.5 is 30mins
@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS Holidays(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM Holidays;
 
 CREATE TABLE IF NOT EXISTS Employees(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -101,13 +102,15 @@ CREATE TABLE IF NOT EXISTS Employees(
     dateHire DATE NOT NULL,
     empNumYear CHAR(4),
     position VARCHAR(50),
-    shiftId BIGINT NOT NULL, -- tentative 
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id)
+    isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+-- ALTER TABLE Employees
+-- DROP FOREIGN KEY employees_ibfk_1;
+-- ALTER TABLE Employees
+-- DROP COLUMN shiftId;
 
 SELECT * FROM Employees;
 
@@ -162,6 +165,7 @@ CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
     employeeNumber CHAR(8),
     startSchedDate DATE,
     endSchedDate DATE,
+    isDone BOOLEAN DEFAULT False,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,

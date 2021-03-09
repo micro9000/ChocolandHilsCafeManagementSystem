@@ -123,7 +123,6 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.Anchor = AnchorStyles.None;
 
             controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
-            controlToDisplay.WorkShifts = _workShiftController.GetAll().Data;
             // TODO: add the existing emp. govt. ids from our database and use the CustomModels -> EmployeeGovtIdCardTempModel.cs
 
             // event added
@@ -409,7 +408,7 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
-
+        #region Employee Work shift scheduling control
         public void DisplayEmployeeWorkShiftScheduleMgmntControl()
         {
             this.panelContainer.Controls.Clear();
@@ -418,6 +417,11 @@ namespace Main.Forms.EmployeeManagementForms
             //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
             manageEmpWorkScheduleControlObj.Location = new Point(this.ClientSize.Width / 2 - manageEmpWorkScheduleControlObj.Size.Width / 2, this.ClientSize.Height / 2 - manageEmpWorkScheduleControlObj.Size.Height / 2);
             manageEmpWorkScheduleControlObj.Anchor = AnchorStyles.None;
+
+            manageEmpWorkScheduleControlObj.Employees = _employeeController.GetAll().Data;
+            manageEmpWorkScheduleControlObj.WorkShifts = _workShiftController.GetAll().Data;
+
+            manageEmpWorkScheduleControlObj.ShiftSelected += HandleShiftSelectedToGetAdditionalDetails;
 
             //manageEmpWorkScheduleControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
 
@@ -428,6 +432,23 @@ namespace Main.Forms.EmployeeManagementForms
             this.panelContainer.Controls.Add(manageEmpWorkScheduleControlObj);
         }
 
+        private void HandleShiftSelectedToGetAdditionalDetails(object sender, EventArgs e)
+        {
+            ManageEmpWorkScheduleControl manageEmpWorkScheduleControlObj = (ManageEmpWorkScheduleControl)sender;
+            var selectedShiftId = manageEmpWorkScheduleControlObj.SelectedShiftId;
+
+            if (selectedShiftId > 0)
+            {
+                var shiftDays = _employeeShiftDayData.GetByShiftId(selectedShiftId);
+                manageEmpWorkScheduleControlObj.WorkShiftDays = shiftDays;
+                manageEmpWorkScheduleControlObj.DisplayWorkShiftDays();
+            }
+        }
+
+
+        #endregion
+
+        #region Employee leave management
 
         private void DisplayEmployeeLeaveManagementControl()
         {
@@ -580,6 +601,10 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
+        #endregion
+
+        #region Holiday CRUD Control
+
         public void DisplayHolidayCRUDControl()
         {
             this.panelContainer.Controls.Clear();
@@ -663,5 +688,9 @@ namespace Main.Forms.EmployeeManagementForms
                 }
             }
         }
+
+
+        #endregion
+
     }
 }

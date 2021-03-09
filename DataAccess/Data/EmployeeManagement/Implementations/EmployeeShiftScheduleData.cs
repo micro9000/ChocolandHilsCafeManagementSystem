@@ -12,61 +12,87 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
     public class EmployeeShiftScheduleData : DataManagerCRUD<EmployeeShiftScheduleModel>, IEmployeeShiftScheduleData
     {
         private readonly IDbConnectionFactory _dbConnFactory;
+        private readonly IEmployeeShiftData _employeeShiftData;
 
-        public EmployeeShiftScheduleData(IDbConnectionFactory dbConnFactory) :
+        public EmployeeShiftScheduleData(IDbConnectionFactory dbConnFactory, IEmployeeShiftData employeeShiftData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
+            _employeeShiftData = employeeShiftData;
         }
+
+
 
         public EmployeeShiftScheduleModel GetByEmployeeNumberAndSchedDate(string employeeNumber, DateTime schedDate)
         {
             string query = @"SELECT * FROM EmployeeShiftSchedules
-                            isDeleted = false AND 
-                            employeeNumber=@EmployeeNumber AND
-                           schedDate=@SchedDate";
+                            WHERE isDeleted=false AND isDone=false AND employeeNumber=@EmployeeNumber AND 
+                            startSchedDate <= @SchedDate AND endSchedDate >= @SchedDate ORDER BY id DESC";
 
-            return this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber, SchedDate = schedDate });
+            var shiftSchedDetails = this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber, SchedDate = schedDate });
+
+            if (shiftSchedDetails != null)
+            {
+                shiftSchedDetails.Shift = _employeeShiftData.GetById(shiftSchedDetails.ShiftId);
+            }
+
+            return shiftSchedDetails;
         }
 
-        public List<EmployeeShiftScheduleModel> GetByEmployeeNumberAndSchedDateRange(string employeeNumber, DateTime startDate, DateTime endDate)
+
+        public EmployeeShiftScheduleModel GetByEmployeeNumber(string employeeNumber)
         {
             string query = @"SELECT * FROM EmployeeShiftSchedules
-                            isDeleted=false AND employeeNumber=@EmployeeNumber AND  
-                            schedDate BETWEEN @StartDate AND @EndDate";
+                            WHERE isDeleted=false AND isDone=false AND employeeNumber=@EmployeeNumber ORDER BY id DESC";
 
-            return this.GetAll(query, new
+            var shiftSchedDetails = this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber });
+
+            if (shiftSchedDetails != null)
             {
-                EmployeeNumber = employeeNumber,
-                StartDate = startDate,
-                EndDate = endDate
-            });
+                shiftSchedDetails.Shift = _employeeShiftData.GetById(shiftSchedDetails.ShiftId);
+            }
+
+            return shiftSchedDetails;
         }
 
-        public List<EmployeeShiftScheduleModel> GetBySchedDateRange(DateTime startDate, DateTime endDate)
-        {
-            string query = @"SELECT * FROM EmployeeShiftSchedules
-                            isDeleted=false AND schedDate BETWEEN @StartDate AND @EndDate";
+        //public List<EmployeeShiftScheduleModel> GetByEmployeeNumberAndSchedDateRange(string employeeNumber, DateTime startDate, DateTime endDate)
+        //{
+        //    string query = @"SELECT * FROM EmployeeShiftSchedules
+        //                    WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND  
+        //                    schedDate BETWEEN @StartDate AND @EndDate";
 
-            return this.GetAll(query, new
-            {
-                StartDate = startDate,
-                EndDate = endDate
-            });
-        }
+        //    return this.GetAll(query, new
+        //    {
+        //        EmployeeNumber = employeeNumber,
+        //        StartDate = startDate,
+        //        EndDate = endDate
+        //    });
+        //}
 
-        public List<EmployeeShiftScheduleModel> GetByShiftAndSchedDateRange(long shiftId, DateTime startDate, DateTime endDate)
-        {
-            string query = @"SELECT * FROM EmployeeShiftSchedules
-                            isDeleted=false AND shiftId=@ShiftId AND
-                            schedDate BETWEEN @StartDate AND @EndDate";
+        //public List<EmployeeShiftScheduleModel> GetBySchedDateRange(DateTime startDate, DateTime endDate)
+        //{
+        //    string query = @"SELECT * FROM EmployeeShiftSchedules
+        //                    WHERE isDeleted=false AND schedDate BETWEEN @StartDate AND @EndDate";
 
-            return this.GetAll(query, new
-            {
-                ShiftId = shiftId,
-                StartDate = startDate,
-                EndDate = endDate
-            });
-        }
+        //    return this.GetAll(query, new
+        //    {
+        //        StartDate = startDate,
+        //        EndDate = endDate
+        //    });
+        //}
+
+        //public List<EmployeeShiftScheduleModel> GetByShiftAndSchedDateRange(long shiftId, DateTime startDate, DateTime endDate)
+        //{
+        //    string query = @"SELECT * FROM EmployeeShiftSchedules
+        //                    WHERE isDeleted=false AND shiftId=@ShiftId AND
+        //                    schedDate BETWEEN @StartDate AND @EndDate";
+
+        //    return this.GetAll(query, new
+        //    {
+        //        ShiftId = shiftId,
+        //        StartDate = startDate,
+        //        EndDate = endDate
+        //    });
+        //}
     }
 }

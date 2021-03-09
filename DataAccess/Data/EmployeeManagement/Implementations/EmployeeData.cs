@@ -13,35 +13,30 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
     public class EmployeeData : DataManagerCRUD<EmployeeModel>, IEmployeeData
     {
         private readonly IDbConnectionFactory _dbConnFactory;
-        private readonly IEmployeeShiftData _employeeShiftData;
+        private readonly IEmployeeShiftScheduleData _employeeShiftScheduleData;
 
-        public EmployeeData(IDbConnectionFactory dbConnFactory, IEmployeeShiftData employeeShiftData) :
+        public EmployeeData(IDbConnectionFactory dbConnFactory, IEmployeeShiftScheduleData employeeShiftScheduleData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
-            _employeeShiftData = employeeShiftData;
+            _employeeShiftScheduleData = employeeShiftScheduleData;
         }
 
         public List<EmployeeModel> GetAllNotDeleted()
         {
-            string query = @"SELECT * 
-                            FROM Employees AS EMP
-                            JOIN EmployeeShifts AS SHIFT ON EMP.shiftId=SHIFT.id
-                            WHERE EMP.isDeleted=false";
+            string query = @"SELECT * FROM Employees WHERE isDeleted=false";
 
-            List<EmployeeModel> results = new List<EmployeeModel>();
+            var employees = this.GetAll(query);
 
-            using (var conn = _dbConnFactory.CreateConnection())
+            if (employees != null)
             {
-                results = conn.Query<EmployeeModel, EmployeeShiftModel, EmployeeModel>(query,
-                        (emp, shift) => {
-                            emp.Shift = shift;
-                            return emp;
-                        }).ToList();
-                conn.Close();
+                foreach (var emp in employees)
+                {
+                    emp.CurrentShiftSchedule = _employeeShiftScheduleData.GetByEmployeeNumber(emp.EmployeeNumber);
+                }
             }
-
-            return results;
+            
+            return employees;
         }
 
         public long GetCountByEmpNumYear(DateTime dateHire)
@@ -55,69 +50,61 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
         public List<EmployeeModel> GetAllByDateHire(DateTime dateHire)
         {
-            string query = @"SELECT * 
-                            FROM Employees  AS EMP
-                            JOIN EmployeeShifts AS SHIFT ON EMP.shiftId=SHIFT.id
-                            WHERE EMP.isDeleted=false AND 
-                            EMP.dateHire BETWEEN @DateHire AND DATE_ADD(@DateHire, INTERVAL 1 DAY)";
+            string query = @"SELECT * FROM Employees WHERE isDeleted=false AND 
+                            dateHire BETWEEN @DateHire AND DATE_ADD(@DateHire, INTERVAL 1 DAY)";
 
-            List<EmployeeModel> results = new List<EmployeeModel>();
+            var employees = this.GetAll(query, new { DateHire = dateHire });
 
-            using (var conn = _dbConnFactory.CreateConnection())
+            if (employees != null)
             {
-                results = conn.Query<EmployeeModel, EmployeeShiftModel, EmployeeModel>(query,
-                        (emp, shift) => {
-                            emp.Shift = shift;
-                            return emp;
-                        }, new { DateHire = dateHire }).ToList();
-                conn.Close();
+                foreach (var emp in employees)
+                {
+                    emp.CurrentShiftSchedule = _employeeShiftScheduleData.GetByEmployeeNumber(emp.EmployeeNumber);
+                }
             }
-
-            return results;
+            
+            return employees;
         }
 
         public EmployeeModel GetByEmployeeNumber(string employeeNumber)
         {
             string query = @"SELECT * FROM Employees 
                             WHERE isDeleted=false AND employeeNumber=@EmployeeNumber";
+            
+            var emp = this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber });
 
-            var empDetails = this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber });
-
-            if (empDetails != null)
+            if (emp != null)
             {
-                empDetails.Shift = _employeeShiftData.Get(empDetails.ShiftId);
+                emp.CurrentShiftSchedule = _employeeShiftScheduleData.GetByEmployeeNumber(emp.EmployeeNumber);
             }
 
-            return empDetails;
+            return emp;
         }
 
         public List<EmployeeModel> Search(string search)
         {
             string query = @"SELECT * 
-                            FROM Employees AS EMP
-                            JOIN EmployeeShifts AS SHIFT ON EMP.shiftId=SHIFT.id
-                            WHERE EMP.isDeleted=false AND (
-                            EMP.employeeNumber LIKE @Search OR
-                            EMP.firstName LIKE @Search OR
-                            EMP.lastName LIKE @Search OR
-                            EMP.address LIKE @Search OR
-                            EMP.mobileNumber LIKE @Search OR
-                            EMP.emailAddress LIKE @Search OR
-                            EMP.branchAssign LIKE @Search)";
+                            FROM Employees
+                            WHERE isDeleted=false AND (
+                            employeeNumber LIKE @Search OR
+                            firstName LIKE @Search OR
+                            lastName LIKE @Search OR
+                            address LIKE @Search OR
+                            mobileNumber LIKE @Search OR
+                            emailAddress LIKE @Search OR
+                            branchAssign LIKE @Search)";
 
-            List<EmployeeModel> results = new List<EmployeeModel>();
+            var employees = this.GetAll(query, new { Search = "%" + search + "%" });
 
-            using (var conn = _dbConnFactory.CreateConnection())
+            if (employees != null)
             {
-                results = conn.Query<EmployeeModel, EmployeeShiftModel, EmployeeModel>(query,
-                        (emp, shift) => {
-                            emp.Shift = shift;
-                            return emp;
-                        }, new { Search = "%" + search + "%" }).ToList();
-                conn.Close();
+                foreach (var emp in employees)
+                {
+                    emp.CurrentShiftSchedule = _employeeShiftScheduleData.GetByEmployeeNumber(emp.EmployeeNumber);
+                }
             }
 
-            return results;
+            return employees;
         }
     }
 }

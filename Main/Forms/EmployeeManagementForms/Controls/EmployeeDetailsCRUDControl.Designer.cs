@@ -30,8 +30,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void InitializeComponent()
         {
             this.EmployeeBasicInfo = new System.Windows.Forms.TabPage();
-            this.label17 = new System.Windows.Forms.Label();
-            this.CBoxShifts = new System.Windows.Forms.ComboBox();
             this.TbxMiddleInitial = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.TbxEmpPosition = new System.Windows.Forms.TextBox();
@@ -97,8 +95,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // EmployeeBasicInfo
             // 
-            this.EmployeeBasicInfo.Controls.Add(this.label17);
-            this.EmployeeBasicInfo.Controls.Add(this.CBoxShifts);
             this.EmployeeBasicInfo.Controls.Add(this.TbxMiddleInitial);
             this.EmployeeBasicInfo.Controls.Add(this.label16);
             this.EmployeeBasicInfo.Controls.Add(this.TbxEmpPosition);
@@ -122,29 +118,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeBasicInfo.Location = new System.Drawing.Point(4, 30);
             this.EmployeeBasicInfo.Name = "EmployeeBasicInfo";
             this.EmployeeBasicInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.EmployeeBasicInfo.Size = new System.Drawing.Size(677, 508);
+            this.EmployeeBasicInfo.Size = new System.Drawing.Size(677, 430);
             this.EmployeeBasicInfo.TabIndex = 0;
             this.EmployeeBasicInfo.Text = "Basic Information";
             this.EmployeeBasicInfo.UseVisualStyleBackColor = true;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label17.ForeColor = System.Drawing.Color.Black;
-            this.label17.Location = new System.Drawing.Point(48, 420);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(39, 20);
-            this.label17.TabIndex = 49;
-            this.label17.Text = "Shift";
-            // 
-            // CBoxShifts
-            // 
-            this.CBoxShifts.FormattingEnabled = true;
-            this.CBoxShifts.Location = new System.Drawing.Point(46, 443);
-            this.CBoxShifts.Name = "CBoxShifts";
-            this.CBoxShifts.Size = new System.Drawing.Size(577, 29);
-            this.CBoxShifts.TabIndex = 48;
             // 
             // TbxMiddleInitial
             // 
@@ -361,7 +338,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeGovtIds.Location = new System.Drawing.Point(4, 30);
             this.EmployeeGovtIds.Name = "EmployeeGovtIds";
             this.EmployeeGovtIds.Padding = new System.Windows.Forms.Padding(3);
-            this.EmployeeGovtIds.Size = new System.Drawing.Size(677, 508);
+            this.EmployeeGovtIds.Size = new System.Drawing.Size(677, 430);
             this.EmployeeGovtIds.TabIndex = 1;
             this.EmployeeGovtIds.Text = "Government Ids";
             this.EmployeeGovtIds.UseVisualStyleBackColor = true;
@@ -467,7 +444,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.ListViewEmpGovtIdCards.HideSelection = false;
             this.ListViewEmpGovtIdCards.Location = new System.Drawing.Point(3, 144);
             this.ListViewEmpGovtIdCards.Name = "ListViewEmpGovtIdCards";
-            this.ListViewEmpGovtIdCards.Size = new System.Drawing.Size(671, 361);
+            this.ListViewEmpGovtIdCards.Size = new System.Drawing.Size(671, 283);
             this.ListViewEmpGovtIdCards.TabIndex = 1;
             this.ListViewEmpGovtIdCards.UseCompatibleStateImageBehavior = false;
             this.ListViewEmpGovtIdCards.View = System.Windows.Forms.View.Details;
@@ -502,7 +479,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeSalaryRateTab.Controls.Add(this.groupBox1);
             this.EmployeeSalaryRateTab.Location = new System.Drawing.Point(4, 30);
             this.EmployeeSalaryRateTab.Name = "EmployeeSalaryRateTab";
-            this.EmployeeSalaryRateTab.Size = new System.Drawing.Size(677, 508);
+            this.EmployeeSalaryRateTab.Size = new System.Drawing.Size(677, 430);
             this.EmployeeSalaryRateTab.TabIndex = 2;
             this.EmployeeSalaryRateTab.Text = " Salary";
             this.EmployeeSalaryRateTab.UseVisualStyleBackColor = true;
@@ -589,7 +566,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnCancelUpdateEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelUpdateEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnCancelUpdateEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdateEmployee.Location = new System.Drawing.Point(416, 662);
+            this.BtnCancelUpdateEmployee.Location = new System.Drawing.Point(416, 599);
             this.BtnCancelUpdateEmployee.Name = "BtnCancelUpdateEmployee";
             this.BtnCancelUpdateEmployee.Size = new System.Drawing.Size(134, 48);
             this.BtnCancelUpdateEmployee.TabIndex = 47;
@@ -628,7 +605,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TabControlSaveEmployeeDetails.Location = new System.Drawing.Point(5, 114);
             this.TabControlSaveEmployeeDetails.Name = "TabControlSaveEmployeeDetails";
             this.TabControlSaveEmployeeDetails.SelectedIndex = 0;
-            this.TabControlSaveEmployeeDetails.Size = new System.Drawing.Size(685, 542);
+            this.TabControlSaveEmployeeDetails.Size = new System.Drawing.Size(685, 464);
             this.TabControlSaveEmployeeDetails.TabIndex = 45;
             // 
             // SaveEmployeeAction
@@ -639,7 +616,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.SaveEmployeeAction.Location = new System.Drawing.Point(4, 30);
             this.SaveEmployeeAction.Name = "SaveEmployeeAction";
             this.SaveEmployeeAction.Padding = new System.Windows.Forms.Padding(3);
-            this.SaveEmployeeAction.Size = new System.Drawing.Size(677, 508);
+            this.SaveEmployeeAction.Size = new System.Drawing.Size(677, 430);
             this.SaveEmployeeAction.TabIndex = 3;
             this.SaveEmployeeAction.Text = "Action";
             this.SaveEmployeeAction.UseVisualStyleBackColor = true;
@@ -710,7 +687,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnSaveEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveEmployee.Location = new System.Drawing.Point(556, 662);
+            this.BtnSaveEmployee.Location = new System.Drawing.Point(556, 599);
             this.BtnSaveEmployee.Name = "BtnSaveEmployee";
             this.BtnSaveEmployee.Size = new System.Drawing.Size(134, 48);
             this.BtnSaveEmployee.TabIndex = 44;
@@ -750,7 +727,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.Controls.Add(this.TabControlSaveEmployeeDetails);
             this.Controls.Add(this.BtnSaveEmployee);
             this.Name = "EmployeeDetailsCRUDControl";
-            this.Size = new System.Drawing.Size(696, 722);
+            this.Size = new System.Drawing.Size(696, 667);
             this.Load += new System.EventHandler(this.EmployeeDetailsCRUDControl_Load);
             this.EmployeeBasicInfo.ResumeLayout(false);
             this.EmployeeBasicInfo.PerformLayout();
@@ -825,7 +802,5 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Button BtnSaveEmployee;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label LblActionForEmployeeDetails;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.ComboBox CBoxShifts;
     }
 }

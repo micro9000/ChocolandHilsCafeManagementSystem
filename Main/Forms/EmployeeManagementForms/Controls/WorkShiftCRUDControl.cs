@@ -411,9 +411,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     row.Cells[0].Value = shift.Id;
                     row.Cells[1].Value = shift.Shift;
-                    row.Cells[2].Value = shift.StartTime.ToString("HH:mm:ss", CultureInfo.CurrentCulture);
-                    row.Cells[3].Value = shift.EndTime.ToString("HH:mm:ss", CultureInfo.CurrentCulture);
-                    row.Cells[4].Value = shift.BreakTime.ToString("HH:mm:ss", CultureInfo.CurrentCulture); ;
+                    row.Cells[2].Value = shift.StartTime.ToString("hh:mm:ss tt", CultureInfo.CurrentCulture);
+                    row.Cells[3].Value = shift.EndTime.ToString("hh:mm:ss tt", CultureInfo.CurrentCulture);
+                    row.Cells[4].Value = shift.BreakTime.ToString("hh:mm:ss tt", CultureInfo.CurrentCulture); ;
                     row.Cells[5].Value = shift.BreakTimeHrs.ToString();
                     row.Cells[6].Value = shift.NumberOfHrs.ToString();
                     this.DGVWorkShifts.Rows.Add(row);

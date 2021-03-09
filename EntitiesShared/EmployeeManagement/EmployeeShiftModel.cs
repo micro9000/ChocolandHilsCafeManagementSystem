@@ -70,5 +70,17 @@ namespace EntitiesShared.EmployeeManagement
             get { return isActive; }
             set { isActive = value; }
         }
+
+
+        private List<EmployeeShiftDayModel> shiftDays;
+
+        [Write(false)]
+        [Computed]
+        public List<EmployeeShiftDayModel> ShiftDays
+        {
+            get { return shiftDays; }
+            set { shiftDays = value; }
+        }
+
     }
 }

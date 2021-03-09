@@ -104,8 +104,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TimeIn = new System.Windows.Forms.ColumnHeader();
             this.Timeout = new System.Windows.Forms.ColumnHeader();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.LblEmployeeShiftSchedule = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
             this.TabPagePayslipHistory.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -843,8 +841,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.White;
-            this.groupBox2.Controls.Add(this.LblEmployeeShiftSchedule);
-            this.groupBox2.Controls.Add(this.label25);
             this.groupBox2.Controls.Add(this.LblEmail);
             this.groupBox2.Controls.Add(this.LblContactNumber);
             this.groupBox2.Controls.Add(this.LblAge);
@@ -924,25 +920,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1080, 583);
             this.panel3.TabIndex = 5;
-            // 
-            // LblEmployeeShiftSchedule
-            // 
-            this.LblEmployeeShiftSchedule.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblEmployeeShiftSchedule.Location = new System.Drawing.Point(195, 169);
-            this.LblEmployeeShiftSchedule.Name = "LblEmployeeShiftSchedule";
-            this.LblEmployeeShiftSchedule.Size = new System.Drawing.Size(278, 20);
-            this.LblEmployeeShiftSchedule.TabIndex = 13;
-            this.LblEmployeeShiftSchedule.Text = "-";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label25.Location = new System.Drawing.Point(18, 170);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(114, 19);
-            this.label25.TabIndex = 12;
-            this.label25.Text = "Shift scheduel";
             // 
             // EmployeeDetailsControl
             // 
@@ -1053,7 +1030,5 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ColumnHeader TimeIn;
         private System.Windows.Forms.ColumnHeader Timeout;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label LblEmployeeShiftSchedule;
-        private System.Windows.Forms.Label label25;
     }
 }
