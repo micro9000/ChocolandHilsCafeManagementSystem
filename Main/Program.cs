@@ -110,7 +110,6 @@ namespace Main
             services.AddTransient<IEmployeeSalaryRateData, EmployeeSalaryRateData>();
             services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
             services.AddTransient<IEmployeeShiftDayData, EmployeeShiftDayData>();
-            services.AddTransient<IEmployeeShiftScheduleData, EmployeeShiftScheduleData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
             services.AddTransient<IEmployeeGovtContributionData, EmployeeGovtContributionData>();
 

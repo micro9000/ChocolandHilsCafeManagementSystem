@@ -160,29 +160,29 @@ SELECT * FROM EmployeeSalaryRate
 WHERE isDeleted=false AND employeeNumber='20190001'
 ORDER BY id DESC LIMIT 1;
 
-CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    shiftId BIGINT NOT NULL,
-    employeeNumber CHAR(8),
-    startSchedDate DATE,
-    endSchedDate DATE,
-    isDone BOOLEAN DEFAULT False,
-    createdAt DATETIME DEFAULT NOW(),
-    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
-)ENGINE=INNODB;
+-- CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
+-- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     shiftId BIGINT NOT NULL,
+--     employeeNumber CHAR(8),
+--     startSchedDate DATE,
+--     endSchedDate DATE,
+--     isDone BOOLEAN DEFAULT False,
+--     createdAt DATETIME DEFAULT NOW(),
+--     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+--     deletedAt DATETIME,
+--     isDeleted BOOLEAN DEFAULT False,
+--     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
+-- )ENGINE=INNODB;
 
-SELECT * FROM EmployeeShiftSchedules;
+-- SELECT * FROM EmployeeShiftSchedules;
 
-SELECT * FROM EmployeeShiftSchedules
-WHERE isDeleted=false AND isDone=false AND employeeNumber='20190001' AND 
-startSchedDate <= '2021-01-01' AND endSchedDate >= '2024-03-03';
+-- select * from EmployeeShiftSchedules
+-- where isDeleted=false and isDone=false and employeeNumber='20190001' and 
+-- startSchedDate <= '2021-01-01' and endSchedDate >= '2024-03-03';
 
-SELECT * FROM EmployeeShiftSchedules
-WHERE isDeleted=false AND isDone=false AND employeeNumber=@EmployeeNumber AND 
-startSchedDate <= @SchedDate AND endSchedDate >= @SchedDate
+-- select * from EmployeeShiftSchedules
+-- where isDeleted=false and isDone=false and employeeNumber=@EmployeeNumber and 
+-- startSchedDate <= @SchedDate and endSchedDate >= @SchedDate
 
 -- SELECT DATE_ADD("2017-06-15", INTERVAL 10 HOUR); 
 

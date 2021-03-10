@@ -43,16 +43,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
-
-        private List<EmployeeWorkShiftScheduleModel> employeeShiftSchedule;
-
-        public List<EmployeeWorkShiftScheduleModel> EmployeeShiftSchedule
-        {
-            get { return employeeShiftSchedule; }
-            set { employeeShiftSchedule = value; }
-        }
-
-
         public ManageEmpWorkScheduleControl()
         {
             InitializeComponent();
@@ -159,10 +149,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[2].Value = fullName;
                     row.Cells[3].Value = employee.Position;
 
-                    //if (employee.CurrentShiftSchedule != null && employee.CurrentShiftSchedule.Shift != null)
-                    //{
-                    //    row.Cells[4].Value = employee.CurrentShiftSchedule.Shift.Shift;
-                    //}
+                    if (employee.Shift != null)
+                    {
+                        row.Cells[4].Value = employee.Shift.Shift;
+                    }
 
                     this.DGVEmployeeList.Rows.Add(row);
                 }

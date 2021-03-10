@@ -13,7 +13,6 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
     {
 
         private readonly IDbConnectionFactory _dbConnFactory;
-        private readonly IEmployeeShiftData _employeeShiftData;
 
         public HolidayData(IDbConnectionFactory dbConnFactory) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)

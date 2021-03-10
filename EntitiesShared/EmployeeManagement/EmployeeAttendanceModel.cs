@@ -26,23 +26,6 @@ namespace EntitiesShared.EmployeeManagement
             set { workDate = value; }
         }
 
-        private long shiftSchedId;
-
-        public long ShiftSchedId
-        {
-            get { return shiftSchedId; }
-            set { shiftSchedId = value; }
-        }
-
-        private EmployeeShiftScheduleModel shiftSchedule;
-
-        public EmployeeShiftScheduleModel ShiftSchedule
-        {
-            get { return shiftSchedule; }
-            set { shiftSchedule = value; }
-        }
-
-
         private DateTime timeIn1;
 
         public DateTime TimeIn1
