@@ -43,9 +43,24 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
+        // Event handler for saving
+        public event EventHandler EmployeeShiftUpdated;
+        protected virtual void OnEmployeeShiftUpdated(EventArgs e)
+        {
+            EmployeeShiftUpdated?.Invoke(this, e);
+        }
+        public UpdateEmployeeShiftModel UpdateEmployeeShift { get; set; } = new UpdateEmployeeShiftModel();
+
+
         public ManageEmpWorkScheduleControl()
         {
             InitializeComponent();
+        }
+
+
+        public void ResetUpdateEmployeeShiftVal()
+        {
+            UpdateEmployeeShift = new UpdateEmployeeShiftModel();
         }
 
 
@@ -121,21 +136,24 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             {
                 this.DGVEmployeeList.ColumnCount = 4;
 
+                this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber";
+                this.DGVEmployeeList.Columns[0].Visible = true;
+
+                this.DGVEmployeeList.Columns[1].Name = "Fullname";
+                this.DGVEmployeeList.Columns[1].Visible = true;
+
+                this.DGVEmployeeList.Columns[2].Name = "Position";
+                this.DGVEmployeeList.Columns[2].Visible = true;
+
+                this.DGVEmployeeList.Columns[3].Name = "Shift";
+                this.DGVEmployeeList.Columns[3].Visible = true;
+
 
                 DataGridViewCheckBoxColumn selectChbx = new DataGridViewCheckBoxColumn();
                 selectChbx.HeaderText = "Select";
                 selectChbx.Name = "selectEmpCkbox";
                 selectChbx.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                this.DGVEmployeeList.Columns.Insert(0, selectChbx);
-
-                this.DGVEmployeeList.Columns[1].Name = "EmployeeNumber";
-                this.DGVEmployeeList.Columns[1].Visible = true;
-
-                this.DGVEmployeeList.Columns[2].Name = "Fullname";
-                this.DGVEmployeeList.Columns[2].Visible = true;
-
-                this.DGVEmployeeList.Columns[3].Name = "Position";
-                this.DGVEmployeeList.Columns[3].Visible = true;
+                this.DGVEmployeeList.Columns.Add(selectChbx);
 
                 foreach (var employee in this.Employees)
                 {
@@ -144,14 +162,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     string fullName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
 
-                    row.Cells[0].Value = false;
-                    row.Cells[1].Value = employee.EmployeeNumber;
-                    row.Cells[2].Value = fullName;
-                    row.Cells[3].Value = employee.Position;
+                    row.Cells[0].Value = employee.EmployeeNumber;
+                    row.Cells[1].Value = fullName;
+                    row.Cells[2].Value = employee.Position;
 
                     if (employee.Shift != null)
                     {
-                        row.Cells[4].Value = employee.Shift.Shift;
+                        row.Cells[3].Value = employee.Shift.Shift;
                     }
 
                     this.DGVEmployeeList.Rows.Add(row);
@@ -238,17 +255,26 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void BtnSaveEmployeeShiftSchedule_Click(object sender, EventArgs e)
         {
-            List<string> empNums = new List<string>();
-            foreach (DataGridViewRow row in this.DGVEmployeeList.Rows)
+            if (this.DGVShiftList.CurrentRow.Index > -1)
             {
-                bool isSelected = Convert.ToBoolean(row.Cells["selectEmpCkbox"].Value);
-                if (isSelected)
+                string shiftId = this.DGVShiftList.CurrentRow.Cells[0].Value.ToString();
+                UpdateEmployeeShift.ShiftId = long.Parse(shiftId);
+
+                foreach (DataGridViewRow row in this.DGVEmployeeList.Rows)
                 {
-                    empNums.Add(row.Cells["EmployeeNumber"].Value.ToString());
+                    bool isSelected = Convert.ToBoolean(row.Cells["selectEmpCkbox"].Value);
+                    if (isSelected)
+                    {
+                        UpdateEmployeeShift.EmployeeNumbers.Add(row.Cells["EmployeeNumber"].Value.ToString());
+                    }
+                }
+
+                if (UpdateEmployeeShift.ShiftId > 0 && UpdateEmployeeShift.EmployeeNumbers.Count > 0)
+                {
+                    OnEmployeeShiftUpdated(EventArgs.Empty);
                 }
             }
-
-            MessageBox.Show(string.Join(",", empNums.ToArray()));
+            
         }
 
     }

@@ -251,6 +251,39 @@ namespace Main.Controllers.EmployeeManagementControllers
             return results;
         }
 
+
+        public EntityResult<UpdateEmployeeShiftModel> UpdateEmployeesShift (UpdateEmployeeShiftModel newEmpShift)
+        {
+            var results = new EntityResult<UpdateEmployeeShiftModel>();
+            results.IsSuccess = true;
+            results.Data = newEmpShift; // no other data to return
+
+            if (newEmpShift != null)
+            {
+                foreach(var empNum in newEmpShift.EmployeeNumbers)
+                {
+                    var employeeDetails = _employeeData.GetByEmployeeNumber(empNum);
+
+                    if (employeeDetails == null)
+                    {
+                        results.Messages.Add($"Employee details with employee number of {empNum} not found.");
+                    }
+                    else
+                    {
+                        employeeDetails.ShiftId = newEmpShift.ShiftId;
+
+                        if (this._employeeData.Update(employeeDetails))
+                        {
+                            results.Messages.Add($"Shift updated for {empNum}.");
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
+
         public List<EmployeeGovtIdCardTempModel> GetAllEmployeeIdCardsMapToCustomModel(string employeeNumber)
         {
             // id cards in our database

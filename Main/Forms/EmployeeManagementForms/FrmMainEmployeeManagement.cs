@@ -439,6 +439,7 @@ namespace Main.Forms.EmployeeManagementForms
             manageEmpWorkScheduleControlObj.WorkShifts = _workShiftController.GetAll().Data;
 
             manageEmpWorkScheduleControlObj.ShiftSelected += HandleShiftSelectedToGetAdditionalDetails;
+            manageEmpWorkScheduleControlObj.EmployeeShiftUpdated += HandleUpdateEmployeeShift;
 
             //manageEmpWorkScheduleControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
 
@@ -459,6 +460,33 @@ namespace Main.Forms.EmployeeManagementForms
                 var shiftDays = _employeeShiftDayData.GetByShiftId(selectedShiftId);
                 manageEmpWorkScheduleControlObj.WorkShiftDays = shiftDays;
                 manageEmpWorkScheduleControlObj.DisplayWorkShiftDays();
+            }
+        }
+
+
+        private void HandleUpdateEmployeeShift(object sender, EventArgs e)
+        {
+            ManageEmpWorkScheduleControl manageEmpWorkScheduleControlObj = (ManageEmpWorkScheduleControl)sender;
+            var updateEmployeeShift = manageEmpWorkScheduleControlObj.UpdateEmployeeShift;
+
+            if (updateEmployeeShift != null)
+            {
+                var updateResults = _employeeController.UpdateEmployeesShift(updateEmployeeShift);
+
+                string resultMessages = "";
+                foreach (var msg in updateResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                MessageBox.Show(resultMessages, "Update employee shift", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                manageEmpWorkScheduleControlObj.Employees = _employeeController.GetAll().Data;
+                manageEmpWorkScheduleControlObj.WorkShifts = _workShiftController.GetAll().Data;
+
+                manageEmpWorkScheduleControlObj.DisplayEmployees();
+                manageEmpWorkScheduleControlObj.DisplayWorkShifts();
+                manageEmpWorkScheduleControlObj.ResetUpdateEmployeeShiftVal();
             }
         }
 

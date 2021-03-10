@@ -33,7 +33,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label2 = new System.Windows.Forms.Label();
             this.DGVEmployeeList = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.BtnCancelUpdate = new System.Windows.Forms.Button();
             this.DGVShiftList = new System.Windows.Forms.DataGridView();
             this.BtnSaveEmployeeShiftSchedule = new System.Windows.Forms.Button();
             this.GroupPanelShiftDays = new System.Windows.Forms.GroupBox();
@@ -87,7 +86,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.BtnCancelUpdate);
             this.groupBox2.Controls.Add(this.DGVShiftList);
             this.groupBox2.Controls.Add(this.BtnSaveEmployeeShiftSchedule);
             this.groupBox2.Controls.Add(this.GroupPanelShiftDays);
@@ -97,21 +95,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Shifts";
-            // 
-            // BtnCancelUpdate
-            // 
-            this.BtnCancelUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(99)))), ((int)(((byte)(67)))), ((int)(((byte)(67)))));
-            this.BtnCancelUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnCancelUpdate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnCancelUpdate.ForeColor = System.Drawing.Color.White;
-            this.BtnCancelUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdate.Location = new System.Drawing.Point(181, 391);
-            this.BtnCancelUpdate.Name = "BtnCancelUpdate";
-            this.BtnCancelUpdate.Size = new System.Drawing.Size(115, 47);
-            this.BtnCancelUpdate.TabIndex = 50;
-            this.BtnCancelUpdate.Text = "Cancel";
-            this.BtnCancelUpdate.UseVisualStyleBackColor = false;
-            this.BtnCancelUpdate.Visible = false;
             // 
             // DGVShiftList
             // 
@@ -273,7 +256,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.CheckBox CBoxMonday;
         private System.Windows.Forms.CheckBox CBoxTuesday;
         private System.Windows.Forms.DataGridView DGVShiftList;
-        private System.Windows.Forms.Button BtnCancelUpdate;
         private System.Windows.Forms.Button BtnSaveEmployeeShiftSchedule;
     }
 }
