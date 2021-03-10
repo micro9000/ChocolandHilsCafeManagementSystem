@@ -13,13 +13,13 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
     public class EmployeeData : DataManagerCRUD<EmployeeModel>, IEmployeeData
     {
         private readonly IDbConnectionFactory _dbConnFactory;
-        private readonly IEmployeeShiftScheduleData _employeeShiftScheduleData;
+        private readonly IEmployeeShiftData _employeeShiftData;
 
-        public EmployeeData(IDbConnectionFactory dbConnFactory, IEmployeeShiftScheduleData employeeShiftScheduleData) :
+        public EmployeeData(IDbConnectionFactory dbConnFactory, IEmployeeShiftData employeeShiftData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
-            _employeeShiftScheduleData = employeeShiftScheduleData;
+            _employeeShiftData = employeeShiftData;
         }
 
         public List<EmployeeModel> GetAllNotDeleted()
@@ -32,7 +32,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             {
                 foreach (var emp in employees)
                 {
-                    emp.CurrentShiftSchedule = _employeeShiftScheduleData.GetByEmployeeNumber(emp.EmployeeNumber);
+                    emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
                 }
             }
             
@@ -59,7 +59,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             {
                 foreach (var emp in employees)
                 {
-                    emp.CurrentShiftSchedule = _employeeShiftScheduleData.GetByEmployeeNumber(emp.EmployeeNumber);
+                    emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
                 }
             }
             
@@ -75,7 +75,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
             if (emp != null)
             {
-                emp.CurrentShiftSchedule = _employeeShiftScheduleData.GetByEmployeeNumber(emp.EmployeeNumber);
+                emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
             }
 
             return emp;
@@ -100,7 +100,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             {
                 foreach (var emp in employees)
                 {
-                    emp.CurrentShiftSchedule = _employeeShiftScheduleData.GetByEmployeeNumber(emp.EmployeeNumber);
+                    emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
                 }
             }
 

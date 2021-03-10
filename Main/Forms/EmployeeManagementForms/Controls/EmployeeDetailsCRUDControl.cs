@@ -32,6 +32,40 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             set { govtAgencies = value; }
         }
 
+
+        public event EventHandler WorkShiftSelected;
+        protected virtual void OnWorkShiftSelected(EventArgs e)
+        {
+            WorkShiftSelected?.Invoke(this, e);
+        }
+
+        private long selectedShiftId;
+
+        public long SelectedShiftId
+        {
+            get { return selectedShiftId; }
+            set { selectedShiftId = value; }
+        }
+
+
+        private List<EmployeeShiftModel> workShifts;
+
+        public List<EmployeeShiftModel> WorkShifts
+        {
+            get { return workShifts; }
+            set { workShifts = value; }
+        }
+
+
+        private List<EmployeeShiftDayModel> workShiftDays = new List<EmployeeShiftDayModel>();
+
+        public List<EmployeeShiftDayModel> WorkShiftDays
+        {
+            get { return workShiftDays; }
+            set { workShiftDays = value; }
+        }
+
+
         private EmployeeModel employee;
 
         public EmployeeModel Employee
@@ -119,6 +153,20 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     this.CboxGovtAgencies.Items.Add(item);
                 }
             }
+
+            // Work shifts load in combo box
+            if (this.WorkShifts != null)
+            {
+                ComboboxItem item;
+                foreach (var shift in this.WorkShifts)
+                {
+                    item = new ComboboxItem();
+                    item.Text = $"{shift.Shift} - from {shift.StartTime.ToShortTimeString()} to {shift.EndTime.ToShortTimeString()}";
+                    item.Value = shift.Id;
+                    this.CBoxShiftList.Items.Add(item);
+                }
+            }
+
         }
 
         public void ClearForm()
@@ -140,6 +188,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TbxEmpPosition.Text = "";
             this.TbxEmployeeNumber.Text = "";
             this.CboxGovtAgencies.SelectedIndex = -1;
+
+            this.CBoxShiftList.SelectedIndex = -1;
+            ResetShiftDaysCheckBoxes();
 
             this.TboxEmpIdNumber.Text = "";
 
@@ -179,6 +230,21 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.TbxBranchAssign.Text = employeeDetails.BranchAssign;
                 this.TbxEmail.Text = employeeDetails.EmailAddress;
                 this.TbxEmpPosition.Text = employeeDetails.Position;
+
+                var shift = employeeDetails.Shift;
+
+                for(int i=0; i < this.CBoxShiftList.Items.Count; i++)
+                {
+                    var item = this.CBoxShiftList.Items[i] as ComboboxItem;
+                    if (long.Parse(item.Value.ToString()) == employeeDetails.ShiftId)
+                    {
+                        this.CBoxShiftList.SelectedIndex = i;
+                        break;
+                    }
+                }
+
+                this.WorkShiftDays = shift.ShiftDays;
+                DisplayWorkShiftDays();
 
                 DisplayEmployeeGovtIds();
                 DisplayEmployeeSalaryRate();
@@ -234,6 +300,17 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             //    return;
             //}
 
+            var selectedWorkShift = this.CBoxShiftList.SelectedItem as ComboboxItem;
+
+            if (selectedWorkShift == null)
+            {
+                MessageBox.Show("Kindly choose emplooyee shift.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            long selectedWorkShiftId = long.Parse(selectedWorkShift.Value.ToString());
+
+
             Employee = new EmployeeModel
             {
                 FirstName = this.TbxFirstName.Text,
@@ -245,7 +322,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 Address = this.TbxAddress.Text,
                 BranchAssign = this.TbxBranchAssign.Text,
                 EmailAddress = this.TbxEmail.Text,
-                Position = this.TbxEmpPosition.Text
+                Position = this.TbxEmpPosition.Text,
+                ShiftId = selectedWorkShiftId
             };
 
             if (this.IsNew == false)
@@ -466,5 +544,54 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
+        private void CBoxShiftList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.CBoxShiftList.SelectedIndex >= 0)
+            {
+                var selectedShift = this.CBoxShiftList.SelectedItem as ComboboxItem;
+
+                if (selectedShift != null)
+                {
+                    SelectedShiftId = long.Parse(selectedShift.Value.ToString());
+                    OnWorkShiftSelected(EventArgs.Empty);
+                }
+
+            }
+        }
+
+        public void ResetShiftDaysCheckBoxes()
+        {
+            foreach (var daysCheckBoxControl in this.GroupPanelShiftDays.Controls)
+            {
+                if (daysCheckBoxControl is CheckBox)
+                {
+                    ((CheckBox)daysCheckBoxControl).Checked = false;
+                }
+            }
+        }
+
+        public void DisplayWorkShiftDays()
+        {
+            ResetShiftDaysCheckBoxes();
+            // Display shift days
+            if (this.WorkShiftDays != null)
+            {
+                foreach (var shiftDay in this.WorkShiftDays)
+                {
+                    string dayNameTag = $"{shiftDay.DayName}-{shiftDay.OrderNum}";
+
+                    foreach (var daysCheckBoxControl in this.GroupPanelShiftDays.Controls)
+                    {
+                        if (daysCheckBoxControl is CheckBox)
+                        {
+                            if (((CheckBox)daysCheckBoxControl).Tag.ToString() == dayNameTag)
+                            {
+                                ((CheckBox)daysCheckBoxControl).Checked = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

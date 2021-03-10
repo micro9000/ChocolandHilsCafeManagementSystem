@@ -123,11 +123,13 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.Anchor = AnchorStyles.None;
 
             controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
+            controlToDisplay.WorkShifts = _workShiftController.GetAll().Data;
             // TODO: add the existing emp. govt. ids from our database and use the CustomModels -> EmployeeGovtIdCardTempModel.cs
 
             // event added
             controlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
             controlToDisplay.PropertyChanged += this.OnEmployeeNumberEnter;
+            controlToDisplay.WorkShiftSelected += HandleSelectedWorkShiftToGetOtherInfo;
 
             this.panelContainer.Controls.Add(controlToDisplay);
         }
@@ -160,6 +162,21 @@ namespace Main.Forms.EmployeeManagementForms
             {
                 MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+
+        private void HandleSelectedWorkShiftToGetOtherInfo(object sender, EventArgs e)
+        {
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            long selectedWorkShiftId = employeeCRUDControlObj.SelectedShiftId;
+
+            if (selectedWorkShiftId > 0)
+            {
+                var shiftDays = _employeeShiftDayData.GetByShiftId(selectedWorkShiftId);
+                employeeCRUDControlObj.WorkShiftDays = shiftDays;
+                employeeCRUDControlObj.DisplayWorkShiftDays();
+            }
+
         }
 
         private void OnEmployeeNumberEnter(object sender, PropertyChangedEventArgs e)

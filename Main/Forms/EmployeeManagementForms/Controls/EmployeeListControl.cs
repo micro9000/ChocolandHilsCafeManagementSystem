@@ -79,7 +79,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             if (Employees != null)
             {
                 this.DGVEmployeeList.Rows.Clear();
-                this.DGVEmployeeList.ColumnCount = 10;
+                this.DGVEmployeeList.ColumnCount = 11;
 
                 this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber";
                 this.DGVEmployeeList.Columns[0].HeaderText = "Employee #";
@@ -106,11 +106,15 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVEmployeeList.Columns[7].Name = "DateHire";
                 this.DGVEmployeeList.Columns[7].HeaderText = "Date hire";
 
-                this.DGVEmployeeList.Columns[8].Name = "CreatedAt";
-                this.DGVEmployeeList.Columns[8].HeaderText = "Created At";
+                this.DGVEmployeeList.Columns[8].Name = "Shift";
+                this.DGVEmployeeList.Columns[8].HeaderText = "Shift";
 
-                this.DGVEmployeeList.Columns[9].Name = "UpdatedAt";
-                this.DGVEmployeeList.Columns[9].HeaderText = "Updated At";
+                this.DGVEmployeeList.Columns[9].Name = "CreatedAt";
+                this.DGVEmployeeList.Columns[9].HeaderText = "Created At";
+
+                this.DGVEmployeeList.Columns[10].Name = "UpdatedAt";
+                this.DGVEmployeeList.Columns[10].HeaderText = "Updated At";
+
 
                 DataGridViewImageColumn btnViewDetailsImg = new DataGridViewImageColumn();
                 btnViewDetailsImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -131,8 +135,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[5].Value = employee.EmailAddress;
                     row.Cells[6].Value = employee.BranchAssign;
                     row.Cells[7].Value = employee.DateHire.ToShortDateString();
-                    row.Cells[8].Value = employee.CreatedAt.ToShortDateString();
-                    row.Cells[9].Value = employee.UpdatedAt.ToShortDateString();
+                    row.Cells[8].Value = employee.Shift.Shift;
+                    row.Cells[9].Value = employee.CreatedAt.ToShortDateString();
+                    row.Cells[10].Value = employee.UpdatedAt.ToShortDateString();
                     DGVEmployeeList.Rows.Add(row);
                 }
             }

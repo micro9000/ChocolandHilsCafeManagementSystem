@@ -112,15 +112,23 @@ namespace EntitiesShared.EmployeeManagement
             set { dateHire = value; }
         }
 
+        private long shiftId;
 
-        private EmployeeShiftScheduleModel currentShiftSchedule = new EmployeeShiftScheduleModel();
-
-        public EmployeeShiftScheduleModel CurrentShiftSchedule
+        public long ShiftId
         {
-            get { return currentShiftSchedule; }
-            set { currentShiftSchedule = value; }
+            get { return shiftId; }
+            set { shiftId = value; }
         }
 
+
+        private EmployeeShiftModel shift;
+        [Write(false)]
+        [Computed]
+        public EmployeeShiftModel Shift
+        {
+            get { return shift; }
+            set { shift = value; }
+        }
 
     }
 }

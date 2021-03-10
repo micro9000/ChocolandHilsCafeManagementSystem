@@ -102,15 +102,16 @@ CREATE TABLE IF NOT EXISTS Employees(
     dateHire DATE NOT NULL,
     empNumYear CHAR(4),
     position VARCHAR(50),
+    shiftId BIGINT NOT NULL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
+ALTER TABLE Employees ADD CONSTRAINT employees_ibfk_1 FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id);
 -- ALTER TABLE Employees
 -- DROP FOREIGN KEY employees_ibfk_1;
--- ALTER TABLE Employees
--- DROP COLUMN shiftId;
 
 SELECT * FROM Employees;
 
@@ -174,6 +175,14 @@ CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
 )ENGINE=INNODB;
 
 SELECT * FROM EmployeeShiftSchedules;
+
+SELECT * FROM EmployeeShiftSchedules
+WHERE isDeleted=false AND isDone=false AND employeeNumber='20190001' AND 
+startSchedDate <= '2021-01-01' AND endSchedDate >= '2024-03-03';
+
+SELECT * FROM EmployeeShiftSchedules
+WHERE isDeleted=false AND isDone=false AND employeeNumber=@EmployeeNumber AND 
+startSchedDate <= @SchedDate AND endSchedDate >= @SchedDate
 
 -- SELECT DATE_ADD("2017-06-15", INTERVAL 10 HOUR); 
 

@@ -188,9 +188,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.CboxDisable.Checked = this.EmployeeShiftToAddUpdate.IsActive == false;
 
                 // Display shift days
-                if (this.employeeShiftDaysToAddUpdate != null)
+                if (this.EmployeeShiftDaysToAddUpdate != null)
                 {
-                    foreach (var shiftDay in this.employeeShiftDaysToAddUpdate)
+                    foreach (var shiftDay in this.EmployeeShiftDaysToAddUpdate)
                     {
                         string dayNameTag = $"{shiftDay.DayName}-{shiftDay.OrderNum}";
 
