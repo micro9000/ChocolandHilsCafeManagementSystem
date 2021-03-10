@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -38,8 +39,24 @@ namespace Main
             if (signResults.IsSuccess)
             {
                 _sessions.CurrentLoggedInUser = signResults.Data;
-                _mainFrm.Show();
-                this.Hide();
+
+                var checkedButton = GPanelChooseTerminal.Controls.OfType<RadioButton>()
+                                      .FirstOrDefault(r => r.Checked);
+
+
+                if (checkedButton == null)
+                {
+                    MessageBox.Show("Kindly choose application you are going to use", "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+                MessageBox.Show(checkedButton.Name);
+
+                if (checkedButton.Name == "RBtnAdminDashboard")
+                {
+                    _mainFrm.Show();
+                    this.Hide();
+                }
+
             }
             else
             {
@@ -64,6 +81,12 @@ namespace Main
                 Login();
                 e.Handled = true;
             }
+        }
+
+        private void BtnOpenAttendanceTerminal_Click(object sender, EventArgs e)
+        {
+            AttendanceTerminalForm attendanceTerminalFrm = new AttendanceTerminalForm();
+            attendanceTerminalFrm.Show();
         }
     }
 }

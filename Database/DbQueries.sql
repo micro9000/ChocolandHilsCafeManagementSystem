@@ -208,20 +208,20 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
 CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
+    shiftId BIGINT NOT NULL,
 	workDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    shiftSchedId BIGINT NOT NULL,
-    timeIn1 DATETIME,
-    timeOut1 DATETIME, -- noon break (matic based on timeout2) , 12:00NN, based on shiftsched:breaktime
-    timeIn2 DATETIME, -- noon time-in (matic on timeout2) : 01:00PM, based on shiftsched:breaktime
-    timeOut2 DATETIME, -- 
+    timeIn DATETIME,
+    timeOut DATETIME, -- 
     lateMins DECIMAL, -- number of minutes
     underTimeMins DECIMAL, -- number of minutes
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(shiftSchedId) REFERENCES EmployeeShiftSchedules(id)
+    FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
+
+SELECT * FROM EmployeeAttendance;
 
 SELECT TIME_FORMAT("08:30:00", "%H") as hrs, TIME_FORMAT("08:30:00", "%i") as mins;
 SELECT TIME_FORMAT("17:30:00", "%H.%i");
@@ -342,6 +342,8 @@ CREATE TABLE IF NOT EXISTS Users(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+SELECT * FROM Users;
 
 CREATE TABLE IF NOT EXISTS UserRoles(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

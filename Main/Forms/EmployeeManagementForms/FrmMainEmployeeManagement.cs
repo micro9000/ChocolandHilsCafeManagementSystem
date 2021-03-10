@@ -736,6 +736,5 @@ namespace Main.Forms.EmployeeManagementForms
 
 
         #endregion
-
     }
 }

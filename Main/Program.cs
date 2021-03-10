@@ -53,17 +53,17 @@ namespace Main
 
             using (ServiceProvider serviceProvider = services.BuildServiceProvider())
             {
-                //var loginFrm = serviceProvider.GetRequiredService<LoginFrm>();
-                var mainFrm = serviceProvider.GetRequiredService<MainFrm>();
+                var loginFrm = serviceProvider.GetRequiredService<LoginFrm>();
+                //var mainFrm = serviceProvider.GetRequiredService<MainFrm>();
                 var logger = serviceProvider.GetRequiredService<ILogger<MainFrm>>();
 
                 try
                 {
-                    Application.Run(mainFrm);
+                    Application.Run(loginFrm);
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Unexpected application error, kindly visit system logs and report this error to developer: " + ex.Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     logger.LogError($"{ex.Message} {ex.StackTrace}");
                 }
             }
@@ -81,9 +81,19 @@ namespace Main
             return Confbuilder;
         }
 
+
+        private static void UnhandleExceptionHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception e = (Exception)args.ExceptionObject;
+            MessageBox.Show($"Unhandle exception caught: { e.Message } - Runtime terminating: {args.IsTerminating}");
+        }
+
+
         private static void ConfigureServices (ServiceCollection services, IConfigurationRoot confBuilder)
         {
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandleExceptionHandler);
+            services.AddAutoMapper(currentDomain.GetAssemblies());
            
             // settings
             services.Configure<DBConnectionSettings>(confBuilder.GetSection(nameof(DBConnectionSettings)));
