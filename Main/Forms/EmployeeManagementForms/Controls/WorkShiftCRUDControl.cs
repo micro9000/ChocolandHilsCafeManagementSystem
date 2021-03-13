@@ -424,7 +424,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void DGVWorkShifts_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Update button
-            if ((e.ColumnIndex == 7) && e.RowIndex > -1)
+            if (e.RowIndex > -1 && (e.ColumnIndex == 7))
             {
                 if (DGVWorkShifts.CurrentRow != null)
                 {
@@ -439,7 +439,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
 
             // Delete button
-            if ((e.ColumnIndex == 8) && e.RowIndex > -1)
+            if (e.RowIndex > -1 && (e.ColumnIndex == 8))
             {
                 if (DGVWorkShifts.CurrentRow != null)
                 {

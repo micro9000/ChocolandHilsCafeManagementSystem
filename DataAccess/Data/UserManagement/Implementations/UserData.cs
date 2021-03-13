@@ -19,12 +19,28 @@ namespace DataAccess.Data.UserManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public UserModel GetUserByEmployeeNumber(string empNumber)
+        public List<UserModel> GetAllNotDeleted()
+        {
+            string query = @"SELECT * FROM Users WHERE isDeleted=False";
+
+            return this.GetAll(query);
+        }
+
+        public List<UserModel> Search(string searchStr)
         {
             string query = @"SELECT * FROM Users 
-                            WHERE isDeleted=False AND isActive=True AND employeeNumber=@EmployeeNumber";
+                            WHERE isDeleted=False AND 
+                                    (userName LIKE @SearchStr OR fullName LIKE @SearchStr)";
 
-            return this.GetFirstOrDefault(query, new { EmployeeNumber = empNumber });
+            return this.GetAll(query, new { SearchStr = $"%{searchStr}%" });
+        }
+
+        public UserModel GetUserByUserName(string userName)
+        {
+            string query = @"SELECT * FROM Users 
+                            WHERE isDeleted=False AND userName=@UserName";
+
+            return this.GetFirstOrDefault(query, new { UserName = userName });
         }
     }
 }

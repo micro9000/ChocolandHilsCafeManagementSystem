@@ -20,14 +20,15 @@ namespace DataAccess.Data.UserManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public List<UserRoleModel> GetUserRoles(long userId)
+        public UserRoleModel GetUserRole(long userId)
         {
             string query = @"SELECT *
                             FROM UserRoles AS UR
                             JOIN Roles AS R ON R.id = UR.roleId
-                            WHERE UR.isDeleted=False AND UR.userId=@UserId";
+                            WHERE UR.isDeleted=False AND UR.userId=@UserId
+                            ORDER BY UR.id DESC LIMIT 1";
 
-            List<UserRoleModel> results = new List<UserRoleModel>();
+            UserRoleModel results = new UserRoleModel();
 
             using (var conn = _dbConnFactory.CreateConnection())
             {
@@ -36,7 +37,7 @@ namespace DataAccess.Data.UserManagement.Implementations
                             UR.Role = R;
                             return UR;
                         }, 
-                        new { UserId = userId }).ToList();
+                        new { UserId = userId }).ToList().FirstOrDefault();
                 conn.Close();
             }
 

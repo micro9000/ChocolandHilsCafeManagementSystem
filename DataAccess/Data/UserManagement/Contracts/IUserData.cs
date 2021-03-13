@@ -10,6 +10,8 @@ namespace DataAccess.Data.UserManagement.Contracts
 {
     public interface IUserData : IDataManagerCRUD<UserModel>
     {
-        UserModel GetUserByEmployeeNumber(string empNumber);
+        List<UserModel> GetAllNotDeleted();
+        List<UserModel> Search(string searchStr);
+        UserModel GetUserByUserName(string userName);
     }
 }

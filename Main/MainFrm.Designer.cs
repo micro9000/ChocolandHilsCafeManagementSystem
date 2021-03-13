@@ -31,6 +31,7 @@ namespace Main
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrm));
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.BtnUserMgnment = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.LblCurrentUserRoles = new System.Windows.Forms.Label();
             this.LblCurrentUserName = new System.Windows.Forms.Label();
@@ -60,6 +61,7 @@ namespace Main
             // 
             this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
             this.panelSidebar.Controls.Add(this.BtnOtherData);
+            this.panelSidebar.Controls.Add(this.BtnUserMgnment);
             this.panelSidebar.Controls.Add(this.panel1);
             this.panelSidebar.Controls.Add(this.BtnSettingsSystem);
             this.panelSidebar.Controls.Add(this.BtnSalesReportSystem);
@@ -72,6 +74,28 @@ namespace Main
             this.panelSidebar.Name = "panelSidebar";
             this.panelSidebar.Size = new System.Drawing.Size(220, 641);
             this.panelSidebar.TabIndex = 0;
+            // 
+            // BtnUserMgnment
+            // 
+            this.BtnUserMgnment.BackColor = System.Drawing.Color.Transparent;
+            this.BtnUserMgnment.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnUserMgnment.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnUserMgnment.FlatAppearance.BorderSize = 0;
+            this.BtnUserMgnment.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnUserMgnment.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnUserMgnment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnUserMgnment.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnUserMgnment.ForeColor = System.Drawing.Color.White;
+            this.BtnUserMgnment.Image = global::Main.Properties.Resources.icons8_user_male_30;
+            this.BtnUserMgnment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnUserMgnment.Location = new System.Drawing.Point(0, 302);
+            this.BtnUserMgnment.Name = "BtnUserMgnment";
+            this.BtnUserMgnment.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.BtnUserMgnment.Size = new System.Drawing.Size(220, 47);
+            this.BtnUserMgnment.TabIndex = 7;
+            this.BtnUserMgnment.Text = "Users";
+            this.BtnUserMgnment.UseVisualStyleBackColor = false;
+            this.BtnUserMgnment.Click += new System.EventHandler(this.BtnUserMgnment_Click);
             // 
             // panel1
             // 
@@ -352,11 +376,11 @@ namespace Main
             this.BtnOtherData.ForeColor = System.Drawing.Color.White;
             this.BtnOtherData.Image = ((System.Drawing.Image)(resources.GetObject("BtnOtherData.Image")));
             this.BtnOtherData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnOtherData.Location = new System.Drawing.Point(0, 302);
+            this.BtnOtherData.Location = new System.Drawing.Point(0, 349);
             this.BtnOtherData.Name = "BtnOtherData";
             this.BtnOtherData.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.BtnOtherData.Size = new System.Drawing.Size(220, 47);
-            this.BtnOtherData.TabIndex = 7;
+            this.BtnOtherData.TabIndex = 8;
             this.BtnOtherData.Text = "Others";
             this.BtnOtherData.UseVisualStyleBackColor = false;
             this.BtnOtherData.Click += new System.EventHandler(this.BtnOtherData_Click);
@@ -407,6 +431,7 @@ namespace Main
         private System.Windows.Forms.Button BtnUserLogout;
         private System.Windows.Forms.Label LblRenderedFormTitle;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnUserMgnment;
         private System.Windows.Forms.Button BtnOtherData;
     }
 }

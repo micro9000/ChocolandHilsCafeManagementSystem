@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.UserManagement
 {
     [Table("UserRoles")]
-    public class UserRoleModel
+    public class UserRoleModel : BaseModel
     {
         private long userId;
 
@@ -18,9 +18,9 @@ namespace EntitiesShared.UserManagement
             set { userId = value; }
         }
 
-        private int roleId;
+        private long roleId;
 
-        public int RoleId
+        public long RoleId
         {
             get { return roleId; }
             set { roleId = value; }

@@ -1,5 +1,4 @@
 ﻿using Main.Controllers.UserManagementControllers;
-using Main.UserManagementForms;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -49,7 +48,7 @@ namespace Main
                     MessageBox.Show("Kindly choose application you are going to use", "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
-                MessageBox.Show(checkedButton.Name);
+                //MessageBox.Show(checkedButton.Name);
 
                 if (checkedButton.Name == "RBtnAdminDashboard")
                 {
@@ -85,8 +84,8 @@ namespace Main
 
         private void BtnOpenAttendanceTerminal_Click(object sender, EventArgs e)
         {
-            AttendanceTerminalForm attendanceTerminalFrm = new AttendanceTerminalForm();
-            attendanceTerminalFrm.Show();
+            //AttendanceTerminalForm attendanceTerminalFrm = new AttendanceTerminalForm();
+            //attendanceTerminalFrm.Show();
         }
     }
 }

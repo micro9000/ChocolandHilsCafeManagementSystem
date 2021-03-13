@@ -10,19 +10,16 @@ namespace EntitiesShared.UserManagement
     [Table("Users")]
     public class UserModel : BaseModel
     {
-        public string EmployeeNumber { get; set; }
-        public string passwordSha512 { get; set; }
+        public string UserName { get; set; }
+
+        public string FullName { get; set; }
+
+        public string PasswordSha512 { get; set; }
 
         [Write(false)]
         [Computed]
-        public List<UserRoleModel> Roles { get; set; }
+        public UserRoleModel Role { get; set; }
 
-        private bool isActive;
-
-        public bool IsActive
-        {
-            get { return isActive; }
-            set { isActive = value; }
-        }
+        public bool IsActive { get; set; }
     }
 }

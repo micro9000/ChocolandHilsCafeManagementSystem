@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static EntitiesShared.StaticData;
 
 namespace DataAccess.Data.UserManagement.Implementations
 {
@@ -17,6 +18,13 @@ namespace DataAccess.Data.UserManagement.Implementations
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
+        }
+
+
+        public RoleModel GetByRolekey (UserRole roleKey)
+        {
+            string query = "SELECT * FROM Roles WHERE rolekey=@RoleKey";
+            return this.GetFirstOrDefault(query, new { RoleKey = roleKey.ToString() });
         }
     }
 }

@@ -11,8 +11,7 @@ namespace EntitiesShared
         public enum UserRole
         {
             normal,
-            admin,
-            root
+            admin
         }
 
         public enum EmployeeBenefitsPaySched

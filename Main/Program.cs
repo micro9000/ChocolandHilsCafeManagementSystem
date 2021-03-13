@@ -1,6 +1,5 @@
 using DapperGenericDataManager;
 using DataAccess;
-using Main.UserManagementForms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -30,6 +29,8 @@ using Main.Controllers.OtherDataController;
 using Main.Controllers.OtherDataController.ControllerInterface;
 using DataAccess.Data.OtherDataManagement.Contracts;
 using DataAccess.Data.OtherDataManagement.Implementations;
+using Main.Forms.UserManagementForms;
+using Main.Controllers.UserManagementControllers.Validator;
 
 namespace Main
 {
@@ -145,6 +146,7 @@ namespace Main
             // Other Data:
             // validator
             services.AddTransient<LeaveTypeAddUpdateValidator>();
+            services.AddTransient<UserAddUpdateValidator>();
             services.AddTransient<GovernmentAgencyAddUpdateValidator>();
             // Controllers
             services.AddTransient<ILeaveTypeController, LeaveTypeController>();
@@ -156,15 +158,10 @@ namespace Main
 
             // forms
             services.AddTransient<MainFrm>();
-            services.AddTransient<MainUserMgnFrm>();
+            services.AddTransient<FrmUserManagement>();
             services.AddTransient<LoginFrm>();
-
-            // Employee Management forms
             services.AddTransient<FrmMainEmployeeManagement>();
-
-            // Other data form
             services.AddTransient<FrmOtherData>();
-
             services.AddTransient<FrmPayroll>();
 
 
