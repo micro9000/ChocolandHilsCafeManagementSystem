@@ -294,6 +294,11 @@ namespace Main.Controllers.UserManagementControllers
                         result.IsSuccess = true;
                         result.Messages.Add("User found.");
                     }
+                    else
+                    {
+                        result.IsSuccess = false;
+                        result.Messages.Add("Invalid password.");
+                    }
                 }
             }catch(Exception ex)
             {

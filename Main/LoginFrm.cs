@@ -35,7 +35,7 @@ namespace Main
         {
             var signResults = _userController.SignIn(this.TbxUsername.Text, this.TbxPassword.Text);
 
-            if (signResults.IsSuccess)
+            if (signResults != null && signResults.IsSuccess)
             {
                 _sessions.CurrentLoggedInUser = signResults.Data;
 
@@ -48,23 +48,26 @@ namespace Main
                     MessageBox.Show("Kindly choose application you are going to use", "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
-                //MessageBox.Show(checkedButton.Name);
-
+                
                 if (checkedButton.Name == "RBtnAdminDashboard")
                 {
-                    _mainFrm.Show();
-                    this.Hide();
+                    if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.admin)
+                    {
+                        _mainFrm.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unauthorized to use admin dashboard", "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
                 }
 
             }
             else
             {
-                string messages = "";
-                foreach(var msg in signResults.Messages)
-                {
-                    messages += msg + " | ";
-                }
-                MessageBox.Show(messages);
+                string messages = string.Join(",", signResults.Messages.ToArray());
+
+                MessageBox.Show(messages, "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
