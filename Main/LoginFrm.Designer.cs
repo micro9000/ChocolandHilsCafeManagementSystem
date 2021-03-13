@@ -59,7 +59,7 @@ namespace Main
             this.TbxUsername.Name = "TbxUsername";
             this.TbxUsername.Size = new System.Drawing.Size(257, 29);
             this.TbxUsername.TabIndex = 1;
-            this.TbxUsername.Text = "20210001";
+            this.TbxUsername.Text = "admin01";
             // 
             // TbxPassword
             // 
@@ -69,7 +69,7 @@ namespace Main
             this.TbxPassword.PasswordChar = '*';
             this.TbxPassword.Size = new System.Drawing.Size(257, 29);
             this.TbxPassword.TabIndex = 2;
-            this.TbxPassword.Text = "Welcome2021";
+            this.TbxPassword.Text = "raniel";
             this.TbxPassword.UseSystemPasswordChar = true;
             this.TbxPassword.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TbxPassword_KeyUp);
             // 

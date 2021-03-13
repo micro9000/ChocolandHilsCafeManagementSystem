@@ -319,13 +319,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void BtnSaveWorkShift_Click(object sender, EventArgs e)
         {
             var shiftStartTime = this.DTPickerShiftStartTime.Value;
+            decimal breakTimeHrs = GetHrInSelectedBreakTimeHrs();
             decimal numberOfHrs = this.TboxShiftNumberOfHrs.Value;
 
-            int wholePartFrmHr = (int)decimal.Truncate(numberOfHrs);
-            int fractionPartFrmHr = (int)numberOfHrs - wholePartFrmHr;
+            decimal wholeWorkingHrs = numberOfHrs + breakTimeHrs;
 
-            var shiftEndTime = shiftStartTime.AddHours(wholePartFrmHr);
-            shiftEndTime = shiftEndTime.AddMinutes(fractionPartFrmHr);
+            decimal wholePartFrmHr = decimal.Truncate(wholeWorkingHrs); // include hrs from breaktime
+            decimal fractionPartFrmHr = wholeWorkingHrs - wholePartFrmHr;
+
+            var shiftEndTime = shiftStartTime.AddHours((double)wholePartFrmHr);
+            shiftEndTime = shiftEndTime.AddMinutes((double)fractionPartFrmHr);
 
             CollectCheckedDays();
 
@@ -336,7 +339,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 EndTime = DateTime.Parse(shiftEndTime.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
                 NumberOfHrs = numberOfHrs,
                 BreakTime = DateTime.Parse(this.DTPickerShiftBreaktime.Value.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
-                BreakTimeHrs = GetHrInSelectedBreakTimeHrs(),
+                BreakTimeHrs = breakTimeHrs,
                 IsActive = this.CboxDisable.Checked == true ? false : true
             };
 
