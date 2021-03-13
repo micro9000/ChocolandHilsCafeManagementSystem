@@ -31,6 +31,7 @@ using DataAccess.Data.OtherDataManagement.Contracts;
 using DataAccess.Data.OtherDataManagement.Implementations;
 using Main.Forms.UserManagementForms;
 using Main.Controllers.UserManagementControllers.Validator;
+using Main.Forms.AttendanceTerminal;
 
 namespace Main
 {
@@ -163,6 +164,7 @@ namespace Main
             services.AddTransient<FrmMainEmployeeManagement>();
             services.AddTransient<FrmOtherData>();
             services.AddTransient<FrmPayroll>();
+            services.AddTransient<AttendanceTerminalForm>();
 
 
             //Add Serilog

@@ -25,7 +25,7 @@ SELECT * FROM LeaveTypes WHERE isDeleted=False AND isActive=true;
 CREATE TABLE IF NOT EXISTS EmployeeShifts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     shift VARCHAR(50),
-    startTime DATETIME, -- we just need the time (ignore the date)
+    startTime DATETIME, -- we only need the time (ignore the date)
     endTime DATETIME, -- same with this column
     numberOfHrs DECIMAL(5,2), -- can be 7.5 hrs
     breakTime DATETIME,
@@ -36,6 +36,10 @@ CREATE TABLE IF NOT EXISTS EmployeeShifts(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+alter table EmployeeShifts
+add column earlyTimeOut DATETIME; -- half day for first 4 or 6 hrs
+alter table EmployeeShifts
+add column lateTimeIn DATETIME; -- half day for last 4 or 6 hrs
 
 SELECT * FROM EmployeeShifts;
 
@@ -209,11 +213,19 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
     shiftId BIGINT NOT NULL,
-	workDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    timeIn DATETIME,
-    timeOut DATETIME, -- 
-    lateMins DECIMAL, -- number of minutes
-    underTimeMins DECIMAL, -- number of minutes
+	workDate DATE NOT NULL,
+    firstTimeIn DATETIME,
+    firstTimeOut DATETIME,
+    firstHalfHrs DECIMAL,-- in minutes
+    firstHalfLateMins DECIMAL, -- put value upon time-in
+    firstHalfUnderTimeMins DECIMAL, -- put value upon time-out
+    secondTimeIn DATETIME,
+    secondTimeOut DATETIME,
+    secondHalfHrs DECIMAL, -- in minutes
+    secondHalfLateMins DECIMAL,
+    secondHalfUnderTimeMins DECIMAL,
+    overTimeMins DECIMAL,
+    isTimeOutProvided BOOLEAN DEFAULT false,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
@@ -221,7 +233,17 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
 
+
+SELECT * 
+FROM EmployeeAttendance AS EA
+JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
+JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber;
+
+
 SELECT * FROM EmployeeAttendance;
+
+SELECT * FROM EmployeeAttendance 
+WHERE employeeNumber='20190001' AND workDate='2021-03-13';
 
 SELECT TIME_FORMAT("08:30:00", "%H") as hrs, TIME_FORMAT("08:30:00", "%i") as mins;
 SELECT TIME_FORMAT("17:30:00", "%H.%i");

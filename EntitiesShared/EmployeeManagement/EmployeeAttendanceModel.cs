@@ -18,6 +18,16 @@ namespace EntitiesShared.EmployeeManagement
             set { employeeNumber = value; }
         }
 
+        private EmployeeModel employee;
+        [Write(false)]
+        [Computed]
+        public EmployeeModel Employee
+        {
+            get { return employee; }
+            set { employee = value; }
+        }
+
+
         private long shiftId;
 
         public long ShiftId
@@ -27,7 +37,8 @@ namespace EntitiesShared.EmployeeManagement
         }
 
         private EmployeeShiftModel shift;
-
+        [Write(false)]
+        [Computed]
         public EmployeeShiftModel Shift
         {
             get { return shift; }
@@ -43,37 +54,105 @@ namespace EntitiesShared.EmployeeManagement
             set { workDate = value; }
         }
 
-        private DateTime timeIn;
+        private DateTime firstTimeIn;
 
-        public DateTime TimeIn
+        public DateTime FirstTimeIn
         {
-            get { return timeIn; }
-            set { timeIn = value; }
+            get { return firstTimeIn; }
+            set { firstTimeIn = value; }
         }
 
-        private DateTime timeOut;
+        private DateTime firstTimeOut;
 
-        public DateTime TimeOut
+        public DateTime FirstTimeOut
         {
-            get { return timeOut; }
-            set { timeOut = value; }
+            get { return firstTimeOut; }
+            set { firstTimeOut = value; }
+        }
+
+        private decimal firstHalfHrs;
+
+        public decimal FirstHalfHrs
+        {
+            get { return firstHalfHrs; }
+            set { firstHalfHrs = value; }
+        }
+
+        private decimal firstHalfLateMins;
+
+        public decimal FirstHalfLateMins
+        {
+            get { return firstHalfLateMins; }
+            set { firstHalfLateMins = value; }
+        }
+
+        private decimal firstHalfUnderTimeMins;
+
+        public decimal FirstHalfUnderTimeMins
+        {
+            get { return firstHalfUnderTimeMins; }
+            set { firstHalfUnderTimeMins = value; }
         }
 
 
-        private decimal lateMins;
 
-        public decimal LateMins
+        private DateTime secondTimeIn;
+
+        public DateTime SecondTimeIn
         {
-            get { return lateMins; }
-            set { lateMins = value; }
+            get { return secondTimeIn; }
+            set { secondTimeIn = value; }
         }
 
-        private decimal underTimeMins;
+        private DateTime secondTimeOut;
 
-        public decimal UnderTimeMins
+        public DateTime SecondTimeOut
         {
-            get { return underTimeMins; }
-            set { underTimeMins = value; }
+            get { return secondTimeOut; }
+            set { secondTimeOut = value; }
         }
+
+        private decimal secondHalfHrs;
+
+        public decimal SecondHalfHrs
+        {
+            get { return secondHalfHrs; }
+            set { secondHalfHrs = value; }
+        }
+
+
+        private decimal secondHalfLateMins;
+
+        public decimal SecondHalfLateMins
+        {
+            get { return secondHalfLateMins; }
+            set { secondHalfLateMins = value; }
+        }
+
+        private decimal secondHalfUnderTimeMins;
+
+        public decimal SecondHalfUnderTimeMins
+        {
+            get { return secondHalfUnderTimeMins; }
+            set { secondHalfUnderTimeMins = value; }
+        }
+
+        private decimal overTimeMins;
+
+        public decimal OverTimeMins
+        {
+            get { return overTimeMins; }
+            set { overTimeMins = value; }
+        }
+
+        private bool isTimeOutProvided;
+
+        public bool IsTimeOutProvided
+        {
+            get { return isTimeOutProvided; }
+            set { isTimeOutProvided = value; }
+        }
+
+
     }
 }

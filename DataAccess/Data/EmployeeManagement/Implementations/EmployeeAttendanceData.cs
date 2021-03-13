@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace DataAccess.Data.EmployeeManagement.Implementations
 {
@@ -19,67 +20,39 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public List<EmployeeAttendanceModel> GetAllByEmployeeNumberAndWorkDateRange(string employeeNumber, DateTime startDate, DateTime endDate)
+        public List<EmployeeAttendanceModel> GetAllAttendanceRecordByWorkDate (DateTime workDate)
         {
-            string query = @"SELECT * FROM EmployeeAttendance
-                             WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND
-                                workDate BETWEEN @StartDate AND @EndDate";
+            string query = @"SELECT * 
+                                FROM EmployeeAttendance AS EA
+                                JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
+                                JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
+                                WHERE workDate=@WorkDate";
 
-            return this.GetAll(query, new {
-                EmployeeNumber = employeeNumber,
-                StartDate = startDate,
-                EndDate = endDate
-            });
+            List<EmployeeAttendanceModel> results = new List<EmployeeAttendanceModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeAttendanceModel, EmployeeShiftModel, EmployeeModel, EmployeeAttendanceModel>(query,
+                        (EA, ES, E) => {
+
+                            EA.Shift = ES;
+                            EA.Employee = E;
+
+                            return EA;
+                        }, new { WorkDate = workDate.ToString("yyyy/MM/dd") }).ToList();
+                conn.Close();
+            }
+
+            return results;
         }
 
-        public List<EmployeeAttendanceModel> GetAllByShiftIdAndWorkDateRange(long shiftSchedId, DateTime startDate, DateTime endDate)
+
+        public EmployeeAttendanceModel GetEmployeeAttendanceByWorkDate(string employeeNumber, DateTime workDate)
         {
-            string query = @"SELECT * FROM EmployeeAttendance
-                             WHERE isDeleted=false AND shiftSchedId=@ShiftSchedId AND
-                                workDate BETWEEN @StartDate AND @EndDate";
+            string query = @"SELECT * FROM EmployeeAttendance 
+                                WHERE employeeNumber=@EmployeeNumber AND workDate=@WorkDate";
 
-            return this.GetAll(query, new
-            {
-                ShiftSchedId = shiftSchedId,
-                StartDate = startDate,
-                EndDate = endDate
-            });
-        }
-
-        public List<EmployeeAttendanceModel> GetAllByWorkDateRange(DateTime startDate, DateTime endDate)
-        {
-            string query = @"SELECT * FROM EmployeeAttendance
-                             WHERE isDeleted=false AND workDate BETWEEN @StartDate AND @EndDate";
-
-            return this.GetAll(query, new
-            {
-                StartDate = startDate,
-                EndDate = endDate
-            });
-        }
-
-        public List<EmployeeAttendanceModel> GetAllEmployeesWithUndertimeByWorkDateRange(DateTime startDate, DateTime endDate)
-        {
-            string query = @"SELECT * FROM EmployeeAttendance
-                             WHERE isDeleted=false AND lateMins > 0 AND workDate BETWEEN @StartDate AND @EndDate";
-
-            return this.GetAll(query, new
-            {
-                StartDate = startDate,
-                EndDate = endDate
-            });
-        }
-
-        public List<EmployeeAttendanceModel> GetAllLateEmployeesByWorkDateRange(DateTime startDate, DateTime endDate)
-        {
-            string query = @"SELECT * FROM EmployeeAttendance
-                             WHERE isDeleted=false AND underTimeMins > 0 AND workDate BETWEEN @StartDate AND @EndDate";
-
-            return this.GetAll(query, new
-            {
-                StartDate = startDate,
-                EndDate = endDate
-            });
+            return this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber, WorkDate = workDate.ToString("yyyy/MM/dd") });
         }
     }
 }

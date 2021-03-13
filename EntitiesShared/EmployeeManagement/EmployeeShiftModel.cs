@@ -37,7 +37,6 @@ namespace EntitiesShared.EmployeeManagement
             set { endTime = value; }
         }
 
-
         private decimal numberOfHrs;
 
         public decimal NumberOfHrs
@@ -62,6 +61,24 @@ namespace EntitiesShared.EmployeeManagement
             get { return breakTimeHrs; }
             set { breakTimeHrs = value; }
         }
+
+
+        private DateTime earlyTimeOut;
+
+        public DateTime EarlyTimeOut
+        {
+            get { return earlyTimeOut; }
+            set { earlyTimeOut = value; }
+        }
+
+        private DateTime lateTimeIn;
+
+        public DateTime LateTimeIn
+        {
+            get { return lateTimeIn; }
+            set { lateTimeIn = value; }
+        }
+
 
         private bool isActive;
 

@@ -31,6 +31,7 @@ namespace Main
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrm));
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.BtnOtherData = new System.Windows.Forms.Button();
             this.BtnUserMgnment = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.LblCurrentUserRoles = new System.Windows.Forms.Label();
@@ -50,7 +51,7 @@ namespace Main
             this.LblRenderedFormTitle = new System.Windows.Forms.Label();
             this.panelMainBody = new System.Windows.Forms.Panel();
             this.EmployeeManagementToolStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.BtnOtherData = new System.Windows.Forms.Button();
+            this.BtnAttendanceTerminal = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelMainBanner.SuspendLayout();
@@ -60,6 +61,7 @@ namespace Main
             // panelSidebar
             // 
             this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.panelSidebar.Controls.Add(this.BtnAttendanceTerminal);
             this.panelSidebar.Controls.Add(this.BtnOtherData);
             this.panelSidebar.Controls.Add(this.BtnUserMgnment);
             this.panelSidebar.Controls.Add(this.panel1);
@@ -72,8 +74,30 @@ namespace Main
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelSidebar.Location = new System.Drawing.Point(0, 0);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(220, 641);
+            this.panelSidebar.Size = new System.Drawing.Size(229, 641);
             this.panelSidebar.TabIndex = 0;
+            // 
+            // BtnOtherData
+            // 
+            this.BtnOtherData.BackColor = System.Drawing.Color.Transparent;
+            this.BtnOtherData.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnOtherData.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnOtherData.FlatAppearance.BorderSize = 0;
+            this.BtnOtherData.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnOtherData.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnOtherData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnOtherData.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnOtherData.ForeColor = System.Drawing.Color.White;
+            this.BtnOtherData.Image = ((System.Drawing.Image)(resources.GetObject("BtnOtherData.Image")));
+            this.BtnOtherData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnOtherData.Location = new System.Drawing.Point(0, 349);
+            this.BtnOtherData.Name = "BtnOtherData";
+            this.BtnOtherData.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.BtnOtherData.Size = new System.Drawing.Size(229, 47);
+            this.BtnOtherData.TabIndex = 8;
+            this.BtnOtherData.Text = "Others";
+            this.BtnOtherData.UseVisualStyleBackColor = false;
+            this.BtnOtherData.Click += new System.EventHandler(this.BtnOtherData_Click);
             // 
             // BtnUserMgnment
             // 
@@ -91,7 +115,7 @@ namespace Main
             this.BtnUserMgnment.Location = new System.Drawing.Point(0, 302);
             this.BtnUserMgnment.Name = "BtnUserMgnment";
             this.BtnUserMgnment.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnUserMgnment.Size = new System.Drawing.Size(220, 47);
+            this.BtnUserMgnment.Size = new System.Drawing.Size(229, 47);
             this.BtnUserMgnment.TabIndex = 7;
             this.BtnUserMgnment.Text = "Users";
             this.BtnUserMgnment.UseVisualStyleBackColor = false;
@@ -107,7 +131,7 @@ namespace Main
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 518);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(220, 123);
+            this.panel1.Size = new System.Drawing.Size(229, 123);
             this.panel1.TabIndex = 0;
             // 
             // LblCurrentUserRoles
@@ -170,7 +194,7 @@ namespace Main
             this.BtnUserLogout.Location = new System.Drawing.Point(0, 76);
             this.BtnUserLogout.Name = "BtnUserLogout";
             this.BtnUserLogout.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnUserLogout.Size = new System.Drawing.Size(220, 47);
+            this.BtnUserLogout.Size = new System.Drawing.Size(229, 47);
             this.BtnUserLogout.TabIndex = 7;
             this.BtnUserLogout.Text = "Sign-out";
             this.BtnUserLogout.UseVisualStyleBackColor = false;
@@ -192,7 +216,7 @@ namespace Main
             this.BtnSettingsSystem.Location = new System.Drawing.Point(0, 255);
             this.BtnSettingsSystem.Name = "BtnSettingsSystem";
             this.BtnSettingsSystem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnSettingsSystem.Size = new System.Drawing.Size(220, 47);
+            this.BtnSettingsSystem.Size = new System.Drawing.Size(229, 47);
             this.BtnSettingsSystem.TabIndex = 6;
             this.BtnSettingsSystem.Text = "Settings";
             this.BtnSettingsSystem.UseVisualStyleBackColor = false;
@@ -213,7 +237,7 @@ namespace Main
             this.BtnSalesReportSystem.Location = new System.Drawing.Point(0, 208);
             this.BtnSalesReportSystem.Name = "BtnSalesReportSystem";
             this.BtnSalesReportSystem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnSalesReportSystem.Size = new System.Drawing.Size(220, 47);
+            this.BtnSalesReportSystem.Size = new System.Drawing.Size(229, 47);
             this.BtnSalesReportSystem.TabIndex = 5;
             this.BtnSalesReportSystem.Text = "Sales Report";
             this.BtnSalesReportSystem.UseVisualStyleBackColor = false;
@@ -234,7 +258,7 @@ namespace Main
             this.BtnInventorySystem.Location = new System.Drawing.Point(0, 161);
             this.BtnInventorySystem.Name = "BtnInventorySystem";
             this.BtnInventorySystem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnInventorySystem.Size = new System.Drawing.Size(220, 47);
+            this.BtnInventorySystem.Size = new System.Drawing.Size(229, 47);
             this.BtnInventorySystem.TabIndex = 4;
             this.BtnInventorySystem.Text = "Inventory";
             this.BtnInventorySystem.UseVisualStyleBackColor = false;
@@ -255,7 +279,7 @@ namespace Main
             this.BtnPayrollSystem.Location = new System.Drawing.Point(0, 114);
             this.BtnPayrollSystem.Name = "BtnPayrollSystem";
             this.BtnPayrollSystem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnPayrollSystem.Size = new System.Drawing.Size(220, 47);
+            this.BtnPayrollSystem.Size = new System.Drawing.Size(229, 47);
             this.BtnPayrollSystem.TabIndex = 3;
             this.BtnPayrollSystem.Text = "Payroll";
             this.BtnPayrollSystem.UseVisualStyleBackColor = false;
@@ -277,7 +301,7 @@ namespace Main
             this.BtnEmployeeManagementMenuItem.Location = new System.Drawing.Point(0, 67);
             this.BtnEmployeeManagementMenuItem.Name = "BtnEmployeeManagementMenuItem";
             this.BtnEmployeeManagementMenuItem.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnEmployeeManagementMenuItem.Size = new System.Drawing.Size(220, 47);
+            this.BtnEmployeeManagementMenuItem.Size = new System.Drawing.Size(229, 47);
             this.BtnEmployeeManagementMenuItem.TabIndex = 2;
             this.BtnEmployeeManagementMenuItem.Text = "Employees";
             this.BtnEmployeeManagementMenuItem.UseVisualStyleBackColor = false;
@@ -290,7 +314,7 @@ namespace Main
             this.panelMainBanner.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelMainBanner.Location = new System.Drawing.Point(0, 0);
             this.panelMainBanner.Name = "panelMainBanner";
-            this.panelMainBanner.Size = new System.Drawing.Size(220, 67);
+            this.panelMainBanner.Size = new System.Drawing.Size(229, 67);
             this.panelMainBanner.TabIndex = 0;
             // 
             // label1
@@ -310,9 +334,9 @@ namespace Main
             this.panelSecondaryBanner.Controls.Add(this.button1);
             this.panelSecondaryBanner.Controls.Add(this.LblRenderedFormTitle);
             this.panelSecondaryBanner.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelSecondaryBanner.Location = new System.Drawing.Point(220, 0);
+            this.panelSecondaryBanner.Location = new System.Drawing.Point(229, 0);
             this.panelSecondaryBanner.Name = "panelSecondaryBanner";
-            this.panelSecondaryBanner.Size = new System.Drawing.Size(884, 67);
+            this.panelSecondaryBanner.Size = new System.Drawing.Size(875, 67);
             this.panelSecondaryBanner.TabIndex = 1;
             // 
             // button1
@@ -344,7 +368,7 @@ namespace Main
             this.LblRenderedFormTitle.ForeColor = System.Drawing.Color.White;
             this.LblRenderedFormTitle.Location = new System.Drawing.Point(117, 21);
             this.LblRenderedFormTitle.Name = "LblRenderedFormTitle";
-            this.LblRenderedFormTitle.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.LblRenderedFormTitle.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.LblRenderedFormTitle.Size = new System.Drawing.Size(205, 30);
             this.LblRenderedFormTitle.TabIndex = 0;
             this.LblRenderedFormTitle.Text = "Rendered form title";
@@ -352,9 +376,9 @@ namespace Main
             // panelMainBody
             // 
             this.panelMainBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMainBody.Location = new System.Drawing.Point(220, 67);
+            this.panelMainBody.Location = new System.Drawing.Point(229, 67);
             this.panelMainBody.Name = "panelMainBody";
-            this.panelMainBody.Size = new System.Drawing.Size(884, 574);
+            this.panelMainBody.Size = new System.Drawing.Size(875, 574);
             this.panelMainBody.TabIndex = 2;
             // 
             // EmployeeManagementToolStrip
@@ -363,27 +387,27 @@ namespace Main
             this.EmployeeManagementToolStrip.Size = new System.Drawing.Size(200, 22);
             this.EmployeeManagementToolStrip.Text = "Employee Management";
             // 
-            // BtnOtherData
+            // BtnAttendanceTerminal
             // 
-            this.BtnOtherData.BackColor = System.Drawing.Color.Transparent;
-            this.BtnOtherData.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BtnOtherData.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnOtherData.FlatAppearance.BorderSize = 0;
-            this.BtnOtherData.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnOtherData.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnOtherData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnOtherData.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnOtherData.ForeColor = System.Drawing.Color.White;
-            this.BtnOtherData.Image = ((System.Drawing.Image)(resources.GetObject("BtnOtherData.Image")));
-            this.BtnOtherData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnOtherData.Location = new System.Drawing.Point(0, 349);
-            this.BtnOtherData.Name = "BtnOtherData";
-            this.BtnOtherData.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnOtherData.Size = new System.Drawing.Size(220, 47);
-            this.BtnOtherData.TabIndex = 8;
-            this.BtnOtherData.Text = "Others";
-            this.BtnOtherData.UseVisualStyleBackColor = false;
-            this.BtnOtherData.Click += new System.EventHandler(this.BtnOtherData_Click);
+            this.BtnAttendanceTerminal.BackColor = System.Drawing.Color.Transparent;
+            this.BtnAttendanceTerminal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnAttendanceTerminal.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnAttendanceTerminal.FlatAppearance.BorderSize = 0;
+            this.BtnAttendanceTerminal.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnAttendanceTerminal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnAttendanceTerminal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnAttendanceTerminal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnAttendanceTerminal.ForeColor = System.Drawing.Color.White;
+            this.BtnAttendanceTerminal.Image = global::Main.Properties.Resources.attendance_white_30;
+            this.BtnAttendanceTerminal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnAttendanceTerminal.Location = new System.Drawing.Point(0, 396);
+            this.BtnAttendanceTerminal.Name = "BtnAttendanceTerminal";
+            this.BtnAttendanceTerminal.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.BtnAttendanceTerminal.Size = new System.Drawing.Size(229, 47);
+            this.BtnAttendanceTerminal.TabIndex = 9;
+            this.BtnAttendanceTerminal.Text = "Attendance Terminal";
+            this.BtnAttendanceTerminal.UseVisualStyleBackColor = false;
+            this.BtnAttendanceTerminal.Click += new System.EventHandler(this.BtnAttendanceTerminal_Click);
             // 
             // MainFrm
             // 
@@ -433,5 +457,6 @@ namespace Main
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button BtnUserMgnment;
         private System.Windows.Forms.Button BtnOtherData;
+        private System.Windows.Forms.Button BtnAttendanceTerminal;
     }
 }

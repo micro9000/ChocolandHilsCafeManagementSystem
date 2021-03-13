@@ -37,25 +37,30 @@ namespace Main
             this.GPanelChooseTerminal = new System.Windows.Forms.GroupBox();
             this.RBtnPOSTerminal = new System.Windows.Forms.RadioButton();
             this.RBtnAdminDashboard = new System.Windows.Forms.RadioButton();
-            this.BtnOpenAttendanceTerminal = new System.Windows.Forms.Button();
+            this.panelSecondaryBanner = new System.Windows.Forms.Panel();
+            this.LblRenderedFormTitle = new System.Windows.Forms.Label();
             this.GPanelChooseTerminal.SuspendLayout();
+            this.panelSecondaryBanner.SuspendLayout();
             this.SuspendLayout();
             // 
             // BtnLogin
             // 
-            this.BtnLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnLogin.Location = new System.Drawing.Point(124, 280);
+            this.BtnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnLogin.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnLogin.ForeColor = System.Drawing.Color.White;
+            this.BtnLogin.Location = new System.Drawing.Point(108, 319);
             this.BtnLogin.Name = "BtnLogin";
             this.BtnLogin.Size = new System.Drawing.Size(260, 47);
             this.BtnLogin.TabIndex = 0;
             this.BtnLogin.Text = "Login";
-            this.BtnLogin.UseVisualStyleBackColor = true;
+            this.BtnLogin.UseVisualStyleBackColor = false;
             this.BtnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
             // 
             // TbxUsername
             // 
             this.TbxUsername.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TbxUsername.Location = new System.Drawing.Point(127, 41);
+            this.TbxUsername.Location = new System.Drawing.Point(111, 102);
             this.TbxUsername.Name = "TbxUsername";
             this.TbxUsername.Size = new System.Drawing.Size(257, 29);
             this.TbxUsername.TabIndex = 1;
@@ -64,7 +69,7 @@ namespace Main
             // TbxPassword
             // 
             this.TbxPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TbxPassword.Location = new System.Drawing.Point(127, 98);
+            this.TbxPassword.Location = new System.Drawing.Point(111, 137);
             this.TbxPassword.Name = "TbxPassword";
             this.TbxPassword.PasswordChar = '*';
             this.TbxPassword.Size = new System.Drawing.Size(257, 29);
@@ -77,7 +82,7 @@ namespace Main
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(40, 44);
+            this.label1.Location = new System.Drawing.Point(24, 105);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(81, 21);
             this.label1.TabIndex = 3;
@@ -87,7 +92,7 @@ namespace Main
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(45, 98);
+            this.label2.Location = new System.Drawing.Point(29, 137);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 21);
             this.label2.TabIndex = 4;
@@ -97,7 +102,7 @@ namespace Main
             // 
             this.GPanelChooseTerminal.Controls.Add(this.RBtnPOSTerminal);
             this.GPanelChooseTerminal.Controls.Add(this.RBtnAdminDashboard);
-            this.GPanelChooseTerminal.Location = new System.Drawing.Point(124, 148);
+            this.GPanelChooseTerminal.Location = new System.Drawing.Point(108, 187);
             this.GPanelChooseTerminal.Name = "GPanelChooseTerminal";
             this.GPanelChooseTerminal.Size = new System.Drawing.Size(260, 118);
             this.GPanelChooseTerminal.TabIndex = 5;
@@ -128,23 +133,34 @@ namespace Main
             this.RBtnAdminDashboard.Text = "Admin Dashboard";
             this.RBtnAdminDashboard.UseVisualStyleBackColor = true;
             // 
-            // BtnOpenAttendanceTerminal
+            // panelSecondaryBanner
             // 
-            this.BtnOpenAttendanceTerminal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnOpenAttendanceTerminal.Location = new System.Drawing.Point(124, 333);
-            this.BtnOpenAttendanceTerminal.Name = "BtnOpenAttendanceTerminal";
-            this.BtnOpenAttendanceTerminal.Size = new System.Drawing.Size(260, 47);
-            this.BtnOpenAttendanceTerminal.TabIndex = 6;
-            this.BtnOpenAttendanceTerminal.Text = "Open Attendance Terminal";
-            this.BtnOpenAttendanceTerminal.UseVisualStyleBackColor = true;
-            this.BtnOpenAttendanceTerminal.Click += new System.EventHandler(this.BtnOpenAttendanceTerminal_Click);
+            this.panelSecondaryBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.panelSecondaryBanner.Controls.Add(this.LblRenderedFormTitle);
+            this.panelSecondaryBanner.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelSecondaryBanner.Location = new System.Drawing.Point(0, 0);
+            this.panelSecondaryBanner.Name = "panelSecondaryBanner";
+            this.panelSecondaryBanner.Size = new System.Drawing.Size(425, 67);
+            this.panelSecondaryBanner.TabIndex = 6;
+            // 
+            // LblRenderedFormTitle
+            // 
+            this.LblRenderedFormTitle.AutoSize = true;
+            this.LblRenderedFormTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblRenderedFormTitle.ForeColor = System.Drawing.Color.White;
+            this.LblRenderedFormTitle.Location = new System.Drawing.Point(12, 18);
+            this.LblRenderedFormTitle.Name = "LblRenderedFormTitle";
+            this.LblRenderedFormTitle.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.LblRenderedFormTitle.Size = new System.Drawing.Size(162, 30);
+            this.LblRenderedFormTitle.TabIndex = 0;
+            this.LblRenderedFormTitle.Text = "Welcome back!";
             // 
             // LoginFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(470, 400);
-            this.Controls.Add(this.BtnOpenAttendanceTerminal);
+            this.ClientSize = new System.Drawing.Size(425, 382);
+            this.Controls.Add(this.panelSecondaryBanner);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.GPanelChooseTerminal);
             this.Controls.Add(this.BtnLogin);
@@ -156,6 +172,8 @@ namespace Main
             this.Text = "LoginFrm";
             this.GPanelChooseTerminal.ResumeLayout(false);
             this.GPanelChooseTerminal.PerformLayout();
+            this.panelSecondaryBanner.ResumeLayout(false);
+            this.panelSecondaryBanner.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,6 +189,7 @@ namespace Main
         private System.Windows.Forms.GroupBox GPanelChooseTerminal;
         private System.Windows.Forms.RadioButton RBtnPOSTerminal;
         private System.Windows.Forms.RadioButton RBtnAdminDashboard;
-        private System.Windows.Forms.Button BtnOpenAttendanceTerminal;
+        private System.Windows.Forms.Panel panelSecondaryBanner;
+        private System.Windows.Forms.Label LblRenderedFormTitle;
     }
 }

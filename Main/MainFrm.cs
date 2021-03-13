@@ -1,4 +1,5 @@
-﻿using Main.Forms.EmployeeManagementForms;
+﻿using Main.Forms.AttendanceTerminal;
+using Main.Forms.EmployeeManagementForms;
 using Main.Forms.OtherDataForms;
 using Main.Forms.PayrollForms;
 using Main.Forms.UserManagementForms;
@@ -21,6 +22,7 @@ namespace Main
         private readonly FrmOtherData _frmOtherData;
         private readonly FrmPayroll _payrollForm;
         private readonly FrmUserManagement _frmUserManagement;
+        private readonly AttendanceTerminalForm _attendanceTerminalForm;
         private Button currentButton;
         private Form activeForm;
 
@@ -28,7 +30,8 @@ namespace Main
                         FrmMainEmployeeManagement frmMainEmployeeManagement,
                         FrmOtherData frmOtherData,
                         FrmPayroll payrollForm,
-                        FrmUserManagement frmUserManagement)
+                        FrmUserManagement frmUserManagement,
+                        AttendanceTerminalForm attendanceTerminalForm)
         {
             InitializeComponent();
             _sessions = sessions;
@@ -36,6 +39,7 @@ namespace Main
             _frmOtherData = frmOtherData;
             _payrollForm = payrollForm;
             _frmUserManagement = frmUserManagement;
+            _attendanceTerminalForm = attendanceTerminalForm;
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -135,6 +139,27 @@ namespace Main
         private void BtnUserMgnment_Click(object sender, EventArgs e)
         {
             OpenChildForm(_frmUserManagement, sender);
+        }
+
+        private void BtnAttendanceTerminal_Click(object sender, EventArgs e)
+        {
+            if (activeForm != null)
+                activeForm.Hide();
+
+            ActivateButton(sender);
+
+            activeForm = _attendanceTerminalForm;
+            _attendanceTerminalForm.TopLevel = false;
+
+            _attendanceTerminalForm.Location = new Point(this.panelMainBody.Width / 2 - _attendanceTerminalForm.Size.Width / 2, this.panelMainBody.Height / 2 - _attendanceTerminalForm.Size.Height / 2);
+            _attendanceTerminalForm.Anchor = AnchorStyles.None;
+
+            _attendanceTerminalForm.FormBorderStyle = FormBorderStyle.None;
+            this.panelMainBody.Controls.Add(_attendanceTerminalForm);
+            this.panelMainBody.Tag = _attendanceTerminalForm;
+            _attendanceTerminalForm.BringToFront();
+            _attendanceTerminalForm.Show();
+            this.LblRenderedFormTitle.Text = _attendanceTerminalForm.Text;
         }
     }
 }

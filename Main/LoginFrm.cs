@@ -84,11 +84,5 @@ namespace Main
                 e.Handled = true;
             }
         }
-
-        private void BtnOpenAttendanceTerminal_Click(object sender, EventArgs e)
-        {
-            //AttendanceTerminalForm attendanceTerminalFrm = new AttendanceTerminalForm();
-            //attendanceTerminalFrm.Show();
-        }
     }
 }
