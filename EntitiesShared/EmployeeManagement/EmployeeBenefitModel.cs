@@ -25,38 +25,5 @@ namespace EntitiesShared.EmployeeManagement
             get { return amount; }
             set { amount = value; }
         }
-
-        private bool isEnabled;
-
-        public bool IsEnabled
-        {
-            get { return isEnabled; }
-            set { isEnabled = value; }
-        }
-
-
-        private StaticData.EmployeeBenefitsPaySched paySched;
-
-        public StaticData.EmployeeBenefitsPaySched PaySched
-        {
-            get { return paySched; }
-            set { paySched = value; }
-        }
-
-        private int payMonth;
-        // for specific-month-day
-        public int PayMonth
-        {
-            get { return payMonth; }
-            set { payMonth = value; }
-        }
-
-        private int payDay;
-        // for specific-month-day
-        public int PayDay
-        {
-            get { return payDay; }
-            set { payDay = value; }
-        }
     }
 }

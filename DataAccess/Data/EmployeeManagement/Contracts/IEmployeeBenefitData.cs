@@ -11,8 +11,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeeBenefitData : IDataManagerCRUD<EmployeeBenefitModel>
     {
-        List<EmployeeBenefitModel> GetAllByIsEnabled(bool isEnabled);
-        List<EmployeeBenefitModel> GetByPaySched(StaticData.EmployeeBenefitsPaySched paySchedType);
-        List<EmployeeBenefitModel> GetAllBySpecificMonthAndDay(int month, int day);
+        List<EmployeeBenefitModel> GetAllNotDeleted();
     }
 }

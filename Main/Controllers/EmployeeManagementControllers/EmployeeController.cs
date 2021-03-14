@@ -189,9 +189,9 @@ namespace Main.Controllers.EmployeeManagementControllers
             // If employee number is empty or null, add new employee (assume the user want to add new user)
             if (isNewEmployee)
             {
-                DateTime dateHire = input.DateHire == DateTime.MinValue ? DateTime.Now : input.DateHire;
+                DateTime dateHire = (input.DateHire == DateTime.MinValue) ? DateTime.Now : input.DateHire;
                 input.EmployeeNumber = this.GenerateNewEmployeeNumber(dateHire);
-                input.EmpNumYear = input.DateHire.Year.ToString();
+                input.EmpNumYear = dateHire.Year.ToString();
             }
 
             ValidationResult validationResult = _employeeAddUpdateValidator.Validate(input);
@@ -251,6 +251,18 @@ namespace Main.Controllers.EmployeeManagementControllers
             return results;
         }
 
+
+        public void SaveEmployeeImageFileName(string employeeNumber, string fileName)
+        {
+            var employeeDetails = _employeeData.GetByEmployeeNumber(employeeNumber);
+
+            if (employeeDetails != null && string.IsNullOrEmpty(fileName) == false)
+            {
+                employeeDetails.ImageFileName = fileName;
+                this._employeeData.Update(employeeDetails);
+            }
+
+        }
 
         public EntityResult<UpdateEmployeeShiftModel> UpdateEmployeesShift (UpdateEmployeeShiftModel newEmpShift)
         {

@@ -19,12 +19,10 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public List<EmployeeDeductionModel> GetAllByIsEnabled(bool isEnabled)
+        public List<EmployeeDeductionModel> GetAllNotDeleted()
         {
-            string query = @"SELECT * FROM EmployeeDeductions
-                            WHERE isDeleted=false AND isEnabled=@IsEnabled";
-
-            return this.GetAll(query, new { IsEnabled = isEnabled });
+            string query = @"SELECT * FROM EmployeeDeductions WHERE isDeleted=false";
+            return this.GetAll(query);
         }
     }
 }

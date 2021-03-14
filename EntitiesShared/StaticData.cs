@@ -13,13 +13,5 @@ namespace EntitiesShared
             normal,
             admin
         }
-
-        public enum EmployeeBenefitsPaySched
-        {
-            monthly,
-            yearly,
-            payday,
-            specificMonthDay
-        }
     }
 }

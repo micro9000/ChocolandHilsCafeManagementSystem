@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Main.Forms.EmployeeManagementForms.Controls
 {
@@ -174,6 +175,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.employeeNumber = "";
             this.IsNew = true;
 
+            if (PicBoxEmpImage.Image != null)
+            {
+                PicBoxEmpImage.Image.Dispose();
+                PicBoxEmpImage.ImageLocation = null;
+                PicBoxEmpImage.Image = null;
+            }
+            
 
             this.LblActionForEmployeeDetails.Text = "Add new employee";
             this.TbxFirstName.Text = "";
@@ -190,7 +198,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CboxGovtAgencies.SelectedIndex = -1;
 
             this.CBoxShiftList.SelectedIndex = -1;
-            ResetShiftDaysCheckBoxes();
+            this.LblShiftWorkingDays.Text = "";
 
             this.TboxEmpIdNumber.Text = "";
 
@@ -207,6 +215,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnActionUpdateEmployeeDetails.Enabled = true;
             this.BtnCancelUpdateEmployee.Visible = true;
             this.ListViewEmpGovtIdCards.Items.Clear();
+            this.NumUpDwnEmployeeContribution.Value = 0;
+            this.NumUpDwnEmployerContribution.Value = 0;
 
             this.BtnUndoToDelete.Visible = false;
             this.BtnDeleteEmpIdCard.Visible = false;
@@ -230,6 +240,23 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.TbxBranchAssign.Text = employeeDetails.BranchAssign;
                 this.TbxEmail.Text = employeeDetails.EmailAddress;
                 this.TbxEmpPosition.Text = employeeDetails.Position;
+
+
+
+                string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                var EmployeeImgsDirInfo = Directory.CreateDirectory(appPath + "\\EmployeeImgs\\");
+
+                if (EmployeeImgsDirInfo.Exists)
+                {
+                    string empImgPath = appPath + "\\EmployeeImgs\\" + employeeDetails.ImageFileName;
+
+                    if (File.Exists(empImgPath))
+                    {
+                        PicBoxEmpImage.Image = new Bitmap(empImgPath);
+                        PicBoxEmpImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                    }
+                }
+
 
                 var shift = employeeDetails.Shift;
 
@@ -266,6 +293,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         var row = new string[] {
                             govtId.EmployeeGovtIdCard.GovernmentAgency != null ? govtId.EmployeeGovtIdCard.GovernmentAgency.GovtAgency : "",
                             govtId.EmployeeGovtIdCard.EmployeeIdNumber,
+                            govtId.EmployeeGovtIdCard.EmployeeContribution.ToString(),
+                            govtId.EmployeeGovtIdCard.EmployerContribution.ToString(),
                             (govtId.IsExisting ? "EXISTING" : "NEW"),
                             govtId.EmployeeGovtIdCard.IsDeleted ? "To Delete" : ""
                         };
@@ -292,6 +321,39 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
+
+        public string UploadEmployeeImage(string employeeNum)
+        {
+            try
+            {
+                if (openFileDialogBrowseEmpImg.CheckFileExists)
+                {
+                    string filename = Path.GetFileName(openFileDialogBrowseEmpImg.FileName);
+                    string fileExt = Path.GetExtension(openFileDialogBrowseEmpImg.FileName);
+                    if (filename != null && fileExt != null && File.Exists(openFileDialogBrowseEmpImg.FileName))
+                    {
+                        string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+                        var directoryInfo = Directory.CreateDirectory(appPath + "\\EmployeeImgs\\");
+
+                        string newFileName = $"{employeeNum}{fileExt}";
+
+                        if (directoryInfo.Exists && File.Exists(appPath + "\\EmployeeImgs\\" + newFileName) == false)
+                        {
+                            System.IO.File.Copy(openFileDialogBrowseEmpImg.FileName, appPath + "\\EmployeeImgs\\" + newFileName, true);
+                            MessageBox.Show("Image uploaded successfully.", "Upload image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return newFileName;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ ex.Message } { ex.StackTrace }", "File Already exits");
+            }
+            return "";
+        }
+
         private void BtnSaveEmployee_Click(object sender, EventArgs e)
         {
             //if (this.RBtnUpdate.Checked == false && this.RBtnNew.Checked == false)
@@ -299,6 +361,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             //    MessageBox.Show("Kindly choose action.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             //    return;
             //}
+
 
             var selectedWorkShift = this.CBoxShiftList.SelectedItem as ComboboxItem;
 
@@ -430,6 +493,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                             // I will add the employee number in EmployeeController.cs
                             EmployeeIdNumber = empGovtIdNumber,
                             GovtAgencyId = selectedGovtAgencyId,
+                            EmployeeContribution = NumUpDwnEmployeeContribution.Value,
+                            EmployerContribution = NumUpDwnEmployerContribution.Value,
                             GovernmentAgency = new GovernmentAgencyModel
                             {
                                 // add temporary object to get the name or title of the govt. agency
@@ -559,38 +624,46 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
-        public void ResetShiftDaysCheckBoxes()
-        {
-            foreach (var daysCheckBoxControl in this.GroupPanelShiftDays.Controls)
-            {
-                if (daysCheckBoxControl is CheckBox)
-                {
-                    ((CheckBox)daysCheckBoxControl).Checked = false;
-                }
-            }
-        }
 
         public void DisplayWorkShiftDays()
         {
-            ResetShiftDaysCheckBoxes();
+            this.LblShiftWorkingDays.Text = "";
             // Display shift days
             if (this.WorkShiftDays != null)
             {
-                foreach (var shiftDay in this.WorkShiftDays)
-                {
-                    string dayNameTag = $"{shiftDay.DayName}-{shiftDay.OrderNum}";
+                string workDays = string.Join(", ", this.WorkShiftDays.OrderBy(x => x.OrderNum).Select(x => x.DayName).ToArray());
+                this.LblShiftWorkingDays.Text = workDays;
+            }
+        }
 
-                    foreach (var daysCheckBoxControl in this.GroupPanelShiftDays.Controls)
+        private void BtnBrowseEmployeeImage_Click(object sender, EventArgs e)
+        {
+            openFileDialogBrowseEmpImg.InitialDirectory = "C://Desktop";
+            openFileDialogBrowseEmpImg.Title = "Select image to be upload.";
+            openFileDialogBrowseEmpImg.Filter = "Image Only(*.jpg; *.jpeg; *.gif; *.bmp; *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png";
+            openFileDialogBrowseEmpImg.FilterIndex = 1;
+
+            try
+            {
+                if (openFileDialogBrowseEmpImg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    if (openFileDialogBrowseEmpImg.CheckFileExists)
                     {
-                        if (daysCheckBoxControl is CheckBox)
-                        {
-                            if (((CheckBox)daysCheckBoxControl).Tag.ToString() == dayNameTag)
-                            {
-                                ((CheckBox)daysCheckBoxControl).Checked = true;
-                            }
-                        }
+                        string path = System.IO.Path.GetFullPath(openFileDialogBrowseEmpImg.FileName);
+                        //label1.Text = path;
+                        PicBoxEmpImage.Image = new Bitmap(openFileDialogBrowseEmpImg.FileName);
+                        PicBoxEmpImage.SizeMode = PictureBoxSizeMode.StretchImage;
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Please Upload image.");
+                }
+            }
+            catch (Exception ex)
+            {
+                //it will give if file is already exits..
+                MessageBox.Show(ex.Message);
             }
         }
     }

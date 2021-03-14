@@ -10,6 +10,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 {
     public interface IEmployeeDeductionData : IDataManagerCRUD<EmployeeDeductionModel>
     {
-        List<EmployeeDeductionModel> GetAllByIsEnabled(bool isEnabled);
+        List<EmployeeDeductionModel> GetAllNotDeleted();
     }
 }

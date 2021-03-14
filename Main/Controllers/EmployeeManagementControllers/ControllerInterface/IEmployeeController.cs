@@ -16,6 +16,8 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
                                                                 List<EmployeeGovtIdCardTempModel> idCards,
                                                                 EmployeeSalaryRateModel salaryRate);
 
+        void SaveEmployeeImageFileName(string employeeNumber, string fileName);
+
         EntityResult<UpdateEmployeeShiftModel> UpdateEmployeesShift(UpdateEmployeeShiftModel newEmpShift);
 
         EntityResult<EmployeeModel> GetByEmployeeNumber(string employeeNumber);

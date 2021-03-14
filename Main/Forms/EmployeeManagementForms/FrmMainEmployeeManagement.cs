@@ -159,6 +159,10 @@ namespace Main.Forms.EmployeeManagementForms
             if (saveResults.IsSuccess)
             {
                 MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string imageFileName = employeeCRUDControlObj.UploadEmployeeImage(saveResults.Data.Employee.EmployeeNumber);
+
+                _employeeController.SaveEmployeeImageFileName(saveResults.Data.Employee.EmployeeNumber, imageFileName);
+
                 employeeCRUDControlObj.ClearForm();
 
                 //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";

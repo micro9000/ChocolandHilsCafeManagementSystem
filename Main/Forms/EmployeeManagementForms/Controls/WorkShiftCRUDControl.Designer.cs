@@ -456,9 +456,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.CheckBox CBoxMonday;
         private System.Windows.Forms.CheckBox CBoxTuesday;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DateTimePicker DTPickerEarlyTimeOut;
         private System.Windows.Forms.DateTimePicker DTPickerLateTimeIn;
     }

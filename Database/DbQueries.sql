@@ -113,7 +113,13 @@ CREATE TABLE IF NOT EXISTS Employees(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
-ALTER TABLE Employees ADD CONSTRAINT employees_ibfk_1 FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id);
+ALTER TABLE Employees 
+ADD CONSTRAINT employees_ibfk_1 
+FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id);
+
+ALTER TABLE Employees
+ADD COLUMN imageFileName VARCHAR(500);
+
 -- ALTER TABLE Employees
 -- DROP FOREIGN KEY employees_ibfk_1;
 
@@ -135,6 +141,8 @@ CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
     employeeNumber CHAR(8),
     govtAgencyId INT NOT NULL,
     employeeIdNumber VARCHAR(50) UNIQUE,
+    employeeContribution DECIMAL(5,2),
+    employerContribution DECIMAL(5,2),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
@@ -233,13 +241,13 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
 
-
 SELECT * 
 FROM EmployeeAttendance AS EA
 JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
-JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber;
+JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
+WHERE workDate='2021-03-13';
 
-
+SELECT * FROM Employees WHERE isDeleted=false;
 SELECT * FROM EmployeeAttendance;
 
 SELECT * FROM EmployeeAttendance 
@@ -249,20 +257,6 @@ SELECT TIME_FORMAT("08:30:00", "%H") as hrs, TIME_FORMAT("08:30:00", "%i") as mi
 SELECT TIME_FORMAT("17:30:00", "%H.%i");
 select TIMESTAMPDIFF(HOUR, '2015-12-16 18:00:00','2015-12-17 06:00:00');
 
--- Government benefits (employee and employer contributions
-CREATE TABLE IF NOT EXISTS EmployeeGovtContributions(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    employeeNumber CHAR(8),
-    employeeGovtIdCardId BIGINT NOT NULL,
-    employeeContribution DECIMAL(5,2),
-    employerContribution DECIMAL(5,2),
-    totalContribution DECIMAL(5,2),
-    createdAt DATETIME DEFAULT NOW(),
-    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(EmployeeGovtIdCardId) REFERENCES EmployeeGovtIdCards(id)
-)ENGINE=INNODB;
 
 
 -- possible enhancement:
@@ -271,11 +265,7 @@ CREATE TABLE IF NOT EXISTS EmployeeGovtContributions(
 CREATE TABLE IF NOT EXISTS EmployeeBenefits(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     benefitTitle VARCHAR(255),
-    amount DECIMAL(5,2),
-    isEnabled BOOLEAN DEFAULT True,
-    paySched CHAR(30), -- MONTHLY (last pay day of the month), YEARLY, PAYDAY, SPECIFIC-MONTH-DAY
-    payMonth INT DEFAULT 0, -- nullable or empty, 1-12, only applicable to PER-YEAR and SPECIFIC-MONTH-DAY
-    payDay INT DEFAULT 0, -- nullable or empty, 1-31
+    amount DECIMAL(9,2),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
@@ -288,8 +278,7 @@ CREATE TABLE IF NOT EXISTS EmployeeBenefits(
 CREATE TABLE IF NOT EXISTS EmployeeDeductions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     deductionTitle VARCHAR(255),
-    amount DECIMAL(5,2),
-    isEnabled BOOLEAN DEFAULT True,
+    amount DECIMAL(9,2),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,

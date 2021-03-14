@@ -25,13 +25,5 @@ namespace EntitiesShared.EmployeeManagement
             get { return amount; }
             set { amount = value; }
         }
-
-        private bool isEnabled;
-
-        public bool IsEnabled
-        {
-            get { return isEnabled; }
-            set { isEnabled = value; }
-        }
     }
 }

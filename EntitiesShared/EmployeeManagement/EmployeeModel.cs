@@ -26,8 +26,6 @@ namespace EntitiesShared.EmployeeManagement
             set { empNumYear = value; }
         }
 
-
-
         private string firstName;
 
         public string FirstName
@@ -128,6 +126,14 @@ namespace EntitiesShared.EmployeeManagement
         {
             get { return shift; }
             set { shift = value; }
+        }
+
+        private string imageFileName;
+
+        public string ImageFileName
+        {
+            get { return imageFileName; }
+            set { imageFileName = value; }
         }
 
     }

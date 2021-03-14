@@ -37,6 +37,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_List = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_Details = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_FileLeave = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripItem_Benefits_Deductions = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemPayroll = new System.Windows.Forms.ToolStripMenuItem();
             this.PayrollMenuItems = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AttendanceStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -90,35 +91,42 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_Add,
             this.ToolStripItem_List,
             this.ToolStripItem_Details,
-            this.ToolStripItem_FileLeave});
+            this.ToolStripItem_FileLeave,
+            this.ToolStripItem_Benefits_Deductions});
             this.EmployeeMenuItemsMenuStrip.Name = "EmployeeMenuItems";
             this.EmployeeMenuItemsMenuStrip.OwnerItem = this.MenuItemEmployee;
-            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(138, 92);
+            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(260, 114);
             this.EmployeeMenuItemsMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.EmployeeMenuItemsMenuStrip_ItemClicked);
             // 
             // ToolStripItem_Add
             // 
             this.ToolStripItem_Add.Name = "ToolStripItem_Add";
-            this.ToolStripItem_Add.Size = new System.Drawing.Size(137, 22);
+            this.ToolStripItem_Add.Size = new System.Drawing.Size(259, 22);
             this.ToolStripItem_Add.Text = "Save Details";
             // 
             // ToolStripItem_List
             // 
             this.ToolStripItem_List.Name = "ToolStripItem_List";
-            this.ToolStripItem_List.Size = new System.Drawing.Size(137, 22);
+            this.ToolStripItem_List.Size = new System.Drawing.Size(259, 22);
             this.ToolStripItem_List.Text = "List";
             // 
             // ToolStripItem_Details
             // 
             this.ToolStripItem_Details.Name = "ToolStripItem_Details";
-            this.ToolStripItem_Details.Size = new System.Drawing.Size(137, 22);
+            this.ToolStripItem_Details.Size = new System.Drawing.Size(259, 22);
             this.ToolStripItem_Details.Text = "View Details";
             // 
             // ToolStripItem_FileLeave
             // 
             this.ToolStripItem_FileLeave.Name = "ToolStripItem_FileLeave";
-            this.ToolStripItem_FileLeave.Size = new System.Drawing.Size(137, 22);
+            this.ToolStripItem_FileLeave.Size = new System.Drawing.Size(259, 22);
             this.ToolStripItem_FileLeave.Text = "File leave";
+            // 
+            // ToolStripItem_Benefits_Deductions
+            // 
+            this.ToolStripItem_Benefits_Deductions.Name = "ToolStripItem_Benefits_Deductions";
+            this.ToolStripItem_Benefits_Deductions.Size = new System.Drawing.Size(259, 22);
+            this.ToolStripItem_Benefits_Deductions.Text = "Benefits/Deductions/Contributions";
             // 
             // MenuItemPayroll
             // 
@@ -299,7 +307,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ToolStripMenuItem MenuItemEmployee;
         private System.Windows.Forms.ToolStripMenuItem MenuItemWorkSchedules;
         private System.Windows.Forms.Panel panelContainer;
-        private System.Windows.Forms.ToolStripMenuItem LeaveTypeStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FileLeaveSchedStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem GovtIdsStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ListToolStripDDItem;
@@ -325,5 +332,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ToolStripMenuItem WorkShiftsMenItem;
         private System.Windows.Forms.ToolStripMenuItem EmpWorkShiftScheds;
         private System.Windows.Forms.ToolStripMenuItem HolidaysMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripItem_Benefits_Deductions;
     }
 }
