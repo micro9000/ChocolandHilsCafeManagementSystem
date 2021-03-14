@@ -103,6 +103,7 @@ namespace Main
 
             services.AddSingleton<Sessions>(); // application state or session
             services.AddSingleton<Hashing>();
+            services.AddSingleton<DecimalMinutesToHrsConverter>();
 
             // Data Access services
             services.AddTransient<IUserData, UserData>();

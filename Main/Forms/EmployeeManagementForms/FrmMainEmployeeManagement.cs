@@ -14,12 +14,14 @@ using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Controllers.OtherDataController.ControllerInterface;
 using Main.Forms.EmployeeManagementForms.Controls;
 using Microsoft.Extensions.Logging;
+using Shared.Helpers;
 
 namespace Main.Forms.EmployeeManagementForms
 {
     public partial class FrmMainEmployeeManagement : Form
     {
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
+        private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
         private readonly IEmployeeShiftDayData _employeeShiftDayData;
@@ -29,8 +31,10 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IEmployeeLeaveController _employeeLeaveController;
         private readonly IHolidayController _holidayController;
         private readonly IHolidayData _holidayData;
+        private readonly IEmployeeAttendanceData _employeeAttendanceData;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
+                                    DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                                 IGovernmentAgencyData governmentAgencyData,
                                 IEmployeeLeaveData employeeLeaveData,
                                 IEmployeeShiftDayData employeeShiftDayData,
@@ -39,10 +43,12 @@ namespace Main.Forms.EmployeeManagementForms
                                 ILeaveTypeController leaveTypeController,
                                 IEmployeeLeaveController employeeLeaveController,
                                 IHolidayController holidayController,
-                                IHolidayData holidayData)
+                                IHolidayData holidayData,
+                                IEmployeeAttendanceData employeeAttendanceData)
         {
             InitializeComponent();
             _logger = logger;
+            _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _governmentAgencyData = governmentAgencyData;
             _employeeLeaveData = employeeLeaveData;
             _employeeShiftDayData = employeeShiftDayData;
@@ -52,6 +58,7 @@ namespace Main.Forms.EmployeeManagementForms
             _employeeLeaveController = employeeLeaveController;
             _holidayController = holidayController;
             _holidayData = holidayData;
+            _employeeAttendanceData = employeeAttendanceData;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -235,7 +242,7 @@ namespace Main.Forms.EmployeeManagementForms
 
             this.panelContainer.Controls.Clear();
 
-            var employeeDetailsControl = new EmployeeDetailsControl();
+            var employeeDetailsControl = new EmployeeDetailsControl(_decimalMinutesToHrsConverter);
             employeeDetailsControl.Dock = DockStyle.Fill;
 
             this.panelContainer.Controls.Add(employeeDetailsControl);
@@ -269,13 +276,14 @@ namespace Main.Forms.EmployeeManagementForms
         {
             this.panelContainer.Controls.Clear();
 
-            var employeeDetailsControlObj = new EmployeeDetailsControl();
+            var employeeDetailsControlObj = new EmployeeDetailsControl(_decimalMinutesToHrsConverter);
             employeeDetailsControlObj.Dock = DockStyle.Fill;
             //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
             //userControlToDisplay.Anchor = AnchorStyles.None;
 
 
             employeeDetailsControlObj.EmployeeNumberPropertyChanged += OnViewEmployeeDetails;
+            employeeDetailsControlObj.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
             //userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
 
             //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
@@ -294,6 +302,24 @@ namespace Main.Forms.EmployeeManagementForms
             employeeDetailsControlObj.EmployeeFullInformations = this._employeeController.GetEmployeeFullInformations(EmployeeNumber).Data;
             employeeDetailsControlObj.DisplayAllEmployeeInformations();
 
+            int year = DateTime.Now.Year;
+            DateTime Jan1 = new DateTime(year, 1, 1);
+            DateTime today = DateTime.Now;
+
+            employeeDetailsControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(EmployeeNumber, Jan1, today);
+            employeeDetailsControlObj.DisplayAttendanceRecord();
+        }
+
+
+        private void HandleFilterEmployeeAttendance(object sender, EventArgs e)
+        {
+            EmployeeDetailsControl employeeDetailsControlObj = (EmployeeDetailsControl)sender;
+            var EmployeeNumber = employeeDetailsControlObj.EmployeeNumber;
+            DateTime startDate = employeeDetailsControlObj.FilterAttendanceStartDate;
+            DateTime endDate = employeeDetailsControlObj.FilterAttendanceEndDate;
+
+            employeeDetailsControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(EmployeeNumber, startDate, endDate);
+            employeeDetailsControlObj.DisplayAttendanceRecord();
         }
 
 

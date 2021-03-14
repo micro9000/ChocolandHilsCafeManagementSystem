@@ -11,6 +11,8 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
     public interface IEmployeeAttendanceData : IDataManagerCRUD<EmployeeAttendanceModel>
     {
         List<EmployeeAttendanceModel> GetAllAttendanceRecordByWorkDate(DateTime workDate);
+        List<EmployeeAttendanceModel> GetAllAttendanceRecordByWorkDateRange(string employeeNumber, DateTime startDate, DateTime endDate);
+        List<EmployeeAttendanceModel> GetAllAttendanceRecordByWorkDateRange(DateTime startDate, DateTime endDate);
         EmployeeAttendanceModel GetEmployeeAttendanceByWorkDate(string employeeNumber, DateTime workDate);
     }
 }

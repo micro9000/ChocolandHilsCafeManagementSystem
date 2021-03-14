@@ -52,8 +52,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.DPickerFilterAttendanceEndDate = new System.Windows.Forms.DateTimePicker();
+            this.DPickerFilterAttendanceStartDate = new System.Windows.Forms.DateTimePicker();
             this.LblEmail = new System.Windows.Forms.Label();
             this.LblContactNumber = new System.Windows.Forms.Label();
             this.LblAge = new System.Windows.Forms.Label();
@@ -67,11 +67,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label2 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.BtnFilterAttendanceHistory = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label16 = new System.Windows.Forms.Label();
-            this.Late = new System.Windows.Forms.ColumnHeader();
-            this.UnderTime = new System.Windows.Forms.ColumnHeader();
             this.label7 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -99,10 +97,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.TabPageEmpAttendance = new System.Windows.Forms.TabPage();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.WorkDate = new System.Windows.Forms.ColumnHeader();
-            this.TimeIn = new System.Windows.Forms.ColumnHeader();
-            this.Timeout = new System.Windows.Forms.ColumnHeader();
+            this.LViewAttendanceHistoryForToday = new System.Windows.Forms.ListView();
+            this.LVColumnDate = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnShift = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnShiftTime = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnFirstHalf = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnSecondHalf = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnRenderHrs = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnLate = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnUnderTime = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnOvertime = new System.Windows.Forms.ColumnHeader();
             this.panel3 = new System.Windows.Forms.Panel();
             this.TabPagePayslipHistory.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -364,23 +368,23 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.comboBox1.Size = new System.Drawing.Size(162, 29);
             this.comboBox1.TabIndex = 12;
             // 
-            // dateTimePicker2
+            // DPickerFilterAttendanceEndDate
             // 
-            this.dateTimePicker2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker2.Location = new System.Drawing.Point(228, 27);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(119, 29);
-            this.dateTimePicker2.TabIndex = 16;
+            this.DPickerFilterAttendanceEndDate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.DPickerFilterAttendanceEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPickerFilterAttendanceEndDate.Location = new System.Drawing.Point(228, 27);
+            this.DPickerFilterAttendanceEndDate.Name = "DPickerFilterAttendanceEndDate";
+            this.DPickerFilterAttendanceEndDate.Size = new System.Drawing.Size(119, 29);
+            this.DPickerFilterAttendanceEndDate.TabIndex = 16;
             // 
-            // dateTimePicker1
+            // DPickerFilterAttendanceStartDate
             // 
-            this.dateTimePicker1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(68, 27);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(119, 29);
-            this.dateTimePicker1.TabIndex = 15;
+            this.DPickerFilterAttendanceStartDate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.DPickerFilterAttendanceStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPickerFilterAttendanceStartDate.Location = new System.Drawing.Point(68, 27);
+            this.DPickerFilterAttendanceStartDate.Name = "DPickerFilterAttendanceStartDate";
+            this.DPickerFilterAttendanceStartDate.Size = new System.Drawing.Size(119, 29);
+            this.DPickerFilterAttendanceStartDate.TabIndex = 15;
             // 
             // LblEmail
             // 
@@ -507,27 +511,28 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label15.TabIndex = 39;
             this.label15.Text = "Start";
             // 
-            // button1
+            // BtnFilterAttendanceHistory
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(370, 25);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(115, 31);
-            this.button1.TabIndex = 38;
-            this.button1.Text = "Submit";
-            this.button1.UseVisualStyleBackColor = false;
+            this.BtnFilterAttendanceHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnFilterAttendanceHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnFilterAttendanceHistory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnFilterAttendanceHistory.ForeColor = System.Drawing.Color.White;
+            this.BtnFilterAttendanceHistory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnFilterAttendanceHistory.Location = new System.Drawing.Point(353, 27);
+            this.BtnFilterAttendanceHistory.Name = "BtnFilterAttendanceHistory";
+            this.BtnFilterAttendanceHistory.Size = new System.Drawing.Size(78, 31);
+            this.BtnFilterAttendanceHistory.TabIndex = 38;
+            this.BtnFilterAttendanceHistory.Text = "Submit";
+            this.BtnFilterAttendanceHistory.UseVisualStyleBackColor = false;
+            this.BtnFilterAttendanceHistory.Click += new System.EventHandler(this.BtnFilterAttendanceHistory_Click);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.label14);
             this.panel2.Controls.Add(this.label15);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Controls.Add(this.dateTimePicker2);
-            this.panel2.Controls.Add(this.dateTimePicker1);
+            this.panel2.Controls.Add(this.BtnFilterAttendanceHistory);
+            this.panel2.Controls.Add(this.DPickerFilterAttendanceEndDate);
+            this.panel2.Controls.Add(this.DPickerFilterAttendanceStartDate);
             this.panel2.Controls.Add(this.label16);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
@@ -544,18 +549,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label16.Size = new System.Drawing.Size(271, 21);
             this.label16.TabIndex = 14;
             this.label16.Text = "Select the date range you want to see";
-            // 
-            // Late
-            // 
-            this.Late.Name = "Late";
-            this.Late.Text = "Late";
-            this.Late.Width = 100;
-            // 
-            // UnderTime
-            // 
-            this.UnderTime.Name = "UnderTime";
-            this.UnderTime.Text = "UT";
-            this.UnderTime.Width = 100;
             // 
             // label7
             // 
@@ -667,7 +660,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.label12);
             this.groupBox4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupBox4.Location = new System.Drawing.Point(434, 279);
+            this.groupBox4.Location = new System.Drawing.Point(441, 182);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(529, 249);
             this.groupBox4.TabIndex = 3;
@@ -801,7 +794,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox3.BackColor = System.Drawing.Color.White;
             this.groupBox3.Controls.Add(this.ListViewEmpGovtIdCards);
             this.groupBox3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.groupBox3.Location = new System.Drawing.Point(10, 273);
+            this.groupBox3.Location = new System.Drawing.Point(10, 176);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(400, 255);
             this.groupBox3.TabIndex = 2;
@@ -857,14 +850,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.groupBox2.Location = new System.Drawing.Point(10, 10);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1052, 263);
+            this.groupBox2.Size = new System.Drawing.Size(1052, 160);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Personal information";
             // 
             // TabPageEmpAttendance
             // 
-            this.TabPageEmpAttendance.Controls.Add(this.listView1);
+            this.TabPageEmpAttendance.Controls.Add(this.LViewAttendanceHistoryForToday);
             this.TabPageEmpAttendance.Controls.Add(this.panel2);
             this.TabPageEmpAttendance.Location = new System.Drawing.Point(4, 30);
             this.TabPageEmpAttendance.Name = "TabPageEmpAttendance";
@@ -874,43 +867,69 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TabPageEmpAttendance.Text = "Attendance";
             this.TabPageEmpAttendance.UseVisualStyleBackColor = true;
             // 
-            // listView1
+            // LViewAttendanceHistoryForToday
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.WorkDate,
-            this.TimeIn,
-            this.Timeout,
-            this.Late,
-            this.UnderTime});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(3, 101);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1066, 445);
-            this.listView1.TabIndex = 5;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.LViewAttendanceHistoryForToday.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.LVColumnDate,
+            this.LVColumnShift,
+            this.LVColumnShiftTime,
+            this.LVColumnFirstHalf,
+            this.LVColumnSecondHalf,
+            this.LVColumnRenderHrs,
+            this.LVColumnLate,
+            this.LVColumnUnderTime,
+            this.LVColumnOvertime});
+            this.LViewAttendanceHistoryForToday.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LViewAttendanceHistoryForToday.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LViewAttendanceHistoryForToday.GridLines = true;
+            this.LViewAttendanceHistoryForToday.HideSelection = false;
+            this.LViewAttendanceHistoryForToday.Location = new System.Drawing.Point(3, 101);
+            this.LViewAttendanceHistoryForToday.Name = "LViewAttendanceHistoryForToday";
+            this.LViewAttendanceHistoryForToday.Size = new System.Drawing.Size(1066, 445);
+            this.LViewAttendanceHistoryForToday.TabIndex = 5;
+            this.LViewAttendanceHistoryForToday.UseCompatibleStateImageBehavior = false;
+            this.LViewAttendanceHistoryForToday.View = System.Windows.Forms.View.Details;
             // 
-            // WorkDate
+            // LVColumnDate
             // 
-            this.WorkDate.Name = "WorkDate";
-            this.WorkDate.Text = "Date";
-            this.WorkDate.Width = 100;
+            this.LVColumnDate.Text = "Date";
+            this.LVColumnDate.Width = 120;
             // 
-            // TimeIn
+            // LVColumnShift
             // 
-            this.TimeIn.Name = "TimeIn";
-            this.TimeIn.Text = "Time In";
-            this.TimeIn.Width = 100;
+            this.LVColumnShift.Text = "Shift";
+            this.LVColumnShift.Width = 170;
             // 
-            // Timeout
+            // LVColumnShiftTime
             // 
-            this.Timeout.Name = "Timeout";
-            this.Timeout.Text = "Time out";
-            this.Timeout.Width = 100;
+            this.LVColumnShiftTime.Text = "Shift Time";
+            this.LVColumnShiftTime.Width = 150;
+            // 
+            // LVColumnFirstHalf
+            // 
+            this.LVColumnFirstHalf.Text = "First half";
+            this.LVColumnFirstHalf.Width = 120;
+            // 
+            // LVColumnSecondHalf
+            // 
+            this.LVColumnSecondHalf.Text = "Second Half";
+            this.LVColumnSecondHalf.Width = 120;
+            // 
+            // LVColumnRenderHrs
+            // 
+            this.LVColumnRenderHrs.Text = "Hours";
+            // 
+            // LVColumnLate
+            // 
+            this.LVColumnLate.Text = "Late";
+            // 
+            // LVColumnUnderTime
+            // 
+            this.LVColumnUnderTime.Text = "UT";
+            // 
+            // LVColumnOvertime
+            // 
+            this.LVColumnOvertime.Text = "OT";
             // 
             // panel3
             // 
@@ -978,8 +997,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker DPickerFilterAttendanceEndDate;
+        private System.Windows.Forms.DateTimePicker DPickerFilterAttendanceStartDate;
         private System.Windows.Forms.Label LblEmail;
         private System.Windows.Forms.Label LblContactNumber;
         private System.Windows.Forms.Label LblAge;
@@ -993,11 +1012,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnFilterAttendanceHistory;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.ColumnHeader Late;
-        private System.Windows.Forms.ColumnHeader UnderTime;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -1025,10 +1042,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TabPage TabPageEmpAttendance;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ColumnHeader WorkDate;
-        private System.Windows.Forms.ColumnHeader TimeIn;
-        private System.Windows.Forms.ColumnHeader Timeout;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.ListView LViewAttendanceHistoryForToday;
+        private System.Windows.Forms.ColumnHeader LVColumnShift;
+        private System.Windows.Forms.ColumnHeader LVColumnShiftTime;
+        private System.Windows.Forms.ColumnHeader LVColumnFirstHalf;
+        private System.Windows.Forms.ColumnHeader LVColumnSecondHalf;
+        private System.Windows.Forms.ColumnHeader LVColumnRenderHrs;
+        private System.Windows.Forms.ColumnHeader LVColumnLate;
+        private System.Windows.Forms.ColumnHeader LVColumnUnderTime;
+        private System.Windows.Forms.ColumnHeader LVColumnOvertime;
+        private System.Windows.Forms.ColumnHeader LVColumnDate;
     }
 }

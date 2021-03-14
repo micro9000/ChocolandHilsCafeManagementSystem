@@ -110,6 +110,7 @@
 
   <ItemGroup>
     <Folder Include="FormModels\" />
+    <Folder Include="Reports\" />
   </ItemGroup>
 
   <ItemGroup>

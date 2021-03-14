@@ -1,6 +1,7 @@
 ﻿using DataAccess.Data.EmployeeManagement.Contracts;
 using EntitiesShared.EmployeeManagement;
 using Microsoft.Extensions.Logging;
+using Shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,15 +18,18 @@ namespace Main.Forms.AttendanceTerminal
     public partial class AttendanceTerminalForm : Form
     {
         private readonly ILogger<LoginFrm> _logger;
+        private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeeAttendanceData _employeeAttendanceData;
 
-        public AttendanceTerminalForm(ILogger<LoginFrm> logger, 
+        public AttendanceTerminalForm(ILogger<LoginFrm> logger,
+                                    DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                                     IEmployeeData employeeData,
                                     IEmployeeAttendanceData employeeAttendanceData)
         {
             InitializeComponent();
             _logger = logger;
+            _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _employeeData = employeeData;
             _employeeAttendanceData = employeeAttendanceData;
         }
@@ -35,30 +39,17 @@ namespace Main.Forms.AttendanceTerminal
             DisplayAttendanceRecordForToday();
         }
 
-        public string GetMinDecimalToHrsFormat(decimal minutes)
-        {
-            if (minutes < 60)
-            {
-                return minutes.ToString() + "mins";
-            }
-
-            decimal hrsAndMins = minutes / 60;
-
-            int hrsSide = (int)Math.Truncate(hrsAndMins);
-            double frac = (double)hrsAndMins % 1;
-
-            int minsSide = (int)Math.Truncate(frac * 60);
-
-            return $"{hrsSide.ToString()}.{minsSide.ToString()}";
-        }
-
         public void DisplayAttendanceRecordForToday()
         {
             var attendanceRecord = this._employeeAttendanceData.GetAllAttendanceRecordByWorkDate(DateTime.Now);
+            DisplayAttendanceRecord(attendanceRecord);
+        }
 
+        public void DisplayAttendanceRecord(List<EmployeeAttendanceModel> attendanceRecord)
+        {
             if (attendanceRecord != null)
             {
-                this.LViewAttendanceHistoryForToday.Items.Clear();
+                this.LViewAttendanceHistory.Items.Clear();
                 foreach (var attendance in attendanceRecord)
                 {
                     DateTime firstTimeOut = DateTime.Now;
@@ -80,10 +71,10 @@ namespace Main.Forms.AttendanceTerminal
                         secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
                     }
 
-                    string whoDayTotalHrs = this.GetMinDecimalToHrsFormat(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
-                    string late = this.GetMinDecimalToHrsFormat(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
-                    string underTime = this.GetMinDecimalToHrsFormat(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
-                    string overTime = this.GetMinDecimalToHrsFormat(attendance.OverTimeMins);
+                    string whoDayTotalHrs = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
+                    string late = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
+                    string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
+                    string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
 
                     var row = new string[]
                     {
@@ -102,7 +93,7 @@ namespace Main.Forms.AttendanceTerminal
                     var listViewItem = new ListViewItem(row);
                     listViewItem.Tag = attendance;
 
-                    this.LViewAttendanceHistoryForToday.Items.Add(listViewItem);
+                    this.LViewAttendanceHistory.Items.Add(listViewItem);
                 }
             }
         }
@@ -221,7 +212,14 @@ namespace Main.Forms.AttendanceTerminal
                             attendance.FirstTimeIn = todaysDateAndTime;
 
                             // insert the attendance record
-                            _employeeAttendanceData.Add(attendance);
+                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            {
+                                DisplayConfirmationForm(true);
+                            }
+                            else
+                            {
+                                DisplayConfirmationForm(false);
+                            }
                         }
                         else if (startDateTime < todaysDateAndTime &&
                                 earlyTimeOutDateTime < todaysDateAndTime &&
@@ -441,5 +439,13 @@ namespace Main.Forms.AttendanceTerminal
             }
         }
 
+        private void BtnFilterAttendance_Click(object sender, EventArgs e)
+        {
+            var start = this.DPickerFilterAttendanceStart.Value;
+            var end = this.DPickerFilterAttendanceEnd.Value;
+
+            var attendanceRecord = this._employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(start, end);
+            DisplayAttendanceRecord(attendanceRecord);
+        }
     }
 }

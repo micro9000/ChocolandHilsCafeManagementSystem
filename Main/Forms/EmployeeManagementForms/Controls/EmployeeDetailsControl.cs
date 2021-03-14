@@ -1,4 +1,6 @@
-﻿using EntitiesShared.EmployeeManagement.Models;
+﻿using EntitiesShared.EmployeeManagement;
+using EntitiesShared.EmployeeManagement.Models;
+using Shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,9 +15,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 {
     public partial class EmployeeDetailsControl : UserControl
     {
-        public EmployeeDetailsControl()
+        public EmployeeDetailsControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter)
         {
             InitializeComponent();
+            _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
         }
 
         public event PropertyChangedEventHandler EmployeeNumberPropertyChanged;
@@ -34,8 +37,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
+        private List<EmployeeAttendanceModel> attendanceHistory;
+
+        public List<EmployeeAttendanceModel> AttendanceHistory
+        {
+            get { return attendanceHistory; }
+            set { attendanceHistory = value; }
+        }
 
         private EmployeeDetailsModel employeeFullInformations = new EmployeeDetailsModel();
+        private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
 
         public EmployeeDetailsModel EmployeeFullInformations
         {
@@ -113,5 +124,98 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
+
+        public void DisplayAttendanceRecord()
+        {
+            if (this.AttendanceHistory != null)
+            {
+                this.LViewAttendanceHistoryForToday.Items.Clear();
+                foreach (var attendance in this.AttendanceHistory)
+                {
+                    DateTime firstTimeOut = DateTime.Now;
+                    if (attendance.FirstTimeOut == DateTime.MinValue)
+                    {
+                        firstTimeOut = attendance.Shift.EarlyTimeOut;
+                    }
+                    else
+                    {
+                        firstTimeOut = attendance.FirstTimeOut;
+                    }
+
+                    string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm")} {firstTimeOut.ToString("hh:mm")}";
+
+                    string secondTimeINandOUT = "";
+
+                    if (attendance.IsTimeOutProvided)
+                    {
+                        secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
+                    }
+
+                    string whoDayTotalHrs = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
+                    string late = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
+                    string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
+                    string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
+
+                    var row = new string[]
+                    {
+                        attendance.WorkDate.ToShortDateString(),
+                        attendance.Shift.Shift,
+                        $"{attendance.Shift.StartTime.ToString("hh:mm tt")} to {attendance.Shift.EndTime.ToString("hh:mm tt")}",
+                        firstTimeINandOUT,
+                        secondTimeINandOUT,
+                        whoDayTotalHrs,
+                        late,
+                        underTime,
+                        overTime
+                    };
+
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = attendance;
+
+                    this.LViewAttendanceHistoryForToday.Items.Add(listViewItem);
+                }
+            }
+        }
+
+
+        private DateTime filterAttendanceStartDate;
+
+        public DateTime FilterAttendanceStartDate
+        {
+            get { return filterAttendanceStartDate; }
+            set { filterAttendanceStartDate = value; }
+        }
+
+
+        private DateTime filterAttendanceEndDate;
+
+        public DateTime FilterAttendanceEndDate
+        {
+            get { return filterAttendanceEndDate; }
+            set { filterAttendanceEndDate = value; }
+        }
+
+
+        // Event handler for saving leave type
+        public event EventHandler FilterEmployeeAttendance;
+        protected virtual void OnFilterEmployeeAttendance(EventArgs e)
+        {
+            FilterEmployeeAttendance?.Invoke(this, e);
+        }
+
+
+        private void BtnFilterAttendanceHistory_Click(object sender, EventArgs e)
+        {
+            FilterAttendanceStartDate = this.DPickerFilterAttendanceStartDate.Value;
+            FilterAttendanceEndDate = this.DPickerFilterAttendanceEndDate.Value;
+
+            if (string.IsNullOrEmpty(this.TboxSearchEmployeeNumber.Text))
+            {
+                MessageBox.Show("Search employee first.", "Search employee details", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            OnFilterEmployeeAttendance(EventArgs.Empty);
+        }
     }
 }
