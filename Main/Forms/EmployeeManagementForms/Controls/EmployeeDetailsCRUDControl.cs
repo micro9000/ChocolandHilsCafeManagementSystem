@@ -190,7 +190,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 PicBoxEmpImage.ImageLocation = null;
                 PicBoxEmpImage.Image = null;
             }
-            
+
+            this.LViewAttendanceHistory.Items.Clear();
 
             this.LblActionForEmployeeDetails.Text = "Add new employee";
             this.TbxFirstName.Text = "";

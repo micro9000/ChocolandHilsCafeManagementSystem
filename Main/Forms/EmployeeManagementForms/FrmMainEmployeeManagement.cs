@@ -253,11 +253,21 @@ namespace Main.Forms.EmployeeManagementForms
             this.panelContainer.Controls.Clear();
 
             var employeeDetailsCRUDControl = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter);
+
+            employeeDetailsCRUDControl.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
+            employeeDetailsCRUDControl.WorkShifts = _workShiftController.GetAll().Data;
+
+            // event added
+            employeeDetailsCRUDControl.EmployeeSaved += this.HandleEmployeeSaved;
             employeeDetailsCRUDControl.PropertyChanged += this.OnEmployeeNumberEnter;
+            employeeDetailsCRUDControl.WorkShiftSelected += HandleSelectedWorkShiftToGetOtherInfo;
+            employeeDetailsCRUDControl.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
 
             employeeDetailsCRUDControl.Location = new Point(this.ClientSize.Width / 2 - employeeDetailsCRUDControl.Size.Width / 2, this.ClientSize.Height / 2 - employeeDetailsCRUDControl.Size.Height / 2);
             employeeDetailsCRUDControl.Anchor = AnchorStyles.None;
             employeeDetailsCRUDControl.UpdateEmployeeDetails();
+
+            employeeDetailsCRUDControl.TbxEmployeeNumber.Text = selectedEmployeeNumber;
             employeeDetailsCRUDControl.EmployeeNumber = selectedEmployeeNumber;
 
             this.panelContainer.Controls.Add(employeeDetailsCRUDControl);

@@ -1074,7 +1074,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ColumnHeader CardIsExisting;
         private System.Windows.Forms.ColumnHeader Remarks;
         private System.Windows.Forms.Button BtnCancelUpdateEmployee;
-        private System.Windows.Forms.TextBox TbxEmployeeNumber;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TabControl TabControlSaveEmployeeDetails;
         private System.Windows.Forms.TabPage SaveEmployeeAction;
@@ -1123,5 +1122,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ColumnHeader LVColumnLate;
         private System.Windows.Forms.ColumnHeader LVColumnUnderTime;
         private System.Windows.Forms.ColumnHeader LVColumnOvertime;
+        public System.Windows.Forms.TextBox TbxEmployeeNumber;
     }
 }
