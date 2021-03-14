@@ -32,6 +32,9 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IHolidayController _holidayController;
         private readonly IHolidayData _holidayData;
         private readonly IEmployeeAttendanceData _employeeAttendanceData;
+        private readonly IEmployeeBenefitsDeductionsController _employeeBenefitsDeductionsController;
+        private readonly IEmployeeBenefitData _employeeBenefitData;
+        private readonly IEmployeeDeductionData _employeeDeductionData;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
@@ -44,7 +47,10 @@ namespace Main.Forms.EmployeeManagementForms
                                 IEmployeeLeaveController employeeLeaveController,
                                 IHolidayController holidayController,
                                 IHolidayData holidayData,
-                                IEmployeeAttendanceData employeeAttendanceData)
+                                IEmployeeAttendanceData employeeAttendanceData,
+                                IEmployeeBenefitsDeductionsController employeeBenefitsDeductionsController,
+                                IEmployeeBenefitData employeeBenefitData,
+                                IEmployeeDeductionData employeeDeductionData)
         {
             InitializeComponent();
             _logger = logger;
@@ -59,6 +65,9 @@ namespace Main.Forms.EmployeeManagementForms
             _holidayController = holidayController;
             _holidayData = holidayData;
             _employeeAttendanceData = employeeAttendanceData;
+            _employeeBenefitsDeductionsController = employeeBenefitsDeductionsController;
+            _employeeBenefitData = employeeBenefitData;
+            _employeeDeductionData = employeeDeductionData;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -78,6 +87,10 @@ namespace Main.Forms.EmployeeManagementForms
             {
                 // Employee Leave management
                 DisplayEmployeeLeaveManagementControl();
+            }
+            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_Benefits_Deductions")
+            {
+                DisplayBenefitDeductionCRUDControl();
             }
         }
 
@@ -730,6 +743,190 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
+
+        #endregion
+
+        #region Employee Benefits/Deduction CRUD
+
+        public void DisplayBenefitDeductionCRUDControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var benefitDeductionControlObj = new EmployeeBenefitsAndDeductions();
+            benefitDeductionControlObj.Location = new Point(this.ClientSize.Width / 2 - benefitDeductionControlObj.Size.Width / 2, this.ClientSize.Height / 2 - benefitDeductionControlObj.Size.Height / 2);
+            benefitDeductionControlObj.Anchor = AnchorStyles.None;
+
+            benefitDeductionControlObj.Benefits = _employeeBenefitData.GetAllNotDeleted();
+            benefitDeductionControlObj.Deductions = _employeeDeductionData.GetAllNotDeleted();
+
+            benefitDeductionControlObj.SaveBenefit += HandleSaveEmployeeBenefits;
+            benefitDeductionControlObj.BtnUpdateBenefitClicked += HandleSelectEmpBenefit;
+            benefitDeductionControlObj.BtnDeleteBenefitClicked += HandleDeleteEmpBenefit;
+
+            benefitDeductionControlObj.SaveDeduction += HandleSaveEmployeeDeduction;
+            benefitDeductionControlObj.BtnUpdateDeductionClicked += HandleSelectEmpDeduction;
+            benefitDeductionControlObj.BtnDeleteDeductionClicked += HandleDeleteEmpDedution;
+
+            this.panelContainer.Controls.Add(benefitDeductionControlObj);
+        }
+
+        private void HandleSaveEmployeeBenefits(object sender, EventArgs e)
+        {
+            EmployeeBenefitsAndDeductions benefitDeductionControlObj = (EmployeeBenefitsAndDeductions)sender;
+            var benefit = benefitDeductionControlObj.BenefitToSave;
+            var isNew = benefitDeductionControlObj.BenefitIsSaveNew;
+
+            if (benefit != null)
+            {
+                var saveResults = _employeeBenefitsDeductionsController.SaveBenefit(benefit, isNew);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save benefit details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    benefitDeductionControlObj.ResetBenefitForm();
+
+                    benefitDeductionControlObj.Benefits = _employeeBenefitData.GetAllNotDeleted();
+                    benefitDeductionControlObj.DisplayBenefitsInDGV();
+
+                    //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
+
+                    //DisplayAddUpdateEmployeeConfirmationUserControl(saveResults.Data, msg);
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+        }
+
+        private void HandleSelectEmpBenefit(object sender, EventArgs e)
+        {
+            EmployeeBenefitsAndDeductions benefitDeductionControlObj = (EmployeeBenefitsAndDeductions)sender;
+            var benefitId = benefitDeductionControlObj.BenefitIdToDeleteOrUpdate;
+
+            benefitDeductionControlObj.BenefitToSave = _employeeBenefitData.Get(benefitId);
+            benefitDeductionControlObj.DisplaySelectedBenefit();
+        }
+
+
+        private void HandleDeleteEmpBenefit(object sender, EventArgs e)
+        {
+            EmployeeBenefitsAndDeductions benefitDeductionControlObj = (EmployeeBenefitsAndDeductions)sender;
+            var benefitId = benefitDeductionControlObj.BenefitIdToDeleteOrUpdate;
+
+            if (benefitId > 0)
+            {
+                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (res == DialogResult.OK)
+                {
+                    var saveResults = _employeeBenefitsDeductionsController.DeleteBenefit(benefitId);
+
+                    string resultMessages = "";
+                    foreach (var msg in saveResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (saveResults.IsSuccess)
+                    {
+                        MessageBox.Show(resultMessages, "Delete benefit.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        benefitDeductionControlObj.Benefits = _employeeBenefitData.GetAllNotDeleted();
+                        benefitDeductionControlObj.DisplayBenefitsInDGV();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Delete benefit details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+        }
+
+
+        private void HandleSaveEmployeeDeduction(object sender, EventArgs e)
+        {
+            EmployeeBenefitsAndDeductions benefitDeductionControlObj = (EmployeeBenefitsAndDeductions)sender;
+            var deduction = benefitDeductionControlObj.DeductionToSave;
+            var isNew = benefitDeductionControlObj.DeductionIsSaveNew;
+
+            if (deduction != null)
+            {
+                var saveResults = _employeeBenefitsDeductionsController.SaveDeduction(deduction, isNew);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save deduction details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    benefitDeductionControlObj.ResetDeductionForm();
+
+                    benefitDeductionControlObj.Deductions = _employeeDeductionData.GetAllNotDeleted();
+                    benefitDeductionControlObj.DisplayDeductionsInDGV();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+        }
+
+
+        private void HandleSelectEmpDeduction(object sender, EventArgs e)
+        {
+            EmployeeBenefitsAndDeductions benefitDeductionControlObj = (EmployeeBenefitsAndDeductions)sender;
+            var deductionId = benefitDeductionControlObj.DeductionIdToDeleteOrUpdate;
+
+            benefitDeductionControlObj.DeductionToSave = _employeeDeductionData.Get(deductionId);
+            benefitDeductionControlObj.DisplaySelectedDeduction();
+        }
+
+
+        private void HandleDeleteEmpDedution(object sender, EventArgs e)
+        {
+            EmployeeBenefitsAndDeductions benefitDeductionControlObj = (EmployeeBenefitsAndDeductions)sender;
+            var deductionId = benefitDeductionControlObj.DeductionIdToDeleteOrUpdate;
+
+            if (deductionId > 0)
+            {
+                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (res == DialogResult.OK)
+                {
+                    var saveResults = _employeeBenefitsDeductionsController.DeleteDeduction(deductionId);
+
+                    string resultMessages = "";
+                    foreach (var msg in saveResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (saveResults.IsSuccess)
+                    {
+                        MessageBox.Show(resultMessages, "Delete deduction.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        benefitDeductionControlObj.Deductions = _employeeDeductionData.GetAllNotDeleted();
+                        benefitDeductionControlObj.DisplayDeductionsInDGV();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Delete deduction details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+        }
 
         #endregion
     }

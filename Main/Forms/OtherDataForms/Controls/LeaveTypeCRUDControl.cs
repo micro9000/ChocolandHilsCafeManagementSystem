@@ -176,7 +176,6 @@ namespace Main.Forms.OtherDataForms.Controls
                 btnDeleteLeaveTypeImg.Image = Image.FromFile("./Resources/remove-24.png");
                 this.DGVLeaveTypes.Columns.Add(btnDeleteLeaveTypeImg);
 
-
                 foreach (var leaveType in this.LeaveTypes)
                 {
                     DataGridViewRow row = new DataGridViewRow();

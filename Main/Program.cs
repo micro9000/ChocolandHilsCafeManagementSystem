@@ -124,6 +124,7 @@ namespace Main
             services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
             services.AddTransient<IEmployeeShiftDayData, EmployeeShiftDayData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
+            services.AddTransient<IEmployeeBenefitsDeductionsController, EmployeeBenefitsDeductionsController>();
 
             // Other data management
             services.AddTransient<ILeaveTypeData, LeaveTypeData>();

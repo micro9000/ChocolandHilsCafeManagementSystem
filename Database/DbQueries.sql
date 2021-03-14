@@ -125,6 +125,9 @@ ADD COLUMN imageFileName VARCHAR(500);
 
 SELECT * FROM Employees;
 
+SELECT COUNT(*) as count FROM Employees 
+WHERE isDeleted=false AND empNumYear = '2021';
+
 CREATE TABLE IF NOT EXISTS GovernmentAgencies(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     govtAgency VARCHAR(255),
@@ -272,6 +275,8 @@ CREATE TABLE IF NOT EXISTS EmployeeBenefits(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM EmployeeBenefits;
+
 -- possible enhancement:
 -- add employee type that will use to add conditional/special deduction
 -- certain employees can have special deduction
@@ -284,6 +289,7 @@ CREATE TABLE IF NOT EXISTS EmployeeDeductions(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
 
 CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
