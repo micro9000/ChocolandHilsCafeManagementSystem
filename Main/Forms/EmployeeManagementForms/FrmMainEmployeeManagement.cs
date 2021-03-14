@@ -65,7 +65,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             ToolStripItem clickedItem = e.ClickedItem;
 
-            if (clickedItem != null && clickedItem.Name == "ToolStripItem_Add")
+            if (clickedItem != null && clickedItem.Name == "ToolStripItem_DetailsCRUD")
             {
                 // Add/update form
                 DisplayAddUpdateEmployeeUserControl();
@@ -73,10 +73,6 @@ namespace Main.Forms.EmployeeManagementForms
             else if (clickedItem != null && clickedItem.Name == "ToolStripItem_List")
             {
                 DisplayEmployeeListUserControl();
-            }
-            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_Details")
-            {
-                DisplayEmployeeDetailsUserControl();
             }
             else if (clickedItem != null && clickedItem.Name == "ToolStripItem_FileLeave")
             {
@@ -96,19 +92,6 @@ namespace Main.Forms.EmployeeManagementForms
 
         #region Add/Update employee confirmation user control related methods event handlers
 
-        //public void DisplayAddUpdateEmployeeConfirmationUserControl(EmployeeModel employeeDetails, string msg)
-        //{
-        //    this.panelContainer.Controls.Clear();
-        //    var userControlToDisplay = new AddUpdateEmployeeConfirmationUserControl();
-        //    //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-        //    //userControlToDisplay.Anchor = AnchorStyles.None;
-
-        //    userControlToDisplay.BtnBackToFormClick += HandleBackToForm;
-
-        //    userControlToDisplay.DisplayEmployeeDetails(employeeDetails, msg);
-
-        //    this.panelContainer.Controls.Add(userControlToDisplay);
-        //}
 
         private void HandleBackToForm(object sender, EventArgs e)
         {
@@ -124,7 +107,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             this.panelContainer.Controls.Clear();
 
-            var controlToDisplay = new EmployeeDetailsCRUDControl();
+            var controlToDisplay = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter);
             //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
             controlToDisplay.Location = new Point(this.ClientSize.Width / 2 - controlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - controlToDisplay.Size.Height / 2);
             controlToDisplay.Anchor = AnchorStyles.None;
@@ -137,6 +120,7 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.EmployeeSaved += this.HandleEmployeeSaved;
             controlToDisplay.PropertyChanged += this.OnEmployeeNumberEnter;
             controlToDisplay.WorkShiftSelected += HandleSelectedWorkShiftToGetOtherInfo;
+            controlToDisplay.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
 
             this.panelContainer.Controls.Add(controlToDisplay);
         }
@@ -200,7 +184,18 @@ namespace Main.Forms.EmployeeManagementForms
                 employeeCRUDControlObj.EmployeeGovtIdCards = _employeeController.GetAllEmployeeIdCardsMapToCustomModel(employeeDetails.Data.EmployeeNumber);
                 employeeCRUDControlObj.EmployeeSalary = _employeeController.GetEmployeeSalaryRateByEmployeeNumber(employeeDetails.Data.EmployeeNumber).Data;
                 employeeCRUDControlObj.DisplayEmployeeDetails(employeeDetails.Data);
+
+
+                int year = DateTime.Now.Year;
+                DateTime Jan1 = new DateTime(year, 1, 1);
+                DateTime today = DateTime.Now;
+
+                employeeCRUDControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(employeeDetails.Data.EmployeeNumber, Jan1, today);
+                employeeCRUDControlObj.DisplayAttendanceRecord();
+
                 employeeCRUDControlObj.MoveToNextTabSaveEmployeeDetails();
+
+
             }
             else
             {
@@ -213,6 +208,18 @@ namespace Main.Forms.EmployeeManagementForms
             }
             
         }
+
+        private void HandleFilterEmployeeAttendance(object sender, EventArgs e)
+        {
+            EmployeeDetailsCRUDControl employeeDetailsCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            var EmployeeNumber = employeeDetailsCRUDControlObj.EmployeeNumber;
+            DateTime startDate = employeeDetailsCRUDControlObj.FilterAttendanceStartDate;
+            DateTime endDate = employeeDetailsCRUDControlObj.FilterAttendanceEndDate;
+
+            employeeDetailsCRUDControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(EmployeeNumber, startDate, endDate);
+            employeeDetailsCRUDControlObj.DisplayAttendanceRecord();
+        }
+
         #endregion
 
 
@@ -242,14 +249,18 @@ namespace Main.Forms.EmployeeManagementForms
         {
             EmployeeListControl employeeListControlObj = (EmployeeListControl)sender;
             var selectedEmployeeNumber = employeeListControlObj.SelectedEmployeeNumber;
-            MessageBox.Show(selectedEmployeeNumber);
-
+            
             this.panelContainer.Controls.Clear();
 
-            var employeeDetailsControl = new EmployeeDetailsControl(_decimalMinutesToHrsConverter);
-            employeeDetailsControl.Dock = DockStyle.Fill;
+            var employeeDetailsCRUDControl = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter);
+            employeeDetailsCRUDControl.PropertyChanged += this.OnEmployeeNumberEnter;
 
-            this.panelContainer.Controls.Add(employeeDetailsControl);
+            employeeDetailsCRUDControl.Location = new Point(this.ClientSize.Width / 2 - employeeDetailsCRUDControl.Size.Width / 2, this.ClientSize.Height / 2 - employeeDetailsCRUDControl.Size.Height / 2);
+            employeeDetailsCRUDControl.Anchor = AnchorStyles.None;
+            employeeDetailsCRUDControl.UpdateEmployeeDetails();
+            employeeDetailsCRUDControl.EmployeeNumber = selectedEmployeeNumber;
+
+            this.panelContainer.Controls.Add(employeeDetailsCRUDControl);
 
             // TODO: Use this method to display all information related to the employee
         }
@@ -273,61 +284,6 @@ namespace Main.Forms.EmployeeManagementForms
 
         #endregion
 
-
-
-        #region Employee Details user control related methods and event handlers
-        private void DisplayEmployeeDetailsUserControl()
-        {
-            this.panelContainer.Controls.Clear();
-
-            var employeeDetailsControlObj = new EmployeeDetailsControl(_decimalMinutesToHrsConverter);
-            employeeDetailsControlObj.Dock = DockStyle.Fill;
-            //userControlToDisplay.Location = new Point(this.ClientSize.Width / 2 - userControlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - userControlToDisplay.Size.Height / 2);
-            //userControlToDisplay.Anchor = AnchorStyles.None;
-
-
-            employeeDetailsControlObj.EmployeeNumberPropertyChanged += OnViewEmployeeDetails;
-            employeeDetailsControlObj.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
-            //userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
-
-            //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
-            //userControlToDisplay.DisplayEmployeeList();
-
-            //userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
-
-            this.panelContainer.Controls.Add(employeeDetailsControlObj);
-        }
-
-        private void OnViewEmployeeDetails(object sender, PropertyChangedEventArgs e)
-        {
-            EmployeeDetailsControl employeeDetailsControlObj = (EmployeeDetailsControl)sender;
-            var EmployeeNumber = employeeDetailsControlObj.EmployeeNumber;
-
-            employeeDetailsControlObj.EmployeeFullInformations = this._employeeController.GetEmployeeFullInformations(EmployeeNumber).Data;
-            employeeDetailsControlObj.DisplayAllEmployeeInformations();
-
-            int year = DateTime.Now.Year;
-            DateTime Jan1 = new DateTime(year, 1, 1);
-            DateTime today = DateTime.Now;
-
-            employeeDetailsControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(EmployeeNumber, Jan1, today);
-            employeeDetailsControlObj.DisplayAttendanceRecord();
-        }
-
-
-        private void HandleFilterEmployeeAttendance(object sender, EventArgs e)
-        {
-            EmployeeDetailsControl employeeDetailsControlObj = (EmployeeDetailsControl)sender;
-            var EmployeeNumber = employeeDetailsControlObj.EmployeeNumber;
-            DateTime startDate = employeeDetailsControlObj.FilterAttendanceStartDate;
-            DateTime endDate = employeeDetailsControlObj.FilterAttendanceEndDate;
-
-            employeeDetailsControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(EmployeeNumber, startDate, endDate);
-            employeeDetailsControlObj.DisplayAttendanceRecord();
-        }
-
-
-        #endregion
 
         private void WorkSchedulesMenItems_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {

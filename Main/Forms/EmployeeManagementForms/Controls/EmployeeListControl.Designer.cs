@@ -147,6 +147,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVEmployeeList.RowTemplate.Height = 25;
             this.DGVEmployeeList.Size = new System.Drawing.Size(1506, 551);
             this.DGVEmployeeList.TabIndex = 1;
+            this.DGVEmployeeList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployees_CellClick);
+            this.DGVEmployeeList.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployees_CellMouseEnter);
             this.DGVEmployeeList.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TbxSearchString_KeyUp);
             // 
             // EmployeeListControl

@@ -12,14 +12,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Shared.Helpers;
 
 namespace Main.Forms.EmployeeManagementForms.Controls
 {
     public partial class EmployeeDetailsCRUDControl : UserControl
     {
-        public EmployeeDetailsCRUDControl()
+        public EmployeeDetailsCRUDControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter)
         {
             InitializeComponent();
+            _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -139,6 +141,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
+        private List<EmployeeAttendanceModel> attendanceHistory;
+
+        public List<EmployeeAttendanceModel> AttendanceHistory
+        {
+            get { return attendanceHistory; }
+            set { attendanceHistory = value; }
+        }
 
         private void EmployeeDetailsCRUDControl_Load(object sender, EventArgs e)
         {
@@ -445,7 +454,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             MoveToNextTabSaveEmployeeDetails();
         }
 
-        private void BtnActionUpdateEmployeeDetails_Click(object sender, EventArgs e)
+        public void UpdateEmployeeDetails()
         {
             this.ClearForm();
             this.IsNew = false;
@@ -456,6 +465,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // if update, disable the add employee button, 
             //the user needs to click cancel in order to choose add new
             this.BtnActionAddNewEmployee.Enabled = false;
+        }
+
+        private void BtnActionUpdateEmployeeDetails_Click(object sender, EventArgs e)
+        {
+            UpdateEmployeeDetails();
         }
 
         private void BtnActionSearchEmployeeByEmployeeNumber_Click(object sender, EventArgs e)
@@ -665,6 +679,102 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 //it will give if file is already exits..
                 MessageBox.Show(ex.Message);
             }
+        }
+
+
+
+        public void DisplayAttendanceRecord()
+        {
+            if (this.AttendanceHistory != null)
+            {
+                this.LViewAttendanceHistory.Items.Clear();
+                foreach (var attendance in this.AttendanceHistory)
+                {
+                    DateTime firstTimeOut = DateTime.Now;
+                    if (attendance.FirstTimeOut == DateTime.MinValue)
+                    {
+                        firstTimeOut = attendance.Shift.EarlyTimeOut;
+                    }
+                    else
+                    {
+                        firstTimeOut = attendance.FirstTimeOut;
+                    }
+
+                    string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm")} {firstTimeOut.ToString("hh:mm")}";
+
+                    string secondTimeINandOUT = "";
+
+                    if (attendance.IsTimeOutProvided)
+                    {
+                        secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
+                    }
+
+                    string whoDayTotalHrs = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
+                    string late = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
+                    string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
+                    string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
+
+                    var row = new string[]
+                    {
+                        attendance.WorkDate.ToShortDateString(),
+                        attendance.Shift.Shift,
+                        $"{attendance.Shift.StartTime.ToString("hh:mm tt")} to {attendance.Shift.EndTime.ToString("hh:mm tt")}",
+                        firstTimeINandOUT,
+                        secondTimeINandOUT,
+                        whoDayTotalHrs,
+                        late,
+                        underTime,
+                        overTime
+                    };
+
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = attendance;
+
+                    this.LViewAttendanceHistory.Items.Add(listViewItem);
+                }
+            }
+        }
+
+
+        private DateTime filterAttendanceStartDate;
+
+        public DateTime FilterAttendanceStartDate
+        {
+            get { return filterAttendanceStartDate; }
+            set { filterAttendanceStartDate = value; }
+        }
+
+
+        private DateTime filterAttendanceEndDate;
+        private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
+
+        public DateTime FilterAttendanceEndDate
+        {
+            get { return filterAttendanceEndDate; }
+            set { filterAttendanceEndDate = value; }
+        }
+
+
+        // Event handler for saving leave type
+        public event EventHandler FilterEmployeeAttendance;
+        protected virtual void OnFilterEmployeeAttendance(EventArgs e)
+        {
+            FilterEmployeeAttendance?.Invoke(this, e);
+        }
+
+
+        private void BtnFilterAttendanceHistory_Click(object sender, EventArgs e)
+        {
+            FilterAttendanceStartDate = this.DPickerFilterAttendanceStartDate.Value;
+            FilterAttendanceEndDate = this.DPickerFilterAttendanceEndDate.Value;
+
+            if (string.IsNullOrEmpty(this.EmployeeNumber))
+            {
+                MessageBox.Show("Search employee first.", "Search employee details", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            OnFilterEmployeeAttendance(EventArgs.Empty);
         }
     }
 }
