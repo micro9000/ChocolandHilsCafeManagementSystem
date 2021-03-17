@@ -53,7 +53,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DGVEmployeeListToSchedule = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.BtnUpdateSelectedDateWorkForce = new System.Windows.Forms.Button();
             this.BtnGenerateWorkforceSchedule = new System.Windows.Forms.Button();
             this.LViewScheduleDates = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
@@ -358,7 +358,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.BtnUpdateSelectedDateWorkForce);
             this.groupBox1.Controls.Add(this.BtnGenerateWorkforceSchedule);
             this.groupBox1.Controls.Add(this.LViewScheduleDates);
             this.groupBox1.Controls.Add(this.label4);
@@ -373,19 +373,20 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling";
             // 
-            // button2
+            // BtnUpdateSelectedDateWorkForce
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(253, 524);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(89, 30);
-            this.button2.TabIndex = 51;
-            this.button2.Text = "Generate";
-            this.button2.UseVisualStyleBackColor = false;
+            this.BtnUpdateSelectedDateWorkForce.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnUpdateSelectedDateWorkForce.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnUpdateSelectedDateWorkForce.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnUpdateSelectedDateWorkForce.ForeColor = System.Drawing.Color.White;
+            this.BtnUpdateSelectedDateWorkForce.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnUpdateSelectedDateWorkForce.Location = new System.Drawing.Point(193, 512);
+            this.BtnUpdateSelectedDateWorkForce.Name = "BtnUpdateSelectedDateWorkForce";
+            this.BtnUpdateSelectedDateWorkForce.Size = new System.Drawing.Size(169, 30);
+            this.BtnUpdateSelectedDateWorkForce.TabIndex = 51;
+            this.BtnUpdateSelectedDateWorkForce.Text = "Update Workforce";
+            this.BtnUpdateSelectedDateWorkForce.UseVisualStyleBackColor = false;
+            this.BtnUpdateSelectedDateWorkForce.Click += new System.EventHandler(this.BtnUpdateSelectedDateWorkForce_Click);
             // 
             // BtnGenerateWorkforceSchedule
             // 
@@ -541,7 +542,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker DPicWorkScheduleStartFrom;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button BtnUpdateSelectedDateWorkForce;
         private System.Windows.Forms.Button BtnGenerateWorkforceSchedule;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
