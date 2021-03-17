@@ -43,11 +43,40 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxWednesday = new System.Windows.Forms.CheckBox();
             this.CBoxMonday = new System.Windows.Forms.CheckBox();
             this.CBoxTuesday = new System.Windows.Forms.CheckBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.DGVScheduledWorkforceByDate = new System.Windows.Forms.DataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.DGVEmployeeListToSchedule = new System.Windows.Forms.DataGridView();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.BtnGenerateWorkforceSchedule = new System.Windows.Forms.Button();
+            this.LViewScheduleDates = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.label4 = new System.Windows.Forms.Label();
+            this.DPicWorkScheduleEndTo = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.DPicWorkScheduleStartFrom = new System.Windows.Forms.DateTimePicker();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeList)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVShiftList)).BeginInit();
             this.GroupPanelShiftDays.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVScheduledWorkforceByDate)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeListToSchedule)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -78,10 +107,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVEmployeeList.AllowUserToDeleteRows = false;
             this.DGVEmployeeList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVEmployeeList.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DGVEmployeeList.Location = new System.Drawing.Point(528, 94);
+            this.DGVEmployeeList.Location = new System.Drawing.Point(508, 3);
             this.DGVEmployeeList.Name = "DGVEmployeeList";
+            this.DGVEmployeeList.ReadOnly = true;
             this.DGVEmployeeList.RowTemplate.Height = 25;
-            this.DGVEmployeeList.Size = new System.Drawing.Size(707, 527);
+            this.DGVEmployeeList.Size = new System.Drawing.Size(716, 623);
             this.DGVEmployeeList.TabIndex = 7;
             // 
             // groupBox2
@@ -89,9 +119,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox2.Controls.Add(this.DGVShiftList);
             this.groupBox2.Controls.Add(this.BtnSaveEmployeeShiftSchedule);
             this.groupBox2.Controls.Add(this.GroupPanelShiftDays);
-            this.groupBox2.Location = new System.Drawing.Point(22, 100);
+            this.groupBox2.Location = new System.Drawing.Point(15, 18);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(489, 507);
+            this.groupBox2.Size = new System.Drawing.Size(423, 510);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Shifts";
@@ -106,7 +136,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVShiftList.Name = "DGVShiftList";
             this.DGVShiftList.ReadOnly = true;
             this.DGVShiftList.RowTemplate.Height = 25;
-            this.DGVShiftList.Size = new System.Drawing.Size(483, 244);
+            this.DGVShiftList.Size = new System.Drawing.Size(417, 244);
             this.DGVShiftList.TabIndex = 53;
             this.DGVShiftList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVShiftList_CellClick);
             // 
@@ -117,7 +147,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveEmployeeShiftSchedule.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveEmployeeShiftSchedule.ForeColor = System.Drawing.Color.White;
             this.BtnSaveEmployeeShiftSchedule.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveEmployeeShiftSchedule.Location = new System.Drawing.Point(319, 391);
+            this.BtnSaveEmployeeShiftSchedule.Location = new System.Drawing.Point(281, 402);
             this.BtnSaveEmployeeShiftSchedule.Name = "BtnSaveEmployeeShiftSchedule";
             this.BtnSaveEmployeeShiftSchedule.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveEmployeeShiftSchedule.TabIndex = 49;
@@ -134,7 +164,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GroupPanelShiftDays.Controls.Add(this.CBoxWednesday);
             this.GroupPanelShiftDays.Controls.Add(this.CBoxMonday);
             this.GroupPanelShiftDays.Controls.Add(this.CBoxTuesday);
-            this.GroupPanelShiftDays.Location = new System.Drawing.Point(56, 293);
+            this.GroupPanelShiftDays.Location = new System.Drawing.Point(18, 297);
             this.GroupPanelShiftDays.Name = "GroupPanelShiftDays";
             this.GroupPanelShiftDays.Size = new System.Drawing.Size(378, 74);
             this.GroupPanelShiftDays.TabIndex = 52;
@@ -218,17 +248,245 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxTuesday.Text = "Tue";
             this.CBoxTuesday.UseVisualStyleBackColor = true;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 94);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1235, 657);
+            this.tabControl1.TabIndex = 9;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.DGVEmployeeList);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1227, 629);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Employee Shift";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.button3);
+            this.tabPage2.Controls.Add(this.panel2);
+            this.tabPage2.Controls.Add(this.groupBox1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1227, 629);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Workforce Schedule";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button3.Location = new System.Drawing.Point(1100, 561);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(102, 49);
+            this.button3.TabIndex = 52;
+            this.button3.Text = "Save";
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.groupBox4);
+            this.panel2.Controls.Add(this.groupBox3);
+            this.panel2.Location = new System.Drawing.Point(437, 17);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(768, 538);
+            this.panel2.TabIndex = 11;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.DGVScheduledWorkforceByDate);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox4.Location = new System.Drawing.Point(0, 282);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(768, 256);
+            this.groupBox4.TabIndex = 11;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Workforce";
+            // 
+            // DGVScheduledWorkforceByDate
+            // 
+            this.DGVScheduledWorkforceByDate.AllowUserToAddRows = false;
+            this.DGVScheduledWorkforceByDate.AllowUserToDeleteRows = false;
+            this.DGVScheduledWorkforceByDate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVScheduledWorkforceByDate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DGVScheduledWorkforceByDate.Location = new System.Drawing.Point(3, 19);
+            this.DGVScheduledWorkforceByDate.Name = "DGVScheduledWorkforceByDate";
+            this.DGVScheduledWorkforceByDate.ReadOnly = true;
+            this.DGVScheduledWorkforceByDate.RowTemplate.Height = 25;
+            this.DGVScheduledWorkforceByDate.Size = new System.Drawing.Size(762, 234);
+            this.DGVScheduledWorkforceByDate.TabIndex = 8;
+            this.DGVScheduledWorkforceByDate.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVScheduledWorkforceByDate_CellClick);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.DGVEmployeeListToSchedule);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(768, 285);
+            this.groupBox3.TabIndex = 10;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Select employee";
+            // 
+            // DGVEmployeeListToSchedule
+            // 
+            this.DGVEmployeeListToSchedule.AllowUserToAddRows = false;
+            this.DGVEmployeeListToSchedule.AllowUserToDeleteRows = false;
+            this.DGVEmployeeListToSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVEmployeeListToSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DGVEmployeeListToSchedule.Location = new System.Drawing.Point(3, 19);
+            this.DGVEmployeeListToSchedule.Name = "DGVEmployeeListToSchedule";
+            this.DGVEmployeeListToSchedule.ReadOnly = true;
+            this.DGVEmployeeListToSchedule.RowTemplate.Height = 25;
+            this.DGVEmployeeListToSchedule.Size = new System.Drawing.Size(762, 263);
+            this.DGVEmployeeListToSchedule.TabIndex = 8;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.BtnGenerateWorkforceSchedule);
+            this.groupBox1.Controls.Add(this.LViewScheduleDates);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.DPicWorkScheduleEndTo);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.DPicWorkScheduleStartFrom);
+            this.groupBox1.Location = new System.Drawing.Point(18, 17);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(389, 593);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Scheduling";
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button2.Location = new System.Drawing.Point(253, 524);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(89, 30);
+            this.button2.TabIndex = 51;
+            this.button2.Text = "Generate";
+            this.button2.UseVisualStyleBackColor = false;
+            // 
+            // BtnGenerateWorkforceSchedule
+            // 
+            this.BtnGenerateWorkforceSchedule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnGenerateWorkforceSchedule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnGenerateWorkforceSchedule.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnGenerateWorkforceSchedule.ForeColor = System.Drawing.Color.White;
+            this.BtnGenerateWorkforceSchedule.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnGenerateWorkforceSchedule.Location = new System.Drawing.Point(265, 78);
+            this.BtnGenerateWorkforceSchedule.Name = "BtnGenerateWorkforceSchedule";
+            this.BtnGenerateWorkforceSchedule.Size = new System.Drawing.Size(89, 30);
+            this.BtnGenerateWorkforceSchedule.TabIndex = 50;
+            this.BtnGenerateWorkforceSchedule.Text = "Generate";
+            this.BtnGenerateWorkforceSchedule.UseVisualStyleBackColor = false;
+            this.BtnGenerateWorkforceSchedule.Click += new System.EventHandler(this.BtnGenerateWorkforceSchedule_Click);
+            // 
+            // LViewScheduleDates
+            // 
+            this.LViewScheduleDates.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
+            this.LViewScheduleDates.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LViewScheduleDates.FullRowSelect = true;
+            this.LViewScheduleDates.GridLines = true;
+            this.LViewScheduleDates.HideSelection = false;
+            this.LViewScheduleDates.Location = new System.Drawing.Point(20, 125);
+            this.LViewScheduleDates.Name = "LViewScheduleDates";
+            this.LViewScheduleDates.Size = new System.Drawing.Size(342, 381);
+            this.LViewScheduleDates.TabIndex = 5;
+            this.LViewScheduleDates.UseCompatibleStateImageBehavior = false;
+            this.LViewScheduleDates.View = System.Windows.Forms.View.Details;
+            this.LViewScheduleDates.SelectedIndexChanged += new System.EventHandler(this.LViewScheduleDates_SelectedIndexChanged);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Date";
+            this.columnHeader1.Width = 200;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Workforce #";
+            this.columnHeader2.Width = 100;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(32, 87);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(25, 21);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "To";
+            // 
+            // DPicWorkScheduleEndTo
+            // 
+            this.DPicWorkScheduleEndTo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.DPicWorkScheduleEndTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicWorkScheduleEndTo.Location = new System.Drawing.Point(91, 81);
+            this.DPicWorkScheduleEndTo.Name = "DPicWorkScheduleEndTo";
+            this.DPicWorkScheduleEndTo.Size = new System.Drawing.Size(168, 29);
+            this.DPicWorkScheduleEndTo.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(32, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(47, 21);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "From";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(91, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(140, 21);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Generate Schedule";
+            // 
+            // DPicWorkScheduleStartFrom
+            // 
+            this.DPicWorkScheduleStartFrom.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.DPicWorkScheduleStartFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicWorkScheduleStartFrom.Location = new System.Drawing.Point(91, 46);
+            this.DPicWorkScheduleStartFrom.Name = "DPicWorkScheduleStartFrom";
+            this.DPicWorkScheduleStartFrom.Size = new System.Drawing.Size(168, 29);
+            this.DPicWorkScheduleStartFrom.TabIndex = 0;
+            // 
             // ManageEmpWorkScheduleControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.DGVEmployeeList);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "ManageEmpWorkScheduleControl";
-            this.Size = new System.Drawing.Size(1235, 621);
+            this.Size = new System.Drawing.Size(1235, 751);
             this.Load += new System.EventHandler(this.ManageEmpWorkScheduleControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -237,6 +495,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             ((System.ComponentModel.ISupportInitialize)(this.DGVShiftList)).EndInit();
             this.GroupPanelShiftDays.ResumeLayout(false);
             this.GroupPanelShiftDays.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVScheduledWorkforceByDate)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeListToSchedule)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -257,5 +525,25 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.CheckBox CBoxTuesday;
         private System.Windows.Forms.DataGridView DGVShiftList;
         private System.Windows.Forms.Button BtnSaveEmployeeShiftSchedule;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.DataGridView DGVScheduledWorkforceByDate;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.DataGridView DGVEmployeeListToSchedule;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ListView LViewScheduleDates;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DateTimePicker DPicWorkScheduleEndTo;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DateTimePicker DPicWorkScheduleStartFrom;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button BtnGenerateWorkforceSchedule;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
     }
 }

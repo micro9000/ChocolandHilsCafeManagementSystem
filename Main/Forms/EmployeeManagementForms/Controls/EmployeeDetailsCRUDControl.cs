@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using Shared.Helpers;
+using System.Globalization;
 
 namespace Main.Forms.EmployeeManagementForms.Controls
 {
@@ -149,6 +150,23 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             set { attendanceHistory = value; }
         }
 
+
+        private List<EmployeeLeaveModel> employeeLeaveHistory;
+
+        public List<EmployeeLeaveModel> EmployeeLeaveHistory
+        {
+            get { return employeeLeaveHistory; }
+            set { employeeLeaveHistory = value; }
+        }
+
+        private List<HolidayModel> holidays;
+
+        public List<HolidayModel> Holidays
+        {
+            get { return holidays; }
+            set { holidays = value; }
+        }
+
         private void EmployeeDetailsCRUDControl_Load(object sender, EventArgs e)
         {
             // Govt. agencies load in combo box
@@ -192,6 +210,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
 
             this.LViewAttendanceHistory.Items.Clear();
+            this.AttendanceHistory = null;
 
             this.LblActionForEmployeeDetails.Text = "Add new employee";
             this.TbxFirstName.Text = "";
@@ -682,41 +701,63 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
-
-
-        public void DisplayAttendanceRecord()
+        public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
         {
-            if (this.AttendanceHistory != null)
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
+        }
+
+
+        //WorkShiftDays
+        public bool CheckIfAbsentOnEmpShift(DateTime workDay)
+        {
+            return WorkShiftDays.Where(x => x.DayName == workDay.ToString("MMM", CultureInfo.InvariantCulture)).FirstOrDefault() == null;
+        }
+
+        private void AddThisAttendanceRecordToListView (EmployeeAttendanceModel attendance, DateTime day)
+        {
+            if (attendance == null && CheckIfAbsentOnEmpShift(day))
             {
-                this.LViewAttendanceHistory.Items.Clear();
-                foreach (var attendance in this.AttendanceHistory)
+                var row = new string[]
                 {
-                    DateTime firstTimeOut = DateTime.Now;
-                    if (attendance.FirstTimeOut == DateTime.MinValue)
-                    {
-                        firstTimeOut = attendance.Shift.EarlyTimeOut;
-                    }
-                    else
-                    {
-                        firstTimeOut = attendance.FirstTimeOut;
-                    }
+                    "AWOL"
+                };
 
-                    string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm")} {firstTimeOut.ToString("hh:mm")}";
+                var listViewItem = new ListViewItem(row);
+                //listViewItem.BackColor = Color.DarkRed;
+                //listViewItem.Tag = attendance;
 
-                    string secondTimeINandOUT = "";
+                this.LViewAttendanceHistory.Items.Add(listViewItem);
+            }
 
-                    if (attendance.IsTimeOutProvided)
-                    {
-                        secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
-                    }
+            if (attendance != null)
+            {
+                DateTime firstTimeOut = DateTime.Now;
+                if (attendance.FirstTimeOut == DateTime.MinValue)
+                {
+                    firstTimeOut = attendance.Shift.EarlyTimeOut;
+                }
+                else
+                {
+                    firstTimeOut = attendance.FirstTimeOut;
+                }
 
-                    string whoDayTotalHrs = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
-                    string late = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
-                    string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
-                    string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
+                string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm")} {firstTimeOut.ToString("hh:mm")}";
 
-                    var row = new string[]
-                    {
+                string secondTimeINandOUT = "";
+
+                if (attendance.IsTimeOutProvided)
+                {
+                    secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
+                }
+
+                string whoDayTotalHrs = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
+                string late = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
+                string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
+                string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
+
+                var row = new string[]
+                {
                         attendance.WorkDate.ToShortDateString(),
                         attendance.Shift.Shift,
                         $"{attendance.Shift.StartTime.ToString("hh:mm tt")} to {attendance.Shift.EndTime.ToString("hh:mm tt")}",
@@ -726,13 +767,83 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         late,
                         underTime,
                         overTime
-                    };
+                };
 
-                    var listViewItem = new ListViewItem(row);
-                    listViewItem.Tag = attendance;
+                var listViewItem = new ListViewItem(row);
+                //listViewItem.BackColor = Color.Azure;
+                //listViewItem.Tag = attendance;
 
-                    this.LViewAttendanceHistory.Items.Add(listViewItem);
+                this.LViewAttendanceHistory.Items.Add(listViewItem);
+            }
+        }
+
+
+        private void DisplayThisEmployeeLeaveRecInListInview(EmployeeLeaveModel leave, DateTime currentDate)
+        {
+            if (leave != null)
+            {
+                var row = new string[]
+                {
+                    currentDate.ToShortDateString(),
+                    leave.LeaveType.LeaveType,
+                    "",
+                    leave.StartDate.ToShortDateString(),
+                    leave.EndDate.ToShortDateString(),
+                    leave.NumberOfDays.ToString() + "d",
+                    "","","",""
+                };
+
+                var listViewItem = new ListViewItem(row);
+                //listViewItem.BackColor = Color.LightGray;
+                //listViewItem.Tag = leave;
+
+                this.LViewAttendanceHistory.Items.Add(listViewItem);
+            }
+        }
+
+        private void DisplayThisHolidayListInview(HolidayModel holiday, DateTime currentDate)
+        {
+            if (holiday != null)
+            {
+                var row = new string[]
+                {
+                    currentDate.ToShortDateString(),
+                    holiday.Holiday,
+                    "","", "", "","","","",""
+                };
+
+                var listViewItem = new ListViewItem(row);
+                //listViewItem.BackColor = Color.Brown;
+                //listViewItem.Tag = leave;
+
+                this.LViewAttendanceHistory.Items.Add(listViewItem);
+            }
+        }
+
+
+        public void DisplayAttendanceRecord(DateTime startDate, DateTime endDate)
+        {
+            if (this.AttendanceHistory != null)
+            {
+                this.LViewAttendanceHistory.Items.Clear();
+
+                foreach (DateTime day in EachDay(startDate, endDate))
+                {
+                    var dayAttendanceRec = this.AttendanceHistory.Where(x => x.WorkDate == day).FirstOrDefault();
+                    var dayLeaveRec = this.EmployeeLeaveHistory.Where(x => x.StartDate <= day && x.EndDate >= day).FirstOrDefault();
+                    var holidayRec = this.Holidays.Where(x => 
+                                        x.DayNum == day.Day && 
+                                        x.MonthAbbr == day.ToString("MMM", CultureInfo.InvariantCulture)).FirstOrDefault();
+
+                    AddThisAttendanceRecordToListView(dayAttendanceRec, day);
+                    DisplayThisEmployeeLeaveRecInListInview(dayLeaveRec, day);
+                    DisplayThisHolidayListInview(holidayRec, day);
                 }
+
+                //foreach (var attendance in this.AttendanceHistory)
+                //{
+                    
+                //}
             }
         }
 

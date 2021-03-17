@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Main.Forms.EmployeeManagementForms.Controls
 {
@@ -75,22 +77,49 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void SetDGVEmployeeListFontAndColors()
         {
+            // DataGridView in 1st tab
             this.DGVEmployeeList.BackgroundColor = Color.White;
             this.DGVEmployeeList.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-
             this.DGVEmployeeList.RowHeadersVisible = false;
             this.DGVEmployeeList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             this.DGVEmployeeList.AllowUserToResizeRows = false;
             this.DGVEmployeeList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             this.DGVEmployeeList.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-
             //this.DGVEmployeeList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.DGVEmployeeList.MultiSelect = false;
             this.DGVEmployeeList.ReadOnly = false;
-
             this.DGVEmployeeList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DGVEmployeeList.ColumnHeadersHeight = 30;
+
+
+            // DataGridView in 2nd tab
+            this.DGVEmployeeListToSchedule.BackgroundColor = Color.White;
+            this.DGVEmployeeListToSchedule.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVEmployeeListToSchedule.RowHeadersVisible = false;
+            this.DGVEmployeeListToSchedule.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVEmployeeListToSchedule.AllowUserToResizeRows = false;
+            this.DGVEmployeeListToSchedule.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.DGVEmployeeListToSchedule.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+            //this.DGVEmployeeListToSchedule.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVEmployeeListToSchedule.MultiSelect = false;
+            this.DGVEmployeeListToSchedule.ReadOnly = false;
+            this.DGVEmployeeListToSchedule.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVEmployeeListToSchedule.ColumnHeadersHeight = 30;
+
+
+            // 2nd DataGridView in 2nd tab
+            this.DGVScheduledWorkforceByDate.BackgroundColor = Color.White;
+            this.DGVScheduledWorkforceByDate.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVScheduledWorkforceByDate.RowHeadersVisible = false;
+            this.DGVScheduledWorkforceByDate.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVScheduledWorkforceByDate.AllowUserToResizeRows = false;
+            this.DGVScheduledWorkforceByDate.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.DGVScheduledWorkforceByDate.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+            //this.DGVScheduledWorkforceByDate.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVScheduledWorkforceByDate.MultiSelect = false;
+            this.DGVScheduledWorkforceByDate.ReadOnly = false;
+            this.DGVScheduledWorkforceByDate.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVScheduledWorkforceByDate.ColumnHeadersHeight = 30;
         }
 
         private void SetDGVShiftListFontAndColors()
@@ -134,6 +163,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVEmployeeList.Rows.Clear();
             if (this.Employees != null)
             {
+                // ----------------------------- 1st tab datagridview
                 this.DGVEmployeeList.ColumnCount = 4;
 
                 this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber";
@@ -173,6 +203,54 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     this.DGVEmployeeList.Rows.Add(row);
                 }
+
+
+
+                // ----------------------------- 2nd tab datagridview
+                this.DGVEmployeeListToSchedule.ColumnCount = 4;
+
+                this.DGVEmployeeListToSchedule.Columns[0].Name = "EmployeeNumber2";
+                this.DGVEmployeeListToSchedule.Columns[0].HeaderText = "Employee Number";
+                this.DGVEmployeeListToSchedule.Columns[0].Visible = true;
+
+                this.DGVEmployeeListToSchedule.Columns[1].Name = "Fullname2";
+                this.DGVEmployeeListToSchedule.Columns[1].HeaderText = "Fullname";
+                this.DGVEmployeeListToSchedule.Columns[1].Visible = true;
+
+                this.DGVEmployeeListToSchedule.Columns[2].Name = "Position2";
+                this.DGVEmployeeListToSchedule.Columns[2].HeaderText = "Position";
+                this.DGVEmployeeListToSchedule.Columns[2].Visible = true;
+
+                this.DGVEmployeeListToSchedule.Columns[3].Name = "Shift2";
+                this.DGVEmployeeListToSchedule.Columns[2].HeaderText = "Shift";
+                this.DGVEmployeeListToSchedule.Columns[3].Visible = true;
+
+                DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
+                selectChbxToSchedule.HeaderText = "Select";
+                selectChbxToSchedule.Name = "selectEmpCkbox2";
+                selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                this.DGVEmployeeListToSchedule.Columns.Add(selectChbxToSchedule);
+
+
+                foreach (var employee in this.Employees)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVEmployeeListToSchedule);
+
+                    string fullName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
+
+                    row.Cells[0].Value = employee.EmployeeNumber;
+                    row.Cells[1].Value = fullName;
+                    row.Cells[2].Value = employee.Position;
+
+                    if (employee.Shift != null)
+                    {
+                        row.Cells[3].Value = employee.Shift.Shift;
+                    }
+
+                    this.DGVEmployeeListToSchedule.Rows.Add(row);
+                }
+
             }
         }
 
@@ -277,5 +355,192 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             
         }
 
+        private WorkforceSchedule workforceSchedule = new WorkforceSchedule();
+
+        public WorkforceSchedule WorkforceSchedule
+        {
+            get { return workforceSchedule; }
+            set { workforceSchedule = value; }
+        }
+
+        public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        {
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
+        }
+
+        private void BtnGenerateWorkforceSchedule_Click(object sender, EventArgs e)
+        {
+            var workSchedStartFrom = this.DPicWorkScheduleStartFrom.Value;
+            var workSchedEndTo = this.DPicWorkScheduleEndTo.Value;
+
+            WorkforceSchedule.StartDate = workSchedStartFrom;
+            WorkforceSchedule.EndDate = workSchedEndTo;
+            WorkforceSchedule.WorkForceByDate = new Dictionary<DateTime, List<EmployeeModel>>();
+
+            if (this.DGVEmployeeListToSchedule.CurrentRow.Index > -1)
+            {
+                List<EmployeeModel> selectedEmployees = new List<EmployeeModel>();
+
+                foreach (DataGridViewRow row in this.DGVEmployeeListToSchedule.Rows)
+                {
+                    bool isSelected = Convert.ToBoolean(row.Cells["selectEmpCkbox2"].Value);
+                    if (isSelected)
+                    {
+                        string empNum = row.Cells["EmployeeNumber2"].Value.ToString();
+                        var empInList = this.Employees.Where(x => x.EmployeeNumber == empNum).FirstOrDefault();
+
+                        var newEmp = JsonSerializer.Deserialize<EmployeeModel>(JsonSerializer.Serialize(empInList));
+
+                        if (empInList != null)
+                        {
+                            selectedEmployees.Add(newEmp);
+                        }
+                    }
+                }
+                
+                // we will not pass the date key here
+                // because, if the employeer or admin user who is generating the workforce schedule
+                // remove the employee on the schedule, it will remove that employee on each day
+                DisplayWorkForce(selectedEmployees);
+
+                foreach (DateTime day in EachDay(workSchedStartFrom, workSchedEndTo))
+                {
+                    WorkforceSchedule.WorkForceByDate.Add(day, selectedEmployees);
+                }
+
+                DisplayWorkScheduleInListView();
+            }
+        }
+
+        public void DisplayWorkScheduleInListView()
+        {
+            this.LViewScheduleDates.Items.Clear();
+            foreach (var workSched in WorkforceSchedule.WorkForceByDate)
+            {
+                var row = new string[] { workSched.Key.ToShortDateString(), workSched.Value.Count.ToString() };
+
+                var listViewItem = new ListViewItem(row);
+                //listViewItem.BackColor = Color.Brown;
+                listViewItem.Tag = workSched.Key.ToShortDateString();
+
+                this.LViewScheduleDates.Items.Add(listViewItem);
+            }
+        }
+
+        public void DisplayWorkForce(List<EmployeeModel> workforce, string dateKey = "")
+        {
+            this.DGVScheduledWorkforceByDate.Rows.Clear();
+            if (workforce != null)
+            {
+                this.DGVScheduledWorkforceByDate.ColumnCount = 4;
+
+                this.DGVScheduledWorkforceByDate.Columns[0].Name = "EmployeeNumber2";
+                this.DGVScheduledWorkforceByDate.Columns[0].HeaderText = "Employee Number";
+                this.DGVScheduledWorkforceByDate.Columns[0].Visible = true;
+
+                this.DGVScheduledWorkforceByDate.Columns[1].Name = "Fullname2";
+                this.DGVScheduledWorkforceByDate.Columns[1].HeaderText = "Fullname";
+                this.DGVScheduledWorkforceByDate.Columns[1].Visible = true;
+
+                this.DGVScheduledWorkforceByDate.Columns[2].Name = "Position2";
+                this.DGVScheduledWorkforceByDate.Columns[2].HeaderText = "Position";
+                this.DGVScheduledWorkforceByDate.Columns[2].Visible = true;
+
+                this.DGVScheduledWorkforceByDate.Columns[3].Name = "Shift2";
+                this.DGVScheduledWorkforceByDate.Columns[2].HeaderText = "Shift";
+                this.DGVScheduledWorkforceByDate.Columns[3].Visible = true;
+
+                // Delete button
+                DataGridViewImageColumn btnDeleteLeaveTypeImg = new DataGridViewImageColumn();
+                //btnDeleteLeaveTypeImg.Name = "";
+                btnDeleteLeaveTypeImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnDeleteLeaveTypeImg.Image = Image.FromFile("./Resources/remove-24.png");
+                this.DGVScheduledWorkforceByDate.Columns.Add(btnDeleteLeaveTypeImg);
+
+                foreach (var employee in workforce)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVScheduledWorkforceByDate);
+
+                    string fullName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
+
+                    row.Cells[0].Value = employee.EmployeeNumber;
+                    row.Cells[1].Value = fullName;
+                    row.Cells[2].Value = employee.Position;
+
+                    if (employee.Shift != null)
+                    {
+                        row.Cells[3].Value = employee.Shift.Shift;
+                    }
+
+                    row.Tag = dateKey;
+
+                    this.DGVScheduledWorkforceByDate.Rows.Add(row);
+                }
+
+            }
+        }
+
+        private void LViewScheduleDates_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (LViewScheduleDates.SelectedItems.Count > 0)
+            {
+                string selectedItem = LViewScheduleDates.SelectedItems[0].Tag as string;
+                DateTime selectedDay = DateTime.Parse(selectedItem);
+
+                var workForce = WorkforceSchedule.WorkForceByDate[selectedDay];
+
+                if (workForce != null)
+                {
+                    // need to pass the date key, so if the admin user
+                    // remove the employee, we will just remove that employee on a particular date
+                    DisplayWorkForce(workForce, selectedItem);
+                }
+            }
+        }
+
+        private void DGVScheduledWorkforceByDate_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 4 && e.RowIndex > -1)
+            {
+                if (DGVScheduledWorkforceByDate.CurrentRow != null)
+                {
+                    string employeeNumber = DGVScheduledWorkforceByDate.CurrentRow.Cells[0].Value.ToString();
+                    string selectedRowTag = DGVScheduledWorkforceByDate.CurrentRow.Tag as string;
+
+                    if (selectedRowTag != "")
+                    {
+                        DateTime selectedDateKey = DateTime.Parse(selectedRowTag);
+
+                        var workForceSched = WorkforceSchedule.WorkForceByDate[selectedDateKey];
+
+                        if (workForceSched != null)
+                        {
+                            var empTmp = workForceSched.Where(x => x.EmployeeNumber == employeeNumber).FirstOrDefault();
+                            if (empTmp != null)
+                                workForceSched.Remove(empTmp);
+                        }
+
+                        // need to pass the date key, so if the admin user
+                        // remove the employee, we will just remove that employee on a particular date
+                        DisplayWorkForce(workForceSched, selectedDateKey.ToShortDateString());
+                    }
+                    else
+                    {
+                        foreach(var workForceSched in WorkforceSchedule.WorkForceByDate)
+                        {
+                            var empTmp = workForceSched.Value.Where(x => x.EmployeeNumber == employeeNumber).FirstOrDefault();
+                            if (empTmp != null)
+                                workForceSched.Value.Remove(empTmp);
+                        }
+
+                        DisplayWorkForce(WorkforceSchedule.WorkForceByDate.FirstOrDefault().Value);
+                    }
+
+                    DisplayWorkScheduleInListView();
+                }
+            }
+        }
     }
 }

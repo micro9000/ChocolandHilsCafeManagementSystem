@@ -204,7 +204,10 @@ namespace Main.Forms.EmployeeManagementForms
                 DateTime today = DateTime.Now;
 
                 employeeCRUDControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(employeeDetails.Data.EmployeeNumber, Jan1, today);
-                employeeCRUDControlObj.DisplayAttendanceRecord();
+                employeeCRUDControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeDetails.Data.EmployeeNumber, year);
+                employeeCRUDControlObj.Holidays = _holidayData.GetAllNotDeleted();
+
+                employeeCRUDControlObj.DisplayAttendanceRecord(Jan1, today);
 
                 employeeCRUDControlObj.MoveToNextTabSaveEmployeeDetails();
 
@@ -230,7 +233,7 @@ namespace Main.Forms.EmployeeManagementForms
             DateTime endDate = employeeDetailsCRUDControlObj.FilterAttendanceEndDate;
 
             employeeDetailsCRUDControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(EmployeeNumber, startDate, endDate);
-            employeeDetailsCRUDControlObj.DisplayAttendanceRecord();
+            employeeDetailsCRUDControlObj.DisplayAttendanceRecord(startDate, endDate);
         }
 
         #endregion

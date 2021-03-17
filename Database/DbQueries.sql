@@ -218,6 +218,20 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
     FOREIGN KEY (leaveId) REFERENCES LeaveTypes(id)
 )ENGINE=INNODB;
 
+SELECT * FROM EmployeeLeaves;
+
+CREATE TABLE IF NOT EXISTS ExpectedWorkforce(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    employeeNumber CHAR(8),
+	workDate DATE,
+    isDone BOOLEAN DEFAULT False,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
+)ENGINE=INNODB;
+
 
 -- TODO: for halfday
 CREATE TABLE IF NOT EXISTS EmployeeAttendance(
@@ -290,6 +304,8 @@ CREATE TABLE IF NOT EXISTS EmployeeDeductions(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM EmployeeDeductions;
+
 
 CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -306,6 +322,8 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+SELECT * FROM EmployeePayslips;
 
 -- employee benefits inventory per payday/payslip
 CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
