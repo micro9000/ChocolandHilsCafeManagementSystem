@@ -390,11 +390,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         string empNum = row.Cells["EmployeeNumber2"].Value.ToString();
                         var empInList = this.Employees.Where(x => x.EmployeeNumber == empNum).FirstOrDefault();
 
-                        var newEmp = JsonSerializer.Deserialize<EmployeeModel>(JsonSerializer.Serialize(empInList));
-
                         if (empInList != null)
                         {
-                            selectedEmployees.Add(newEmp);
+                            selectedEmployees.Add(empInList);
                         }
                     }
                 }
@@ -406,7 +404,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 foreach (DateTime day in EachDay(workSchedStartFrom, workSchedEndTo))
                 {
-                    WorkforceSchedule.WorkForceByDate.Add(day, selectedEmployees);
+                    var selectedEmployeesTmp = JsonSerializer.Deserialize<List<EmployeeModel>>(JsonSerializer.Serialize(selectedEmployees));
+                    WorkforceSchedule.WorkForceByDate.Add(day, selectedEmployeesTmp);
                 }
 
                 DisplayWorkScheduleInListView();
