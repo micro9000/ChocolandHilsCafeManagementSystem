@@ -220,7 +220,7 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
 
 SELECT * FROM EmployeeLeaves;
 
-CREATE TABLE IF NOT EXISTS ExpectedWorkforce(
+CREATE TABLE IF NOT EXISTS WorkforceSchedules(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
 	workDate DATE,
@@ -228,9 +228,21 @@ CREATE TABLE IF NOT EXISTS ExpectedWorkforce(
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
+    isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+SELECT * FROM WorkforceSchedules;
+
+SELECT *
+FROM WorkforceSchedules AS WFS
+JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
+WHERE WFS.isDeleted=false AND WFS.isDone = false;
+
+SELECT * 
+FROM WorkforceSchedules AS WFS
+JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
+WHERE WFS.isDeleted=false AND WFS.isDone=false AND
+WFS.id=@SchedId AND WFS.workDate=@WorkDate;
 
 
 -- TODO: for halfday

@@ -73,6 +73,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             DisplayWorkShifts();
             DisplayEmployees();
+
+            DisplayWorkScheduleInListView();
         }
 
         private void SetDGVEmployeeListFontAndColors()
@@ -355,9 +357,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             
         }
 
-        private WorkforceSchedule workforceSchedule = new WorkforceSchedule();
+        private WorkforceScheduling workforceSchedule = new WorkforceScheduling();
 
-        public WorkforceSchedule WorkforceSchedule
+        public WorkforceScheduling WorkforceSchedule
         {
             get { return workforceSchedule; }
             set { workforceSchedule = value; }
@@ -393,14 +395,46 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             return selectedEmployees;
         }
 
+
+        public void ClearSelectedEmployees()
+        {
+            foreach (DataGridViewRow row in this.DGVEmployeeListToSchedule.Rows)
+            {
+                row.Cells["selectEmpCkbox2"].Value = (bool)false;
+            }
+
+        }
+
         private void BtnGenerateWorkforceSchedule_Click(object sender, EventArgs e)
         {
             var workSchedStartFrom = this.DPicWorkScheduleStartFrom.Value;
             var workSchedEndTo = this.DPicWorkScheduleEndTo.Value;
 
+            if (workSchedEndTo < workSchedStartFrom)
+            {
+                MessageBox.Show("Invalid start and end date", "Generate workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+
+            if (WorkforceSchedule != null && WorkforceSchedule.WorkforceSchedules != null)
+            {
+                var lastWorkForceDate = WorkforceSchedule.WorkforceSchedules.LastOrDefault().WorkDate;
+
+                if (workSchedStartFrom.Date <= lastWorkForceDate.Date)
+                {
+                    MessageBox.Show("Invalid start date. Kindly update the specific workforce schedule.", "Generate workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+            }
+            else
+            {
+                WorkforceSchedule.WorkForceByDate = new Dictionary<DateTime, List<EmployeeModel>>();
+            }
+
+
             WorkforceSchedule.StartDate = workSchedStartFrom;
             WorkforceSchedule.EndDate = workSchedEndTo;
-            WorkforceSchedule.WorkForceByDate = new Dictionary<DateTime, List<EmployeeModel>>();
 
             var selectedEmployees = GetSelectedEmployeeToSchedule();
 
@@ -418,10 +452,35 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             foreach (DateTime day in EachDay(workSchedStartFrom, workSchedEndTo))
             {
                 var selectedEmployeesTmp = JsonSerializer.Deserialize<List<EmployeeModel>>(JsonSerializer.Serialize(selectedEmployees));
-                WorkforceSchedule.WorkForceByDate.Add(day, selectedEmployeesTmp);
+
+                if (WorkforceSchedule.WorkForceByDate.ContainsKey(day))
+                {
+                    var addedEmployees = WorkforceSchedule.WorkForceByDate[day];
+
+                    if (addedEmployees != null)
+                    {
+                        foreach(var selectedEmp in selectedEmployeesTmp)
+                        {
+                            var empTmp = addedEmployees.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).FirstOrDefault();
+
+                            if (empTmp == null)
+                            {
+                                addedEmployees.Add(selectedEmp);
+                            }
+                        }
+
+                        WorkforceSchedule.WorkForceByDate[day] = addedEmployees;
+                    }
+                }
+                else
+                {
+                    WorkforceSchedule.WorkForceByDate.Add(day, selectedEmployeesTmp);
+                }
             }
 
             DisplayWorkScheduleInListView();
+
+            ClearSelectedEmployees();
         }
 
         public void DisplayWorkScheduleInListView()
@@ -429,7 +488,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LViewScheduleDates.Items.Clear();
             foreach (var workSched in WorkforceSchedule.WorkForceByDate)
             {
-                var row = new string[] { workSched.Key.ToShortDateString(), workSched.Value.Count.ToString() };
+                var row = new string[] { workSched.Key.ToLongDateString(), workSched.Value.Count.ToString() };
 
                 var listViewItem = new ListViewItem(row);
                 //listViewItem.BackColor = Color.Brown;
@@ -513,6 +572,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void DGVScheduledWorkforceByDate_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Remove button in DataGridView Workforce
+            // when click
             if (e.ColumnIndex == 4 && e.RowIndex > -1)
             {
                 if (DGVScheduledWorkforceByDate.CurrentRow != null)
@@ -530,7 +591,28 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         {
                             var empTmp = workForceSched.Where(x => x.EmployeeNumber == employeeNumber).FirstOrDefault();
                             if (empTmp != null)
+                            {
                                 workForceSched.Remove(empTmp);
+
+                                if (WorkforceSchedule.WorkforceSchedules != null)
+                                {
+                                    // if there is existing workforce schedule in our database
+                                    // check if the employee we remove on the datagridview
+                                    // is also existing in our database, if yes, then delete the record
+                                    var workForceInDatabase = WorkforceSchedule.WorkforceSchedules
+                                                                    .Where(x =>
+                                                                        x.WorkDate == selectedDateKey &&
+                                                                        x.EmployeeNumber == empTmp.EmployeeNumber
+                                                                    ).FirstOrDefault();
+
+                                    if (workForceInDatabase != null)
+                                    {
+                                        // mark as deleted
+                                        workForceInDatabase.IsDeleted = true;
+                                        workForceInDatabase.DeletedAt = DateTime.Now;
+                                    }
+                                }
+                            }
                         }
 
                         // need to pass the date key, so if the admin user
@@ -539,11 +621,35 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     }
                     else
                     {
+                        // remove on each workday's workforce list
                         foreach(var workForceSched in WorkforceSchedule.WorkForceByDate)
                         {
                             var empTmp = workForceSched.Value.Where(x => x.EmployeeNumber == employeeNumber).FirstOrDefault();
                             if (empTmp != null)
+                            {
                                 workForceSched.Value.Remove(empTmp);
+
+                                if (WorkforceSchedule.WorkforceSchedules != null)
+                                {
+                                    // if there is existing workforce schedule in our database
+                                    // check if the employee we remove on the datagridview
+                                    // is also existing in our database, if yes, then delete the record
+                                    var workForceInDatabase = WorkforceSchedule.WorkforceSchedules
+                                                                    .Where(x =>
+                                                                        x.WorkDate == workForceSched.Key &&
+                                                                        x.EmployeeNumber == empTmp.EmployeeNumber
+                                                                    ).FirstOrDefault();
+
+                                    if (workForceInDatabase != null)
+                                    {
+                                        // mark as deleted
+                                        workForceInDatabase.IsDeleted = true;
+                                        workForceInDatabase.DeletedAt = DateTime.Now;
+                                    }
+
+                                }
+                            }
+
                         }
 
                         DisplayWorkForce(WorkforceSchedule.WorkForceByDate.FirstOrDefault().Value);
@@ -558,20 +664,71 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             if (LViewScheduleDates.SelectedItems.Count > 0)
             {
+                // selected employees in datagrid tab 2, top datagridview
+                var selectedEmployees = GetSelectedEmployeeToSchedule();
+
+                if (selectedEmployees != null && selectedEmployees.Count == 0)
+                {
+                    MessageBox.Show("Kindly select employee", "Generate workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
                 string selectedItem = LViewScheduleDates.SelectedItems[0].Tag as string;
                 DateTime selectedDay = DateTime.Parse(selectedItem);
 
-                var selectedEmployees = GetSelectedEmployeeToSchedule();
-                selectedEmployees = JsonSerializer.Deserialize<List<EmployeeModel>>(JsonSerializer.Serialize(selectedEmployees));
+                // existing workforce (Employee list in Global variable)
+                var selectedDayWorkforce = WorkforceSchedule.WorkForceByDate[selectedDay];
 
-                WorkforceSchedule.WorkForceByDate[selectedDay] = selectedEmployees;
+                var newDayWorkforce = new List<EmployeeModel>();
+
+                if (selectedDayWorkforce == null && selectedEmployees.Count > 0)
+                {
+                    newDayWorkforce = JsonSerializer.Deserialize<List<EmployeeModel>>(JsonSerializer.Serialize(selectedEmployees));
+                }
+                else if (selectedDayWorkforce != null &&  selectedEmployees.Count > 0)
+                {
+                    foreach(var emp in selectedEmployees)
+                    {
+                        var empInSelectedDay = selectedDayWorkforce.Where(x => x.EmployeeNumber == emp.EmployeeNumber).FirstOrDefault();
+                        // add if not yet added
+                        if (empInSelectedDay == null)
+                        {
+                            selectedDayWorkforce.Add(emp);
+                        }
+                    }
+                    // create new workforce list in memory
+                    newDayWorkforce = JsonSerializer.Deserialize<List<EmployeeModel>>(JsonSerializer.Serialize(selectedDayWorkforce));
+                }
+
+                WorkforceSchedule.WorkForceByDate[selectedDay] = newDayWorkforce;
 
                 // need to pass the date key, so if the admin user
                 // remove the employee, we will just remove that employee on a particular date
-                DisplayWorkForce(selectedEmployees, selectedItem);
+                DisplayWorkForce(newDayWorkforce, selectedItem);
                 DisplayWorkScheduleInListView();
+
+                ClearSelectedEmployees();
             }
 
+        }
+
+        private void BtnSelectAllEmployees_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.DGVEmployeeListToSchedule.Rows)
+            {
+                row.Cells["selectEmpCkbox2"].Value = (bool)true;
+            }
+        }
+
+        public event EventHandler SaveWorkforceSchedule;
+        protected virtual void OnSaveWorkforceSchedule(EventArgs e)
+        {
+            SaveWorkforceSchedule?.Invoke(this, e);
+        }
+
+        private void BtnSaveWorkforceSchedule_Click(object sender, EventArgs e)
+        {
+            OnSaveWorkforceSchedule(EventArgs.Empty);
         }
     }
 }

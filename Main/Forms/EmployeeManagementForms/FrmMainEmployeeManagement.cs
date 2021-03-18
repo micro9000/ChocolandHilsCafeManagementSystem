@@ -35,6 +35,7 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IEmployeeBenefitsDeductionsController _employeeBenefitsDeductionsController;
         private readonly IEmployeeBenefitData _employeeBenefitData;
         private readonly IEmployeeDeductionData _employeeDeductionData;
+        private readonly IWorkforceScheduleController _workforceScheduleController;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
@@ -50,7 +51,8 @@ namespace Main.Forms.EmployeeManagementForms
                                 IEmployeeAttendanceData employeeAttendanceData,
                                 IEmployeeBenefitsDeductionsController employeeBenefitsDeductionsController,
                                 IEmployeeBenefitData employeeBenefitData,
-                                IEmployeeDeductionData employeeDeductionData)
+                                IEmployeeDeductionData employeeDeductionData,
+                                IWorkforceScheduleController workforceScheduleController)
         {
             InitializeComponent();
             _logger = logger;
@@ -68,6 +70,7 @@ namespace Main.Forms.EmployeeManagementForms
             _employeeBenefitsDeductionsController = employeeBenefitsDeductionsController;
             _employeeBenefitData = employeeBenefitData;
             _employeeDeductionData = employeeDeductionData;
+            _workforceScheduleController = workforceScheduleController;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -449,9 +452,11 @@ namespace Main.Forms.EmployeeManagementForms
 
             manageEmpWorkScheduleControlObj.Employees = _employeeController.GetAll().Data;
             manageEmpWorkScheduleControlObj.WorkShifts = _workShiftController.GetAll().Data;
+            manageEmpWorkScheduleControlObj.WorkforceSchedule = _workforceScheduleController.GetWorkforceSchedule();
 
             manageEmpWorkScheduleControlObj.ShiftSelected += HandleShiftSelectedToGetAdditionalDetails;
             manageEmpWorkScheduleControlObj.EmployeeShiftUpdated += HandleUpdateEmployeeShift;
+            manageEmpWorkScheduleControlObj.SaveWorkforceSchedule += HandleSaveWorkforceSchedule;
 
             //manageEmpWorkScheduleControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
 
@@ -499,6 +504,33 @@ namespace Main.Forms.EmployeeManagementForms
                 manageEmpWorkScheduleControlObj.DisplayEmployees();
                 manageEmpWorkScheduleControlObj.DisplayWorkShifts();
                 manageEmpWorkScheduleControlObj.ResetUpdateEmployeeShiftVal();
+            }
+        }
+
+
+        private void HandleSaveWorkforceSchedule(object sender, EventArgs e)
+        {
+            ManageEmpWorkScheduleControl manageEmpWorkScheduleControlObj = (ManageEmpWorkScheduleControl)sender;
+            var workforceSchedule = manageEmpWorkScheduleControlObj.WorkforceSchedule;
+
+            if (workforceSchedule != null)
+            {
+                var saveResults = _workforceScheduleController.Save(workforceSchedule);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
