@@ -224,7 +224,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVEmployeeListToSchedule.Columns[2].Visible = true;
 
                 this.DGVEmployeeListToSchedule.Columns[3].Name = "Shift2";
-                this.DGVEmployeeListToSchedule.Columns[2].HeaderText = "Shift";
+                this.DGVEmployeeListToSchedule.Columns[3].HeaderText = "Shift";
                 this.DGVEmployeeListToSchedule.Columns[3].Visible = true;
 
                 DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
@@ -518,7 +518,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVScheduledWorkforceByDate.Columns[2].Visible = true;
 
                 this.DGVScheduledWorkforceByDate.Columns[3].Name = "Shift2";
-                this.DGVScheduledWorkforceByDate.Columns[2].HeaderText = "Shift";
+                this.DGVScheduledWorkforceByDate.Columns[3].HeaderText = "Shift";
                 this.DGVScheduledWorkforceByDate.Columns[3].Visible = true;
 
                 // Delete button
