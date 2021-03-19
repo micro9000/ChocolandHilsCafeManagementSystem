@@ -525,6 +525,8 @@ namespace Main.Forms.EmployeeManagementForms
 
                 if (saveResults.IsSuccess)
                 {
+                    manageEmpWorkScheduleControlObj.WorkforceSchedule = saveResults.Data;
+                    manageEmpWorkScheduleControlObj.Reset();
                     MessageBox.Show(resultMessages, "Save workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else

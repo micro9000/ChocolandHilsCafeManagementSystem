@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -80,18 +81,19 @@ namespace Main.Controllers.EmployeeManagementControllers
                 workforceScheduling.EndDate = workforceScheduleInOurDB.LastOrDefault().WorkDate;
 
                 foreach (var sched in workforceScheduleInOurDB)
-                    {
-                        if (workforceScheduling.WorkForceByDate.ContainsKey(sched.WorkDate))
-                        {
-                            workforceScheduling.WorkForceByDate[sched.WorkDate].Add(sched.Employee);
-                        }
-                        else
-                        {
-                            workforceScheduling.WorkForceByDate[sched.WorkDate] = new List<EmployeeModel>();
-                            workforceScheduling.WorkForceByDate[sched.WorkDate].Add(sched.Employee);
-                        }
-                    }
+                {
+                    var tempEmployeeObj = JsonSerializer.Deserialize<EmployeeModel>(JsonSerializer.Serialize(sched.Employee));
 
+                    if (workforceScheduling.WorkForceByDate.ContainsKey(sched.WorkDate))
+                    {
+                        workforceScheduling.WorkForceByDate[sched.WorkDate].Add(tempEmployeeObj);
+                    }
+                    else
+                    {
+                        workforceScheduling.WorkForceByDate[sched.WorkDate] = new List<EmployeeModel>();
+                        workforceScheduling.WorkForceByDate[sched.WorkDate].Add(tempEmployeeObj);
+                    }
+                }
             }
 
             return workforceScheduling;
