@@ -167,6 +167,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             set { holidays = value; }
         }
 
+        private List<WorkforceScheduleModel> workforceSchedules;
+
+        public List<WorkforceScheduleModel> WorkforceSchedules
+        {
+            get { return workforceSchedules; }
+            set { workforceSchedules = value; }
+        }
+
+
+
         private void EmployeeDetailsCRUDControl_Load(object sender, EventArgs e)
         {
             // Govt. agencies load in combo box
@@ -700,32 +710,53 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 MessageBox.Show(ex.Message);
             }
         }
-
-        public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        public bool CheckIfDayOff(DateTime workDay)
         {
-            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
-                yield return day;
+            if (WorkShiftDays == null)
+                return true;
+
+            string[] workdays = WorkShiftDays.Select(x => x.DayName).ToList().ToArray();
+            return workdays.Contains(workDay.ToString("ddd", CultureInfo.InvariantCulture)) == false;
         }
 
-
-        //WorkShiftDays
         public bool CheckIfAbsentOnEmpShift(DateTime workDay)
         {
-            return WorkShiftDays.Where(x => x.DayName == workDay.ToString("MMM", CultureInfo.InvariantCulture)).FirstOrDefault() == null;
+            var workforceSched = WorkforceSchedules != null ? WorkforceSchedules.Where(x => x.WorkDate == workDay).FirstOrDefault() : null;
+
+            bool isAbsentOnWorkSched = workforceSched == null ? true : workDay > DateTime.Now && workforceSched.isDone == false;
+
+            return CheckIfDayOff(workDay) == false && isAbsentOnWorkSched == true;
         }
+
 
         private void AddThisAttendanceRecordToListView (EmployeeAttendanceModel attendance, DateTime day)
         {
+
             if (attendance == null && CheckIfAbsentOnEmpShift(day))
-            {
+            { // for absent
                 var row = new string[]
                 {
-                    "AWOL"
+                    day.ToShortDateString(),
+                    day.ToString("ddd", CultureInfo.InvariantCulture),
+                    "", "", "AWOL"
                 };
 
                 var listViewItem = new ListViewItem(row);
                 //listViewItem.BackColor = Color.DarkRed;
                 //listViewItem.Tag = attendance;
+
+                this.LViewAttendanceHistory.Items.Add(listViewItem);
+
+            }else if (attendance == null && CheckIfDayOff(day) == true)
+            {
+                var row = new string[]
+                {
+                    day.ToShortDateString(),
+                    day.ToString("ddd", CultureInfo.InvariantCulture),
+                    "OFF", "", ""
+                };
+
+                var listViewItem = new ListViewItem(row);
 
                 this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
@@ -758,15 +789,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 var row = new string[]
                 {
-                        attendance.WorkDate.ToShortDateString(),
-                        attendance.Shift.Shift,
-                        $"{attendance.Shift.StartTime.ToString("hh:mm tt")} to {attendance.Shift.EndTime.ToString("hh:mm tt")}",
-                        firstTimeINandOUT,
-                        secondTimeINandOUT,
-                        whoDayTotalHrs,
-                        late,
-                        underTime,
-                        overTime
+                    attendance.WorkDate.ToShortDateString(),
+                    day.ToString("ddd", CultureInfo.InvariantCulture),
+                    attendance.Shift.Shift,
+                    $"{attendance.Shift.StartTime.ToString("hh:mm tt")} to {attendance.Shift.EndTime.ToString("hh:mm tt")}",
+                    firstTimeINandOUT,
+                    secondTimeINandOUT,
+                    whoDayTotalHrs,
+                    late,
+                    underTime,
+                    overTime
                 };
 
                 var listViewItem = new ListViewItem(row);
@@ -785,7 +817,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 var row = new string[]
                 {
                     currentDate.ToShortDateString(),
-                    leave.LeaveType.LeaveType,
+                    currentDate.ToString("ddd", CultureInfo.InvariantCulture),
+                    $"LV: {leave.LeaveType.LeaveType}",
                     "",
                     leave.StartDate.ToShortDateString(),
                     leave.EndDate.ToShortDateString(),
@@ -808,7 +841,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 var row = new string[]
                 {
                     currentDate.ToShortDateString(),
-                    holiday.Holiday,
+                    currentDate.ToString("ddd", CultureInfo.InvariantCulture),
+                    $"HD: {holiday.Holiday}",
                     "","", "", "","","","",""
                 };
 
@@ -820,6 +854,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
         }
 
+
+
+        public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        {
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
+        }
 
         public void DisplayAttendanceRecord(DateTime startDate, DateTime endDate)
         {
@@ -840,10 +881,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     DisplayThisHolidayListInview(holidayRec, day);
                 }
 
-                //foreach (var attendance in this.AttendanceHistory)
-                //{
-                    
-                //}
+                this.LViewAttendanceHistory.Items[this.LViewAttendanceHistory.Items.Count - 1].EnsureVisible();
             }
         }
 

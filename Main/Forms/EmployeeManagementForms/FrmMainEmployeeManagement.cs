@@ -36,6 +36,7 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IEmployeeBenefitData _employeeBenefitData;
         private readonly IEmployeeDeductionData _employeeDeductionData;
         private readonly IWorkforceScheduleController _workforceScheduleController;
+        private readonly IWorkforceScheduleData _workforceScheduleData;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
@@ -52,7 +53,8 @@ namespace Main.Forms.EmployeeManagementForms
                                 IEmployeeBenefitsDeductionsController employeeBenefitsDeductionsController,
                                 IEmployeeBenefitData employeeBenefitData,
                                 IEmployeeDeductionData employeeDeductionData,
-                                IWorkforceScheduleController workforceScheduleController)
+                                IWorkforceScheduleController workforceScheduleController,
+                                IWorkforceScheduleData workforceScheduleData)
         {
             InitializeComponent();
             _logger = logger;
@@ -71,6 +73,7 @@ namespace Main.Forms.EmployeeManagementForms
             _employeeBenefitData = employeeBenefitData;
             _employeeDeductionData = employeeDeductionData;
             _workforceScheduleController = workforceScheduleController;
+            _workforceScheduleData = workforceScheduleData;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -209,6 +212,7 @@ namespace Main.Forms.EmployeeManagementForms
                 employeeCRUDControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(employeeDetails.Data.EmployeeNumber, Jan1, today);
                 employeeCRUDControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeDetails.Data.EmployeeNumber, year);
                 employeeCRUDControlObj.Holidays = _holidayData.GetAllNotDeleted();
+                employeeCRUDControlObj.WorkforceSchedules = _workforceScheduleData.GetAllForEmpAttendance(Jan1, today, employeeDetails.Data.EmployeeNumber);
 
                 employeeCRUDControlObj.DisplayAttendanceRecord(Jan1, today);
 

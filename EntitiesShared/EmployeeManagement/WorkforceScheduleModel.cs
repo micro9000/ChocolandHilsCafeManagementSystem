@@ -25,5 +25,7 @@ namespace EntitiesShared.EmployeeManagement
 
 
         public DateTime WorkDate { get; set; }
+
+        public bool isDone { get; set; }
     }
 }

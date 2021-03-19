@@ -234,6 +234,10 @@ CREATE TABLE IF NOT EXISTS WorkforceSchedules(
 SELECT * FROM WorkforceSchedules;
 
 SELECT *
+FROM WorkforceSchedules 
+WHERE isDeleted=false AND workDate BETWEEN '' AND '';
+
+SELECT *
 FROM WorkforceSchedules AS WFS
 JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
 WHERE WFS.isDeleted=false AND WFS.isDone = false;

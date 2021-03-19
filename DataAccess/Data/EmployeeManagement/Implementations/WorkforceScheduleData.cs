@@ -44,26 +44,6 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             }
 
             return results;
-
-            //string query = @"SELECT * 
-            //                FROM WorkforceSchedules AS WFS
-            //                JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
-            //                WHERE WFS.isDeleted=false AND WFS.isDone=false AND
-            //                WFS.id=@SchedId AND WFS.workDate=@WorkDate";
-
-            //List<WorkforceScheduleModel> results = new List<WorkforceScheduleModel>();
-
-            //using (var conn = _dbConnFactory.CreateConnection())
-            //{
-            //    results = conn.Query<WorkforceScheduleModel, EmployeeModel, WorkforceScheduleModel>(query,
-            //            (WFS, E) => {
-            //                WFS.Employee = E;
-            //                return WFS;
-            //            }).ToList();
-            //    conn.Close();
-            //}
-
-            //return results.FirstOrDefault();
         }
 
         public List<WorkforceScheduleModel> GetAllNotYetDone()
@@ -83,25 +63,39 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
             return results;
 
-            //string query = @"SELECT *
-            //                    FROM WorkforceSchedules AS WFS
-            //                    JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
-            //                    WHERE WFS.isDeleted=false AND WFS.isDone = false";
-
-            //List<WorkforceScheduleModel> results = new List<WorkforceScheduleModel>();
-
-            //using (var conn = _dbConnFactory.CreateConnection())
-            //{
-            //    results = conn.Query<WorkforceScheduleModel, EmployeeModel, WorkforceScheduleModel>(query,
-            //            (WFS, E) => {
-            //                WFS.Employee = E;
-            //                return WFS;
-            //            }).ToList();
-            //    conn.Close();
-            //}
-
-            //return results;
         }
 
+
+        public List<WorkforceScheduleModel> GetAllForEmpAttendance(DateTime startDate, DateTime endDate, string employeeNumber)
+        {
+            string query = @"SELECT *
+                            FROM WorkforceSchedules 
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND workDate BETWEEN @StartDate AND @EndDate";
+
+            return this.GetAll(query, new { 
+                StartDate = startDate, 
+                EndDate = endDate,
+                EmployeeNumber = employeeNumber
+            });
+        }
+           
     }
 }
+//string query = @"SELECT *
+//                    FROM WorkforceSchedules AS WFS
+//                    JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
+//                    WHERE WFS.isDeleted=false AND WFS.isDone = false";
+
+//List<WorkforceScheduleModel> results = new List<WorkforceScheduleModel>();
+
+//using (var conn = _dbConnFactory.CreateConnection())
+//{
+//    results = conn.Query<WorkforceScheduleModel, EmployeeModel, WorkforceScheduleModel>(query,
+//            (WFS, E) => {
+//                WFS.Employee = E;
+//                return WFS;
+//            }).ToList();
+//    conn.Close();
+//}
+
+//return results;

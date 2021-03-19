@@ -31,6 +31,7 @@ namespace Main
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrm));
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.BtnAttendanceTerminal = new System.Windows.Forms.Button();
             this.BtnOtherData = new System.Windows.Forms.Button();
             this.BtnUserMgnment = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -51,7 +52,6 @@ namespace Main
             this.LblRenderedFormTitle = new System.Windows.Forms.Label();
             this.panelMainBody = new System.Windows.Forms.Panel();
             this.EmployeeManagementToolStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.BtnAttendanceTerminal = new System.Windows.Forms.Button();
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelMainBanner.SuspendLayout();
@@ -77,6 +77,28 @@ namespace Main
             this.panelSidebar.Size = new System.Drawing.Size(229, 641);
             this.panelSidebar.TabIndex = 0;
             // 
+            // BtnAttendanceTerminal
+            // 
+            this.BtnAttendanceTerminal.BackColor = System.Drawing.Color.Transparent;
+            this.BtnAttendanceTerminal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnAttendanceTerminal.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnAttendanceTerminal.FlatAppearance.BorderSize = 0;
+            this.BtnAttendanceTerminal.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnAttendanceTerminal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnAttendanceTerminal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnAttendanceTerminal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnAttendanceTerminal.ForeColor = System.Drawing.Color.White;
+            this.BtnAttendanceTerminal.Image = global::Main.Properties.Resources.attendance_white_30;
+            this.BtnAttendanceTerminal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnAttendanceTerminal.Location = new System.Drawing.Point(0, 396);
+            this.BtnAttendanceTerminal.Name = "BtnAttendanceTerminal";
+            this.BtnAttendanceTerminal.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.BtnAttendanceTerminal.Size = new System.Drawing.Size(229, 47);
+            this.BtnAttendanceTerminal.TabIndex = 9;
+            this.BtnAttendanceTerminal.Text = "Attendance Terminal";
+            this.BtnAttendanceTerminal.UseVisualStyleBackColor = false;
+            this.BtnAttendanceTerminal.Click += new System.EventHandler(this.BtnAttendanceTerminal_Click);
+            // 
             // BtnOtherData
             // 
             this.BtnOtherData.BackColor = System.Drawing.Color.Transparent;
@@ -88,7 +110,7 @@ namespace Main
             this.BtnOtherData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnOtherData.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnOtherData.ForeColor = System.Drawing.Color.White;
-            this.BtnOtherData.Image = ((System.Drawing.Image)(resources.GetObject("BtnOtherData.Image")));
+            this.BtnOtherData.Image = global::Main.Properties.Resources.folder_white_24;
             this.BtnOtherData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnOtherData.Location = new System.Drawing.Point(0, 349);
             this.BtnOtherData.Name = "BtnOtherData";
@@ -386,28 +408,6 @@ namespace Main
             this.EmployeeManagementToolStrip.Name = "EmployeeManagementToolStrip";
             this.EmployeeManagementToolStrip.Size = new System.Drawing.Size(200, 22);
             this.EmployeeManagementToolStrip.Text = "Employee Management";
-            // 
-            // BtnAttendanceTerminal
-            // 
-            this.BtnAttendanceTerminal.BackColor = System.Drawing.Color.Transparent;
-            this.BtnAttendanceTerminal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BtnAttendanceTerminal.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BtnAttendanceTerminal.FlatAppearance.BorderSize = 0;
-            this.BtnAttendanceTerminal.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnAttendanceTerminal.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnAttendanceTerminal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnAttendanceTerminal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnAttendanceTerminal.ForeColor = System.Drawing.Color.White;
-            this.BtnAttendanceTerminal.Image = global::Main.Properties.Resources.attendance_white_30;
-            this.BtnAttendanceTerminal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAttendanceTerminal.Location = new System.Drawing.Point(0, 396);
-            this.BtnAttendanceTerminal.Name = "BtnAttendanceTerminal";
-            this.BtnAttendanceTerminal.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.BtnAttendanceTerminal.Size = new System.Drawing.Size(229, 47);
-            this.BtnAttendanceTerminal.TabIndex = 9;
-            this.BtnAttendanceTerminal.Text = "Attendance Terminal";
-            this.BtnAttendanceTerminal.UseVisualStyleBackColor = false;
-            this.BtnAttendanceTerminal.Click += new System.EventHandler(this.BtnAttendanceTerminal_Click);
             // 
             // MainFrm
             // 
