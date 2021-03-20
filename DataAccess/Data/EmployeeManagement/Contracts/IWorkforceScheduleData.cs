@@ -13,5 +13,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
         WorkforceScheduleModel GetByIdAndWorkdate(long schedId, DateTime workDate);
         List<WorkforceScheduleModel> GetAllNotYetDone();
         List<WorkforceScheduleModel> GetAllForEmpAttendance(DateTime startDate, DateTime endDate, string employeeNumber);
+        WorkforceScheduleModel GetScheduleByEmpAndDate(string employeeNumber, DateTime workDate);
     }
 }

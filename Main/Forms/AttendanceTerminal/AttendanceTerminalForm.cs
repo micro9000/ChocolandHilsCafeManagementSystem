@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 
 namespace Main.Forms.AttendanceTerminal
@@ -21,17 +22,20 @@ namespace Main.Forms.AttendanceTerminal
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeeAttendanceData _employeeAttendanceData;
+        private readonly IWorkforceScheduleData _workforceScheduleData;
 
         public AttendanceTerminalForm(ILogger<LoginFrm> logger,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                                     IEmployeeData employeeData,
-                                    IEmployeeAttendanceData employeeAttendanceData)
+                                    IEmployeeAttendanceData employeeAttendanceData,
+                                    IWorkforceScheduleData workforceScheduleData)
         {
             InitializeComponent();
             _logger = logger;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _employeeData = employeeData;
             _employeeAttendanceData = employeeAttendanceData;
+            _workforceScheduleData = workforceScheduleData;
         }
 
         private void AttendanceTerminalForm_Load(object sender, EventArgs e)
@@ -125,7 +129,7 @@ namespace Main.Forms.AttendanceTerminal
                 {
                     if (empDetails.Shift == null)
                     {
-                        MessageBox.Show("Employee's shift not found.", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Employee's shift not found. \nKindly set employee shift.", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                     var shiftDetails = empDetails.Shift;
@@ -147,6 +151,14 @@ namespace Main.Forms.AttendanceTerminal
                     DateTime todaysDateAndTime = this.DPickerTesting.Value; //DateTime.Now;
                     //var culture = CultureInfo.CurrentCulture;
                     //var workDateDayAbbr = culture.DateTimeFormat.GetAbbreviatedDayName(workDate.DayOfWeek);
+
+                    var workforceSchedule = _workforceScheduleData.GetScheduleByEmpAndDate(empDetails.EmployeeNumber, todaysDateAndTime);
+
+                    if (workforceSchedule == null)
+                    {
+                        MessageBox.Show("No workforce schedule specify in your account.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
                     var todayAttendance = _employeeAttendanceData.GetEmployeeAttendanceByWorkDate(empDetails.EmployeeNumber, todaysDateAndTime);
                     if (todayAttendance != null && this.RBtnTimeIN.Checked)
@@ -194,15 +206,21 @@ namespace Main.Forms.AttendanceTerminal
                             attendance.FirstTimeIn = todaysDateAndTime;
                             attendance.FirstHalfLateMins = lateMins;
 
-                            // insert the attendance record
-                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            using (var transaction = new TransactionScope())
                             {
-                                DisplayConfirmationForm(true);
+                                // insert the attendance record
+                                if (_employeeAttendanceData.Add(attendance) > 0)
+                                {
+                                    DisplayConfirmationForm(true);
+                                    workforceSchedule.isDone = true;
+                                }
+                                else
+                                {
+                                    DisplayConfirmationForm(false);
+                                }
+                                transaction.Complete();
                             }
-                            else
-                            {
-                                DisplayConfirmationForm(false);
-                            }
+                            
                         }
                         else if (startDateTime >= todaysDateAndTime && earlyTimeOutDateTime > todaysDateAndTime)
                         {
@@ -211,15 +229,21 @@ namespace Main.Forms.AttendanceTerminal
 
                             attendance.FirstTimeIn = todaysDateAndTime;
 
-                            // insert the attendance record
-                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            using (var transaction = new TransactionScope())
                             {
-                                DisplayConfirmationForm(true);
+                                // insert the attendance record
+                                if (_employeeAttendanceData.Add(attendance) > 0)
+                                {
+                                    DisplayConfirmationForm(true);
+                                    workforceSchedule.isDone = true;
+                                }
+                                else
+                                {
+                                    DisplayConfirmationForm(false);
+                                }
+                                transaction.Complete();
                             }
-                            else
-                            {
-                                DisplayConfirmationForm(false);
-                            }
+                            
                         }
                         else if (startDateTime < todaysDateAndTime &&
                                 earlyTimeOutDateTime < todaysDateAndTime &&
@@ -231,15 +255,21 @@ namespace Main.Forms.AttendanceTerminal
 
                             attendance.SecondTimeIn = todaysDateAndTime;
 
-                            // insert the attendance record
-                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            using (var transaction = new TransactionScope())
                             {
-                                DisplayConfirmationForm(true);
+                                // insert the attendance record
+                                if (_employeeAttendanceData.Add(attendance) > 0)
+                                {
+                                    DisplayConfirmationForm(true);
+                                    workforceSchedule.isDone = true;
+                                }
+                                else
+                                {
+                                    DisplayConfirmationForm(false);
+                                }
+                                transaction.Complete();
                             }
-                            else
-                            {
-                                DisplayConfirmationForm(false);
-                            }
+                            
 
                         }
                         else if (startDateTime < todaysDateAndTime &&
@@ -261,15 +291,22 @@ namespace Main.Forms.AttendanceTerminal
                             attendance.SecondHalfLateMins = lateMins;
 
 
-                            // insert the attendance record
-                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            using (var transaction = new TransactionScope())
                             {
-                                DisplayConfirmationForm(true);
+                                // insert the attendance record
+                                if (_employeeAttendanceData.Add(attendance) > 0)
+                                {
+                                    DisplayConfirmationForm(true);
+                                    workforceSchedule.isDone = true;
+                                }
+                                else
+                                {
+                                    DisplayConfirmationForm(false);
+                                }
+                                transaction.Complete();
                             }
-                            else
-                            {
-                                DisplayConfirmationForm(false);
-                            }
+
+                            
 
                         }
                         else if (startDateTime < todaysDateAndTime &&
@@ -281,16 +318,21 @@ namespace Main.Forms.AttendanceTerminal
 
                             attendance.SecondTimeIn = todaysDateAndTime;
 
-
-                            // insert the attendance record
-                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            using (var transaction = new TransactionScope())
                             {
-                                DisplayConfirmationForm(true);
+                                // insert the attendance record
+                                if (_employeeAttendanceData.Add(attendance) > 0)
+                                {
+                                    DisplayConfirmationForm(true);
+                                    workforceSchedule.isDone = true;
+                                }
+                                else
+                                {
+                                    DisplayConfirmationForm(false);
+                                }
+                                transaction.Complete();
                             }
-                            else
-                            {
-                                DisplayConfirmationForm(false);
-                            }
+                            
                         }
                         else
                         {
@@ -326,14 +368,22 @@ namespace Main.Forms.AttendanceTerminal
                                 todayAttendance.FirstTimeOut = todaysDateAndTime;
                                 todayAttendance.FirstHalfHrs = firstTimeOutHrs;
 
-                                if (_employeeAttendanceData.Update(todayAttendance))
+                                using (var transaction = new TransactionScope())
                                 {
-                                    DisplayConfirmationForm(true);
+                                    if (_employeeAttendanceData.Update(todayAttendance))
+                                    {
+                                        DisplayConfirmationForm(true);
+                                        workforceSchedule.isDone = true;
+                                    }
+                                    else
+                                    {
+                                        DisplayConfirmationForm(false);
+                                    }
+
+                                    transaction.Complete();
                                 }
-                                else
-                                {
-                                    DisplayConfirmationForm(false);
-                                }
+
+                                
                             }
                             else if (todaysDateAndTime < earlyTimeOutDateTime && lateTimeInDateTime >= todaysDateAndTime)
                             {
@@ -348,15 +398,20 @@ namespace Main.Forms.AttendanceTerminal
                                 todayAttendance.FirstHalfHrs = firstTimeOutHrs;
                                 todayAttendance.FirstHalfUnderTimeMins = underTime;
 
+                                using (var transaction = new TransactionScope())
+                                {
+                                    if (_employeeAttendanceData.Update(todayAttendance))
+                                    {
+                                        DisplayConfirmationForm(true);
+                                        workforceSchedule.isDone = true;
+                                    }
+                                    else
+                                    {
+                                        DisplayConfirmationForm(false);
+                                    }
+                                    transaction.Complete();
+                                }
 
-                                if (_employeeAttendanceData.Update(todayAttendance))
-                                {
-                                    DisplayConfirmationForm(true);
-                                }
-                                else
-                                {
-                                    DisplayConfirmationForm(false);
-                                }
 
                             }
                             else if (todaysDateAndTime > earlyTimeOutDateTime && todaysDateAndTime > lateTimeInDateTime)
@@ -384,14 +439,22 @@ namespace Main.Forms.AttendanceTerminal
                                     todayAttendance.SecondHalfUnderTimeMins = underTime;
 
 
-                                    if (_employeeAttendanceData.Update(todayAttendance))
+                                    using (var transaction = new TransactionScope())
                                     {
-                                        DisplayConfirmationForm(true);
+                                        if (_employeeAttendanceData.Update(todayAttendance))
+                                        {
+                                            DisplayConfirmationForm(true);
+                                            workforceSchedule.isDone = true;
+                                        }
+                                        else
+                                        {
+                                            DisplayConfirmationForm(false);
+                                        }
+
+                                        transaction.Complete();
                                     }
-                                    else
-                                    {
-                                        DisplayConfirmationForm(false);
-                                    }
+
+                                    
                                 }
                                 else
                                 {
@@ -408,14 +471,21 @@ namespace Main.Forms.AttendanceTerminal
 
                                     todayAttendance.OverTimeMins = overTimeHrs;
 
-                                    if (_employeeAttendanceData.Update(todayAttendance))
+                                    using (var transaction = new TransactionScope())
                                     {
-                                        DisplayConfirmationForm(true);
+                                        if (_employeeAttendanceData.Update(todayAttendance))
+                                        {
+                                            DisplayConfirmationForm(true);
+                                            workforceSchedule.isDone = true;
+                                        }
+                                        else
+                                        {
+                                            DisplayConfirmationForm(false);
+                                        }
+
+                                        transaction.Complete();
                                     }
-                                    else
-                                    {
-                                        DisplayConfirmationForm(false);
-                                    }
+                                    
                                 }
 
                                 //MessageBox.Show("Compute first-half hrs and second-half hrs");

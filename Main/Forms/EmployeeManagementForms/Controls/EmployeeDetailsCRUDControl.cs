@@ -105,6 +105,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             set { isNew = value; }
         }
 
+        private Dictionary<DateTime, AttendanceRecord> attendanceToDisplay = new Dictionary<DateTime, AttendanceRecord>();
+
+        public Dictionary<DateTime, AttendanceRecord> AttendanceToDisplay
+        {
+            get { return attendanceToDisplay; }
+            set { attendanceToDisplay = value; }
+        }
+
 
 
         public event EventHandler EmployeeSaved;
@@ -710,6 +718,42 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 MessageBox.Show(ex.Message);
             }
         }
+
+
+
+        // ########################################################
+
+        public void AddThisToAttendanceListView(AttendanceRecordType attendanceRecordType, DateTime day, AttendanceRecord record)
+        {
+            if (this.AttendanceToDisplay.ContainsKey(day))
+            {
+                var existingRecord = this.AttendanceToDisplay[day];
+                int existingRecordTypeHierarchy = (int)existingRecord.recordType;
+                int attendanceRecordTypeHierarchy = (int)attendanceRecordType;
+
+                record.recordType = attendanceRecordType;
+                record.WorkDate = day;
+
+                if (attendanceRecordType == AttendanceRecordType.timeInOut)
+                {
+                    this.AttendanceToDisplay[day] = record;
+                }
+                else if (attendanceRecordTypeHierarchy > existingRecordTypeHierarchy)
+                {
+                    this.AttendanceToDisplay[day] = record;
+                }
+            }
+            else
+            {
+                record.recordType = attendanceRecordType;
+                record.WorkDate = day;
+
+                this.AttendanceToDisplay.Add(day, record);
+            }
+        }
+
+
+
         public bool CheckIfDayOff(DateTime workDay)
         {
             if (WorkShiftDays == null)
@@ -729,6 +773,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
+
         private void AddThisAttendanceRecordToListView (EmployeeAttendanceModel attendance, DateTime day)
         {
 
@@ -741,11 +786,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     "", "", "AWOL"
                 };
 
-                var listViewItem = new ListViewItem(row);
-                //listViewItem.BackColor = Color.DarkRed;
-                //listViewItem.Tag = attendance;
+                AddThisToAttendanceListView(AttendanceRecordType.awol, day, new AttendanceRecord { record = row });
 
-                this.LViewAttendanceHistory.Items.Add(listViewItem);
+                //var listViewItem = new ListViewItem(row);
+                //listViewItem.ForeColor = Color.FromArgb(207, 54, 54); // red
+                ////listViewItem.Tag = attendance;
+
+                //this.LViewAttendanceHistory.Items.Add(listViewItem);
 
             }else if (attendance == null && CheckIfDayOff(day) == true)
             {
@@ -756,9 +803,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     "OFF", "", ""
                 };
 
-                var listViewItem = new ListViewItem(row);
+                AddThisToAttendanceListView(AttendanceRecordType.off, day, new AttendanceRecord { record = row });
 
-                this.LViewAttendanceHistory.Items.Add(listViewItem);
+                //var listViewItem = new ListViewItem(row);
+                //this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
 
             if (attendance != null)
@@ -787,6 +835,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
                 string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
 
+                //if (CheckIfDayOff(day) == true)
+                //{}
+
                 var row = new string[]
                 {
                     attendance.WorkDate.ToShortDateString(),
@@ -801,11 +852,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     overTime
                 };
 
-                var listViewItem = new ListViewItem(row);
-                //listViewItem.BackColor = Color.Azure;
-                //listViewItem.Tag = attendance;
 
-                this.LViewAttendanceHistory.Items.Add(listViewItem);
+                AddThisToAttendanceListView(AttendanceRecordType.timeInOut, day, new AttendanceRecord { record = row });
+
+                //var listViewItem = new ListViewItem(row);
+                //listViewItem.ForeColor = Color.FromArgb(50, 168, 82); // green
+                ////listViewItem.Tag = attendance;
+
+                //this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
         }
 
@@ -826,11 +880,15 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     "","","",""
                 };
 
-                var listViewItem = new ListViewItem(row);
-                //listViewItem.BackColor = Color.LightGray;
-                //listViewItem.Tag = leave;
 
-                this.LViewAttendanceHistory.Items.Add(listViewItem);
+                AddThisToAttendanceListView(AttendanceRecordType.leave, currentDate, new AttendanceRecord { record = row });
+
+
+                //var listViewItem = new ListViewItem(row);
+                ////listViewItem.BackColor = Color.LightGray;
+                ////listViewItem.Tag = leave;
+
+                //this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
         }
 
@@ -846,14 +904,39 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     "","", "", "","","","",""
                 };
 
-                var listViewItem = new ListViewItem(row);
-                //listViewItem.BackColor = Color.Brown;
-                //listViewItem.Tag = leave;
 
-                this.LViewAttendanceHistory.Items.Add(listViewItem);
+                AddThisToAttendanceListView(AttendanceRecordType.holiday, currentDate, new AttendanceRecord { record = row });
+
+
+                //var listViewItem = new ListViewItem(row);
+                ////listViewItem.BackColor = Color.Brown;
+                ////listViewItem.Tag = leave;
+
+                //this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
         }
 
+
+        public void DisplayAttendanceFromTemporaryLocation()
+        {
+            if (this.AttendanceToDisplay != null)
+            {
+                foreach(var record in this.AttendanceToDisplay)
+                {
+                    var listViewItem = new ListViewItem(record.Value.record);
+
+                    if (record.Value.recordType == AttendanceRecordType.timeInOut)
+                    {
+                        listViewItem.ForeColor = Color.FromArgb(50, 168, 82); // green
+                    }else if (record.Value.recordType == AttendanceRecordType.awol)
+                    {
+                        listViewItem.ForeColor = Color.FromArgb(207, 54, 54); // red
+                    }
+
+                    this.LViewAttendanceHistory.Items.Add(listViewItem);
+                }
+            }
+        }
 
 
         public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
@@ -881,7 +964,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     DisplayThisHolidayListInview(holidayRec, day);
                 }
 
-                this.LViewAttendanceHistory.Items[this.LViewAttendanceHistory.Items.Count - 1].EnsureVisible();
+                DisplayAttendanceFromTemporaryLocation();
+                //this.LViewAttendanceHistory.Items[this.LViewAttendanceHistory.Items.Count - 1].EnsureVisible();
             }
         }
 
@@ -926,5 +1010,23 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             OnFilterEmployeeAttendance(EventArgs.Empty);
         }
+    }
+
+    public enum AttendanceRecordType
+    {
+        timeInOut = 5,
+        off = 4,
+        holiday = 3,
+        leave = 2,
+        awol = 1
+    }
+
+    public class AttendanceRecord
+    {
+        public DateTime WorkDate { get; set; }
+
+        public string[] record { get; set; }
+
+        public AttendanceRecordType recordType { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             var results = this.GetFirstOrDefault(query, new
             {
                 SchedId = schedId,
-                WorkDate = workDate
+                WorkDate = workDate.ToString("yyyy/MM/dd")
             });
 
             if (results != null)
@@ -73,12 +73,26 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                             WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND workDate BETWEEN @StartDate AND @EndDate";
 
             return this.GetAll(query, new { 
-                StartDate = startDate, 
-                EndDate = endDate,
+                StartDate = startDate.ToString("yyyy/MM/dd"), 
+                EndDate = endDate.ToString("yyyy/MM/dd"),
                 EmployeeNumber = employeeNumber
             });
         }
-           
+
+
+        public WorkforceScheduleModel GetScheduleByEmpAndDate(string employeeNumber, DateTime workDate)
+        {
+            string query = @"SELECT *
+                            FROM WorkforceSchedules 
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND workDate=@WorkDate";
+
+            return this.GetFirstOrDefault(query, new
+            {
+                EmployeeNumber = employeeNumber,
+                WorkDate = workDate.ToString("yyyy/MM/dd")
+            });
+        }
+
     }
 }
 //string query = @"SELECT *
