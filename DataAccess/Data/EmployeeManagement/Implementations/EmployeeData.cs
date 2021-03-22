@@ -14,12 +14,16 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
     {
         private readonly IDbConnectionFactory _dbConnFactory;
         private readonly IEmployeeShiftData _employeeShiftData;
+        private readonly IEmployeeSalaryRateData _employeeSalaryRateData;
 
-        public EmployeeData(IDbConnectionFactory dbConnFactory, IEmployeeShiftData employeeShiftData) :
+        public EmployeeData(IDbConnectionFactory dbConnFactory, 
+                            IEmployeeShiftData employeeShiftData,
+                            IEmployeeSalaryRateData employeeSalaryRateData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
             _employeeShiftData = employeeShiftData;
+            _employeeSalaryRateData = employeeSalaryRateData;
         }
 
         public List<EmployeeModel> GetAllNotDeleted()
@@ -33,6 +37,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                 foreach (var emp in employees)
                 {
                     emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
+                    emp.SalaryRates = _employeeSalaryRateData.GetByEmployeeNumber(emp.EmployeeNumber);
                 }
             }
             
@@ -60,6 +65,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                 foreach (var emp in employees)
                 {
                     emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
+                    emp.SalaryRates = _employeeSalaryRateData.GetByEmployeeNumber(emp.EmployeeNumber);
                 }
             }
             
@@ -76,6 +82,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             if (emp != null)
             {
                 emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
+                emp.SalaryRates = _employeeSalaryRateData.GetByEmployeeNumber(emp.EmployeeNumber);
             }
 
             return emp;
@@ -101,6 +108,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                 foreach (var emp in employees)
                 {
                     emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
+                    emp.SalaryRates = _employeeSalaryRateData.GetByEmployeeNumber(emp.EmployeeNumber);
                 }
             }
 

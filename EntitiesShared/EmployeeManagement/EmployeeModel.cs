@@ -136,5 +136,14 @@ namespace EntitiesShared.EmployeeManagement
             set { imageFileName = value; }
         }
 
+
+        private EmployeeSalaryRateModel salaryRates;
+        [Write(false)]
+        [Computed]
+        public EmployeeSalaryRateModel SalaryRates
+        {
+            get { return salaryRates; }
+            set { salaryRates = value; }
+        }
     }
 }

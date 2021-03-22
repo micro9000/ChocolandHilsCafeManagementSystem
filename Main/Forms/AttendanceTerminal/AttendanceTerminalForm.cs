@@ -82,6 +82,7 @@ namespace Main.Forms.AttendanceTerminal
 
                     var row = new string[]
                     {
+                        attendance.WorkDate.ToShortDateString(),
                         attendance.EmployeeNumber,
                         $"{attendance.Employee.FirstName} {attendance.Employee.LastName}",
                         attendance.Shift.Shift,

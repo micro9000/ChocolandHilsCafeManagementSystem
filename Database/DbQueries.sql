@@ -233,23 +233,6 @@ CREATE TABLE IF NOT EXISTS WorkforceSchedules(
 
 SELECT * FROM WorkforceSchedules;
 
-SELECT *
-FROM WorkforceSchedules 
-WHERE isDeleted=false AND workDate BETWEEN '' AND '';
-
-SELECT *
-FROM WorkforceSchedules AS WFS
-JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
-WHERE WFS.isDeleted=false AND WFS.isDone = false;
-
-SELECT * 
-FROM WorkforceSchedules AS WFS
-JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
-WHERE WFS.isDeleted=false AND WFS.isDone=false AND
-WFS.id=@SchedId AND WFS.workDate=@WorkDate;
-
-
--- TODO: for halfday
 CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
@@ -273,23 +256,8 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
-
-SELECT * 
-FROM EmployeeAttendance AS EA
-JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
-JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
-WHERE workDate='2021-03-13';
-
-SELECT * FROM Employees WHERE isDeleted=false;
-SELECT * FROM EmployeeAttendance;
-
-SELECT * FROM EmployeeAttendance 
-WHERE employeeNumber='20190001' AND workDate='2021-03-13';
-
-SELECT TIME_FORMAT("08:30:00", "%H") as hrs, TIME_FORMAT("08:30:00", "%i") as mins;
-SELECT TIME_FORMAT("17:30:00", "%H.%i");
-select TIMESTAMPDIFF(HOUR, '2015-12-16 18:00:00','2015-12-17 06:00:00');
-
+ALTER TABLE EmployeeAttendance
+ADD COLUMN isPaid BOOLEAN DEFAULT false;
 
 
 -- possible enhancement:
@@ -322,6 +290,23 @@ CREATE TABLE IF NOT EXISTS EmployeeDeductions(
 
 SELECT * FROM EmployeeDeductions;
 
+-- Payroll generation:
+-- Employee daily salary * number of days duty (display days, leave, absent)
+-- Compute Deductions (deductions list, late, government contribution)
+-- Compute Benefits (benefits list and bonus, employer government contribution)
+-- 
+
+CREATE TABLE IF NOT EXISTS PayrollHistory(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    startDate DATE,
+    endDate DATE,
+    payDate DATE,
+    totalPayment DECIMAL(9,2),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -329,10 +314,11 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	startShiftDate DATE,
     endShiftDate DATE,
     payDate DATE,
-    NetBasicSalary DECIMAL(5,2), -- kinsenas
+    NetBasicSalary DECIMAL(5,2),
     benefitsTotal DECIMAL(5,2),
     deducationTotal DECIMAL(5,2),
     totalIncome DECIMAL(5,2),
+    paydaySequence INT NOT NULL, -- 1 and 2 
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
@@ -355,6 +341,7 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
 
+
 -- employee deductions inventory per payday/payslip
 -- leave and absenses(Calculated from attendance) can be added on this
 -- government contributions
@@ -370,7 +357,6 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
-
 -- --------------------------------------------------------------------------------------
 -- User related tables:
 -- --------------------------------------------------------------------------------------

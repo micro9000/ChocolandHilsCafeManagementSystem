@@ -133,6 +133,7 @@ namespace Main.Forms.AttendanceTerminal
             this.LVColumnOvertime});
             this.LViewAttendanceHistory.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.LViewAttendanceHistory.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LViewAttendanceHistory.FullRowSelect = true;
             this.LViewAttendanceHistory.GridLines = true;
             this.LViewAttendanceHistory.HideSelection = false;
             this.LViewAttendanceHistory.Location = new System.Drawing.Point(0, 286);
@@ -149,12 +150,12 @@ namespace Main.Forms.AttendanceTerminal
             // 
             // LVColumnEmployeeNum
             // 
-            this.LVColumnEmployeeNum.Text = "Employee Number";
+            this.LVColumnEmployeeNum.Text = "Employee #";
             this.LVColumnEmployeeNum.Width = 120;
             // 
             // LVColumnEmployeeName
             // 
-            this.LVColumnEmployeeName.Text = "Employee";
+            this.LVColumnEmployeeName.Text = "Name";
             this.LVColumnEmployeeName.Width = 120;
             // 
             // LVColumnShift

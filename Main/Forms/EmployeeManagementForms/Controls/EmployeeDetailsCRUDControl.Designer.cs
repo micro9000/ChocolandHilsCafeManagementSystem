@@ -94,6 +94,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeAttendance = new System.Windows.Forms.TabPage();
             this.LViewAttendanceHistory = new System.Windows.Forms.ListView();
             this.LVColumnDate = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnDayName = new System.Windows.Forms.ColumnHeader();
             this.LVColumnShift = new System.Windows.Forms.ColumnHeader();
             this.LVColumnShiftTime = new System.Windows.Forms.ColumnHeader();
             this.LVColumnFirstHalf = new System.Windows.Forms.ColumnHeader();
@@ -135,7 +136,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.panel1 = new System.Windows.Forms.Panel();
             this.LblActionForEmployeeDetails = new System.Windows.Forms.Label();
             this.openFileDialogBrowseEmpImg = new System.Windows.Forms.OpenFileDialog();
-            this.LVColumnDayName = new System.Windows.Forms.ColumnHeader();
             this.EmployeeBasicInfo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -749,6 +749,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TbxEmployeeNumber.Name = "TbxEmployeeNumber";
             this.TbxEmployeeNumber.Size = new System.Drawing.Size(352, 27);
             this.TbxEmployeeNumber.TabIndex = 20;
+            this.TbxEmployeeNumber.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TbxEmployeeNumber_KeyUp);
             // 
             // label10
             // 
@@ -783,7 +784,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.SaveEmployeeAction.Location = new System.Drawing.Point(4, 30);
             this.SaveEmployeeAction.Name = "SaveEmployeeAction";
             this.SaveEmployeeAction.Padding = new System.Windows.Forms.Padding(3);
-            this.SaveEmployeeAction.Size = new System.Drawing.Size(997, 519);
+            this.SaveEmployeeAction.Size = new System.Drawing.Size(1093, 519);
             this.SaveEmployeeAction.TabIndex = 3;
             this.SaveEmployeeAction.Text = "Action";
             this.SaveEmployeeAction.UseVisualStyleBackColor = true;
@@ -795,7 +796,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnActionUpdateEmployeeDetails.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnActionUpdateEmployeeDetails.ForeColor = System.Drawing.Color.White;
             this.BtnActionUpdateEmployeeDetails.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnActionUpdateEmployeeDetails.Location = new System.Drawing.Point(412, 106);
+            this.BtnActionUpdateEmployeeDetails.Location = new System.Drawing.Point(504, 125);
             this.BtnActionUpdateEmployeeDetails.Name = "BtnActionUpdateEmployeeDetails";
             this.BtnActionUpdateEmployeeDetails.Size = new System.Drawing.Size(264, 37);
             this.BtnActionUpdateEmployeeDetails.TabIndex = 43;
@@ -810,7 +811,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnActionAddNewEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnActionAddNewEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnActionAddNewEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnActionAddNewEmployee.Location = new System.Drawing.Point(222, 106);
+            this.BtnActionAddNewEmployee.Location = new System.Drawing.Point(314, 125);
             this.BtnActionAddNewEmployee.Name = "BtnActionAddNewEmployee";
             this.BtnActionAddNewEmployee.Size = new System.Drawing.Size(184, 37);
             this.BtnActionAddNewEmployee.TabIndex = 40;
@@ -824,7 +825,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GBoxSearchEmployee.Controls.Add(this.TbxEmployeeNumber);
             this.GBoxSearchEmployee.Controls.Add(this.label10);
             this.GBoxSearchEmployee.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.GBoxSearchEmployee.Location = new System.Drawing.Point(222, 167);
+            this.GBoxSearchEmployee.Location = new System.Drawing.Point(314, 186);
             this.GBoxSearchEmployee.Name = "GBoxSearchEmployee";
             this.GBoxSearchEmployee.Size = new System.Drawing.Size(454, 169);
             this.GBoxSearchEmployee.TabIndex = 42;
@@ -894,6 +895,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.LVColumnDate.Text = "Date";
             this.LVColumnDate.Width = 120;
+            // 
+            // LVColumnDayName
+            // 
+            this.LVColumnDayName.Text = "Day";
             // 
             // LVColumnShift
             // 
@@ -1267,10 +1272,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // openFileDialogBrowseEmpImg
             // 
             this.openFileDialogBrowseEmpImg.FileName = "openFileDialog1";
-            // 
-            // LVColumnDayName
-            // 
-            this.LVColumnDayName.Text = "Day";
             // 
             // EmployeeDetailsCRUDControl
             // 

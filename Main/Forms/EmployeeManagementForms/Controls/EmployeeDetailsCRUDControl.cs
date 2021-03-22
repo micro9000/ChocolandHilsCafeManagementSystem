@@ -788,12 +788,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 AddThisToAttendanceListView(AttendanceRecordType.awol, day, new AttendanceRecord { record = row });
 
-                //var listViewItem = new ListViewItem(row);
-                //listViewItem.ForeColor = Color.FromArgb(207, 54, 54); // red
-                ////listViewItem.Tag = attendance;
-
-                //this.LViewAttendanceHistory.Items.Add(listViewItem);
-
             }else if (attendance == null && CheckIfDayOff(day) == true)
             {
                 var row = new string[]
@@ -804,9 +798,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 };
 
                 AddThisToAttendanceListView(AttendanceRecordType.off, day, new AttendanceRecord { record = row });
-
-                //var listViewItem = new ListViewItem(row);
-                //this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
 
             if (attendance != null)
@@ -835,9 +826,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
                 string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
 
-                //if (CheckIfDayOff(day) == true)
-                //{}
-
                 var row = new string[]
                 {
                     attendance.WorkDate.ToShortDateString(),
@@ -855,11 +843,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 AddThisToAttendanceListView(AttendanceRecordType.timeInOut, day, new AttendanceRecord { record = row });
 
-                //var listViewItem = new ListViewItem(row);
-                //listViewItem.ForeColor = Color.FromArgb(50, 168, 82); // green
-                ////listViewItem.Tag = attendance;
-
-                //this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
         }
 
@@ -883,12 +866,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 AddThisToAttendanceListView(AttendanceRecordType.leave, currentDate, new AttendanceRecord { record = row });
 
-
-                //var listViewItem = new ListViewItem(row);
-                ////listViewItem.BackColor = Color.LightGray;
-                ////listViewItem.Tag = leave;
-
-                //this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
         }
 
@@ -906,13 +883,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
 
                 AddThisToAttendanceListView(AttendanceRecordType.holiday, currentDate, new AttendanceRecord { record = row });
-
-
-                //var listViewItem = new ListViewItem(row);
-                ////listViewItem.BackColor = Color.Brown;
-                ////listViewItem.Tag = leave;
-
-                //this.LViewAttendanceHistory.Items.Add(listViewItem);
             }
         }
 
@@ -1009,6 +979,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
 
             OnFilterEmployeeAttendance(EventArgs.Empty);
+        }
+
+        private void TbxEmployeeNumber_KeyUp(object sender, KeyEventArgs e)
+        {
+
         }
     }
 

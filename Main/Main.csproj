@@ -110,6 +110,7 @@
 
   <ItemGroup>
     <Folder Include="FormModels\" />
+    <Folder Include="Forms\PayrollForms\PdfHtmlTemplates\" />
     <Folder Include="Reports\" />
   </ItemGroup>
 
