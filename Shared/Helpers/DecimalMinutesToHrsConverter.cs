@@ -8,7 +8,7 @@ namespace Shared.Helpers
 {
     public class DecimalMinutesToHrsConverter
     {
-        public string ConvertToString(decimal minutes)
+        public string ConvertToStringHrs(decimal minutes)
         {
             if (minutes < 60)
             {
@@ -23,6 +23,27 @@ namespace Shared.Helpers
             int minsSide = (int)Math.Truncate(frac * 60);
 
             return $"{hrsSide.ToString()}.{minsSide.ToString()}";
+        }
+
+        public string ConvertToStringDays(decimal minutes)
+        {
+            if (minutes < 60)
+            {
+                return minutes.ToString() + "mins";
+            }
+
+            decimal hrsAndMins = minutes / 60;
+
+            //int hrsSide = (int)Math.Truncate(hrsAndMins);
+            double frac = (double)hrsAndMins % 1;
+
+            int minsSide = (int)Math.Truncate(frac * 60);
+
+            decimal daysAndHrs = hrsAndMins / 24;
+            int daysSide = (int)Math.Truncate(daysAndHrs);
+            double fracHrsSide = (double)daysAndHrs % 1;
+
+            return $"{daysSide.ToString()}.{fracHrsSide.ToString()}.{minsSide.ToString()}";
         }
 
         public Tuple<decimal, decimal> GetHrsAndMinsSide (decimal minutes)

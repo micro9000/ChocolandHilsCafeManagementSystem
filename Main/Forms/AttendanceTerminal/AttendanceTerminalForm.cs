@@ -76,10 +76,10 @@ namespace Main.Forms.AttendanceTerminal
                         secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
                     }
 
-                    string wholeDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
-                    string late = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
-                    string underTime = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
-                    string overTime = _decimalMinutesToHrsConverter.ConvertToString(attendance.OverTimeMins);
+                    string wholeDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalHrs); //attendance.FirstHalfHrs + attendance.SecondHalfHrs
+                    string late = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalLate); //attendance.FirstHalfLateMins + attendance.SecondHalfLateMins
+                    string underTime = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalUnderTime);//attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins
+                    string overTime = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.OverTimeMins);
 
                     var row = new string[]
                     {

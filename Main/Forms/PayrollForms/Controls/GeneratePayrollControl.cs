@@ -1,5 +1,6 @@
 ﻿using EntitiesShared.EmployeeManagement;
 using EntitiesShared.OtherDataManagement;
+using Shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ namespace Main.Forms.PayrollForms.Controls
 {
     public partial class GeneratePayrollControl : UserControl
     {
+
 
         private DateTime payDate;
 
@@ -47,6 +49,23 @@ namespace Main.Forms.PayrollForms.Controls
         }
 
 
+        private List<EmployeeAttendanceModel> attendanceHistory;
+
+        public List<EmployeeAttendanceModel> AttendanceHistory
+        {
+            get { return attendanceHistory; }
+            set { attendanceHistory = value; }
+        }
+
+
+        private List<EmployeeLeaveModel> employeeLeaveHistory;
+
+        public List<EmployeeLeaveModel> EmployeeLeaveHistory
+        {
+            get { return employeeLeaveHistory; }
+            set { employeeLeaveHistory = value; }
+        }
+
         private List<EmployeeModel> employees;
 
         public List<EmployeeModel> Employees
@@ -75,16 +94,18 @@ namespace Main.Forms.PayrollForms.Controls
 
 
         private List<EmployeeDeductionModel> deductions;
-
         public List<EmployeeDeductionModel> Deductions
         {
             get { return deductions; }
             set { deductions = value; }
         }
 
-        public GeneratePayrollControl()
+        private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
+
+        public GeneratePayrollControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter)
         {
             InitializeComponent();
+            _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
         }
 
         private void SetDGVFontAndColors()
@@ -157,55 +178,98 @@ namespace Main.Forms.PayrollForms.Controls
             OnInitiatePayrollGeneration(EventArgs.Empty);
         }
 
-        //public void DisplayEmployees()
-        //{
-        //    this.DGVEmployeeList.Rows.Clear();
-        //    if (this.Employees != null)
-        //    {
-        //        this.DGVEmployeeList.ColumnCount = 4;
+        public void DisplayEmployeeWithAttendanceRecordAndSalary()
+        {
+            if (this.AttendanceHistory != null && this.Employees != null)
+            {
+                this.DGVEmployeeList.Rows.Clear();
+                if (this.Employees != null)
+                {
+                    this.DGVEmployeeList.ColumnCount = 8;
 
-        //        this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber2";
-        //        this.DGVEmployeeList.Columns[0].HeaderText = "Employee Number";
-        //        this.DGVEmployeeList.Columns[0].Visible = true;
+                    this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber2";
+                    this.DGVEmployeeList.Columns[0].HeaderText = "Employee Number";
+                    this.DGVEmployeeList.Columns[0].Visible = true;
 
-        //        this.DGVEmployeeList.Columns[1].Name = "Fullname2";
-        //        this.DGVEmployeeList.Columns[1].HeaderText = "Fullname";
-        //        this.DGVEmployeeList.Columns[1].Visible = true;
+                    this.DGVEmployeeList.Columns[1].Name = "Fullname2";
+                    this.DGVEmployeeList.Columns[1].HeaderText = "Fullname";
+                    this.DGVEmployeeList.Columns[1].Visible = true;
 
-        //        this.DGVEmployeeList.Columns[2].Name = "Position2";
-        //        this.DGVEmployeeList.Columns[2].HeaderText = "Position";
-        //        this.DGVEmployeeList.Columns[2].Visible = true;
+                    this.DGVEmployeeList.Columns[2].Name = "DailyRate";
+                    this.DGVEmployeeList.Columns[2].HeaderText = "Daily Rate";
+                    this.DGVEmployeeList.Columns[2].Visible = true;
 
-        //        this.DGVEmployeeList.Columns[3].Name = "DailyRate";
-        //        this.DGVEmployeeList.Columns[3].HeaderText = "Daily Rate";
-        //        this.DGVEmployeeList.Columns[3].Visible = true;
+                    this.DGVEmployeeList.Columns[3].Name = "Days";
+                    this.DGVEmployeeList.Columns[3].HeaderText = "Days";
+                    this.DGVEmployeeList.Columns[3].Visible = true;
 
-        //        DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
-        //        selectChbxToSchedule.HeaderText = "Select";
-        //        selectChbxToSchedule.Name = "selectEmpCkbox";
-        //        selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-        //        this.DGVEmployeeList.Columns.Add(selectChbxToSchedule);
+                    this.DGVEmployeeList.Columns[4].Name = "L";
+                    this.DGVEmployeeList.Columns[4].HeaderText = "L";
+                    this.DGVEmployeeList.Columns[4].Visible = true;
 
-        //        foreach (var employee in this.Employees)
-        //        {
-        //            DataGridViewRow row = new DataGridViewRow();
-        //            row.CreateCells(this.DGVEmployeeList);
+                    this.DGVEmployeeList.Columns[5].Name = "Late";
+                    this.DGVEmployeeList.Columns[5].HeaderText = "Late";
+                    this.DGVEmployeeList.Columns[5].Visible = true;
 
-        //            string fullName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
+                    this.DGVEmployeeList.Columns[6].Name = "UT";
+                    this.DGVEmployeeList.Columns[6].HeaderText = "UT";
+                    this.DGVEmployeeList.Columns[6].Visible = true;
 
-        //            row.Cells[0].Value = employee.EmployeeNumber;
-        //            row.Cells[1].Value = fullName;
-        //            row.Cells[2].Value = employee.Position;
+                    this.DGVEmployeeList.Columns[7].Name = "OT";
+                    this.DGVEmployeeList.Columns[7].HeaderText = "OT";
+                    this.DGVEmployeeList.Columns[7].Visible = true;
 
-        //            if (employee.SalaryRates != null)
-        //            {
-        //                row.Cells[3].Value = employee.SalaryRates.DailyRate;
-        //            }
+                    DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
+                    selectChbxToSchedule.HeaderText = "Select";
+                    selectChbxToSchedule.Name = "selectEmpCkbox";
+                    selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    this.DGVEmployeeList.Columns.Add(selectChbxToSchedule);
 
-        //            this.DGVEmployeeList.Rows.Add(row);
-        //        }
 
-        //    }
-        //}
+                    foreach (var employee in this.Employees)
+                    {
+                        DataGridViewRow row = new DataGridViewRow();
+                        row.CreateCells(this.DGVEmployeeList);
+
+                        string fullName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
+
+                        row.Cells[0].Value = employee.EmployeeNumber;
+                        row.Cells[1].Value = fullName;
+
+                        if (employee.SalaryRates != null)
+                        {
+                            row.Cells[2].Value = employee.SalaryRates.DailyRate;
+                        }
+
+
+                        var currentEmpAttendanceRec = this.AttendanceHistory.Where(x => x.EmployeeNumber == employee.EmployeeNumber).ToList();
+                        var totalDays = currentEmpAttendanceRec.Count;
+                        var totalLateInMins = currentEmpAttendanceRec.Sum(x => x.TotalLate);
+                        var totalUnderTime = currentEmpAttendanceRec.Sum(x => x.TotalUnderTime);
+
+                        row.Cells[3].Value = totalDays.ToString();
+
+                        if (this.EmployeeLeaveHistory != null)
+                        {
+                            var currentEmpLeave = this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == employee.EmployeeNumber).ToList();
+                            var totalLeave = currentEmpLeave.Sum(x => x.NumberOfDays);
+                            row.Cells[4].Value = totalLeave.ToString();
+                        }
+                        else
+                        {
+                            row.Cells[4].Value = "";
+                        }
+
+                        row.Cells[5].Value = _decimalMinutesToHrsConverter.ConvertToStringHrs(totalLateInMins);
+                        row.Cells[6].Value = _decimalMinutesToHrsConverter.ConvertToStringHrs(totalUnderTime);
+
+                        row.Cells[7].Value = "";
+
+                        this.DGVEmployeeList.Rows.Add(row);
+                    }
+
+                }
+            }
+        }
     }
 }

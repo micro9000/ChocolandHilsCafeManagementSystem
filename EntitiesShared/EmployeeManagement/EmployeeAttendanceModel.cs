@@ -145,6 +145,35 @@ namespace EntitiesShared.EmployeeManagement
             set { overTimeMins = value; }
         }
 
+        [Write(false)]
+        [Computed]
+        public decimal TotalHrs { // in minutes
+            get
+            {
+                return this.FirstHalfHrs + this.SecondHalfHrs;
+            }
+        }
+
+        [Write(false)]
+        [Computed]
+        public decimal TotalLate
+        {
+            get
+            {
+                return this.FirstHalfLateMins + this.SecondHalfLateMins;
+            }
+        }
+
+        [Write(false)]
+        [Computed]
+        public decimal TotalUnderTime
+        {
+            get
+            {
+                return this.FirstHalfUnderTimeMins + this.SecondHalfUnderTimeMins;
+            }
+        }
+
         private bool isTimeOutProvided;
 
         public bool IsTimeOutProvided
