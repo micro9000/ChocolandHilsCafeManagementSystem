@@ -47,7 +47,5 @@ namespace Main.Controllers.PayrollController
             _workforceScheduleData = workforceScheduleData;
         }
 
-
-
     }
 }

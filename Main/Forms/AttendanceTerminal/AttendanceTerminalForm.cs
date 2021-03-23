@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data.EmployeeManagement.Contracts;
 using EntitiesShared.EmployeeManagement;
+using EntitiesShared.PayrollManagement.Models;
 using Microsoft.Extensions.Logging;
 using Shared.Helpers;
 using System;
@@ -75,10 +76,10 @@ namespace Main.Forms.AttendanceTerminal
                         secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
                     }
 
-                    string whoDayTotalHrs = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
-                    string late = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
-                    string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
-                    string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
+                    string wholeDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
+                    string late = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
+                    string underTime = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
+                    string overTime = _decimalMinutesToHrsConverter.ConvertToString(attendance.OverTimeMins);
 
                     var row = new string[]
                     {
@@ -89,7 +90,7 @@ namespace Main.Forms.AttendanceTerminal
                         $"{attendance.Shift.StartTime.ToString("hh:mm tt")} to {attendance.Shift.EndTime.ToString("hh:mm tt")}",
                         firstTimeINandOUT,
                         secondTimeINandOUT,
-                        whoDayTotalHrs,
+                        wholeDayTotalHrs,
                         late,
                         underTime,
                         overTime
@@ -116,6 +117,49 @@ namespace Main.Forms.AttendanceTerminal
             confirmationForm.IsSuccess = isSuccess;
             confirmationForm.Show();
         }
+
+
+        private DailySalaryComputation GetDailySalaryComputation(decimal empDailyRate, decimal shiftHrs, EmployeeAttendanceModel empAttendance)
+        {
+            decimal hourlyRate = empDailyRate / shiftHrs;
+            decimal minuteRate = hourlyRate / 60;
+
+            // Whole day salary
+            decimal wholeDayMins = empAttendance.FirstHalfHrs + empAttendance.SecondHalfHrs;
+            Tuple<decimal, decimal> wholeDayHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(wholeDayMins);
+            decimal wholeDayHrsSideTotalRate = wholeDayHrsAndMins.Item1 * hourlyRate;
+            decimal wholeDayMinsSideTotalRate = wholeDayHrsAndMins.Item2 * minuteRate;
+
+            // late deduction computation
+            decimal lateInMunites = empAttendance.FirstHalfLateMins + empAttendance.SecondHalfLateMins;
+            Tuple<decimal, decimal> lateHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(lateInMunites);
+            decimal lateHrsSideTotal = lateHrsAndMins.Item1 * hourlyRate;
+            decimal lateMinsSideTotal = lateHrsAndMins.Item2 * minuteRate;
+            decimal totalLateDeduction = lateHrsSideTotal + lateMinsSideTotal;
+
+            // undertime deduction computation
+            decimal underTimeInMinutes = empAttendance.FirstHalfUnderTimeMins + empAttendance.SecondHalfUnderTimeMins;
+            Tuple<decimal, decimal> underTimeHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(underTimeInMinutes);
+            decimal underTimeHrsSideTotal = underTimeHrsAndMins.Item1 * hourlyRate;
+            decimal underTimeMinsSideTotal = underTimeHrsAndMins.Item2 * minuteRate;
+            decimal totalUnderTimeDeduction = underTimeHrsSideTotal + underTimeMinsSideTotal;
+
+            // whole day salary computation
+            decimal totalWholeDaySalary = (wholeDayHrsSideTotalRate + wholeDayMinsSideTotalRate) - (totalLateDeduction + totalUnderTimeDeduction);
+
+            // will check if overtime is paid
+            // for now we will not add overtime
+            //decimal overTimeInMunites = empAttendance.OverTimeMins; 
+
+            return new DailySalaryComputation
+            {
+                LateTotalDeduction = totalLateDeduction,
+                UnderTimeTotalDeduction = totalUnderTimeDeduction,
+                TotalDailySalary = totalWholeDaySalary
+            };
+
+        }
+
 
         private void TBoxCurrentEmployeeNumber_KeyUp(object sender, KeyEventArgs e)
         {
@@ -369,6 +413,13 @@ namespace Main.Forms.AttendanceTerminal
                                 todayAttendance.FirstTimeOut = todaysDateAndTime;
                                 todayAttendance.FirstHalfHrs = firstTimeOutHrs;
 
+                                var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+
+                                todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
+                                todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+                                todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
+                                todayAttendance.OverTimeTotalDeduction = 0;
+
                                 using (var transaction = new TransactionScope())
                                 {
                                     if (_employeeAttendanceData.Update(todayAttendance))
@@ -398,6 +449,13 @@ namespace Main.Forms.AttendanceTerminal
                                 todayAttendance.FirstTimeOut = todaysDateAndTime;
                                 todayAttendance.FirstHalfHrs = firstTimeOutHrs;
                                 todayAttendance.FirstHalfUnderTimeMins = underTime;
+
+                                var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+
+                                todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
+                                todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+                                todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
+                                todayAttendance.OverTimeTotalDeduction = 0;
 
                                 using (var transaction = new TransactionScope())
                                 {
@@ -439,6 +497,12 @@ namespace Main.Forms.AttendanceTerminal
 
                                     todayAttendance.SecondHalfUnderTimeMins = underTime;
 
+                                    var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+
+                                    todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
+                                    todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+                                    todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
+                                    todayAttendance.OverTimeTotalDeduction = 0;
 
                                     using (var transaction = new TransactionScope())
                                     {
@@ -471,6 +535,13 @@ namespace Main.Forms.AttendanceTerminal
                                     todayAttendance.SecondHalfHrs = secondTimeOutHrs;
 
                                     todayAttendance.OverTimeMins = overTimeHrs;
+
+                                    var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+
+                                    todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
+                                    todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+                                    todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
+                                    todayAttendance.OverTimeTotalDeduction = 0;
 
                                     using (var transaction = new TransactionScope())
                                     {

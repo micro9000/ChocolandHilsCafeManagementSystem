@@ -60,6 +60,7 @@ SELECT TIME_FORMAT(startTime, "%H") as startDateHrs, TIME_FORMAT(startTime, "%i"
 FROM EmployeeShifts;
 
 select * from EmployeeShifts;
+SELECT * FROM EmployeeSalaryRate;
 
 -- for improvement on the future
     -- get the number of hrs from EmployeeShifts table
@@ -220,6 +221,11 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
 
 SELECT * FROM EmployeeLeaves;
 
+SELECT * 
+FROM EmployeeLeaves
+WHERE startDate BETWEEN '2021-03-15' AND '2021-03-30'
+and endDate BETWEEN '2021-03-15' AND '2021-03-30';
+
 CREATE TABLE IF NOT EXISTS WorkforceSchedules(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
@@ -257,13 +263,23 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
 ALTER TABLE EmployeeAttendance
+ADD COLUMN lateTotalDeduction DECIMAL(9,2);
+ALTER TABLE EmployeeAttendance
+ADD COLUMN underTimeTotalDeduction DECIMAL(9,2);
+ALTER TABLE EmployeeAttendance
+ADD COLUMN overTimeTotalDeduction DECIMAL(9,2);
+ALTER TABLE EmployeeAttendance
+ADD COLUMN totalDailySalary DECIMAL(9,2);
+ALTER TABLE EmployeeAttendance
 ADD COLUMN isPaid BOOLEAN DEFAULT false;
+
+SELECT * FROM EmployeeAttendance where workDate='2021-03-13';
 
 SELECT * 
 FROM EmployeeAttendance AS EA
 JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
 JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
-WHERE EA.employeeNumber=@EmployeeNumber AND EA.workDate BETWEEN @StartDate AND @EndDate
+WHERE EA.workDate BETWEEN '2021-03-13' AND '2021-03-23'
 ORDER BY EA.id DESC;
 
 -- possible enhancement:

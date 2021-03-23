@@ -78,12 +78,13 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         }
 
 
-        public List<EmployeeLeaveModel> GetAllByEmployeeNumberAndDateRange(string employeeNumber, int year)
+        public List<EmployeeLeaveModel> GetAllByEmployeeNumberAndDateRange(string employeeNumber, int year, DateTime startDate, DateTime endDate)
         {
             string query = @"SELECT * 
                             FROM EmployeeLeaves AS EL
                             JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
-                            WHERE EL.isDeleted=false AND EL.employeeNumber=@EmployeeNumber AND EL.currentYear=@Year
+                            WHERE EL.isDeleted=false AND EL.employeeNumber=@EmployeeNumber AND EL.currentYear=@Year AND
+                            EL.startDate BETWEEN @StartDate AND @EndDate AND EL.endDate BETWEEN @StartDate AND @EndDate
                             ORDER BY EL.id DESC";
 
             List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
@@ -97,13 +98,14 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                         }, new
                         {
                             EmployeeNumber = employeeNumber,
-                            Year = year
+                            Year = year,
+                            StartDate = startDate,
+                            EndDate = endDate
                         }).ToList();
                 conn.Close();
             }
 
             return results;
-
         }
     }
 }

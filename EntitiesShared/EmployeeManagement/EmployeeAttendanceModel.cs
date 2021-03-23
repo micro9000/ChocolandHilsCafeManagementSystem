@@ -153,6 +153,47 @@ namespace EntitiesShared.EmployeeManagement
             set { isTimeOutProvided = value; }
         }
 
+        private decimal lateTotalDeduction;
+
+        public decimal LateTotalDeduction
+        {
+            get { return lateTotalDeduction; }
+            set { lateTotalDeduction = value; }
+        }
+
+        private decimal underTimeTotalDeduction;
+
+        public decimal UnderTimeTotalDeduction
+        {
+            get { return underTimeTotalDeduction; }
+            set { underTimeTotalDeduction = value; }
+        }
+
+        private decimal overTimeTotalDeduction;
+
+        public decimal OverTimeTotalDeduction
+        {
+            get { return overTimeTotalDeduction; }
+            set { overTimeTotalDeduction = value; }
+        }
+
+
+        private decimal totalDailySalary;
+
+        public decimal TotalDailySalary
+        {
+            get { return totalDailySalary; }
+            set { totalDailySalary = value; }
+        }
+
+
+        private bool isPaid;
+
+        public bool IsPaid
+        {
+            get { return isPaid; }
+            set { isPaid = value; }
+        }
 
     }
 }

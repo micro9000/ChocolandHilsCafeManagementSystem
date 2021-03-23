@@ -821,10 +821,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
                 }
 
-                string whoDayTotalHrs = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
-                string late = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
-                string underTime = _decimalMinutesToHrsConverter.Convert(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
-                string overTime = _decimalMinutesToHrsConverter.Convert(attendance.OverTimeMins);
+                string whoDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfHrs + attendance.SecondHalfHrs);
+                string late = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfLateMins + attendance.SecondHalfLateMins);
+                string underTime = _decimalMinutesToHrsConverter.ConvertToString(attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins);
+                string overTime = _decimalMinutesToHrsConverter.ConvertToString(attendance.OverTimeMins);
 
                 var row = new string[]
                 {

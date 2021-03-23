@@ -12,5 +12,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
     {
         List<EmployeeLeaveModel> GetAllByEmployeeNumberAndYear(string employeeNumber, int year);
         List<EmployeeLeaveModel> GetAllByEmployeeNumberAndLeaveId(string employeeNumber, long leaveId, int year);
+        List<EmployeeLeaveModel> GetAllByEmployeeNumberAndDateRange(string employeeNumber, int year, DateTime startDate, DateTime endDate);
     }
 }
