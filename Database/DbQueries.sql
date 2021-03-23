@@ -259,6 +259,12 @@ CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 ALTER TABLE EmployeeAttendance
 ADD COLUMN isPaid BOOLEAN DEFAULT false;
 
+SELECT * 
+FROM EmployeeAttendance AS EA
+JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
+JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
+WHERE EA.employeeNumber=@EmployeeNumber AND EA.workDate BETWEEN @StartDate AND @EndDate
+ORDER BY EA.id DESC;
 
 -- possible enhancement:
 -- add employee type that will use to add additional benefits

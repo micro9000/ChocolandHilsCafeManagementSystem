@@ -35,7 +35,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             var results = this.GetFirstOrDefault(query, new
             {
                 SchedId = schedId,
-                WorkDate = workDate.ToString("yyyy/MM/dd")
+                WorkDate = workDate.ToString("yyyy-MM-dd")
             });
 
             if (results != null)
@@ -73,8 +73,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                             WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND workDate BETWEEN @StartDate AND @EndDate";
 
             return this.GetAll(query, new { 
-                StartDate = startDate.ToString("yyyy/MM/dd"), 
-                EndDate = endDate.ToString("yyyy/MM/dd"),
+                StartDate = startDate.ToString("yyyy-MM-dd"), 
+                EndDate = endDate.ToString("yyyy-MM-dd"),
                 EmployeeNumber = employeeNumber
             });
         }
@@ -89,7 +89,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return this.GetFirstOrDefault(query, new
             {
                 EmployeeNumber = employeeNumber,
-                WorkDate = workDate.ToString("yyyy/MM/dd")
+                WorkDate = workDate.ToString("yyyy-MM-dd")
             });
         }
 

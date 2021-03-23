@@ -39,7 +39,21 @@ namespace Main.Forms.PayrollForms
             controlToDisplay.Location = new Point(this.ClientSize.Width / 2 - controlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - controlToDisplay.Size.Height / 2);
             controlToDisplay.Anchor = AnchorStyles.None;
 
+            controlToDisplay.InitiatePayrollGeneration += HandleInitiatePayrollGeneration;
+
             this.panelContainer.Controls.Add(controlToDisplay);
+        }
+
+        private void HandleInitiatePayrollGeneration(object sender, EventArgs e)
+        {
+            GeneratePayrollControl generatePayrollControlObj = (GeneratePayrollControl)sender;
+
+            var paydate = generatePayrollControlObj.PayDate;
+            var shiftStartDate = generatePayrollControlObj.ShiftStartDate;
+            var shiftEndDate = generatePayrollControlObj.ShiftEndDate;
+
+            MessageBox.Show(paydate.ToString());
+
         }
     }
 }

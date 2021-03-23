@@ -14,6 +14,39 @@ namespace Main.Forms.PayrollForms.Controls
 {
     public partial class GeneratePayrollControl : UserControl
     {
+
+        private DateTime payDate;
+
+        public DateTime PayDate
+        {
+            get { return payDate; }
+            set { payDate = value; }
+        }
+
+        private DateTime shiftStartDate;
+
+        public DateTime ShiftStartDate
+        {
+            get { return shiftStartDate; }
+            set { shiftStartDate = value; }
+        }
+
+        private DateTime shiftEndDate;
+
+        public DateTime ShiftEndDate
+        {
+            get { return shiftEndDate; }
+            set { shiftEndDate = value; }
+        }
+
+        // Event handler for saving leave type
+        public event EventHandler InitiatePayrollGeneration;
+        protected virtual void OnInitiatePayrollGeneration(EventArgs e)
+        {
+            InitiatePayrollGeneration?.Invoke(this, e);
+        }
+
+
         private List<EmployeeModel> employees;
 
         public List<EmployeeModel> Employees
@@ -115,9 +148,13 @@ namespace Main.Forms.PayrollForms.Controls
             //DisplayEmployees();
         }
 
-        private void TabControlDeductions_SelectedIndexChanged(object sender, EventArgs e)
+        private void BtnGeneratePayrollInitiate_Click(object sender, EventArgs e)
         {
+            this.PayDate = DPickerPaydate.Value;
+            this.ShiftStartDate = DPickerShiftStartDate.Value;
+            this.ShiftEndDate = DPickerShiftEndDate.Value;
 
+            OnInitiatePayrollGeneration(EventArgs.Empty);
         }
 
         //public void DisplayEmployees()

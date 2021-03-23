@@ -33,13 +33,14 @@ namespace Main.Forms.PayrollForms.Controls
             this.label2 = new System.Windows.Forms.Label();
             this.TabControlDeductions = new System.Windows.Forms.TabControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.BtnGeneratePayrollInitiate = new System.Windows.Forms.Button();
-            this.DTPicShiftEndDate = new System.Windows.Forms.DateTimePicker();
+            this.DPickerShiftEndDate = new System.Windows.Forms.DateTimePicker();
+            this.DPickerPaydate = new System.Windows.Forms.DateTimePicker();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.DTPicShiftStartDate = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
-            this.DTPicPaydate = new System.Windows.Forms.DateTimePicker();
+            this.label6 = new System.Windows.Forms.Label();
+            this.DPickerShiftStartDate = new System.Windows.Forms.DateTimePicker();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.BtnSelectAllEmployees = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -68,10 +69,10 @@ namespace Main.Forms.PayrollForms.Controls
             this.label1 = new System.Windows.Forms.Label();
             this.button9 = new System.Windows.Forms.Button();
             this.dataGridView6 = new System.Windows.Forms.DataGridView();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.panel1.SuspendLayout();
             this.TabControlDeductions.SuspendLayout();
             this.tabPage6.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeList)).BeginInit();
             this.tabPage2.SuspendLayout();
@@ -84,7 +85,6 @@ namespace Main.Forms.PayrollForms.Controls
             ((System.ComponentModel.ISupportInitialize)(this.DGVSalesRecords)).BeginInit();
             this.tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).BeginInit();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -125,7 +125,6 @@ namespace Main.Forms.PayrollForms.Controls
             this.TabControlDeductions.SelectedIndex = 0;
             this.TabControlDeductions.Size = new System.Drawing.Size(871, 489);
             this.TabControlDeductions.TabIndex = 7;
-            this.TabControlDeductions.SelectedIndexChanged += new System.EventHandler(this.TabControlDeductions_SelectedIndexChanged);
             // 
             // tabPage6
             // 
@@ -137,6 +136,22 @@ namespace Main.Forms.PayrollForms.Controls
             this.tabPage6.Text = "Generate";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.BtnGeneratePayrollInitiate);
+            this.groupBox1.Controls.Add(this.DPickerShiftEndDate);
+            this.groupBox1.Controls.Add(this.DPickerPaydate);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.DPickerShiftStartDate);
+            this.groupBox1.Location = new System.Drawing.Point(177, 95);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(457, 239);
+            this.groupBox1.TabIndex = 67;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Generate new payroll";
+            // 
             // BtnGeneratePayrollInitiate
             // 
             this.BtnGeneratePayrollInitiate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -144,62 +159,63 @@ namespace Main.Forms.PayrollForms.Controls
             this.BtnGeneratePayrollInitiate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnGeneratePayrollInitiate.ForeColor = System.Drawing.Color.White;
             this.BtnGeneratePayrollInitiate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnGeneratePayrollInitiate.Location = new System.Drawing.Point(248, 160);
+            this.BtnGeneratePayrollInitiate.Location = new System.Drawing.Point(310, 152);
             this.BtnGeneratePayrollInitiate.Name = "BtnGeneratePayrollInitiate";
             this.BtnGeneratePayrollInitiate.Size = new System.Drawing.Size(115, 47);
             this.BtnGeneratePayrollInitiate.TabIndex = 65;
             this.BtnGeneratePayrollInitiate.Text = "Initiate";
             this.BtnGeneratePayrollInitiate.UseVisualStyleBackColor = false;
+            this.BtnGeneratePayrollInitiate.Click += new System.EventHandler(this.BtnGeneratePayrollInitiate_Click);
             // 
-            // DTPicShiftEndDate
+            // DPickerShiftEndDate
             // 
-            this.DTPicShiftEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DTPicShiftEndDate.Location = new System.Drawing.Point(315, 102);
-            this.DTPicShiftEndDate.Name = "DTPicShiftEndDate";
-            this.DTPicShiftEndDate.Size = new System.Drawing.Size(117, 29);
-            this.DTPicShiftEndDate.TabIndex = 64;
+            this.DPickerShiftEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPickerShiftEndDate.Location = new System.Drawing.Point(308, 101);
+            this.DPickerShiftEndDate.Name = "DPickerShiftEndDate";
+            this.DPickerShiftEndDate.Size = new System.Drawing.Size(117, 29);
+            this.DPickerShiftEndDate.TabIndex = 64;
+            // 
+            // DPickerPaydate
+            // 
+            this.DPickerPaydate.Location = new System.Drawing.Point(154, 55);
+            this.DPickerPaydate.Name = "DPickerPaydate";
+            this.DPickerPaydate.Size = new System.Drawing.Size(271, 29);
+            this.DPickerPaydate.TabIndex = 58;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(284, 108);
+            this.label7.Location = new System.Drawing.Point(277, 107);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(25, 21);
             this.label7.TabIndex = 63;
             this.label7.Text = "To";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(40, 110);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(115, 21);
-            this.label6.TabIndex = 61;
-            this.label6.Text = "Shift start from";
-            // 
-            // DTPicShiftStartDate
-            // 
-            this.DTPicShiftStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DTPicShiftStartDate.Location = new System.Drawing.Point(161, 102);
-            this.DTPicShiftStartDate.Name = "DTPicShiftStartDate";
-            this.DTPicShiftStartDate.Size = new System.Drawing.Size(117, 29);
-            this.DTPicShiftStartDate.TabIndex = 60;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(91, 62);
+            this.label4.Location = new System.Drawing.Point(84, 61);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(64, 21);
             this.label4.TabIndex = 59;
             this.label4.Text = "Paydate";
             // 
-            // DTPicPaydate
+            // label6
             // 
-            this.DTPicPaydate.Location = new System.Drawing.Point(161, 56);
-            this.DTPicPaydate.Name = "DTPicPaydate";
-            this.DTPicPaydate.Size = new System.Drawing.Size(271, 29);
-            this.DTPicPaydate.TabIndex = 58;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(33, 109);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(115, 21);
+            this.label6.TabIndex = 61;
+            this.label6.Text = "Shift start from";
+            // 
+            // DPickerShiftStartDate
+            // 
+            this.DPickerShiftStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPickerShiftStartDate.Location = new System.Drawing.Point(154, 101);
+            this.DPickerShiftStartDate.Name = "DPickerShiftStartDate";
+            this.DPickerShiftStartDate.Size = new System.Drawing.Size(117, 29);
+            this.DPickerShiftStartDate.TabIndex = 60;
             // 
             // tabPage1
             // 
@@ -532,22 +548,6 @@ namespace Main.Forms.PayrollForms.Controls
             this.dataGridView6.Size = new System.Drawing.Size(811, 265);
             this.dataGridView6.TabIndex = 1;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.BtnGeneratePayrollInitiate);
-            this.groupBox1.Controls.Add(this.DTPicShiftEndDate);
-            this.groupBox1.Controls.Add(this.DTPicPaydate);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.DTPicShiftStartDate);
-            this.groupBox1.Location = new System.Drawing.Point(177, 95);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(457, 239);
-            this.groupBox1.TabIndex = 67;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Generate new payroll";
-            // 
             // GeneratePayrollControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -561,6 +561,8 @@ namespace Main.Forms.PayrollForms.Controls
             this.panel1.PerformLayout();
             this.TabControlDeductions.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeList)).EndInit();
@@ -575,8 +577,6 @@ namespace Main.Forms.PayrollForms.Controls
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView6)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -612,12 +612,12 @@ namespace Main.Forms.PayrollForms.Controls
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.DataGridView dataGridView6;
-        private System.Windows.Forms.DateTimePicker DTPicShiftEndDate;
+        private System.Windows.Forms.DateTimePicker DPickerShiftEndDate;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.DateTimePicker DTPicShiftStartDate;
+        private System.Windows.Forms.DateTimePicker DPickerShiftStartDate;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DateTimePicker DTPicPaydate;
+        private System.Windows.Forms.DateTimePicker DPickerPaydate;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button BtnGeneratePayrollInitiate;

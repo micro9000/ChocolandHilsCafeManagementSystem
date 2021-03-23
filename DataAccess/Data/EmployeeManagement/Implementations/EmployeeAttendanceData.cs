@@ -39,7 +39,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                             EA.Employee = E;
 
                             return EA;
-                        }, new { WorkDate = workDate.ToString("yyyy/MM/dd") }).ToList();
+                        }, new { WorkDate = workDate.ToString("yyyy-MM-dd") }).ToList();
                 conn.Close();
             }
 
@@ -70,8 +70,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                         }, 
                         new { 
                             EmployeeNumber = employeeNumber,
-                            StartDate = startDate.ToString("yyyy/MM/dd"), 
-                            EndDate = endDate.ToString("yyyy/MM/dd") 
+                            StartDate = startDate.ToString("yyyy-MM-dd"), 
+                            EndDate = endDate.ToString("yyyy-MM-dd") 
                         }).ToList();
                 conn.Close();
             }
@@ -102,8 +102,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                         },
                         new
                         {
-                            StartDate = startDate.ToString("yyyy/MM/dd"),
-                            EndDate = endDate.ToString("yyyy/MM/dd")
+                            StartDate = startDate.ToString("yyyy-MM-dd"),
+                            EndDate = endDate.ToString("yyyy-MM-dd")
                         }).ToList();
                 conn.Close();
             }
@@ -116,7 +116,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             string query = @"SELECT * FROM EmployeeAttendance 
                                 WHERE employeeNumber=@EmployeeNumber AND workDate=@WorkDate";
 
-            return this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber, WorkDate = workDate.ToString("yyyy/MM/dd") });
+            return this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber, WorkDate = workDate.ToString("yyyy-MM-dd") });
         }
     }
 }

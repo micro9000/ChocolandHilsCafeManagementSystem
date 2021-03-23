@@ -891,7 +891,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             if (this.AttendanceToDisplay != null)
             {
-                foreach(var record in this.AttendanceToDisplay)
+                this.LViewAttendanceHistory.Items.Clear();
+
+                foreach (var record in this.AttendanceToDisplay)
                 {
                     var listViewItem = new ListViewItem(record.Value.record);
 
@@ -919,7 +921,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             if (this.AttendanceHistory != null)
             {
-                this.LViewAttendanceHistory.Items.Clear();
+                this.AttendanceToDisplay = new Dictionary<DateTime, AttendanceRecord>();
 
                 foreach (DateTime day in EachDay(startDate, endDate))
                 {
