@@ -212,7 +212,13 @@ namespace Main.Forms.PayrollForms
 
                                 payslipData.TotalIncome = empTotalIncome;
                                 payslipData.BenefitsTotal = empTotalBenefits;
+
+                                // we already deduction the ff. deductions in total income
+                                // upon time-out daily salary computation
+                                empTotalDeductions += payslipData.LateTotalDeduction;
+                                empTotalDeductions += payslipData.UnderTimeTotalDeduction;
                                 payslipData.DeductionTotal = empTotalDeductions;
+
                                 payslipData.NetTakeHomePay = empNetTakeHomePay;
 
                                 _employeePayslipData.Update(payslipData);

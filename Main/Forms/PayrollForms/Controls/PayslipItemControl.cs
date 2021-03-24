@@ -35,7 +35,7 @@ namespace Main.Forms.PayrollForms.Controls
             if (Payslip != null)
             {
                 this.LblTotalIncome.Text = Payslip.TotalIncome.ToString();
-                this.LblTotalDeductions.Text = Payslip.LateTotalDeduction.ToString();
+                this.LblTotalDeductions.Text = Payslip.DeductionTotal.ToString();
                 this.LblTotalNetTakeHomePay.Text = Payslip.NetTakeHomePay.ToString();
 
                 var monthlyRate = new ListViewItem(new string[] {
