@@ -1,5 +1,6 @@
 ﻿using EntitiesShared.EmployeeManagement;
 using EntitiesShared.OtherDataManagement;
+using EntitiesShared.PayrollManagement;
 using EntitiesShared.PayrollManagement.Models;
 using Shared.Helpers;
 using System;
@@ -660,11 +661,42 @@ namespace Main.Forms.PayrollForms.Controls
 
             this.DisplayEmployeeInOverviewTag(SelectedEmployeesForPayrollGeneration);
 
-            //var payslipItemControlObj = new PayslipItemControl();
-            //payslipItemControlObj.Location = new Point(this.PanelEmployeePayslipContainer.Width / 2 - payslipItemControlObj.Size.Width / 2, this.PanelEmployeePayslipContainer.Height / 2 - payslipItemControlObj.Size.Height / 2);
-            //payslipItemControlObj.Anchor = AnchorStyles.None;
-            //this.PanelEmployeePayslipContainer.Controls.Add(payslipItemControlObj);
 
+        }
+
+        private string selectedEmployeeNumberToViewPayslip;
+
+        public string SelectedEmployeeNumberToViewPayslip
+        {
+            get { return selectedEmployeeNumberToViewPayslip; }
+            set { selectedEmployeeNumberToViewPayslip = value; }
+        }
+
+        public event EventHandler ViewEmployeePayslip;
+        protected virtual void OnViewEmployeePayslip(EventArgs e)
+        {
+            ViewEmployeePayslip?.Invoke(this, e);
+        }
+
+        private void DGVEmployeeListForOverview_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1)
+            {
+                if (DGVEmployeeListForOverview.CurrentRow != null)
+                {
+                    SelectedEmployeeNumberToViewPayslip = DGVEmployeeListForOverview.CurrentRow.Cells[0].Value.ToString();
+                    OnViewEmployeePayslip(EventArgs.Empty);
+                }
+            }
+        }
+
+        public void DisplayEmployeePayslip(EmployeeModel employee, EmployeePayslipModel payslip)
+        {
+            this.PanelEmployeePayslipContainer.Controls.Clear();
+            var payslipItemControlObj = new PayslipItemControl { Employee = employee, Payslip = payslip};
+            payslipItemControlObj.Location = new Point(this.PanelEmployeePayslipContainer.Width / 2 - payslipItemControlObj.Size.Width / 2, this.PanelEmployeePayslipContainer.Height / 2 - payslipItemControlObj.Size.Height / 2);
+            payslipItemControlObj.Anchor = AnchorStyles.None;
+            this.PanelEmployeePayslipContainer.Controls.Add(payslipItemControlObj);
         }
     }
 }

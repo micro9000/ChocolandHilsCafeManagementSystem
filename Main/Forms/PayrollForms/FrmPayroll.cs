@@ -22,6 +22,7 @@ namespace Main.Forms.PayrollForms
     public partial class FrmPayroll : Form
     {
         private readonly ILogger<FrmPayroll> _logger;
+        private readonly IEmployeeData _employeeData;
         private readonly IEmployeeAttendanceData _employeeAttendanceData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
         private readonly IEmployeeController _employeeController;
@@ -35,7 +36,8 @@ namespace Main.Forms.PayrollForms
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
 
         public FrmPayroll(ILogger<FrmPayroll> logger,
-                        IEmployeeAttendanceData employeeAttendanceData, 
+                            IEmployeeData employeeData,
+                            IEmployeeAttendanceData employeeAttendanceData, 
                            IEmployeeLeaveData employeeLeaveData,
                            IEmployeeController employeeController,
                            IGovernmentAgencyData governmentAgencyData,
@@ -49,6 +51,7 @@ namespace Main.Forms.PayrollForms
         {
             InitializeComponent();
             _logger = logger;
+            _employeeData = employeeData;
             _employeeAttendanceData = employeeAttendanceData;
             _employeeLeaveData = employeeLeaveData;
             _employeeController = employeeController;
@@ -85,6 +88,7 @@ namespace Main.Forms.PayrollForms
 
             generatePayrollControlObj.InitiatePayrollGeneration += HandleInitiatePayrollGeneration;
             generatePayrollControlObj.GenerateEmployeePayslip += GenerateEmployeePayslip;
+            generatePayrollControlObj.ViewEmployeePayslip += HandleViewEmployeePayslip;
 
             this.panelContainer.Controls.Add(generatePayrollControlObj);
         }
@@ -206,6 +210,7 @@ namespace Main.Forms.PayrollForms
 
                                 empNetTakeHomePay = (empTotalIncome - empTotalDeductions);
 
+                                payslipData.TotalIncome = empTotalIncome;
                                 payslipData.BenefitsTotal = empTotalBenefits;
                                 payslipData.DeductionTotal = empTotalDeductions;
                                 payslipData.NetTakeHomePay = empNetTakeHomePay;
@@ -233,6 +238,18 @@ namespace Main.Forms.PayrollForms
                 _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
                 MessageBox.Show("Internal error, kindly check system logs and report this error to developer.");
             }
+        }
+
+
+        private void HandleViewEmployeePayslip(object sender, EventArgs e)
+        {
+            GeneratePayrollControl generatePayrollControlObj = (GeneratePayrollControl)sender;
+            string empNum = generatePayrollControlObj.SelectedEmployeeNumberToViewPayslip;
+
+            var employeeDetails = _employeeData.GetByEmployeeNumber(empNum);
+            var payslip = _employeePayslipData.GetEmployeePayslipRecordByPaydate(empNum, generatePayrollControlObj.PayDate);
+
+            generatePayrollControlObj.DisplayEmployeePayslip(employeeDetails, payslip);
         }
 
     }

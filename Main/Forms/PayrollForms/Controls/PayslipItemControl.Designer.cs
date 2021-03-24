@@ -30,17 +30,17 @@ namespace Main.Forms.PayrollForms.Controls
         private void InitializeComponent()
         {
             this.label23 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.LblEmployeeName = new System.Windows.Forms.Label();
+            this.LblEmployeeNumber = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.label31 = new System.Windows.Forms.Label();
+            this.LblTotalNetTakeHomePay = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.label30 = new System.Windows.Forms.Label();
+            this.LblTotalDeductions = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.label29 = new System.Windows.Forms.Label();
+            this.LblTotalIncome = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.LVPayslipDeductions = new System.Windows.Forms.ListView();
             this.LVCDeductions = new System.Windows.Forms.ColumnHeader();
@@ -65,27 +65,27 @@ namespace Main.Forms.PayrollForms.Controls
             this.label23.TabIndex = 43;
             this.label23.Text = "Employee";
             // 
-            // label1
+            // LblEmployeeName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(93, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(28, 21);
-            this.label1.TabIndex = 44;
-            this.label1.Text = "---";
+            this.LblEmployeeName.AutoSize = true;
+            this.LblEmployeeName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblEmployeeName.ForeColor = System.Drawing.Color.Black;
+            this.LblEmployeeName.Location = new System.Drawing.Point(93, 10);
+            this.LblEmployeeName.Name = "LblEmployeeName";
+            this.LblEmployeeName.Size = new System.Drawing.Size(28, 21);
+            this.LblEmployeeName.TabIndex = 44;
+            this.LblEmployeeName.Text = "---";
             // 
-            // label2
+            // LblEmployeeNumber
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(477, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(28, 21);
-            this.label2.TabIndex = 46;
-            this.label2.Text = "---";
+            this.LblEmployeeNumber.AutoSize = true;
+            this.LblEmployeeNumber.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblEmployeeNumber.ForeColor = System.Drawing.Color.Black;
+            this.LblEmployeeNumber.Location = new System.Drawing.Point(477, 10);
+            this.LblEmployeeNumber.Name = "LblEmployeeNumber";
+            this.LblEmployeeNumber.Size = new System.Drawing.Size(28, 21);
+            this.LblEmployeeNumber.TabIndex = 46;
+            this.LblEmployeeNumber.Text = "---";
             // 
             // label3
             // 
@@ -101,22 +101,22 @@ namespace Main.Forms.PayrollForms.Controls
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.LightGray;
-            this.panel5.Controls.Add(this.label31);
+            this.panel5.Controls.Add(this.LblTotalNetTakeHomePay);
             this.panel5.Controls.Add(this.label28);
             this.panel5.Location = new System.Drawing.Point(10, 325);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(728, 42);
             this.panel5.TabIndex = 60;
             // 
-            // label31
+            // LblTotalNetTakeHomePay
             // 
-            this.label31.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label31.ForeColor = System.Drawing.Color.Black;
-            this.label31.Location = new System.Drawing.Point(545, 11);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(159, 21);
-            this.label31.TabIndex = 51;
-            this.label31.Text = "0";
+            this.LblTotalNetTakeHomePay.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblTotalNetTakeHomePay.ForeColor = System.Drawing.Color.Black;
+            this.LblTotalNetTakeHomePay.Location = new System.Drawing.Point(545, 11);
+            this.LblTotalNetTakeHomePay.Name = "LblTotalNetTakeHomePay";
+            this.LblTotalNetTakeHomePay.Size = new System.Drawing.Size(159, 21);
+            this.LblTotalNetTakeHomePay.TabIndex = 51;
+            this.LblTotalNetTakeHomePay.Text = "0";
             // 
             // label28
             // 
@@ -132,22 +132,22 @@ namespace Main.Forms.PayrollForms.Controls
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.LightGray;
-            this.panel4.Controls.Add(this.label30);
+            this.panel4.Controls.Add(this.LblTotalDeductions);
             this.panel4.Controls.Add(this.label27);
             this.panel4.Location = new System.Drawing.Point(382, 277);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(356, 42);
             this.panel4.TabIndex = 59;
             // 
-            // label30
+            // LblTotalDeductions
             // 
-            this.label30.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label30.ForeColor = System.Drawing.Color.Black;
-            this.label30.Location = new System.Drawing.Point(180, 12);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(159, 21);
-            this.label30.TabIndex = 51;
-            this.label30.Text = "0";
+            this.LblTotalDeductions.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblTotalDeductions.ForeColor = System.Drawing.Color.Black;
+            this.LblTotalDeductions.Location = new System.Drawing.Point(180, 12);
+            this.LblTotalDeductions.Name = "LblTotalDeductions";
+            this.LblTotalDeductions.Size = new System.Drawing.Size(159, 21);
+            this.LblTotalDeductions.TabIndex = 51;
+            this.LblTotalDeductions.Text = "0";
             // 
             // label27
             // 
@@ -156,29 +156,29 @@ namespace Main.Forms.PayrollForms.Controls
             this.label27.ForeColor = System.Drawing.Color.Black;
             this.label27.Location = new System.Drawing.Point(12, 12);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(97, 21);
+            this.label27.Size = new System.Drawing.Size(124, 21);
             this.label27.TabIndex = 49;
-            this.label27.Text = "Total Income";
+            this.label27.Text = "Total Deductions";
             // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.LightGray;
-            this.panel3.Controls.Add(this.label29);
+            this.panel3.Controls.Add(this.LblTotalIncome);
             this.panel3.Controls.Add(this.label24);
             this.panel3.Location = new System.Drawing.Point(10, 277);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(356, 42);
             this.panel3.TabIndex = 58;
             // 
-            // label29
+            // LblTotalIncome
             // 
-            this.label29.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label29.ForeColor = System.Drawing.Color.Black;
-            this.label29.Location = new System.Drawing.Point(197, 12);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(147, 21);
-            this.label29.TabIndex = 50;
-            this.label29.Text = "0";
+            this.LblTotalIncome.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblTotalIncome.ForeColor = System.Drawing.Color.Black;
+            this.LblTotalIncome.Location = new System.Drawing.Point(197, 12);
+            this.LblTotalIncome.Name = "LblTotalIncome";
+            this.LblTotalIncome.Size = new System.Drawing.Size(147, 21);
+            this.LblTotalIncome.TabIndex = 50;
+            this.LblTotalIncome.Text = "0";
             // 
             // label24
             // 
@@ -254,12 +254,13 @@ namespace Main.Forms.PayrollForms.Controls
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.LVPayslipDeductions);
             this.Controls.Add(this.LVPayslipEarnings);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.LblEmployeeNumber);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.LblEmployeeName);
             this.Controls.Add(this.label23);
             this.Name = "PayslipItemControl";
             this.Size = new System.Drawing.Size(747, 376);
+            this.Load += new System.EventHandler(this.PayslipItemControl_Load);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel4.ResumeLayout(false);
@@ -274,17 +275,17 @@ namespace Main.Forms.PayrollForms.Controls
         #endregion
 
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label LblEmployeeName;
+        private System.Windows.Forms.Label LblEmployeeNumber;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label LblTotalNetTakeHomePay;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label LblTotalDeductions;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label LblTotalIncome;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.ListView LVPayslipDeductions;
         private System.Windows.Forms.ColumnHeader LVCDeductions;

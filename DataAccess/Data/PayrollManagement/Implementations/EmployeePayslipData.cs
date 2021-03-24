@@ -12,47 +12,39 @@ namespace DataAccess.Data.PayrollManagement.Implementations
     public class EmployeePayslipData : DataManagerCRUD<EmployeePayslipModel>, IEmployeePayslipData
     {
         private readonly IDbConnectionFactory _dbConnFactory;
+        private readonly IEmployeePayslipBenefitData _employeePayslipBenefitData;
+        private readonly IEmployeePayslipDeductionData _employeePayslipDeductionData;
 
-        public EmployeePayslipData(IDbConnectionFactory dbConnFactory) :
+        public EmployeePayslipData(IDbConnectionFactory dbConnFactory,
+                                    IEmployeePayslipBenefitData employeePayslipBenefitData,
+                                    IEmployeePayslipDeductionData employeePayslipDeductionData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
+            _employeePayslipBenefitData = employeePayslipBenefitData;
+            _employeePayslipDeductionData = employeePayslipDeductionData;
         }
 
-        //public List<EmployeePayslipModel> GetAllByEmployeeNumberAndShiftDateRange(string employeeNumber, DateTime startShiftDate, DateTime endShiftDate)
-        //{
-        //    string query = @"SELECT * FROM EmployeePayslips
-        //                    WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND
-        //                    startShiftDate=@StartShiftDate AND 
-        //                    endShiftDate=@EndShiftDate";
+        public EmployeePayslipModel GetEmployeePayslipRecordByPaydate(string employeeNumber, DateTime paydate)
+        {
+            string query = @"SELECT * FROM EmployeePayslips WHERE employeeNumber=@EmployeeNumber AND payDate=@PayDate";
 
-        //    return this.GetAll(query, new {
-        //        EmployeeNumber = employeeNumber,
-        //        StartShiftDate = startShiftDate,
-        //        EndShiftDate = endShiftDate
-        //    });
-        //}
+            var payslipRec = this.GetAll(query, new
+            {
+                EmployeeNumber = employeeNumber,
+                PayDate = paydate.ToString("yyyy-MM-dd")
+            });
 
-        //public List<EmployeePayslipModel> GetAllByPaydayDate(DateTime paydayDate)
-        //{
-        //    string query = @"SELECT * FROM EmployeePayslips
-        //                    WHERE isDeleted=false AND payDate=@PaydayDate";
+            if (payslipRec != null)
+            {
+                payslipRec.ForEach(x =>
+                {
+                    x.Benefits = _employeePayslipBenefitData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
+                    x.Deductions = _employeePayslipDeductionData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
+                });
+            }
 
-        //    return this.GetAll(query, new { PaydayDate = paydayDate });
-        //}
-
-        //public List<EmployeePayslipModel> GetAllByShiftDateRange(DateTime startShiftDate, DateTime endShiftDate)
-        //{
-        //    string query = @"SELECT * FROM EmployeePayslips
-        //                    WHERE isDeleted=false AND
-        //                    startShiftDate=@StartShiftDate AND 
-        //                    endShiftDate=@EndShiftDate";
-
-        //    return this.GetAll(query, new
-        //    {
-        //        StartShiftDate = startShiftDate,
-        //        EndShiftDate = endShiftDate
-        //    });
-        //}
+            return payslipRec.FirstOrDefault();
+        }
     }
 }
