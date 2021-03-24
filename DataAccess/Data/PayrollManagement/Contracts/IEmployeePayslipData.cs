@@ -11,5 +11,6 @@ namespace DataAccess.Data.PayrollManagement.Contracts
     public interface IEmployeePayslipData : IDataManagerCRUD<EmployeePayslipModel>
     {
         EmployeePayslipModel GetEmployeePayslipRecordByPaydate(string employeeNumber, DateTime paydate);
+        List<DateTime> GetEmployeePayslipPaydatesList(string employeeNumber);
     }
 }

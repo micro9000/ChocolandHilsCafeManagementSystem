@@ -14,6 +14,8 @@ using System.Windows.Forms;
 using System.IO;
 using Shared.Helpers;
 using System.Globalization;
+using EntitiesShared.PayrollManagement;
+using Main.Forms.PayrollForms.Controls;
 
 namespace Main.Forms.EmployeeManagementForms.Controls
 {
@@ -182,7 +184,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             get { return workforceSchedules; }
             set { workforceSchedules = value; }
         }
-
 
 
         private void EmployeeDetailsCRUDControl_Load(object sender, EventArgs e)
@@ -942,6 +943,31 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
+        private List<DateTime> payslipPaydates;
+
+        public List<DateTime> PayslipPaydates
+        {
+            get { return payslipPaydates; }
+            set { payslipPaydates = value; }
+        }
+
+        public void DisplayEmpPayslipPaydateList()
+        {
+            // Work shifts load in combo box
+            if (this.PayslipPaydates != null)
+            {
+                ComboboxItem item;
+                foreach (var paydate in this.PayslipPaydates)
+                {
+                    item = new ComboboxItem();
+                    item.Text = paydate.ToShortDateString();
+                    item.Value = paydate;
+                    this.CBoxPayslipPaydateList.Items.Add(item);
+                }
+            }
+        }
+
+
         private DateTime filterAttendanceStartDate;
 
         public DateTime FilterAttendanceStartDate
@@ -986,6 +1012,37 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void TbxEmployeeNumber_KeyUp(object sender, KeyEventArgs e)
         {
 
+        }
+
+
+        public DateTime SelectedPayslipPaydateToView { get; set; }
+
+        public event EventHandler FilterEmployeePayslip;
+        protected virtual void OnFilterEmployeePayslip(EventArgs e)
+        {
+            FilterEmployeePayslip?.Invoke(this, e);
+        }
+
+        private void BtnFilterPayslipByPaydate_Click(object sender, EventArgs e)
+        {
+            var selectedPaydate = this.CBoxPayslipPaydateList.SelectedItem as ComboboxItem;
+            if (selectedPaydate != null)
+            {
+                SelectedPayslipPaydateToView = DateTime.Parse(selectedPaydate.Value.ToString());
+                OnFilterEmployeePayslip(EventArgs.Empty);
+            }
+        }
+
+        public void DisplayEmployeePayslip(EmployeeModel employee, EmployeePayslipModel payslip)
+        {
+            if (employee != null && payslip != null)
+            {
+                this.PanelPayslipDetailsContainer.Controls.Clear();
+                var payslipItemControlObj = new PayslipItemControl { Employee = employee, Payslip = payslip };
+                payslipItemControlObj.Location = new Point(this.PanelPayslipDetailsContainer.Width / 2 - payslipItemControlObj.Size.Width / 2, this.PanelPayslipDetailsContainer.Height / 2 - payslipItemControlObj.Size.Height / 2);
+                payslipItemControlObj.Anchor = AnchorStyles.None;
+                this.PanelPayslipDetailsContainer.Controls.Add(payslipItemControlObj);
+            }
         }
     }
 

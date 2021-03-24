@@ -530,25 +530,28 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 foreach (var employee in workforce)
                 {
-                    if (employee.IsDeleted == false)
+                    if (employee != null)
                     {
-                        DataGridViewRow row = new DataGridViewRow();
-                        row.CreateCells(this.DGVScheduledWorkforceByDate);
-
-                        string fullName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
-
-                        row.Cells[0].Value = employee.EmployeeNumber;
-                        row.Cells[1].Value = fullName;
-                        row.Cells[2].Value = employee.Position;
-
-                        if (employee.Shift != null)
+                        if (employee.IsDeleted == false)
                         {
-                            row.Cells[3].Value = employee.Shift.Shift;
+                            DataGridViewRow row = new DataGridViewRow();
+                            row.CreateCells(this.DGVScheduledWorkforceByDate);
+
+                            string fullName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
+
+                            row.Cells[0].Value = employee.EmployeeNumber;
+                            row.Cells[1].Value = fullName;
+                            row.Cells[2].Value = employee.Position;
+
+                            if (employee.Shift != null)
+                            {
+                                row.Cells[3].Value = employee.Shift.Shift;
+                            }
+
+                            row.Tag = dateKey;
+
+                            this.DGVScheduledWorkforceByDate.Rows.Add(row);
                         }
-
-                        row.Tag = dateKey;
-
-                        this.DGVScheduledWorkforceByDate.Rows.Add(row);
                     }
                 }
 

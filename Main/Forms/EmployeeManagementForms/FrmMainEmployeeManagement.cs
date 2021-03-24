@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataAccess.Data.EmployeeManagement.Contracts;
 using DataAccess.Data.OtherDataManagement.Contracts;
+using DataAccess.Data.PayrollManagement.Contracts;
 using EntitiesShared.EmployeeManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Controllers.OtherDataController.ControllerInterface;
@@ -26,6 +27,7 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IEmployeeLeaveData _employeeLeaveData;
         private readonly IEmployeeShiftDayData _employeeShiftDayData;
         private readonly IEmployeeController _employeeController;
+        private readonly IEmployeePayslipData _employeePayslipData;
         private readonly IWorkShiftController _workShiftController;
         private readonly ILeaveTypeController _leaveTypeController;
         private readonly IEmployeeLeaveController _employeeLeaveController;
@@ -44,6 +46,7 @@ namespace Main.Forms.EmployeeManagementForms
                                 IEmployeeLeaveData employeeLeaveData,
                                 IEmployeeShiftDayData employeeShiftDayData,
                                 IEmployeeController employeeController,
+                                IEmployeePayslipData employeePayslipData,
                                 IWorkShiftController workShiftController,
                                 ILeaveTypeController leaveTypeController,
                                 IEmployeeLeaveController employeeLeaveController,
@@ -63,6 +66,7 @@ namespace Main.Forms.EmployeeManagementForms
             _employeeLeaveData = employeeLeaveData;
             _employeeShiftDayData = employeeShiftDayData;
             _employeeController = employeeController;
+            _employeePayslipData = employeePayslipData;
             _workShiftController = workShiftController;
             _leaveTypeController = leaveTypeController;
             _employeeLeaveController = employeeLeaveController;
@@ -140,6 +144,7 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.PropertyChanged += this.OnEmployeeNumberEnter;
             controlToDisplay.WorkShiftSelected += HandleSelectedWorkShiftToGetOtherInfo;
             controlToDisplay.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
+            controlToDisplay.FilterEmployeePayslip += HandleFilterEmployeePayslip;
 
             this.panelContainer.Controls.Add(controlToDisplay);
         }
@@ -214,7 +219,10 @@ namespace Main.Forms.EmployeeManagementForms
                 employeeCRUDControlObj.Holidays = _holidayData.GetAllNotDeleted();
                 employeeCRUDControlObj.WorkforceSchedules = _workforceScheduleData.GetAllForEmpAttendance(Jan1, today, employeeDetails.Data.EmployeeNumber);
 
+                employeeCRUDControlObj.PayslipPaydates = _employeePayslipData.GetEmployeePayslipPaydatesList(employeeDetails.Data.EmployeeNumber);
+
                 employeeCRUDControlObj.DisplayAttendanceRecord(Jan1, today);
+                employeeCRUDControlObj.DisplayEmpPayslipPaydateList();
 
                 employeeCRUDControlObj.MoveToNextTabSaveEmployeeDetails();
 
@@ -241,6 +249,19 @@ namespace Main.Forms.EmployeeManagementForms
 
             employeeDetailsCRUDControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(EmployeeNumber, startDate, endDate);
             employeeDetailsCRUDControlObj.DisplayAttendanceRecord(startDate, endDate);
+        }
+
+
+        private void HandleFilterEmployeePayslip(object sender, EventArgs e)
+        {
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            var employeeNumber = employeeCRUDControlObj.EmployeeNumber;
+            var paydate = employeeCRUDControlObj.SelectedPayslipPaydateToView;
+
+            var payslipData = _employeePayslipData.GetEmployeePayslipRecordByPaydate(employeeNumber, paydate);
+            var employeeData = _employeeController.GetByEmployeeNumber(employeeNumber).Data;
+
+            employeeCRUDControlObj.DisplayEmployeePayslip(employeeData, payslipData);
         }
 
         #endregion

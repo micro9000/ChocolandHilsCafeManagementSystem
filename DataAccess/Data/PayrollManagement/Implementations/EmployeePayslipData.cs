@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace DataAccess.Data.PayrollManagement.Implementations
 {
@@ -27,7 +28,7 @@ namespace DataAccess.Data.PayrollManagement.Implementations
 
         public EmployeePayslipModel GetEmployeePayslipRecordByPaydate(string employeeNumber, DateTime paydate)
         {
-            string query = @"SELECT * FROM EmployeePayslips WHERE employeeNumber=@EmployeeNumber AND payDate=@PayDate";
+            string query = @"SELECT * FROM EmployeePayslips WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND payDate=@PayDate";
 
             var payslipRec = this.GetAll(query, new
             {
@@ -45,6 +46,22 @@ namespace DataAccess.Data.PayrollManagement.Implementations
             }
 
             return payslipRec.FirstOrDefault();
+        }
+
+
+        public List<DateTime> GetEmployeePayslipPaydatesList(string employeeNumber)
+        {
+            string query = @"SELECT payDate FROM EmployeePayslips WHERE isDeleted=false AND employeeNumber=@EmployeeNumber";
+
+            List<DateTime> results = new List<DateTime>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<DateTime>(query, new { EmployeeNumber = employeeNumber}).ToList();
+                conn.Close();
+            }
+
+            return results;
         }
     }
 }
