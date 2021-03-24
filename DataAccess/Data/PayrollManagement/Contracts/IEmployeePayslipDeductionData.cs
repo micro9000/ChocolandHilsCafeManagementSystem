@@ -1,12 +1,12 @@
 ﻿using DapperGenericDataManager;
-using EntitiesShared.EmployeeManagement;
+using EntitiesShared.PayrollManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Data.EmployeeManagement.Contracts
+namespace DataAccess.Data.PayrollManagement.Contracts
 {
     public interface IEmployeePayslipDeductionData : IDataManagerCRUD<EmployeePayslipDeductionModel>
     {

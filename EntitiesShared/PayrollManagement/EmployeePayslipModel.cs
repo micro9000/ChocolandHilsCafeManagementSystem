@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntitiesShared.EmployeeManagement
+namespace EntitiesShared.PayrollManagement
 {
     [Table("EmployeePayslips")]
     public class EmployeePayslipModel : BaseModel
@@ -43,6 +43,52 @@ namespace EntitiesShared.EmployeeManagement
             set { payDate = value; }
         }
 
+        private decimal salaryRate;
+
+        public decimal SalaryRate
+        {
+            get { return salaryRate; }
+            set { salaryRate = value; }
+        }
+
+        private decimal halfMonthRate;
+
+        public decimal HalfMonthRate
+        {
+            get { return halfMonthRate; }
+            set { halfMonthRate = value; }
+        }
+
+        private decimal dailyRate;
+
+        public decimal DailyRate
+        {
+            get { return dailyRate; }
+            set { dailyRate = value; }
+        }
+
+        private string numOfDays;
+
+        public string NumOfDays
+        {
+            get { return numOfDays; }
+            set { numOfDays = value; }
+        }
+
+
+        public string Late { get; set; }
+
+        public decimal LateTotalDeduction { get; set; }
+
+
+        public string UnderTime { get; set; }
+
+        public decimal UnderTimeTotalDeduction { get; set; }
+
+        public string OverTime { get; set; }
+
+        public decimal OverTimeTotalRate { get; set; }
+
         private decimal netBasicSalary;
 
         public decimal NetBasicSalary
@@ -69,6 +115,8 @@ namespace EntitiesShared.EmployeeManagement
             set { benefits = value; }
         }
 
+        public decimal TotalIncome { get; set; }
+
 
         private decimal deductionTotal;
 
@@ -87,12 +135,6 @@ namespace EntitiesShared.EmployeeManagement
             set { deductions = value; }
         }
 
-        private decimal totalIncome;
-
-        public decimal TotalIncome
-        {
-            get { return totalIncome; }
-            set { totalIncome = value; }
-        }
+        public decimal NetTakeHomePay { get; set; }
     }
 }

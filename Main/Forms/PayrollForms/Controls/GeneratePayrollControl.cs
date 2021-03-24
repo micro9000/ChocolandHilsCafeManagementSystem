@@ -1,5 +1,6 @@
 ﻿using EntitiesShared.EmployeeManagement;
 using EntitiesShared.OtherDataManagement;
+using EntitiesShared.PayrollManagement.Models;
 using Shared.Helpers;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -161,12 +163,27 @@ namespace Main.Forms.PayrollForms.Controls
             this.DGVDeductionList.ReadOnly = false;
             this.DGVDeductionList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DGVDeductionList.ColumnHeadersHeight = 30;
+
+            this.DGVEmployeeListForOverview.BackgroundColor = Color.White;
+            this.DGVEmployeeListForOverview.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVEmployeeListForOverview.RowHeadersVisible = false;
+            this.DGVEmployeeListForOverview.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVEmployeeListForOverview.AllowUserToResizeRows = false;
+            this.DGVEmployeeListForOverview.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.DGVEmployeeListForOverview.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVEmployeeListForOverview.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVEmployeeListForOverview.MultiSelect = false;
+            this.DGVEmployeeListForOverview.ReadOnly = false;
+            this.DGVEmployeeListForOverview.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVEmployeeListForOverview.ColumnHeadersHeight = 30;
         }
 
         private void GeneratePayrollControl_Load(object sender, EventArgs e)
         {
             SetDGVFontAndColors();
-            //DisplayEmployees();
+            DisplayGovernmentAgencyList();
+            DisplayBenefitsInDGV();
+            DisplayDeductionsInDGV();
         }
 
         private void BtnGeneratePayrollInitiate_Click(object sender, EventArgs e)
@@ -175,19 +192,24 @@ namespace Main.Forms.PayrollForms.Controls
             this.ShiftStartDate = DPickerShiftStartDate.Value;
             this.ShiftEndDate = DPickerShiftEndDate.Value;
 
+            this.LblPaydate.Text = DPickerPaydate.Value.ToShortDateString();
+            this.LblAttendanceDateStart.Text = DPickerShiftStartDate.Value.ToShortDateString();
+            this.LblAttendanceDateEnd.Text = DPickerShiftEndDate.Value.ToShortDateString();
+
             OnInitiatePayrollGeneration(EventArgs.Empty);
         }
 
-        public void DisplayEmployeeWithAttendanceRecordAndSalary()
+
+        public void DisplayEmployeeWithAttendanceRecordAndSalary(List<EmployeeModel> EmployeeList)
         {
-            if (this.AttendanceHistory != null && this.Employees != null)
+            if (this.AttendanceHistory != null && EmployeeList != null)
             {
                 this.DGVEmployeeList.Rows.Clear();
-                if (this.Employees != null)
+                if (EmployeeList != null)
                 {
                     this.DGVEmployeeList.ColumnCount = 8;
 
-                    this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber2";
+                    this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber";
                     this.DGVEmployeeList.Columns[0].HeaderText = "Employee Number";
                     this.DGVEmployeeList.Columns[0].Visible = true;
 
@@ -226,21 +248,18 @@ namespace Main.Forms.PayrollForms.Controls
                     this.DGVEmployeeList.Columns.Add(selectChbxToSchedule);
 
 
-                    foreach (var employee in this.Employees)
+                    foreach (var employee in EmployeeList)
                     {
                         DataGridViewRow row = new DataGridViewRow();
                         row.CreateCells(this.DGVEmployeeList);
 
-                        string fullName = $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
-
                         row.Cells[0].Value = employee.EmployeeNumber;
-                        row.Cells[1].Value = fullName;
+                        row.Cells[1].Value = employee.FullName;
 
                         if (employee.SalaryRates != null)
                         {
                             row.Cells[2].Value = employee.SalaryRates.DailyRate;
                         }
-
 
                         var currentEmpAttendanceRec = this.AttendanceHistory.Where(x => x.EmployeeNumber == employee.EmployeeNumber).ToList();
                         var totalDays = currentEmpAttendanceRec.Count;
@@ -265,11 +284,387 @@ namespace Main.Forms.PayrollForms.Controls
 
                         row.Cells[7].Value = "";
 
+                        row.Tag = employee;
+
                         this.DGVEmployeeList.Rows.Add(row);
                     }
 
                 }
             }
+        }
+
+        private void TboxSearchEmployee_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                var searchStr = TboxSearchEmployee.Text;
+                var searchEmployeeResults = this.Employees.Where(x => x.EmployeeNumber.Contains(searchStr) || 
+                                                        x.FullName.Contains(searchStr)).ToList();
+
+                this.DisplayEmployeeWithAttendanceRecordAndSalary(searchEmployeeResults);
+
+                e.Handled = true;
+            }
+        }
+
+        private void BtnSelectAllEmployeesInDGV_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.DGVEmployeeList.Rows)
+            {
+                row.Cells["selectEmpCkbox"].Value = (bool)true;
+            }
+        }
+
+        public void DisplayGovernmentAgencyList()
+        {
+            this.DGVGovtAgencies.Rows.Clear();
+            if (this.GovernmentAgencies != null)
+            {
+                this.DGVGovtAgencies.ColumnCount = 2;
+
+                this.DGVGovtAgencies.Columns[0].Name = "GovernmentAgencyId";
+                this.DGVGovtAgencies.Columns[0].Visible = false;
+
+                this.DGVGovtAgencies.Columns[1].Name = "AgencyTitle";
+                this.DGVGovtAgencies.Columns[1].HeaderText = "Agency";
+
+                DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
+                selectChbxToSchedule.HeaderText = "Select";
+                selectChbxToSchedule.Name = "selectGovtAngencyCkbox";
+                selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                this.DGVGovtAgencies.Columns.Add(selectChbxToSchedule);
+
+                foreach (var agency in this.GovernmentAgencies)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVGovtAgencies);
+
+                    row.Cells[0].Value = agency.Id;
+                    row.Cells[1].Value = agency.GovtAgency;
+
+                    row.Tag = agency;
+
+                    this.DGVGovtAgencies.Rows.Add(row);
+                }
+            }
+        }
+
+        public void DisplayBenefitsInDGV()
+        {
+            this.DGVBenefitsList.Rows.Clear();
+            if (this.Benefits != null)
+            {
+                this.DGVBenefitsList.ColumnCount = 3;
+
+                this.DGVBenefitsList.Columns[0].Name = "benefitId";
+                this.DGVBenefitsList.Columns[0].Visible = false;
+
+                this.DGVBenefitsList.Columns[1].Name = "BenefitTitle";
+                this.DGVBenefitsList.Columns[1].HeaderText = "Title";
+
+                this.DGVBenefitsList.Columns[2].Name = "BenefitAmount";
+                this.DGVBenefitsList.Columns[2].HeaderText = "Amount";
+
+                DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
+                selectChbxToSchedule.HeaderText = "Select";
+                selectChbxToSchedule.Name = "selectBenefitCkbox";
+                selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                this.DGVBenefitsList.Columns.Add(selectChbxToSchedule);
+
+                foreach (var benefit in this.Benefits)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(DGVBenefitsList);
+
+                    row.Cells[0].Value = benefit.Id;
+                    row.Cells[1].Value = benefit.BenefitTitle;
+                    row.Cells[2].Value = benefit.Amount;
+
+                    row.Tag = benefit;
+
+                    DGVBenefitsList.Rows.Add(row);
+                }
+
+            }
+        }
+
+        public void DisplayDeductionsInDGV()
+        {
+            this.DGVDeductionList.Rows.Clear();
+            if (this.Deductions != null)
+            {
+                this.DGVDeductionList.ColumnCount = 3;
+
+                this.DGVDeductionList.Columns[0].Name = "benefitId";
+                this.DGVDeductionList.Columns[0].Visible = false;
+
+                this.DGVDeductionList.Columns[1].Name = "DeductionTitle";
+                this.DGVDeductionList.Columns[1].HeaderText = "Title";
+
+                this.DGVDeductionList.Columns[2].Name = "DeductionAmount";
+                this.DGVDeductionList.Columns[2].HeaderText = "Amount";
+
+                DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
+                selectChbxToSchedule.HeaderText = "Select";
+                selectChbxToSchedule.Name = "selectDeductionCkbox";
+                selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                this.DGVDeductionList.Columns.Add(selectChbxToSchedule);
+
+                foreach (var deduction in this.Deductions)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(DGVDeductionList);
+
+                    row.Cells[0].Value = deduction.Id;
+                    row.Cells[1].Value = deduction.DeductionTitle;
+                    row.Cells[2].Value = deduction.Amount;
+
+                    row.Tag = deduction;
+
+                    DGVDeductionList.Rows.Add(row);
+                }
+
+            }
+        }
+
+
+        private void BtnSelectAllGovtAgencies_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.DGVGovtAgencies.Rows)
+            {
+                row.Cells["selectGovtAngencyCkbox"].Value = (bool)true;
+            }
+        }
+
+        private void BtnSelectAllBenefits_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.DGVBenefitsList.Rows)
+            {
+                row.Cells["selectBenefitCkbox"].Value = (bool)true;
+            }
+        }
+
+        private void BtnSelectAllDeductions_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.DGVDeductionList.Rows)
+            {
+                row.Cells["selectDeductionCkbox"].Value = (bool)true;
+            }
+        }
+
+        public List<EmployeeModel> GetSelectedEmployeeToGeneratePayslip()
+        {
+            List<EmployeeModel> selectedEmployees = new List<EmployeeModel>();
+
+            foreach (DataGridViewRow row in this.DGVEmployeeList.Rows)
+            {
+                bool isSelected = Convert.ToBoolean(row.Cells["selectEmpCkbox"].Value);
+                if (isSelected)
+                {
+                    string empNum = row.Cells["EmployeeNumber"].Value.ToString();
+                    var empInList = this.Employees.Where(x => x.EmployeeNumber == empNum).FirstOrDefault();
+
+                    if (empInList != null)
+                    {
+                        var empTmp = JsonSerializer.Deserialize<EmployeeModel>(JsonSerializer.Serialize(empInList));
+                        selectedEmployees.Add(empTmp);
+                    }
+                }
+            }
+
+            return selectedEmployees;
+        }
+
+
+        public List<GovernmentAgencyModel> GetSelectedGovtAgenciesToGeneratePayslip()
+        {
+            List<GovernmentAgencyModel> selectedGovtAgencies = new List<GovernmentAgencyModel>();
+
+            foreach (DataGridViewRow row in this.DGVGovtAgencies.Rows)
+            {
+                bool isSelected = Convert.ToBoolean(row.Cells["selectGovtAngencyCkbox"].Value);
+                if (isSelected)
+                {
+                    var selectedGovt = (GovernmentAgencyModel)row.Tag;
+                    var govtAgencyInList = this.GovernmentAgencies.Where(x => x.Id == selectedGovt.Id).FirstOrDefault();
+
+                    if (govtAgencyInList != null)
+                    {
+                        var govtAgencyTemp = JsonSerializer.Deserialize<GovernmentAgencyModel>(JsonSerializer.Serialize(govtAgencyInList));
+                        selectedGovtAgencies.Add(govtAgencyTemp);
+                    }
+                }
+            }
+
+            return selectedGovtAgencies;
+        }
+
+
+        public List<EmployeeBenefitModel> GetSelectedEmpBenefitsToGeneratePayslip()
+        {
+            List<EmployeeBenefitModel> selectedEmpBenefits = new List<EmployeeBenefitModel>();
+
+            foreach (DataGridViewRow row in this.DGVBenefitsList.Rows)
+            {
+                bool isSelected = Convert.ToBoolean(row.Cells["selectBenefitCkbox"].Value);
+                if (isSelected)
+                {
+                    var selectedEmpBenefit = (EmployeeBenefitModel)row.Tag;
+                    var empBenefitInList = this.Benefits.Where(x => x.Id == selectedEmpBenefit.Id).FirstOrDefault();
+
+                    if (empBenefitInList != null)
+                    {
+                        var govtAgencyTemp = JsonSerializer.Deserialize<EmployeeBenefitModel>(JsonSerializer.Serialize(empBenefitInList));
+                        selectedEmpBenefits.Add(govtAgencyTemp);
+                    }
+                }
+            }
+
+            return selectedEmpBenefits;
+        }
+
+        public List<EmployeeDeductionModel> GetSelectedEmpDeductionsToGeneratePayslip()
+        {
+            List<EmployeeDeductionModel> selectedEmpDeductions = new List<EmployeeDeductionModel>();
+
+            foreach (DataGridViewRow row in this.DGVDeductionList.Rows)
+            {
+                bool isSelected = Convert.ToBoolean(row.Cells["selectDeductionCkbox"].Value);
+                if (isSelected)
+                {
+                    var selectedEmpDeduction = (EmployeeDeductionModel)row.Tag;
+                    var empDeductionInList = this.Deductions.Where(x => x.Id == selectedEmpDeduction.Id).FirstOrDefault();
+
+                    if (empDeductionInList != null)
+                    {
+                        var govtAgencyTemp = JsonSerializer.Deserialize<GovernmentAgencyModel>(JsonSerializer.Serialize(empDeductionInList));
+                        selectedEmpDeductions.Add(empDeductionInList);
+                    }
+                }
+            }
+
+            return selectedEmpDeductions;
+        }
+
+
+        public void DisplayEmployeeInOverviewTag(List<EmployeeModel> EmployeeList)
+        {
+            if (this.AttendanceHistory != null && EmployeeList != null)
+            {
+                this.DGVEmployeeListForOverview.Rows.Clear();
+                if (EmployeeList != null)
+                {
+                    this.DGVEmployeeListForOverview.ColumnCount = 2;
+
+                    this.DGVEmployeeListForOverview.Columns[0].Name = "EmployeeNumber";
+                    this.DGVEmployeeListForOverview.Columns[0].HeaderText = "Employee Number";
+                    this.DGVEmployeeListForOverview.Columns[0].Visible = true;
+
+                    this.DGVEmployeeListForOverview.Columns[1].Name = "Fullname2";
+                    this.DGVEmployeeListForOverview.Columns[1].HeaderText = "Fullname";
+                    this.DGVEmployeeListForOverview.Columns[1].Visible = true;
+
+                    foreach (var employee in EmployeeList)
+                    {
+                        DataGridViewRow row = new DataGridViewRow();
+                        row.CreateCells(this.DGVEmployeeListForOverview);
+
+                        row.Cells[0].Value = employee.EmployeeNumber;
+                        row.Cells[1].Value = employee.FullName;
+
+                        row.Tag = employee;
+
+                        this.DGVEmployeeListForOverview.Rows.Add(row);
+                    }
+
+                }
+            }
+        }
+
+
+        public PaydaySalaryComputationPayslip GetEmployeeAttendanceRecordWithSalaryComputation(EmployeeModel employee)
+        {
+            if (this.AttendanceHistory != null && employee != null)
+            {
+                var currentEmpAttendanceRec = this.AttendanceHistory.Where(x => x.EmployeeNumber == employee.EmployeeNumber).ToList();
+                decimal totalDays = currentEmpAttendanceRec.Count;
+                decimal totalLeaveDays = 0;
+
+                if (this.EmployeeLeaveHistory != null)
+                {
+                    var currentEmpLeave = this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == employee.EmployeeNumber).ToList();
+                    totalLeaveDays = currentEmpLeave.Sum(x => x.NumberOfDays);
+                }
+                totalDays += totalLeaveDays;
+
+                decimal netBasicSalary = currentEmpAttendanceRec.Sum(x => x.TotalDailySalary);
+                netBasicSalary += employee.SalaryRates.DailyRate * totalLeaveDays;
+
+                // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
+                decimal lateDeductions = currentEmpAttendanceRec.Sum(x => x.LateTotalDeduction);
+                decimal underTimeDeductions = currentEmpAttendanceRec.Sum(x => x.UnderTimeTotalDeduction);
+
+                return new PaydaySalaryComputationPayslip
+                {
+                    Late = currentEmpAttendanceRec.Sum(x => x.TotalLate).ToString(),
+                    LateTotalDeduction = lateDeductions,
+                    UnderTime = currentEmpAttendanceRec.Sum(x => x.TotalUnderTime).ToString(),
+                    UnderTimeTotalDeduction = underTimeDeductions,
+                    NumberOfDays = totalDays.ToString(),
+                    NetBasicSalary = netBasicSalary
+                };
+            }
+
+            return new PaydaySalaryComputationPayslip();
+        }
+
+
+        private List<EmployeePayslipGeneration> employeePayslipGenerations = new List<EmployeePayslipGeneration>();
+
+        public List<EmployeePayslipGeneration> EmployeePayslipGenerations
+        {
+            get { return employeePayslipGenerations; }
+            set { employeePayslipGenerations = value; }
+        }
+
+
+        public event EventHandler GenerateEmployeePayslip;
+        protected virtual void OnGenerateEmployeePayslip(EventArgs e)
+        {
+            GenerateEmployeePayslip?.Invoke(this, e);
+        }
+
+        private void BtnGenerateEmployeePayslip_Click(object sender, EventArgs e)
+        {
+            var SelectedEmployeesForPayrollGeneration = this.GetSelectedEmployeeToGeneratePayslip();
+            var SelectedGovtAgenciesForPayrollGeneration = this.GetSelectedGovtAgenciesToGeneratePayslip();
+            var SelectedBenefitsForPayrollGeneration = this.GetSelectedEmpBenefitsToGeneratePayslip();
+            var SelectedDeductionsForPayrollGeneration = this.GetSelectedEmpDeductionsToGeneratePayslip();
+
+            foreach(var selectedEmp in SelectedEmployeesForPayrollGeneration)
+            {
+                EmployeePayslipGenerations.Add(new EmployeePayslipGeneration {
+                    PayDate = this.PayDate,
+                    ShiftStartDate = this.ShiftStartDate,
+                    ShiftEndDate = this.ShiftEndDate,
+                    Employee = selectedEmp,
+                    PaydaySalaryComputation = this.GetEmployeeAttendanceRecordWithSalaryComputation(selectedEmp),
+                    AttendanceHistory = this.AttendanceHistory != null ? this.AttendanceHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
+                    SelectedGovtAgencies = SelectedGovtAgenciesForPayrollGeneration,
+                    SelectedBenefits = SelectedBenefitsForPayrollGeneration,
+                    SelectedDeductions = SelectedDeductionsForPayrollGeneration
+                });
+            }
+
+            OnGenerateEmployeePayslip(EventArgs.Empty);
+
+            this.DisplayEmployeeInOverviewTag(SelectedEmployeesForPayrollGeneration);
+
+            //var payslipItemControlObj = new PayslipItemControl();
+            //payslipItemControlObj.Location = new Point(this.PanelEmployeePayslipContainer.Width / 2 - payslipItemControlObj.Size.Width / 2, this.PanelEmployeePayslipContainer.Height / 2 - payslipItemControlObj.Size.Height / 2);
+            //payslipItemControlObj.Anchor = AnchorStyles.None;
+            //this.PanelEmployeePayslipContainer.Controls.Add(payslipItemControlObj);
+
         }
     }
 }

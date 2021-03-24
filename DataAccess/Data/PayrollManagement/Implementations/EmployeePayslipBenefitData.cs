@@ -1,13 +1,13 @@
 ﻿using DapperGenericDataManager;
-using DataAccess.Data.EmployeeManagement.Contracts;
-using EntitiesShared.EmployeeManagement;
+using DataAccess.Data.PayrollManagement.Contracts;
+using EntitiesShared.PayrollManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Data.EmployeeManagement.Implementations
+namespace DataAccess.Data.PayrollManagement.Implementations
 {
     public class EmployeePayslipBenefitData : DataManagerCRUD<EmployeePayslipBenefitModel>, IEmployeePayslipBenefitData
     {

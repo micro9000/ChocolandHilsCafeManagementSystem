@@ -224,5 +224,13 @@ namespace EntitiesShared.EmployeeManagement
             set { isPaid = value; }
         }
 
+        private long payslipId;
+
+        public long PayslipId
+        {
+            get { return payslipId; }
+            set { payslipId = value; }
+        }
+
     }
 }

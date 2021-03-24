@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data.EmployeeManagement.Contracts;
 using DataAccess.Data.OtherDataManagement.Contracts;
+using DataAccess.Data.PayrollManagement.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

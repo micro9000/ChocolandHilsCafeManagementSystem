@@ -32,6 +32,8 @@ using DataAccess.Data.OtherDataManagement.Implementations;
 using Main.Forms.UserManagementForms;
 using Main.Controllers.UserManagementControllers.Validator;
 using Main.Forms.AttendanceTerminal;
+using DataAccess.Data.PayrollManagement.Contracts;
+using DataAccess.Data.PayrollManagement.Implementations;
 
 namespace Main
 {

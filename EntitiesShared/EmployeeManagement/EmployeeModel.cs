@@ -51,6 +51,16 @@ namespace EntitiesShared.EmployeeManagement
             set { lastName = value; }
         }
 
+        [Write(false)]
+        [Computed]
+        public string FullName
+        {
+            get
+            {
+                return $"{this.FirstName} {this.MiddleName} {this.LastName}";
+            }
+        }
+
         private string address;
 
         public string Address

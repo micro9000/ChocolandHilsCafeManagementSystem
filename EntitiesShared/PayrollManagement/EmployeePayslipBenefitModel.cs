@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntitiesShared.EmployeeManagement
+namespace EntitiesShared.PayrollManagement
 {
     [Table("EmployeePayslipBenefits")]
     public class EmployeePayslipBenefitModel : BaseModel

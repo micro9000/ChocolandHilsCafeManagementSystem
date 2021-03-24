@@ -124,7 +124,11 @@ ADD COLUMN imageFileName VARCHAR(500);
 -- ALTER TABLE Employees
 -- DROP FOREIGN KEY employees_ibfk_1;
 
-SELECT * FROM Employees;
+SELECT * FROM Employees WHERE employeeNumber NOT IN (20190001,
+20210007,
+20210006,
+20210012
+);
 
 SELECT COUNT(*) as count FROM Employees 
 WHERE isDeleted=false AND empNumYear = '2021';
@@ -267,11 +271,13 @@ ADD COLUMN lateTotalDeduction DECIMAL(9,2);
 ALTER TABLE EmployeeAttendance
 ADD COLUMN underTimeTotalDeduction DECIMAL(9,2);
 ALTER TABLE EmployeeAttendance
-ADD COLUMN overTimeTotalDeduction DECIMAL(9,2);
+ADD COLUMN overTimeTotalDeduction DECIMAL(9,2); -- need to rename this
 ALTER TABLE EmployeeAttendance
 ADD COLUMN totalDailySalary DECIMAL(9,2);
 ALTER TABLE EmployeeAttendance
 ADD COLUMN isPaid BOOLEAN DEFAULT false;
+ALTER TABLE EmployeeAttendance
+ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 
 SELECT * FROM EmployeeAttendance where workDate='2021-03-13';
 
@@ -318,17 +324,17 @@ SELECT * FROM EmployeeDeductions;
 -- Compute Benefits (benefits list and bonus, employer government contribution)
 -- 
 
-CREATE TABLE IF NOT EXISTS PayrollHistory(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    startDate DATE,
-    endDate DATE,
-    payDate DATE,
-    totalPayment DECIMAL(9,2),
-    createdAt DATETIME DEFAULT NOW(),
-    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False
-)ENGINE=INNODB;
+-- CREATE TABLE IF NOT EXISTS PayrollHistory(
+-- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     startDate DATE,
+--     endDate DATE,
+--     payDate DATE,
+--     totalPayment DECIMAL(9,2),
+--     createdAt DATETIME DEFAULT NOW(),
+--     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+--     deletedAt DATETIME,
+--     isDeleted BOOLEAN DEFAULT False
+-- )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -336,18 +342,32 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	startShiftDate DATE,
     endShiftDate DATE,
     payDate DATE,
-    NetBasicSalary DECIMAL(5,2),
-    benefitsTotal DECIMAL(5,2),
-    deducationTotal DECIMAL(5,2),
-    totalIncome DECIMAL(5,2),
+    salaryRate DECIMAL(9,2),
+    halfMonthRate DECIMAL(9,2),
+    dailyRate DECIMAL(9,2),
+    numOfDays INT,
+    late VARCHAR(50),
+    lateTotalDeduction DECIMAL(9,2),
+    underTime VARCHAR(50),
+    underTimeTotalDeduction DECIMAL(9,2),
+    overTime VARCHAR(50),
+    overTimeTotalRate DECIMAL(9,2),
+    netBasicSalary DECIMAL(9,2),
+    benefitsTotal DECIMAL(9,2),
+    totalIncome DECIMAL(9,2),
+    deductionTotal DECIMAL(9,2),
+    netTakeHomePay DECIMAL (9,2),
     paydaySequence INT NOT NULL, -- 1 and 2 
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+ALTER TABLE EmployeePayslips
+ADD COLUMN numOfDays INT;
 
 SELECT * FROM EmployeePayslips;
+SELECT * FROM EmployeeAttendance;
 
 -- employee benefits inventory per payday/payslip
 CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
@@ -363,6 +383,7 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
 
+select * from EmployeePayslipBenefits;
 
 -- employee deductions inventory per payday/payslip
 -- leave and absenses(Calculated from attendance) can be added on this
@@ -379,6 +400,8 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
+
+SELECT * FROM EmployeePayslipDeductions;
 -- --------------------------------------------------------------------------------------
 -- User related tables:
 -- --------------------------------------------------------------------------------------
