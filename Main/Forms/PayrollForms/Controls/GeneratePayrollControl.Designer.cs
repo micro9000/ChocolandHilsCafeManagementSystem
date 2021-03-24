@@ -222,7 +222,7 @@ namespace Main.Forms.PayrollForms.Controls
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Size = new System.Drawing.Size(1095, 494);
             this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "Generate";
+            this.tabPage6.Text = "Initate";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // groupBox1
@@ -558,7 +558,7 @@ namespace Main.Forms.PayrollForms.Controls
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage7.Size = new System.Drawing.Size(1095, 494);
             this.tabPage7.TabIndex = 6;
-            this.tabPage7.Text = "Overview";
+            this.tabPage7.Text = "Generate";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // BtnGeneratePayslipPDFAll
