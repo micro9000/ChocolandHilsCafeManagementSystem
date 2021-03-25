@@ -222,6 +222,10 @@ CREATE TABLE IF NOT EXISTS EmployeeLeaves(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY (leaveId) REFERENCES LeaveTypes(id)
 )ENGINE=INNODB;
+ALTER TABLE EmployeeLeaves
+ADD COLUMN isPaid BOOLEAN DEFAULT false;
+ALTER TABLE EmployeeLeaves
+ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 
 SELECT * FROM EmployeeLeaves;
 
@@ -280,6 +284,8 @@ ALTER TABLE EmployeeAttendance
 ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 
 SELECT * FROM EmployeeAttendance where workDate='2021-03-13';
+
+SELECT * FROM EmployeeLeaves;
 
 SELECT * 
 FROM EmployeeAttendance AS EA
@@ -365,9 +371,13 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
 )ENGINE=INNODB;
 ALTER TABLE EmployeePayslips
 ADD COLUMN numOfDays INT;
+ALTER TABLE EmployeePayslips
+ADD COLUMN isCancel BOOLEAN DEFAULT False;
 
 SELECT * FROM EmployeePayslips;
 SELECT * FROM EmployeeAttendance;
+
+SELECT * FROM EmployeePayslips WHERE isDeleted=false AND payDate = '2021-03-24';
 
 -- employee benefits inventory per payday/payslip
 CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(

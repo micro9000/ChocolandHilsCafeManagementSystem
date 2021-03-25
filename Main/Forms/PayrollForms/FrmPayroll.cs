@@ -72,9 +72,13 @@ namespace Main.Forms.PayrollForms
             if (clickedItem != null && clickedItem.Name == "TStripMenuItemGenerate")
             {
                 DisplayGeneratePayrollControl();
+            }else if (clickedItem != null && clickedItem.Name == "TStripMenuItemHistory")
+            {
+                DisplayPayrollHistoryControl();
             }
         }
 
+        #region Generate payroll
         public void DisplayGeneratePayrollControl()
         {
             this.panelContainer.Controls.Clear();
@@ -89,6 +93,8 @@ namespace Main.Forms.PayrollForms
             generatePayrollControlObj.InitiatePayrollGeneration += HandleInitiatePayrollGeneration;
             generatePayrollControlObj.GenerateEmployeePayslip += GenerateEmployeePayslip;
             generatePayrollControlObj.ViewEmployeePayslip += HandleViewEmployeePayslip;
+            generatePayrollControlObj.CancelAllEmployeePayslip += HandleCancelAllEmployeeGeneratedPayslip;
+            generatePayrollControlObj.CancelSelectedEmployeePayslip += HandleCancelSelectedEmployeeGeneratedPayslip;
 
             this.panelContainer.Controls.Add(generatePayrollControlObj);
         }
@@ -102,8 +108,8 @@ namespace Main.Forms.PayrollForms
             var shiftEndDate = generatePayrollControlObj.ShiftEndDate;
 
             generatePayrollControlObj.Employees = _employeeController.GetAll().Data;
-            generatePayrollControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(shiftStartDate, shiftEndDate);
-            generatePayrollControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByDateRange(shiftStartDate.Year, shiftStartDate, shiftEndDate);
+            generatePayrollControlObj.AttendanceHistory = _employeeAttendanceData.GetAllUnpaidAttendanceRecordByWorkDateRange(shiftStartDate, shiftEndDate);
+            generatePayrollControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllUnpaidByDateRange(shiftStartDate.Year, shiftStartDate, shiftEndDate);
             generatePayrollControlObj.DisplayEmployeeWithAttendanceRecordAndSalary(generatePayrollControlObj.Employees);
 
         }
@@ -117,6 +123,24 @@ namespace Main.Forms.PayrollForms
 
                 if (employeePayslipGenerationData != null)
                 {
+                    bool isContinueToGenerate = true;
+                    foreach (var empPayslipGen in employeePayslipGenerationData)
+                    {
+                        string employeeNumber = empPayslipGen.Employee.EmployeeNumber;
+                        var payslipWithTheSameDate = _employeePayslipData.GetEmployeePayslipRecordByPaydate(employeeNumber, empPayslipGen.PayDate);
+
+                        if (payslipWithTheSameDate != null)
+                        {
+                            MessageBox.Show($"{empPayslipGen.Employee.FullName} have existing payslip for paydate: {empPayslipGen.PayDate.ToShortDateString()}",
+                                            "Generate payslip", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            isContinueToGenerate = false;
+                            return;
+                        }
+                    }
+
+                    if (isContinueToGenerate == false)
+                        return;
+
                     using (var transaction = new TransactionScope())
                     {
                         foreach (var empPayslipGen in employeePayslipGenerationData)
@@ -161,8 +185,6 @@ namespace Main.Forms.PayrollForms
                                     var empGovtId = employeeGovtIds.Where(x => x.GovtAgencyId == govtAgency.Id).FirstOrDefault();
                                     if (empGovtId != null)
                                     {
-                                        empTotalDeductions += empGovtId.EmployeeContribution;
-
                                         _employeePayslipDeductionData.Add(new EmployeePayslipDeductionModel
                                         {
                                             PayslipId = payslipId,
@@ -173,7 +195,6 @@ namespace Main.Forms.PayrollForms
 
                                         empTotalDeductions += empGovtId.EmployeeContribution;
                                     }
-                                    
                                 }
 
                                 // Benefits
@@ -215,8 +236,8 @@ namespace Main.Forms.PayrollForms
 
                                 // we already deduction the ff. deductions in total income
                                 // upon time-out daily salary computation
-                                empTotalDeductions += payslipData.LateTotalDeduction;
-                                empTotalDeductions += payslipData.UnderTimeTotalDeduction;
+                                //empTotalDeductions += payslipData.LateTotalDeduction;
+                                //empTotalDeductions += payslipData.UnderTimeTotalDeduction;
                                 payslipData.DeductionTotal = empTotalDeductions;
 
                                 payslipData.NetTakeHomePay = empNetTakeHomePay;
@@ -224,11 +245,20 @@ namespace Main.Forms.PayrollForms
                                 _employeePayslipData.Update(payslipData);
 
 
+                                // Mark employee leave as paid
+                                empPayslipGen.EmployeeLeaves.ForEach(x =>
+                                {
+                                    x.IsPaid = true;
+                                    x.PayslipId = payslipId;
+                                });
+                                _employeeLeaveData.Update(empPayslipGen.EmployeeLeaves);
+
+
+                                // Mark attendance as paid and store the payslip id
                                 empPayslipGen.AttendanceHistory.ForEach(x => {
                                     x.IsPaid = true;
                                     x.PayslipId = payslipId;
                                 });
-
                                 _employeeAttendanceData.Update(empPayslipGen.AttendanceHistory);
 
                             }
@@ -258,5 +288,216 @@ namespace Main.Forms.PayrollForms
             generatePayrollControlObj.DisplayEmployeePayslip(employeeDetails, payslip);
         }
 
+
+        private void HandleCancelAllEmployeeGeneratedPayslip(object sender, EventArgs e)
+        {
+            GeneratePayrollControl generatePayrollControlObj = (GeneratePayrollControl)sender;
+
+            var paydate = generatePayrollControlObj.PayDate;
+            var shiftStartDate = generatePayrollControlObj.ShiftStartDate;
+            var shiftEndDate = generatePayrollControlObj.ShiftEndDate;
+
+            if (CancelAllEmployeePayslipByPaydate(paydate))
+            {
+                generatePayrollControlObj.Employees = _employeeController.GetAll().Data;
+                generatePayrollControlObj.AttendanceHistory = _employeeAttendanceData.GetAllUnpaidAttendanceRecordByWorkDateRange(shiftStartDate, shiftEndDate);
+                generatePayrollControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllUnpaidByDateRange(shiftStartDate.Year, shiftStartDate, shiftEndDate);
+                generatePayrollControlObj.DisplayEmployeeWithAttendanceRecordAndSalary(generatePayrollControlObj.Employees);
+
+                generatePayrollControlObj.ClearDGVEmployeeListForOverview();
+            }
+        }
+
+        private void HandleCancelSelectedEmployeeGeneratedPayslip(object sender, EventArgs e)
+        {
+            GeneratePayrollControl generatePayrollControlObj = (GeneratePayrollControl)sender;
+
+            var paydate = generatePayrollControlObj.PayDate;
+            var shiftStartDate = generatePayrollControlObj.ShiftStartDate;
+            var shiftEndDate = generatePayrollControlObj.ShiftEndDate;
+
+            var employeeNumber = generatePayrollControlObj.SelectedEmployeeNumberToViewPayslip;
+                
+            if (CancelEmployeePayslipByPaydate(paydate, employeeNumber))
+            {
+                generatePayrollControlObj.Employees = _employeeController.GetAll().Data;
+                generatePayrollControlObj.AttendanceHistory = _employeeAttendanceData.GetAllUnpaidAttendanceRecordByWorkDateRange(shiftStartDate, shiftEndDate);
+                generatePayrollControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllUnpaidByDateRange(shiftStartDate.Year, shiftStartDate, shiftEndDate);
+                generatePayrollControlObj.DisplayEmployeeWithAttendanceRecordAndSalary(generatePayrollControlObj.Employees);
+
+                generatePayrollControlObj.ClearDGVEmployeeListForOverview();
+            }
+        }
+
+        #endregion
+
+
+        #region Payroll history
+        public void DisplayPayrollHistoryControl()
+        {
+            this.panelContainer.Controls.Clear();
+            var payslipHistoryControl = new PayslipHistoryControl();
+            payslipHistoryControl.Location = new Point(this.ClientSize.Width / 2 - payslipHistoryControl.Size.Width / 2, this.ClientSize.Height / 2 - payslipHistoryControl.Size.Height / 2);
+            payslipHistoryControl.Anchor = AnchorStyles.None;
+
+            payslipHistoryControl.PayslipDateList = _employeePayslipData.GetPayslipPaydatesList();
+            payslipHistoryControl.RetrieveEmployeePayslip += HandleRetrieveEmployeePayslip;
+            payslipHistoryControl.CancelAllEmployeePayslip += HandleCancelAllEmployeePayslip;
+            payslipHistoryControl.CancelSelectedEmployeePayslip += HandleCancelSelectedEmployeePayslip;
+
+            this.panelContainer.Controls.Add(payslipHistoryControl);
+        }
+
+        private void HandleRetrieveEmployeePayslip(object sender, EventArgs e)
+        {
+            PayslipHistoryControl payslipHistoryControlObj = (PayslipHistoryControl)sender;
+
+            var paydate = payslipHistoryControlObj.SelectedPayslipPayDate;
+
+            payslipHistoryControlObj.EmployeePayslipsByPaydate = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+            payslipHistoryControlObj.DisplayEmployeesInDGV();
+        }
+
+
+        private void HandleCancelAllEmployeePayslip(object sender, EventArgs e)
+        {
+            PayslipHistoryControl payslipHistoryControlObj = (PayslipHistoryControl)sender;
+
+            var paydate = payslipHistoryControlObj.SelectedPayslipPayDate;
+
+            if (this.CancelAllEmployeePayslipByPaydate(paydate))
+            {
+                payslipHistoryControlObj.PayslipDateList = _employeePayslipData.GetPayslipPaydatesList();
+                payslipHistoryControlObj.DisplayPayslipPaydateList();
+                payslipHistoryControlObj.EmployeePayslipsByPaydate = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+                payslipHistoryControlObj.DisplayEmployeesInDGV();
+                payslipHistoryControlObj.ClearPayslipContainer();
+            }
+        }
+
+        private void HandleCancelSelectedEmployeePayslip(object sender, EventArgs e)
+        {
+            PayslipHistoryControl payslipHistoryControlObj = (PayslipHistoryControl)sender;
+
+            var paydate = payslipHistoryControlObj.SelectedPayslipPayDate;
+            var employeeNumber = payslipHistoryControlObj.SelectedEmployeeNumberToCancel;
+
+            if (this.CancelEmployeePayslipByPaydate(paydate, employeeNumber))
+            {
+                payslipHistoryControlObj.PayslipDateList = _employeePayslipData.GetPayslipPaydatesList();
+                payslipHistoryControlObj.DisplayPayslipPaydateList();
+                payslipHistoryControlObj.EmployeePayslipsByPaydate = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+                payslipHistoryControlObj.DisplayEmployeesInDGV();
+                payslipHistoryControlObj.ClearPayslipContainer();
+            }
+        }
+
+        #endregion
+
+
+        public bool CancelAllEmployeePayslipByPaydate(DateTime paydate)
+        {
+            try
+            {
+                var employeePayslips = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+
+                if (employeePayslips != null)
+                {
+                    employeePayslips.ForEach(x => x.IsCancel = true);
+
+                    using (var transaction = new TransactionScope())
+                    {
+                        foreach (var payslip in employeePayslips)
+                        {
+                            var attendanceRecordUnderPayslip = _employeeAttendanceData.GetEmployeeAttendanceByPayslipId(payslip.EmployeeNumber, payslip.Id);
+
+                            attendanceRecordUnderPayslip.ForEach(x =>
+                            {
+                                x.IsPaid = false;
+                                x.PayslipId = 0;
+                            });
+
+                            _employeeAttendanceData.Update(attendanceRecordUnderPayslip);
+
+                            var employeeLeaveUnderPayslip = _employeeLeaveData.GetEmployeeLeavesByPayslipId(payslip.EmployeeNumber, payslip.Id);
+
+                            employeeLeaveUnderPayslip.ForEach(x =>
+                            {
+                                x.IsPaid = false;
+                                x.PayslipId = 0;
+                            });
+
+                            _employeeLeaveData.Update(employeeLeaveUnderPayslip);
+                        }
+
+                        _employeePayslipData.Update(employeePayslips);
+
+                        transaction.Complete();
+                    }
+
+                    MessageBox.Show("Successfully cancel all employee payslip.", "Cancel employee payslip", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                MessageBox.Show("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return false;
+        }
+
+        public bool CancelEmployeePayslipByPaydate(DateTime paydate, string employeeNumber)
+        {
+            try
+            {
+                var employeePayslips = _employeePayslipData.GetEmployeePayslipRecordByPaydate(employeeNumber, paydate);
+
+                if (employeePayslips != null)
+                {
+                    employeePayslips.IsCancel = true;
+
+                    using (var transaction = new TransactionScope())
+                    {
+                        var attendanceRecordUnderPayslip = _employeeAttendanceData.GetEmployeeAttendanceByPayslipId(employeePayslips.EmployeeNumber, employeePayslips.Id);
+
+                        attendanceRecordUnderPayslip.ForEach(x =>
+                        {
+                            x.IsPaid = false;
+                            x.PayslipId = 0;
+                        });
+
+                        _employeeAttendanceData.Update(attendanceRecordUnderPayslip);
+
+                        var employeeLeaveUnderPayslip = _employeeLeaveData.GetEmployeeLeavesByPayslipId(employeePayslips.EmployeeNumber, employeePayslips.Id);
+
+                        employeeLeaveUnderPayslip.ForEach(x =>
+                        {
+                            x.IsPaid = false;
+                            x.PayslipId = 0;
+                        });
+
+                        _employeeLeaveData.Update(employeeLeaveUnderPayslip);
+
+
+                        _employeePayslipData.Update(employeePayslips);
+
+                        transaction.Complete();
+                    }
+
+                    MessageBox.Show("Successfully cancel employee payslip.", "Cancel employee payslip", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                MessageBox.Show("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return false;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using EntitiesShared.EmployeeManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,17 @@ namespace EntitiesShared.PayrollManagement
             get { return employeeNumber; }
             set { employeeNumber = value; }
         }
+
+
+        private EmployeeModel employee;
+        [Write(false)]
+        [Computed]
+        public EmployeeModel Employee
+        {
+            get { return employee; }
+            set { employee = value; }
+        }
+
 
         private DateTime startShiftDate;
 
@@ -136,5 +148,7 @@ namespace EntitiesShared.PayrollManagement
         }
 
         public decimal NetTakeHomePay { get; set; }
+
+        public bool IsCancel { get; set; }
     }
 }

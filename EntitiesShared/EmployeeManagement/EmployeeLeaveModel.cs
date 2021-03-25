@@ -88,5 +88,16 @@ namespace EntitiesShared.EmployeeManagement
             get { return currentYear; }
             set { currentYear = value; }
         }
+
+        public bool IsPaid { get; set; }
+
+
+        private long payslipId;
+
+        public long PayslipId
+        {
+            get { return payslipId; }
+            set { payslipId = value; }
+        }
     }
 }

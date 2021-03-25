@@ -106,6 +106,43 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return results;
         }
 
+
+        public List<EmployeeLeaveModel> GetAllUnpaidByDateRange(int year, DateTime startDate, DateTime endDate)
+        {
+            string query = @"SELECT * 
+                            FROM EmployeeLeaves AS EL
+                            JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
+                            WHERE EL.isDeleted=false AND EL.isPaid=false AND EL.currentYear=@Year AND 
+                            EL.startDate BETWEEN @StartDate AND @EndDate AND EL.endDate BETWEEN @StartDate AND @EndDate 
+                            ORDER BY EL.id DESC";
+
+            List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeLeaveModel, LeaveTypeModel, EmployeeLeaveModel>(query,
+                        (EL, LT) => {
+                            EL.LeaveType = LT;
+                            return EL;
+                        }, new
+                        {
+                            Year = year,
+                            StartDate = startDate,
+                            EndDate = endDate
+                        }).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
+
+
+        public List<EmployeeLeaveModel> GetEmployeeLeavesByPayslipId (string employeeNumber, long payslipId)
+        {
+            string query = @"SELECT * FROM EmployeeLeaves WHERE isDeleted=false AND payslipId=@PayslipId AND employeeNumber=@EmployeeNumber";
+            return this.GetAll(query, new { PayslipId = payslipId, EmployeeNumber = employeeNumber });
+        }
+
         //public List<EmployeeLeaveModel> GetAllByEmployeeNumberAndDateRange(string employeeNumber, int year, DateTime startDate, DateTime endDate)
         //{
         //    string query = @"SELECT * 

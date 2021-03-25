@@ -111,12 +111,56 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return results;
         }
 
+
+        public List<EmployeeAttendanceModel> GetAllUnpaidAttendanceRecordByWorkDateRange(DateTime startDate, DateTime endDate)
+        {
+            string query = @"SELECT * 
+                                FROM EmployeeAttendance AS EA
+                                JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
+                                JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
+                                WHERE EA.workDate BETWEEN @StartDate AND @EndDate AND EA.isPaid=false
+                                ORDER BY EA.id DESC";
+
+            List<EmployeeAttendanceModel> results = new List<EmployeeAttendanceModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeAttendanceModel, EmployeeShiftModel, EmployeeModel, EmployeeAttendanceModel>(query,
+                        (EA, ES, E) => {
+
+                            EA.Shift = ES;
+                            EA.Employee = E;
+
+                            return EA;
+                        },
+                        new
+                        {
+                            StartDate = startDate.ToString("yyyy-MM-dd"),
+                            EndDate = endDate.ToString("yyyy-MM-dd")
+                        }).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
+
         public EmployeeAttendanceModel GetEmployeeAttendanceByWorkDate(string employeeNumber, DateTime workDate)
         {
             string query = @"SELECT * FROM EmployeeAttendance 
                                 WHERE employeeNumber=@EmployeeNumber AND workDate=@WorkDate";
 
             return this.GetFirstOrDefault(query, new { EmployeeNumber = employeeNumber, WorkDate = workDate.ToString("yyyy-MM-dd") });
+        }
+
+
+        public List<EmployeeAttendanceModel> GetEmployeeAttendanceByPayslipId(string employeeNumber, long payslipId)
+        {
+            string query = "SELECT * FROM EmployeeAttendance WHERE isDeleted=false AND payslipId=@PayslipId AND employeeNumber=@EmployeeNumber";
+
+            return this.GetAll(query, new {
+                PayslipId = payslipId,
+                EmployeeNumber = employeeNumber
+            });
         }
     }
 }

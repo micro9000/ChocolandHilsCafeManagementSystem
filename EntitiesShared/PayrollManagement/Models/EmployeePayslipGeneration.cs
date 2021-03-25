@@ -42,6 +42,16 @@ namespace EntitiesShared.PayrollManagement.Models
             set { attendanceHistory = value; }
         }
 
+
+        private List<EmployeeLeaveModel> employeeLeaves;
+
+        public List<EmployeeLeaveModel> EmployeeLeaves
+        {
+            get { return employeeLeaves; }
+            set { employeeLeaves = value; }
+        }
+
+
         private List<GovernmentAgencyModel> selectedGovtAgencies;
 
         public List<GovernmentAgencyModel> SelectedGovtAgencies

@@ -38,6 +38,9 @@ namespace Main.Forms.PayrollForms.Controls
                 this.LblTotalDeductions.Text = Payslip.DeductionTotal.ToString();
                 this.LblTotalNetTakeHomePay.Text = Payslip.NetTakeHomePay.ToString();
 
+                this.LblShiftStartDate.Text = Payslip.StartShiftDate.ToShortDateString();
+                this.LblShiftEndDate.Text = Payslip.EndShiftDate.ToShortDateString();
+
                 var monthlyRate = new ListViewItem(new string[] {
                     "Monthly Rate", "", Payslip.SalaryRate.ToString()
                 });

@@ -267,6 +267,12 @@ namespace Main.Forms.PayrollForms.Controls
                         var totalLateInMins = currentEmpAttendanceRec.Sum(x => x.TotalLate);
                         var totalUnderTime = currentEmpAttendanceRec.Sum(x => x.TotalUnderTime);
 
+                        if (totalDays <= 0)
+                        {
+                            row.DefaultCellStyle.ForeColor = Color.Red;
+                            row.ReadOnly = true;
+                        }
+
                         row.Cells[3].Value = totalDays.ToString();
 
                         if (this.EmployeeLeaveHistory != null)
@@ -312,7 +318,8 @@ namespace Main.Forms.PayrollForms.Controls
         {
             foreach (DataGridViewRow row in this.DGVEmployeeList.Rows)
             {
-                row.Cells["selectEmpCkbox"].Value = (bool)true;
+                if (row.ReadOnly == false)
+                    row.Cells["selectEmpCkbox"].Value = (bool)true;
             }
         }
 
@@ -459,16 +466,22 @@ namespace Main.Forms.PayrollForms.Controls
 
             foreach (DataGridViewRow row in this.DGVEmployeeList.Rows)
             {
-                bool isSelected = Convert.ToBoolean(row.Cells["selectEmpCkbox"].Value);
-                if (isSelected)
+                if (row.ReadOnly == false)
                 {
-                    string empNum = row.Cells["EmployeeNumber"].Value.ToString();
-                    var empInList = this.Employees.Where(x => x.EmployeeNumber == empNum).FirstOrDefault();
-
-                    if (empInList != null)
+                    bool isSelected = Convert.ToBoolean(row.Cells["selectEmpCkbox"].Value);
+                    if (isSelected)
                     {
-                        var empTmp = JsonSerializer.Deserialize<EmployeeModel>(JsonSerializer.Serialize(empInList));
-                        selectedEmployees.Add(empTmp);
+                        string empNum = row.Cells["EmployeeNumber"].Value.ToString();
+                        var empInList = this.Employees.Where(x => x.EmployeeNumber == empNum).FirstOrDefault();
+
+                        var currentEmpAttendanceRec = this.AttendanceHistory.Where(x => x.EmployeeNumber == empNum).ToList();
+                        var totalDays = currentEmpAttendanceRec.Count;
+
+                        if (empInList != null && totalDays > 0)
+                        {
+                            var empTmp = JsonSerializer.Deserialize<EmployeeModel>(JsonSerializer.Serialize(empInList));
+                            selectedEmployees.Add(empTmp);
+                        }
                     }
                 }
             }
@@ -547,12 +560,17 @@ namespace Main.Forms.PayrollForms.Controls
             return selectedEmpDeductions;
         }
 
+        public void ClearDGVEmployeeListForOverview()
+        {
+            this.DGVEmployeeListForOverview.Rows.Clear();
+            this.PanelEmployeePayslipContainer.Controls.Clear();
+        }
 
         public void DisplayEmployeeInOverviewTag(List<EmployeeModel> EmployeeList)
         {
             if (this.AttendanceHistory != null && EmployeeList != null)
             {
-                this.DGVEmployeeListForOverview.Rows.Clear();
+                ClearDGVEmployeeListForOverview();
                 if (EmployeeList != null)
                 {
                     this.DGVEmployeeListForOverview.ColumnCount = 2;
@@ -607,11 +625,11 @@ namespace Main.Forms.PayrollForms.Controls
 
                 return new PaydaySalaryComputationPayslip
                 {
-                    Late = currentEmpAttendanceRec.Sum(x => x.TotalLate).ToString(),
+                    Late = currentEmpAttendanceRec.Sum(x => x.TotalLate).ToString() + "m",
                     LateTotalDeduction = lateDeductions,
-                    UnderTime = currentEmpAttendanceRec.Sum(x => x.TotalUnderTime).ToString(),
+                    UnderTime = currentEmpAttendanceRec.Sum(x => x.TotalUnderTime).ToString() + "m",
                     UnderTimeTotalDeduction = underTimeDeductions,
-                    NumberOfDays = totalDays.ToString(),
+                    NumberOfDays = totalDays.ToString() + "d",
                     NetBasicSalary = netBasicSalary
                 };
             }
@@ -638,30 +656,39 @@ namespace Main.Forms.PayrollForms.Controls
         private void BtnGenerateEmployeePayslip_Click(object sender, EventArgs e)
         {
             var SelectedEmployeesForPayrollGeneration = this.GetSelectedEmployeeToGeneratePayslip();
-            var SelectedGovtAgenciesForPayrollGeneration = this.GetSelectedGovtAgenciesToGeneratePayslip();
-            var SelectedBenefitsForPayrollGeneration = this.GetSelectedEmpBenefitsToGeneratePayslip();
-            var SelectedDeductionsForPayrollGeneration = this.GetSelectedEmpDeductionsToGeneratePayslip();
-
-            foreach(var selectedEmp in SelectedEmployeesForPayrollGeneration)
+            if (SelectedEmployeesForPayrollGeneration != null && SelectedEmployeesForPayrollGeneration.Count > 0)
             {
-                EmployeePayslipGenerations.Add(new EmployeePayslipGeneration {
-                    PayDate = this.PayDate,
-                    ShiftStartDate = this.ShiftStartDate,
-                    ShiftEndDate = this.ShiftEndDate,
-                    Employee = selectedEmp,
-                    PaydaySalaryComputation = this.GetEmployeeAttendanceRecordWithSalaryComputation(selectedEmp),
-                    AttendanceHistory = this.AttendanceHistory != null ? this.AttendanceHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
-                    SelectedGovtAgencies = SelectedGovtAgenciesForPayrollGeneration,
-                    SelectedBenefits = SelectedBenefitsForPayrollGeneration,
-                    SelectedDeductions = SelectedDeductionsForPayrollGeneration
-                });
+                var SelectedGovtAgenciesForPayrollGeneration = this.GetSelectedGovtAgenciesToGeneratePayslip();
+                var SelectedBenefitsForPayrollGeneration = this.GetSelectedEmpBenefitsToGeneratePayslip();
+                var SelectedDeductionsForPayrollGeneration = this.GetSelectedEmpDeductionsToGeneratePayslip();
+
+                EmployeePayslipGenerations = new List<EmployeePayslipGeneration>();
+
+                foreach (var selectedEmp in SelectedEmployeesForPayrollGeneration)
+                {
+                    EmployeePayslipGenerations.Add(new EmployeePayslipGeneration
+                    {
+                        PayDate = this.PayDate,
+                        ShiftStartDate = this.ShiftStartDate,
+                        ShiftEndDate = this.ShiftEndDate,
+                        Employee = selectedEmp,
+                        PaydaySalaryComputation = this.GetEmployeeAttendanceRecordWithSalaryComputation(selectedEmp),
+                        AttendanceHistory = this.AttendanceHistory != null ? this.AttendanceHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
+                        EmployeeLeaves = this.EmployeeLeaveHistory != null ? this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
+                        SelectedGovtAgencies = SelectedGovtAgenciesForPayrollGeneration,
+                        SelectedBenefits = SelectedBenefitsForPayrollGeneration,
+                        SelectedDeductions = SelectedDeductionsForPayrollGeneration
+                    });
+                }
+
+                OnGenerateEmployeePayslip(EventArgs.Empty);
+
+                this.DisplayEmployeeInOverviewTag(SelectedEmployeesForPayrollGeneration);
             }
-
-            OnGenerateEmployeePayslip(EventArgs.Empty);
-
-            this.DisplayEmployeeInOverviewTag(SelectedEmployeesForPayrollGeneration);
-
-
+            else
+            {
+                MessageBox.Show("No selected employee for payslip generation.", "Get selected employees", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private string selectedEmployeeNumberToViewPayslip;
@@ -697,6 +724,28 @@ namespace Main.Forms.PayrollForms.Controls
             payslipItemControlObj.Location = new Point(this.PanelEmployeePayslipContainer.Width / 2 - payslipItemControlObj.Size.Width / 2, this.PanelEmployeePayslipContainer.Height / 2 - payslipItemControlObj.Size.Height / 2);
             payslipItemControlObj.Anchor = AnchorStyles.None;
             this.PanelEmployeePayslipContainer.Controls.Add(payslipItemControlObj);
+        }
+
+
+        public event EventHandler CancelAllEmployeePayslip;
+        protected virtual void OnCancelAllEmployeePayslip(EventArgs e)
+        {
+            CancelAllEmployeePayslip?.Invoke(this, e);
+        }
+
+        private void BtnCancelAllEmployeePayslip_Click(object sender, EventArgs e)
+        {
+            OnCancelAllEmployeePayslip(EventArgs.Empty);
+        }
+
+        public event EventHandler CancelSelectedEmployeePayslip;
+        protected virtual void OnCancelSelectedEmployeePayslip(EventArgs e)
+        {
+            CancelSelectedEmployeePayslip?.Invoke(this, e);
+        }
+        private void BtnCancelSelectedEmployeePayslip_Click(object sender, EventArgs e)
+        {
+            OnCancelSelectedEmployeePayslip(EventArgs.Empty);
         }
     }
 }
