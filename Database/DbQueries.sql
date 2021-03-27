@@ -379,6 +379,9 @@ ALTER TABLE EmployeePayslips
 ADD COLUMN numOfDays INT;
 ALTER TABLE EmployeePayslips
 ADD COLUMN isCancel BOOLEAN DEFAULT False;
+ALTER TABLE EmployeePayslips
+ADD COLUMN employerGovtContributionTotal DECIMAL(9,2) DEFAULT 0;
+
 
 SELECT * FROM EmployeePayslips;
 SELECT * FROM EmployeeAttendance;
@@ -410,13 +413,15 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
     payslipId BIGINT,
     employeeNumber CHAR(8),
 	deductionTitle VARCHAR(255),
-    amount DECIMAL(5,2),
+    amount DECIMAL(9,2),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
+ALTER TABLE EmployeePayslipDeductions
+ADD COLUMN employerGovtContributionAmount DECIMAL(9,2) DEFAULT 0;
 
 SELECT * FROM EmployeePayslipDeductions;
 -- --------------------------------------------------------------------------------------

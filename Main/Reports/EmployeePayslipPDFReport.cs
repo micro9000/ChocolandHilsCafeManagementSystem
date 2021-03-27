@@ -208,11 +208,11 @@ namespace Main.Reports
             footer.Append($@"
                 <tfoot>
                     <tr>
-                        <th>Total income: 50000</th>
-                        <th>Total Deductions: 1000</th>
+                        <th>Total income: {payslip.TotalIncome}</th>
+                        <th>Total Deductions: {payslip.DeductionTotal}</th>
                     </tr>
                     <tr style='text-align: center !important; '>
-                          <th colspan='2'>Your net take home pay >>> {payslip.NetTakeHomePay.ToString()}</th>
+                          <th colspan='2'>Your net take home pay >>> {payslip.NetTakeHomePay}</th>
                     </tr>
                </tfoot>
                 </table>

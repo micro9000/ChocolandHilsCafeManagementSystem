@@ -179,6 +179,7 @@ namespace Main
             services.AddTransient<AttendanceTerminalForm>();
 
             services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
+            services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();
 
             //Add Serilog
             var log = new LoggerConfiguration()

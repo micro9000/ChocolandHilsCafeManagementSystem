@@ -40,6 +40,7 @@ namespace Main
             _payrollForm = payrollForm;
             _frmUserManagement = frmUserManagement;
             _attendanceTerminalForm = attendanceTerminalForm;
+
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -69,6 +70,18 @@ namespace Main
                 this.LblCurrentUserRoles.Text = _sessions.CurrentLoggedInUser.Role.Role.RoleKey.ToString();
 
                 //DisplayHomeControl();
+
+
+                if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.normal)
+                {
+                    this.BtnEmployeeManagementMenuItem.Visible = false;
+                    this.BtnPayrollSystem.Visible = false;
+                    this.BtnInventorySystem.Visible = false;
+                    this.BtnSalesReportSystem.Visible = false;
+                    this.BtnSettingsSystem.Visible = false;
+                    this.BtnUserMgnment.Visible = false;
+                    this.BtnOtherData.Visible = false;
+                }
             }
         }
 

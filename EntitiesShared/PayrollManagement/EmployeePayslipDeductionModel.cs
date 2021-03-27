@@ -42,5 +42,7 @@ namespace EntitiesShared.PayrollManagement
             get { return amount; }
             set { amount = value; }
         }
+
+        public decimal EmployerGovtContributionAmount { get; set; }
     }
 }

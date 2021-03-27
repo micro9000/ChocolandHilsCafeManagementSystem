@@ -27,5 +27,7 @@ namespace EntitiesShared.PayrollManagement.Models
 
         public decimal TotalIncome { get; set; }
 
+        public decimal EmployerContributionTotal { get; set; }
+
     }
 }

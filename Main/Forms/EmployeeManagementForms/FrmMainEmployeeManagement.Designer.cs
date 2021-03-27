@@ -37,7 +37,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_List = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_FileLeave = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_Benefits_Deductions = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemPayroll = new System.Windows.Forms.ToolStripMenuItem();
             this.PayrollMenuItems = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AttendanceStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PayslipStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,7 +68,6 @@ namespace Main.Forms.EmployeeManagementForms
             // 
             this.MenuStripEmployeeManagement.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MenuItemEmployee,
-            this.MenuItemPayroll,
             this.MenuItemWorkSchedules});
             this.MenuStripEmployeeManagement.Location = new System.Drawing.Point(0, 0);
             this.MenuStripEmployeeManagement.Name = "MenuStripEmployeeManagement";
@@ -120,13 +118,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_Benefits_Deductions.Size = new System.Drawing.Size(259, 22);
             this.ToolStripItem_Benefits_Deductions.Text = "Benefits/Deductions/Contributions";
             // 
-            // MenuItemPayroll
-            // 
-            this.MenuItemPayroll.DropDown = this.PayrollMenuItems;
-            this.MenuItemPayroll.Name = "MenuItemPayroll";
-            this.MenuItemPayroll.Size = new System.Drawing.Size(55, 20);
-            this.MenuItemPayroll.Text = "Payroll";
-            // 
             // PayrollMenuItems
             // 
             this.PayrollMenuItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -137,7 +128,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.SalaryStripMenuItem,
             this.LeaveTypesStripMenuItem});
             this.PayrollMenuItems.Name = "PayrollMenuItems";
-            this.PayrollMenuItems.OwnerItem = this.MenuItemPayroll;
+            this.PayrollMenuItems.RightToLeft = System.Windows.Forms.RightToLeft.Inherit;
             this.PayrollMenuItems.Size = new System.Drawing.Size(137, 136);
             this.PayrollMenuItems.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PayrollMenuItems_ItemClicked);
             // 
@@ -317,7 +308,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ToolStripMenuItem BenefisStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DeductionStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LeaveTypesStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem MenuItemPayroll;
         private System.Windows.Forms.ToolStripMenuItem SalaryStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip WorkSchedulesMenItems;
         private System.Windows.Forms.ToolStripMenuItem WorkShiftsMenItem;

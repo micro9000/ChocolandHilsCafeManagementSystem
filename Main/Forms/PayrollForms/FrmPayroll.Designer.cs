@@ -35,6 +35,7 @@ namespace Main.Forms.PayrollForms
             this.CMStripPayroll = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.TStripMenuItemGenerate = new System.Windows.Forms.ToolStripMenuItem();
             this.TStripMenuItemHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this.TStripMenuItemReports = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.menuStripPayroll.SuspendLayout();
             this.CMStripPayroll.SuspendLayout();
@@ -61,10 +62,10 @@ namespace Main.Forms.PayrollForms
             // 
             this.CMStripPayroll.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TStripMenuItemGenerate,
-            this.TStripMenuItemHistory});
+            this.TStripMenuItemHistory,
+            this.TStripMenuItemReports});
             this.CMStripPayroll.Name = "CMStripPayroll";
-            this.CMStripPayroll.OwnerItem = this.toolStripMenuItem1;
-            this.CMStripPayroll.Size = new System.Drawing.Size(122, 48);
+            this.CMStripPayroll.Size = new System.Drawing.Size(122, 70);
             this.CMStripPayroll.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.CMStripPayroll_ItemClicked);
             // 
             // TStripMenuItemGenerate
@@ -78,6 +79,12 @@ namespace Main.Forms.PayrollForms
             this.TStripMenuItemHistory.Name = "TStripMenuItemHistory";
             this.TStripMenuItemHistory.Size = new System.Drawing.Size(121, 22);
             this.TStripMenuItemHistory.Text = "History";
+            // 
+            // TStripMenuItemReports
+            // 
+            this.TStripMenuItemReports.Name = "TStripMenuItemReports";
+            this.TStripMenuItemReports.Size = new System.Drawing.Size(121, 22);
+            this.TStripMenuItemReports.Text = "Reports";
             // 
             // panelContainer
             // 
@@ -113,5 +120,6 @@ namespace Main.Forms.PayrollForms
         private System.Windows.Forms.ToolStripMenuItem TStripMenuItemGenerate;
         private System.Windows.Forms.ToolStripMenuItem TStripMenuItemHistory;
         private System.Windows.Forms.Panel panelContainer;
+        private System.Windows.Forms.ToolStripMenuItem TStripMenuItemReports;
     }
 }

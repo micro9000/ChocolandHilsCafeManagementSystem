@@ -150,5 +150,7 @@ namespace EntitiesShared.PayrollManagement
         public decimal NetTakeHomePay { get; set; }
 
         public bool IsCancel { get; set; }
+
+        public decimal EmployerGovtContributionTotal { get; set; }
     }
 }

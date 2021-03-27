@@ -38,6 +38,7 @@ namespace Main.Forms.PayrollForms
         private readonly IEmployeePayslipDeductionData _employeePayslipDeductionData;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
+        private readonly IPayrollPDFReport _payrollPDFReport;
         private readonly PayrollSettings _payrollSettings;
 
         public FrmPayroll(ILogger<FrmPayroll> logger,
@@ -54,6 +55,7 @@ namespace Main.Forms.PayrollForms
                            IEmployeePayslipDeductionData employeePayslipDeductionData,
                            DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                            IEmployeePayslipPDFReport employeePayslipPDFReport,
+                           IPayrollPDFReport payrollPDFReport,
                            IOptions<PayrollSettings> payrollSettings)
         {
             InitializeComponent();
@@ -71,6 +73,7 @@ namespace Main.Forms.PayrollForms
             _employeePayslipDeductionData = employeePayslipDeductionData;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _employeePayslipPDFReport = employeePayslipPDFReport;
+            _payrollPDFReport = payrollPDFReport;
             _payrollSettings = payrollSettings.Value;
         }
 
@@ -86,6 +89,10 @@ namespace Main.Forms.PayrollForms
             else if (clickedItem != null && clickedItem.Name == "TStripMenuItemHistory")
             {
                 DisplayPayrollHistoryControl();
+            }
+            else if (clickedItem != null && clickedItem.Name == "TStripMenuItemReports")
+            {
+                DisplayPayrollReportsControl();
             }
         }
 
@@ -189,7 +196,7 @@ namespace Main.Forms.PayrollForms
                                 decimal empTotalBenefits = 0;
                                 decimal empTotalIncome = newPayslipRec.NetBasicSalary;
                                 decimal empNetTakeHomePay = 0;
-
+                                decimal employerGovtContributionTotal = 0;
 
                                 // loop thru govt. agencies and retrieve employee and employer govt. id contribution
                                 foreach (var govtAgency in empPayslipGen.SelectedGovtAgencies)
@@ -202,9 +209,11 @@ namespace Main.Forms.PayrollForms
                                             PayslipId = payslipId,
                                             EmployeeNumber = employeeNumber,
                                             DeductionTitle = empGovtId.GovernmentAgency.GovtAgency,
-                                            Amount = empGovtId.EmployeeContribution
+                                            Amount = empGovtId.EmployeeContribution,
+                                            EmployerGovtContributionAmount = empGovtId.EmployerContribution
                                         });
 
+                                        employerGovtContributionTotal += empGovtId.EmployerContribution;
                                         empTotalDeductions += empGovtId.EmployeeContribution;
                                     }
                                 }
@@ -245,6 +254,7 @@ namespace Main.Forms.PayrollForms
 
                                 payslipData.TotalIncome = empTotalIncome;
                                 payslipData.BenefitsTotal = empTotalBenefits;
+                                payslipData.EmployerGovtContributionTotal = employerGovtContributionTotal;
 
                                 // we already deduction the ff. deductions in total income
                                 // upon time-out daily salary computation
@@ -452,6 +462,7 @@ namespace Main.Forms.PayrollForms
         #endregion
 
 
+
         public bool CancelAllEmployeePayslipByPaydate(DateTime paydate)
         {
             try
@@ -556,5 +567,51 @@ namespace Main.Forms.PayrollForms
 
             return false;
         }
+
+
+        #region Payroll reports
+
+        public void DisplayPayrollReportsControl()
+        {
+            this.panelContainer.Controls.Clear();
+            var payrollReportControl = new PayrollReportControl();
+            payrollReportControl.Location = new Point(this.ClientSize.Width / 2 - payrollReportControl.Size.Width / 2, this.ClientSize.Height / 2 - payrollReportControl.Size.Height / 2);
+            payrollReportControl.Anchor = AnchorStyles.None;
+
+            payrollReportControl.PayslipDateList = _employeePayslipData.GetPayslipPaydatesList();
+
+            payrollReportControl.RetrieveEmployeePayslips += HandleRetrieveEmployeePayslipHistory;
+            payrollReportControl.GeneratePDFEmployeePayslipsReport += HandleGeneratePDFEmployeePayslipHistory;
+
+            this.panelContainer.Controls.Add(payrollReportControl);
+        }
+
+        private void HandleRetrieveEmployeePayslipHistory(object sender, EventArgs e)
+        {
+            PayrollReportControl payrollReportControlObj = (PayrollReportControl)sender;
+
+            var paydate = payrollReportControlObj.SelectedPayslipPayDate;
+
+            var payslips = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+            payrollReportControlObj.EmployeePayslipsByPaydate = payslips;
+            payrollReportControlObj.DisplayPayslipHistory();
+        }
+
+        private void HandleGeneratePDFEmployeePayslipHistory(object sender, EventArgs e)
+        {
+            PayrollReportControl payrollReportControlObj = (PayrollReportControl)sender;
+
+            var paydate = payrollReportControlObj.SelectedPayslipPayDate;
+
+            var payslips = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+            
+            if (payslips != null)
+            {
+                _payrollPDFReport.GenerateEmployeePayslipsReport(payslips, paydate);
+                MessageBox.Show($"Kindly check the generated pdf to {_payrollSettings.GeneratedPDFLoc}.", "Generated PDF", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        #endregion
     }
 }

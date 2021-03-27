@@ -51,15 +51,16 @@ namespace Main
                 
                 if (checkedButton.Name == "RBtnAdminDashboard")
                 {
-                    if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.admin)
-                    {
-                        _mainFrm.Show();
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Unauthorized to use admin dashboard", "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
+                    _mainFrm.Show();
+                    this.Hide();
+                    //if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.admin)
+                    //{
+
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Unauthorized to use admin dashboard", "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    //}
                 }
 
             }
