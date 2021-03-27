@@ -21,7 +21,38 @@ namespace Main.Reports
 
         public void GenerateEmployeePayslips(List<EmployeePayslipModel> payslips)
         {
+            StringBuilder sb = new StringBuilder();
 
+            sb.Append(@"<!DOCTYPE html> 
+                            <html> 
+                            <header>
+                                <style>
+                                    th, td{
+                                        padding: 5px;
+                                    }
+
+                                    table#parent-table thead{
+                                        text-align: left;
+                                    }
+
+                                    table {
+                                        width: 100%;
+                                        border-collapse: collapse;
+                                    }
+                                </style>
+                            </header>
+                            <body>");
+
+
+            foreach (var payslip in payslips)
+            {
+                sb.Append(this.ConvertPayslipToHtml(payslip));
+            }
+
+            sb.Append(@"</body>
+                  </html>");
+
+            this.GeneratePdfReport(sb.ToString(), $"Payslip-{DateTime.Now.ToString("yyyy-MM-dd")}");
         }
 
         public void GenerateEmployeePayslip(EmployeePayslipModel payslip)

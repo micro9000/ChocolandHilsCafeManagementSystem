@@ -366,7 +366,7 @@ namespace Main.Forms.PayrollForms
 
             if (payslips != null)
             {
-                _employeePayslipPDFReport.GenerateEmployeePayslip(payslips.FirstOrDefault());
+                _employeePayslipPDFReport.GenerateEmployeePayslips(payslips);
             }
         }
 
