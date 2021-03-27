@@ -1,4 +1,6 @@
 ﻿using EntitiesShared.PayrollManagement;
+using Microsoft.Extensions.Options;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,10 +15,12 @@ namespace Main.Reports
     public class EmployeePayslipPDFReport : IEmployeePayslipPDFReport
     {
         private readonly IConverter _converter;
+        private readonly PayrollSettings _payrollSettings;
 
-        public EmployeePayslipPDFReport(IConverter converter)
+        public EmployeePayslipPDFReport(IConverter converter, IOptions<PayrollSettings> payrollSettings)
         {
             _converter = converter;
+            _payrollSettings = payrollSettings.Value;
         }
 
         public void GenerateEmployeePayslips(List<EmployeePayslipModel> payslips)
@@ -230,7 +234,7 @@ namespace Main.Reports
             globalSettings.Orientation = Orientation.Portrait;
             globalSettings.PaperSize = PaperKind.A4;
             globalSettings.Margins = new MarginSettings { Top = 10, Bottom = 10 };
-            globalSettings.Out = $@"D:\Documents\DinkToPDF\{fileName}.pdf";
+            globalSettings.Out = $@"{_payrollSettings.GeneratedPDFLoc}{fileName}.pdf";
 
             ObjectSettings objectSettings = new ObjectSettings();
             objectSettings.PagesCount = true;

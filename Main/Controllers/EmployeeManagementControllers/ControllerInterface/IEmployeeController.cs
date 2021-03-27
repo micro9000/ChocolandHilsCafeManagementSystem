@@ -32,5 +32,9 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
         EntityResult<EmployeeDetailsModel> GetEmployeeFullInformations(string employeeNumber);
 
         string GenerateNewEmployeeNumber(DateTime dateHire);
+
+        bool MarkEmployeeAsQuit(string employeeNumber);
+        bool UndoMarkEmployeeAsQuit(string employeeNumber);
+        bool MarkEmployeeAsDeleted(string employeeNumber);
     }
 }

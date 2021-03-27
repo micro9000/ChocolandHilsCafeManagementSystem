@@ -128,6 +128,9 @@ namespace EntitiesShared.EmployeeManagement
             set { shiftId = value; }
         }
 
+        public bool IsQuit { get; set; }
+
+        public DateTime QuitDate { get; set; }
 
         private EmployeeShiftModel shift;
         [Write(false)]

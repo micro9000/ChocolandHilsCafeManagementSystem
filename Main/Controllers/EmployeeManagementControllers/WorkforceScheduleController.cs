@@ -74,7 +74,7 @@ namespace Main.Controllers.EmployeeManagementControllers
             //                                into groupSched
             //                                select groupSched).ToDictionary(x => x.Key, y => y.ToList());
 
-            if (workforceScheduleInOurDB != null)
+            if (workforceScheduleInOurDB != null && workforceScheduleInOurDB.Count > 0)
             {
                 workforceScheduling.WorkforceSchedules = workforceScheduleInOurDB;
                 workforceScheduling.StartDate = workforceScheduleInOurDB.FirstOrDefault().WorkDate;

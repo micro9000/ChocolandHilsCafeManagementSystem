@@ -164,11 +164,16 @@ namespace Main.Forms.PayrollForms.Controls
 
         private void BtnCancelAllEmployeePayslip_Click(object sender, EventArgs e)
         {
-            var selectedPaydate = this.CBoxPayslipDates.SelectedItem as ComboboxItem;
-            if (selectedPaydate != null)
+            DialogResult res = MessageBox.Show("Are you sure, you want to cancel all payslips generated?", "Cancel confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
             {
-                SelectedPayslipPayDate = DateTime.Parse(selectedPaydate.Value.ToString());
-                OnCancelAllEmployeePayslip(EventArgs.Empty);
+                var selectedPaydate = this.CBoxPayslipDates.SelectedItem as ComboboxItem;
+                if (selectedPaydate != null)
+                {
+                    SelectedPayslipPayDate = DateTime.Parse(selectedPaydate.Value.ToString());
+                    OnCancelAllEmployeePayslip(EventArgs.Empty);
+                }
             }
         }
 
@@ -183,19 +188,51 @@ namespace Main.Forms.PayrollForms.Controls
 
         private void BtnCancelSelectedEmployeePayslip_Click(object sender, EventArgs e)
         {
+            DialogResult res = MessageBox.Show("Are you sure, you want to cancel all payslips generated?", "Cancel confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                var selectedPaydate = this.CBoxPayslipDates.SelectedItem as ComboboxItem;
+                if (selectedPaydate != null && DGVEmployeeList.CurrentRow != null)
+                {
+                    SelectedPayslipPayDate = DateTime.Parse(selectedPaydate.Value.ToString());
+                    SelectedEmployeeNumberToCancel = DGVEmployeeList.CurrentRow.Cells[0].Value.ToString();
+
+                    OnCancelSelectedEmployeePayslip(EventArgs.Empty);
+                }
+            }
+            
+        }
+
+
+        public string SelectedEmployeeNumberToGeneratePayslipPDF { get; set; }
+
+        public event EventHandler GeneratePayslipPDFForSelectedEmployee;
+        protected virtual void OnGeneratePayslipPDFForSelectedEmployee(EventArgs e)
+        {
+            GeneratePayslipPDFForSelectedEmployee?.Invoke(this, e);
+        }
+        private void BtnGeneratePayslipPDF_Click(object sender, EventArgs e)
+        {
             var selectedPaydate = this.CBoxPayslipDates.SelectedItem as ComboboxItem;
             if (selectedPaydate != null && DGVEmployeeList.CurrentRow != null)
             {
                 SelectedPayslipPayDate = DateTime.Parse(selectedPaydate.Value.ToString());
-                SelectedEmployeeNumberToCancel = DGVEmployeeList.CurrentRow.Cells[0].Value.ToString();
+                SelectedEmployeeNumberToGeneratePayslipPDF = DGVEmployeeList.CurrentRow.Cells[0].Value.ToString();
 
-                OnCancelSelectedEmployeePayslip(EventArgs.Empty);
+                OnGeneratePayslipPDFForSelectedEmployee(EventArgs.Empty);
             }
         }
 
-        private void BtnGeneratePayslipPDF_Click(object sender, EventArgs e)
-        {
 
+        public event EventHandler GeneratePayslipPDFForAllEmployees;
+        protected virtual void OnGeneratePayslipPDFForAllEmployees(EventArgs e)
+        {
+            GeneratePayslipPDFForAllEmployees?.Invoke(this, e);
+        }
+        private void BtnGeneratePayslipPDFAll_Click(object sender, EventArgs e)
+        {
+            OnGeneratePayslipPDFForAllEmployees(EventArgs.Empty);
         }
     }
 }

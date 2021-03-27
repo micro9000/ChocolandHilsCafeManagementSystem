@@ -117,9 +117,15 @@ CREATE TABLE IF NOT EXISTS Employees(
 ALTER TABLE Employees 
 ADD CONSTRAINT employees_ibfk_1 
 FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id);
-
+ALTER TABLE Employees 
+ADD COLUMN isQuit BOOLEAN DEFAULT False;
+ALTER TABLE Employees 
+ADD COLUMN quitDate DATE;
 ALTER TABLE Employees
 ADD COLUMN imageFileName VARCHAR(500);
+
+
+SELECT * FROM Employees;
 
 -- ALTER TABLE Employees
 -- DROP FOREIGN KEY employees_ibfk_1;
@@ -376,6 +382,7 @@ ADD COLUMN isCancel BOOLEAN DEFAULT False;
 
 SELECT * FROM EmployeePayslips;
 SELECT * FROM EmployeeAttendance;
+SELECT * FROM EmployeeLeaves;
 
 SELECT * FROM EmployeePayslips WHERE isDeleted=false AND payDate = '2021-03-24';
 

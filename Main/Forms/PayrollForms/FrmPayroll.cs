@@ -6,6 +6,8 @@ using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Forms.PayrollForms.Controls;
 using Main.Reports;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Shared;
 using Shared.Helpers;
 using System;
 using System.Collections.Generic;
@@ -36,6 +38,7 @@ namespace Main.Forms.PayrollForms
         private readonly IEmployeePayslipDeductionData _employeePayslipDeductionData;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
+        private readonly PayrollSettings _payrollSettings;
 
         public FrmPayroll(ILogger<FrmPayroll> logger,
                             IEmployeeData employeeData,
@@ -50,7 +53,8 @@ namespace Main.Forms.PayrollForms
                            IEmployeePayslipBenefitData employeePayslipBenefitData,
                            IEmployeePayslipDeductionData employeePayslipDeductionData,
                            DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
-                           IEmployeePayslipPDFReport employeePayslipPDFReport)
+                           IEmployeePayslipPDFReport employeePayslipPDFReport,
+                           IOptions<PayrollSettings> payrollSettings)
         {
             InitializeComponent();
             _logger = logger;
@@ -67,6 +71,7 @@ namespace Main.Forms.PayrollForms
             _employeePayslipDeductionData = employeePayslipDeductionData;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _employeePayslipPDFReport = employeePayslipPDFReport;
+            _payrollSettings = payrollSettings.Value;
         }
 
         private void CMStripPayroll_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -101,6 +106,7 @@ namespace Main.Forms.PayrollForms
             generatePayrollControlObj.ViewEmployeePayslip += HandleViewEmployeePayslip;
             generatePayrollControlObj.CancelAllEmployeePayslip += HandleCancelAllEmployeeGeneratedPayslip;
             generatePayrollControlObj.CancelSelectedEmployeePayslip += HandleCancelSelectedEmployeeGeneratedPayslip;
+            generatePayrollControlObj.GeneratePayslipPDF += HandleGeneratePDFForAllEmployeesPayslip;
 
             this.panelContainer.Controls.Add(generatePayrollControlObj);
         }
@@ -335,6 +341,20 @@ namespace Main.Forms.PayrollForms
             }
         }
 
+        private void HandleGeneratePDFForAllEmployeesPayslip(object sender, EventArgs e)
+        {
+            GeneratePayrollControl generatePayrollControlObj = (GeneratePayrollControl)sender;
+            var paydate = generatePayrollControlObj.PayDate;
+            var payslips = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+
+            if (payslips != null)
+            {
+                _employeePayslipPDFReport.GenerateEmployeePayslips(payslips);
+                MessageBox.Show($"Kindly check the generated pdf to {_payrollSettings.GeneratedPDFLoc}.", "Generated PDF", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+
         #endregion
 
 
@@ -350,6 +370,8 @@ namespace Main.Forms.PayrollForms
             payslipHistoryControl.RetrieveEmployeePayslip += HandleRetrieveEmployeePayslip;
             payslipHistoryControl.CancelAllEmployeePayslip += HandleCancelAllEmployeePayslip;
             payslipHistoryControl.CancelSelectedEmployeePayslip += HandleCancelSelectedEmployeePayslip;
+            payslipHistoryControl.GeneratePayslipPDFForAllEmployees += HandleGeneratePDFPayslipForAllEmployees;
+            payslipHistoryControl.GeneratePayslipPDFForSelectedEmployee += HandleGeneratePDFPayslipForSelectedEmployee;
 
             this.panelContainer.Controls.Add(payslipHistoryControl);
         }
@@ -363,11 +385,6 @@ namespace Main.Forms.PayrollForms
             var payslips = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
             payslipHistoryControlObj.EmployeePayslipsByPaydate = payslips;
             payslipHistoryControlObj.DisplayEmployeesInDGV();
-
-            if (payslips != null)
-            {
-                _employeePayslipPDFReport.GenerateEmployeePayslips(payslips);
-            }
         }
 
 
@@ -401,6 +418,34 @@ namespace Main.Forms.PayrollForms
                 payslipHistoryControlObj.EmployeePayslipsByPaydate = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
                 payslipHistoryControlObj.DisplayEmployeesInDGV();
                 payslipHistoryControlObj.ClearPayslipContainer();
+            }
+        }
+
+        private void HandleGeneratePDFPayslipForAllEmployees(object sender, EventArgs e)
+        {
+            PayslipHistoryControl payslipHistoryControlObj = (PayslipHistoryControl)sender;
+            var paydate = payslipHistoryControlObj.SelectedPayslipPayDate;
+            var payslips = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+
+            if (payslips != null)
+            {
+                _employeePayslipPDFReport.GenerateEmployeePayslips(payslips);
+                MessageBox.Show($"Kindly check the generated pdf to {_payrollSettings.GeneratedPDFLoc}.", "Generated PDF", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void HandleGeneratePDFPayslipForSelectedEmployee(object sender, EventArgs e)
+        {
+            PayslipHistoryControl payslipHistoryControlObj = (PayslipHistoryControl)sender;
+            var paydate = payslipHistoryControlObj.SelectedPayslipPayDate;
+            string employeeNumber = payslipHistoryControlObj.SelectedEmployeeNumberToGeneratePayslipPDF;
+
+            var payslip = _employeePayslipData.GetEmployeePayslipRecordByPaydate(employeeNumber,paydate);
+
+            if (payslip != null)
+            {
+                _employeePayslipPDFReport.GenerateEmployeePayslip(payslip);
+                MessageBox.Show($"Kindly check the generated pdf to {_payrollSettings.GeneratedPDFLoc}.", "Generated PDF", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

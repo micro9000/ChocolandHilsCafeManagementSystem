@@ -146,6 +146,10 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
             controlToDisplay.FilterEmployeePayslip += HandleFilterEmployeePayslip;
 
+            controlToDisplay.UndoMarkEmployeeAsResigned += HandleUndoMarkEmployeeAsResigned;
+            controlToDisplay.MarkEmployeeAsResigned += HandleMarkEmployeeAsResigned;
+            controlToDisplay.MarkEmployeeAsDeleted += HandleMarkEmployeeAsDeleted;
+
             this.panelContainer.Controls.Add(controlToDisplay);
         }
 
@@ -263,6 +267,56 @@ namespace Main.Forms.EmployeeManagementForms
 
             employeeCRUDControlObj.DisplayEmployeePayslip(employeeData, payslipData);
         }
+
+        private void HandleMarkEmployeeAsResigned(object sender, EventArgs e)
+        {
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            var employeeNumber = employeeCRUDControlObj.EmployeeNumber;
+
+            var markAsQuitRes = _employeeController.MarkEmployeeAsQuit(employeeNumber);
+
+            if (markAsQuitRes == true)
+            {
+                MessageBox.Show("Successfully mark this employee as resigned.", "Mark Resigned", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var employeeDetails = this._employeeController.GetByEmployeeNumber(employeeNumber);
+                employeeCRUDControlObj.DisplayEmployeeDetails(employeeDetails.Data);
+            }
+        }
+
+        private void HandleUndoMarkEmployeeAsResigned(object sender, EventArgs e)
+        {
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            var employeeNumber = employeeCRUDControlObj.EmployeeNumber;
+
+            var undoMarkAsQuitRes = _employeeController.UndoMarkEmployeeAsQuit(employeeNumber);
+
+            if (undoMarkAsQuitRes == true)
+            {
+                MessageBox.Show("Successfully undo employee resigned.", "Undo Mark Resigned", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                var employeeDetails = this._employeeController.GetByEmployeeNumber(employeeNumber);
+                employeeCRUDControlObj.DisplayEmployeeDetails(employeeDetails.Data);
+            }
+        }
+
+        private void HandleMarkEmployeeAsDeleted(object sender, EventArgs e)
+        {
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            var employeeNumber = employeeCRUDControlObj.EmployeeNumber;
+
+            DialogResult res = MessageBox.Show("Are you sure, you want to delete this employee?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                var markAsQuitRes = _employeeController.MarkEmployeeAsDeleted(employeeNumber);
+
+                if (markAsQuitRes == true)
+                {
+                    employeeCRUDControlObj.ClearForm();
+                }
+            }
+        }
+
 
         #endregion
 

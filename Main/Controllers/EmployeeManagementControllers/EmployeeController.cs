@@ -27,6 +27,7 @@ namespace Main.Controllers.EmployeeManagementControllers
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeeGovtIdCardData _employeeGovtIdCardData;
         private readonly IEmployeeSalaryRateData _employeeSalaryRateData;
+        private readonly IWorkforceScheduleData _workforceScheduleData;
 
         public EmployeeController(ILogger<LoginFrm> logger,
                                 IMapper mapper,
@@ -34,7 +35,8 @@ namespace Main.Controllers.EmployeeManagementControllers
                                 EmployeeSalaryRateAddUpdateValidator employeeSalaryRateValidator,
                                 IEmployeeData employeeData,
                                 IEmployeeGovtIdCardData employeeGovtIdCardData,
-                                IEmployeeSalaryRateData employeeSalaryRateData)
+                                IEmployeeSalaryRateData employeeSalaryRateData,
+                                IWorkforceScheduleData workforceScheduleData)
         {
             _logger = logger;
             _mapper = mapper;
@@ -43,6 +45,7 @@ namespace Main.Controllers.EmployeeManagementControllers
             _employeeData = employeeData;
             _employeeGovtIdCardData = employeeGovtIdCardData;
             _employeeSalaryRateData = employeeSalaryRateData;
+            _workforceScheduleData = workforceScheduleData;
         }
 
 
@@ -480,6 +483,75 @@ namespace Main.Controllers.EmployeeManagementControllers
             return results;
         }
 
+
+        public bool MarkEmployeeAsQuit (string employeeNumber)
+        {
+            var employeeDetails = this._employeeData.GetByEmployeeNumber(employeeNumber);
+
+            if (employeeDetails != null)
+            {
+                employeeDetails.IsQuit = true;
+                employeeDetails.QuitDate = DateTime.Now;
+
+                using(var transaction = new TransactionScope())
+                {
+                    this._employeeData.Update(employeeDetails);
+
+                    this._workforceScheduleData.MarkAsDeletedByEmployee(employeeNumber);
+
+                    transaction.Complete();
+                }
+
+                return true;
+            }
+            return false;
+        }
+
+
+        public bool UndoMarkEmployeeAsQuit(string employeeNumber)
+        {
+            var employeeDetails = this._employeeData.GetByEmployeeNumber(employeeNumber);
+
+            if (employeeDetails != null)
+            {
+                employeeDetails.IsQuit = false;
+
+                using (var transaction = new TransactionScope())
+                {
+                    this._employeeData.Update(employeeDetails);
+
+                    this._workforceScheduleData.UndoMarkAsDeletedByEmployee(employeeNumber);
+
+                    transaction.Complete();
+                }
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool MarkEmployeeAsDeleted(string employeeNumber)
+        {
+            var employeeDetails = this._employeeData.GetByEmployeeNumber(employeeNumber);
+
+            if (employeeDetails != null)
+            {
+                employeeDetails.IsDeleted = true;
+                employeeDetails.DeletedAt = DateTime.Now;
+
+                using (var transaction = new TransactionScope())
+                {
+                    this._employeeData.Update(employeeDetails);
+
+                    this._workforceScheduleData.MarkAsDeletedByEmployee(employeeNumber);
+
+                    transaction.Complete();
+                }
+
+                return true;
+            }
+            return false;
+        }
 
         // helper methods
 

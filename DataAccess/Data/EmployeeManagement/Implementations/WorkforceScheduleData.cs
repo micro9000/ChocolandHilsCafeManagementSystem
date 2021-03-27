@@ -93,6 +93,35 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             });
         }
 
+
+        public bool MarkAsDeletedByEmployee(string employeeNumber)
+        {
+            string query = @"UPDATE WorkforceSchedules SET isDeleted=true WHERE employeeNumber=@EmployeeNumber";
+
+            long affectedRows = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                affectedRows = conn.Execute(query, new { EmployeeNumber = employeeNumber });
+                conn.Close();
+            }
+
+            return affectedRows > 0;
+        }
+
+
+        public bool UndoMarkAsDeletedByEmployee(string employeeNumber)
+        {
+            string query = @"UPDATE WorkforceSchedules SET isDeleted=false WHERE employeeNumber=@EmployeeNumber";
+
+            long affectedRows = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                affectedRows = conn.Execute(query, new { EmployeeNumber = employeeNumber });
+                conn.Close();
+            }
+
+            return affectedRows > 0;
+        }
     }
 }
 //string query = @"SELECT *

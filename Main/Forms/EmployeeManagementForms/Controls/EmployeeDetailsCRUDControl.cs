@@ -289,7 +289,17 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.TbxEmail.Text = employeeDetails.EmailAddress;
                 this.TbxEmpPosition.Text = employeeDetails.Position;
 
-
+                if (employeeDetails.IsQuit == true)
+                {
+                    this.PanelResignedIndicator.Visible = true;
+                    this.LblResignedDate.Text = employeeDetails.QuitDate.ToLongDateString();
+                    this.BtnUndoResignedEmployee.Visible = true;
+                }
+                else
+                {
+                    this.PanelResignedIndicator.Visible = false;
+                    this.BtnUndoResignedEmployee.Visible = false;
+                }
 
                 string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                 var EmployeeImgsDirInfo = Directory.CreateDirectory(appPath + "\\EmployeeImgs\\");
@@ -838,7 +848,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     whoDayTotalHrs,
                     late,
                     underTime,
-                    overTime
+                    overTime,
+                    attendance.IsPaid ? "Paid" : ""
                 };
 
 
@@ -1043,6 +1054,37 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 payslipItemControlObj.Anchor = AnchorStyles.None;
                 this.PanelPayslipDetailsContainer.Controls.Add(payslipItemControlObj);
             }
+        }
+
+        public event EventHandler MarkEmployeeAsResigned;
+        protected virtual void OnMarkEmployeeAsResigned(EventArgs e)
+        {
+            MarkEmployeeAsResigned?.Invoke(this, e);
+        }
+        private void BtnMarkAsResignedThisEmployee_Click(object sender, EventArgs e)
+        {
+            OnMarkEmployeeAsResigned(EventArgs.Empty);
+        }
+
+
+        public event EventHandler MarkEmployeeAsDeleted;
+        protected virtual void OnMarkEmployeeAsDeleted(EventArgs e)
+        {
+            MarkEmployeeAsDeleted?.Invoke(this, e);
+        }
+        private void BtnDeleteThisEmployee_Click(object sender, EventArgs e)
+        {
+            OnMarkEmployeeAsDeleted(EventArgs.Empty);
+        }
+
+        public event EventHandler UndoMarkEmployeeAsResigned;
+        protected virtual void OnUndoMarkEmployeeAsResigned(EventArgs e)
+        {
+            UndoMarkEmployeeAsResigned?.Invoke(this, e);
+        }
+        private void BtnUndoResignedEmployee_Click(object sender, EventArgs e)
+        {
+            OnUndoMarkEmployeeAsResigned(EventArgs.Empty);
         }
     }
 

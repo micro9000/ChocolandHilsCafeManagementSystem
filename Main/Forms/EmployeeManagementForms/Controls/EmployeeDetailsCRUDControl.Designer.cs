@@ -117,10 +117,22 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label25 = new System.Windows.Forms.Label();
             this.BtnFilterPayslipByPaydate = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
+            this.EmployeeDetailsSettings = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.BtnDeleteThisEmployee = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.BtnUndoResignedEmployee = new System.Windows.Forms.Button();
+            this.label27 = new System.Windows.Forms.Label();
+            this.BtnMarkAsResignedThisEmployee = new System.Windows.Forms.Button();
             this.BtnSaveEmployee = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.LblActionForEmployeeDetails = new System.Windows.Forms.Label();
             this.openFileDialogBrowseEmpImg = new System.Windows.Forms.OpenFileDialog();
+            this.PanelResignedIndicator = new System.Windows.Forms.Panel();
+            this.LblResignedDate = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.LVColumnIsPaid = new System.Windows.Forms.ColumnHeader();
             this.EmployeeBasicInfo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -134,7 +146,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeAttendance.SuspendLayout();
             this.EmployeePayslip.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.EmployeeDetailsSettings.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.PanelResignedIndicator.SuspendLayout();
             this.SuspendLayout();
             // 
             // EmployeeBasicInfo
@@ -714,9 +730,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnCancelUpdateEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelUpdateEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnCancelUpdateEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdateEmployee.Location = new System.Drawing.Point(823, 624);
+            this.BtnCancelUpdateEmployee.Location = new System.Drawing.Point(900, 627);
             this.BtnCancelUpdateEmployee.Name = "BtnCancelUpdateEmployee";
-            this.BtnCancelUpdateEmployee.Size = new System.Drawing.Size(134, 48);
+            this.BtnCancelUpdateEmployee.Size = new System.Drawing.Size(93, 48);
             this.BtnCancelUpdateEmployee.TabIndex = 47;
             this.BtnCancelUpdateEmployee.Text = "Cancel";
             this.BtnCancelUpdateEmployee.UseVisualStyleBackColor = false;
@@ -751,6 +767,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeeGovtIds);
             this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeeAttendance);
             this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeePayslip);
+            this.TabControlSaveEmployeeDetails.Controls.Add(this.EmployeeDetailsSettings);
             this.TabControlSaveEmployeeDetails.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TabControlSaveEmployeeDetails.Location = new System.Drawing.Point(0, 69);
             this.TabControlSaveEmployeeDetails.Name = "TabControlSaveEmployeeDetails";
@@ -859,7 +876,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LVColumnRenderHrs,
             this.LVColumnLate,
             this.LVColumnUnderTime,
-            this.LVColumnOvertime});
+            this.LVColumnOvertime,
+            this.LVColumnIsPaid});
             this.LViewAttendanceHistory.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.LViewAttendanceHistory.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LViewAttendanceHistory.FullRowSelect = true;
@@ -1072,6 +1090,106 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label23.TabIndex = 42;
             this.label23.Text = "Paydate";
             // 
+            // EmployeeDetailsSettings
+            // 
+            this.EmployeeDetailsSettings.Controls.Add(this.groupBox4);
+            this.EmployeeDetailsSettings.Controls.Add(this.groupBox3);
+            this.EmployeeDetailsSettings.Location = new System.Drawing.Point(4, 30);
+            this.EmployeeDetailsSettings.Name = "EmployeeDetailsSettings";
+            this.EmployeeDetailsSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.EmployeeDetailsSettings.Size = new System.Drawing.Size(1093, 519);
+            this.EmployeeDetailsSettings.TabIndex = 6;
+            this.EmployeeDetailsSettings.Text = "Settings";
+            this.EmployeeDetailsSettings.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label28);
+            this.groupBox4.Controls.Add(this.BtnDeleteThisEmployee);
+            this.groupBox4.Location = new System.Drawing.Point(93, 107);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(400, 236);
+            this.groupBox4.TabIndex = 52;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Delete employee";
+            // 
+            // label28
+            // 
+            this.label28.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label28.Location = new System.Drawing.Point(43, 39);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(303, 109);
+            this.label28.TabIndex = 51;
+            this.label28.Text = "This will delete the entire employee records. No Undo transaction for this.";
+            // 
+            // BtnDeleteThisEmployee
+            // 
+            this.BtnDeleteThisEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnDeleteThisEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnDeleteThisEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnDeleteThisEmployee.ForeColor = System.Drawing.Color.White;
+            this.BtnDeleteThisEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnDeleteThisEmployee.Location = new System.Drawing.Point(289, 171);
+            this.BtnDeleteThisEmployee.Name = "BtnDeleteThisEmployee";
+            this.BtnDeleteThisEmployee.Size = new System.Drawing.Size(93, 48);
+            this.BtnDeleteThisEmployee.TabIndex = 50;
+            this.BtnDeleteThisEmployee.Text = "Delete";
+            this.BtnDeleteThisEmployee.UseVisualStyleBackColor = false;
+            this.BtnDeleteThisEmployee.Click += new System.EventHandler(this.BtnDeleteThisEmployee_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.BtnUndoResignedEmployee);
+            this.groupBox3.Controls.Add(this.label27);
+            this.groupBox3.Controls.Add(this.BtnMarkAsResignedThisEmployee);
+            this.groupBox3.Location = new System.Drawing.Point(589, 107);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(400, 236);
+            this.groupBox3.TabIndex = 51;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Mark employee as resigned";
+            // 
+            // BtnUndoResignedEmployee
+            // 
+            this.BtnUndoResignedEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnUndoResignedEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnUndoResignedEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnUndoResignedEmployee.ForeColor = System.Drawing.Color.White;
+            this.BtnUndoResignedEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnUndoResignedEmployee.Location = new System.Drawing.Point(208, 171);
+            this.BtnUndoResignedEmployee.Name = "BtnUndoResignedEmployee";
+            this.BtnUndoResignedEmployee.Size = new System.Drawing.Size(70, 48);
+            this.BtnUndoResignedEmployee.TabIndex = 51;
+            this.BtnUndoResignedEmployee.Text = "Undo";
+            this.BtnUndoResignedEmployee.UseVisualStyleBackColor = false;
+            this.BtnUndoResignedEmployee.Visible = false;
+            this.BtnUndoResignedEmployee.Click += new System.EventHandler(this.BtnUndoResignedEmployee_Click);
+            // 
+            // label27
+            // 
+            this.label27.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label27.Location = new System.Drawing.Point(48, 39);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(303, 109);
+            this.label27.TabIndex = 50;
+            this.label27.Text = "This will mark the employee on the systemas resigned, but you can still see his/h" +
+    "er records";
+            // 
+            // BtnMarkAsResignedThisEmployee
+            // 
+            this.BtnMarkAsResignedThisEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnMarkAsResignedThisEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnMarkAsResignedThisEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnMarkAsResignedThisEmployee.ForeColor = System.Drawing.Color.White;
+            this.BtnMarkAsResignedThisEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnMarkAsResignedThisEmployee.Location = new System.Drawing.Point(284, 171);
+            this.BtnMarkAsResignedThisEmployee.Name = "BtnMarkAsResignedThisEmployee";
+            this.BtnMarkAsResignedThisEmployee.Size = new System.Drawing.Size(93, 48);
+            this.BtnMarkAsResignedThisEmployee.TabIndex = 49;
+            this.BtnMarkAsResignedThisEmployee.Text = "Resigned";
+            this.BtnMarkAsResignedThisEmployee.UseVisualStyleBackColor = false;
+            this.BtnMarkAsResignedThisEmployee.Click += new System.EventHandler(this.BtnMarkAsResignedThisEmployee_Click);
+            // 
             // BtnSaveEmployee
             // 
             this.BtnSaveEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -1079,9 +1197,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnSaveEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveEmployee.Location = new System.Drawing.Point(963, 624);
+            this.BtnSaveEmployee.Location = new System.Drawing.Point(1004, 627);
             this.BtnSaveEmployee.Name = "BtnSaveEmployee";
-            this.BtnSaveEmployee.Size = new System.Drawing.Size(134, 48);
+            this.BtnSaveEmployee.Size = new System.Drawing.Size(93, 48);
             this.BtnSaveEmployee.TabIndex = 44;
             this.BtnSaveEmployee.Text = "Save";
             this.BtnSaveEmployee.UseVisualStyleBackColor = false;
@@ -1113,11 +1231,52 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.openFileDialogBrowseEmpImg.FileName = "openFileDialog1";
             // 
+            // PanelResignedIndicator
+            // 
+            this.PanelResignedIndicator.BackColor = System.Drawing.Color.DimGray;
+            this.PanelResignedIndicator.Controls.Add(this.LblResignedDate);
+            this.PanelResignedIndicator.Controls.Add(this.label24);
+            this.PanelResignedIndicator.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.PanelResignedIndicator.ForeColor = System.Drawing.Color.White;
+            this.PanelResignedIndicator.Location = new System.Drawing.Point(78, 628);
+            this.PanelResignedIndicator.Name = "PanelResignedIndicator";
+            this.PanelResignedIndicator.Size = new System.Drawing.Size(453, 44);
+            this.PanelResignedIndicator.TabIndex = 57;
+            this.PanelResignedIndicator.Visible = false;
+            // 
+            // LblResignedDate
+            // 
+            this.LblResignedDate.AutoSize = true;
+            this.LblResignedDate.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblResignedDate.ForeColor = System.Drawing.Color.White;
+            this.LblResignedDate.Location = new System.Drawing.Point(104, 10);
+            this.LblResignedDate.Name = "LblResignedDate";
+            this.LblResignedDate.Size = new System.Drawing.Size(116, 25);
+            this.LblResignedDate.TabIndex = 51;
+            this.LblResignedDate.Text = "0000/00/00";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label24.ForeColor = System.Drawing.Color.White;
+            this.label24.Location = new System.Drawing.Point(9, 10);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(94, 25);
+            this.label24.TabIndex = 50;
+            this.label24.Text = "Resigned:";
+            // 
+            // LVColumnIsPaid
+            // 
+            this.LVColumnIsPaid.Text = "Status";
+            this.LVColumnIsPaid.Width = 100;
+            // 
             // EmployeeDetailsCRUDControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.PanelResignedIndicator);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.TabControlSaveEmployeeDetails);
             this.Controls.Add(this.BtnCancelUpdateEmployee);
@@ -1145,8 +1304,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeePayslip.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.EmployeeDetailsSettings.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.PanelResignedIndicator.ResumeLayout(false);
+            this.PanelResignedIndicator.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1245,5 +1409,17 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ColumnHeader LVColumnDayName;
         private System.Windows.Forms.Panel PanelPayslipDetailsContainer;
         private System.Windows.Forms.ComboBox CBoxPayslipPaydateList;
+        private System.Windows.Forms.Button BtnMarkAsResignedThisEmployee;
+        private System.Windows.Forms.Button BtnDeleteThisEmployee;
+        private System.Windows.Forms.Panel PanelResignedIndicator;
+        private System.Windows.Forms.Label LblResignedDate;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TabPage EmployeeDetailsSettings;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Button BtnUndoResignedEmployee;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.ColumnHeader LVColumnIsPaid;
     }
 }

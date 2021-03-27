@@ -70,7 +70,6 @@ namespace Main.Forms.PayrollForms.Controls
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.BtnCancelSelectedEmployeePayslip = new System.Windows.Forms.Button();
             this.BtnCancelAllEmployeePayslip = new System.Windows.Forms.Button();
-            this.BtnGeneratePayslipPDFAll = new System.Windows.Forms.Button();
             this.PanelEmployeePayslipContainer = new System.Windows.Forms.Panel();
             this.DGVEmployeeListForOverview = new System.Windows.Forms.DataGridView();
             this.BtnGeneratePayslipPDF = new System.Windows.Forms.Button();
@@ -547,7 +546,6 @@ namespace Main.Forms.PayrollForms.Controls
             // 
             this.tabPage7.Controls.Add(this.BtnCancelSelectedEmployeePayslip);
             this.tabPage7.Controls.Add(this.BtnCancelAllEmployeePayslip);
-            this.tabPage7.Controls.Add(this.BtnGeneratePayslipPDFAll);
             this.tabPage7.Controls.Add(this.PanelEmployeePayslipContainer);
             this.tabPage7.Controls.Add(this.DGVEmployeeListForOverview);
             this.tabPage7.Controls.Add(this.BtnGeneratePayslipPDF);
@@ -591,20 +589,6 @@ namespace Main.Forms.PayrollForms.Controls
             this.BtnCancelAllEmployeePayslip.UseVisualStyleBackColor = false;
             this.BtnCancelAllEmployeePayslip.Click += new System.EventHandler(this.BtnCancelAllEmployeePayslip_Click);
             // 
-            // BtnGeneratePayslipPDFAll
-            // 
-            this.BtnGeneratePayslipPDFAll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnGeneratePayslipPDFAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnGeneratePayslipPDFAll.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnGeneratePayslipPDFAll.ForeColor = System.Drawing.Color.White;
-            this.BtnGeneratePayslipPDFAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnGeneratePayslipPDFAll.Location = new System.Drawing.Point(952, 428);
-            this.BtnGeneratePayslipPDFAll.Name = "BtnGeneratePayslipPDFAll";
-            this.BtnGeneratePayslipPDFAll.Size = new System.Drawing.Size(140, 47);
-            this.BtnGeneratePayslipPDFAll.TabIndex = 60;
-            this.BtnGeneratePayslipPDFAll.Text = "Generate PDF All";
-            this.BtnGeneratePayslipPDFAll.UseVisualStyleBackColor = false;
-            // 
             // PanelEmployeePayslipContainer
             // 
             this.PanelEmployeePayslipContainer.Dock = System.Windows.Forms.DockStyle.Top;
@@ -635,12 +619,13 @@ namespace Main.Forms.PayrollForms.Controls
             this.BtnGeneratePayslipPDF.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnGeneratePayslipPDF.ForeColor = System.Drawing.Color.White;
             this.BtnGeneratePayslipPDF.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnGeneratePayslipPDF.Location = new System.Drawing.Point(806, 428);
+            this.BtnGeneratePayslipPDF.Location = new System.Drawing.Point(935, 428);
             this.BtnGeneratePayslipPDF.Name = "BtnGeneratePayslipPDF";
             this.BtnGeneratePayslipPDF.Size = new System.Drawing.Size(140, 47);
             this.BtnGeneratePayslipPDF.TabIndex = 57;
             this.BtnGeneratePayslipPDF.Text = "Generate PDF";
             this.BtnGeneratePayslipPDF.UseVisualStyleBackColor = false;
+            this.BtnGeneratePayslipPDF.Click += new System.EventHandler(this.BtnGeneratePayslipPDF_Click);
             // 
             // BtnGenerateEmployeePayslip
             // 
@@ -649,7 +634,7 @@ namespace Main.Forms.PayrollForms.Controls
             this.BtnGenerateEmployeePayslip.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnGenerateEmployeePayslip.ForeColor = System.Drawing.Color.White;
             this.BtnGenerateEmployeePayslip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnGenerateEmployeePayslip.Location = new System.Drawing.Point(661, 428);
+            this.BtnGenerateEmployeePayslip.Location = new System.Drawing.Point(790, 428);
             this.BtnGenerateEmployeePayslip.Name = "BtnGenerateEmployeePayslip";
             this.BtnGenerateEmployeePayslip.Size = new System.Drawing.Size(139, 47);
             this.BtnGenerateEmployeePayslip.TabIndex = 51;
@@ -737,7 +722,6 @@ namespace Main.Forms.PayrollForms.Controls
         private System.Windows.Forms.Button BtnGeneratePayslipPDF;
         private System.Windows.Forms.Panel PanelEmployeePayslipContainer;
         private System.Windows.Forms.DataGridView DGVEmployeeListForOverview;
-        private System.Windows.Forms.Button BtnGeneratePayslipPDFAll;
         private System.Windows.Forms.Button BtnCancelAllEmployeePayslip;
         private System.Windows.Forms.Button BtnCancelSelectedEmployeePayslip;
     }

@@ -616,6 +616,9 @@ namespace Main.Forms.PayrollForms.Controls
                 }
                 totalDays += totalLeaveDays;
 
+                if (employee.SalaryRates == null)
+                    throw new Exception($"{employee.FullName} don't have salary rate. Kindly update employee details");
+
                 decimal netBasicSalary = currentEmpAttendanceRec.Sum(x => x.TotalDailySalary);
                 netBasicSalary += employee.SalaryRates.DailyRate * totalLeaveDays;
 
@@ -655,39 +658,46 @@ namespace Main.Forms.PayrollForms.Controls
 
         private void BtnGenerateEmployeePayslip_Click(object sender, EventArgs e)
         {
-            var SelectedEmployeesForPayrollGeneration = this.GetSelectedEmployeeToGeneratePayslip();
-            if (SelectedEmployeesForPayrollGeneration != null && SelectedEmployeesForPayrollGeneration.Count > 0)
+            try
             {
-                var SelectedGovtAgenciesForPayrollGeneration = this.GetSelectedGovtAgenciesToGeneratePayslip();
-                var SelectedBenefitsForPayrollGeneration = this.GetSelectedEmpBenefitsToGeneratePayslip();
-                var SelectedDeductionsForPayrollGeneration = this.GetSelectedEmpDeductionsToGeneratePayslip();
-
-                EmployeePayslipGenerations = new List<EmployeePayslipGeneration>();
-
-                foreach (var selectedEmp in SelectedEmployeesForPayrollGeneration)
+                var SelectedEmployeesForPayrollGeneration = this.GetSelectedEmployeeToGeneratePayslip();
+                if (SelectedEmployeesForPayrollGeneration != null && SelectedEmployeesForPayrollGeneration.Count > 0)
                 {
-                    EmployeePayslipGenerations.Add(new EmployeePayslipGeneration
+                    var SelectedGovtAgenciesForPayrollGeneration = this.GetSelectedGovtAgenciesToGeneratePayslip();
+                    var SelectedBenefitsForPayrollGeneration = this.GetSelectedEmpBenefitsToGeneratePayslip();
+                    var SelectedDeductionsForPayrollGeneration = this.GetSelectedEmpDeductionsToGeneratePayslip();
+
+                    EmployeePayslipGenerations = new List<EmployeePayslipGeneration>();
+
+                    foreach (var selectedEmp in SelectedEmployeesForPayrollGeneration)
                     {
-                        PayDate = this.PayDate,
-                        ShiftStartDate = this.ShiftStartDate,
-                        ShiftEndDate = this.ShiftEndDate,
-                        Employee = selectedEmp,
-                        PaydaySalaryComputation = this.GetEmployeeAttendanceRecordWithSalaryComputation(selectedEmp),
-                        AttendanceHistory = this.AttendanceHistory != null ? this.AttendanceHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
-                        EmployeeLeaves = this.EmployeeLeaveHistory != null ? this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
-                        SelectedGovtAgencies = SelectedGovtAgenciesForPayrollGeneration,
-                        SelectedBenefits = SelectedBenefitsForPayrollGeneration,
-                        SelectedDeductions = SelectedDeductionsForPayrollGeneration
-                    });
+                        EmployeePayslipGenerations.Add(new EmployeePayslipGeneration
+                        {
+                            PayDate = this.PayDate,
+                            ShiftStartDate = this.ShiftStartDate,
+                            ShiftEndDate = this.ShiftEndDate,
+                            Employee = selectedEmp,
+                            PaydaySalaryComputation = this.GetEmployeeAttendanceRecordWithSalaryComputation(selectedEmp),
+                            AttendanceHistory = this.AttendanceHistory != null ? this.AttendanceHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
+                            EmployeeLeaves = this.EmployeeLeaveHistory != null ? this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
+                            SelectedGovtAgencies = SelectedGovtAgenciesForPayrollGeneration,
+                            SelectedBenefits = SelectedBenefitsForPayrollGeneration,
+                            SelectedDeductions = SelectedDeductionsForPayrollGeneration
+                        });
+                    }
+
+                    OnGenerateEmployeePayslip(EventArgs.Empty);
+
+                    this.DisplayEmployeeInOverviewTag(SelectedEmployeesForPayrollGeneration);
                 }
-
-                OnGenerateEmployeePayslip(EventArgs.Empty);
-
-                this.DisplayEmployeeInOverviewTag(SelectedEmployeesForPayrollGeneration);
+                else
+                {
+                    MessageBox.Show("No selected employee for payslip generation.", "Get selected employees", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                MessageBox.Show("No selected employee for payslip generation.", "Get selected employees", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(ex.Message, "Generate payslip", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -746,6 +756,16 @@ namespace Main.Forms.PayrollForms.Controls
         private void BtnCancelSelectedEmployeePayslip_Click(object sender, EventArgs e)
         {
             OnCancelSelectedEmployeePayslip(EventArgs.Empty);
+        }
+
+        public event EventHandler GeneratePayslipPDF;
+        protected virtual void OnGeneratePayslipPDF(EventArgs e)
+        {
+            GeneratePayslipPDF?.Invoke(this, e);
+        }
+        private void BtnGeneratePayslipPDF_Click(object sender, EventArgs e)
+        {
+            OnGeneratePayslipPDF(EventArgs.Empty);
         }
     }
 }

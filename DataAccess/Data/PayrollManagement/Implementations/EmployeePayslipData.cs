@@ -66,6 +66,7 @@ namespace DataAccess.Data.PayrollManagement.Implementations
             {
                 payslipRec.ForEach(x =>
                 {
+                    x.Employee = _employeeData.GetByEmployeeNumber(x.EmployeeNumber);
                     x.Benefits = _employeePayslipBenefitData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
                     x.Deductions = _employeePayslipDeductionData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
                 });

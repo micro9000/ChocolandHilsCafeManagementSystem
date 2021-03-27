@@ -172,9 +172,15 @@ namespace Main.Forms.AttendanceTerminal
 
                 if (empDetails != null)
                 {
+                    if (empDetails.SalaryRates == null)
+                    {
+                        MessageBox.Show($"{empDetails.FullName} don't have salary rate. Kindly update employee details", "Salary Rate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
                     if (empDetails.Shift == null)
                     {
-                        MessageBox.Show("Employee's shift not found. \nKindly set employee shift.", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Employee's shift not found. \nKindly set employee shift.", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     var shiftDetails = empDetails.Shift;
@@ -257,7 +263,7 @@ namespace Main.Forms.AttendanceTerminal
                                 if (_employeeAttendanceData.Add(attendance) > 0)
                                 {
                                     DisplayConfirmationForm(true);
-                                    workforceSchedule.isDone = true;
+                                    //workforceSchedule.isDone = true;
                                 }
                                 else
                                 {
@@ -280,7 +286,7 @@ namespace Main.Forms.AttendanceTerminal
                                 if (_employeeAttendanceData.Add(attendance) > 0)
                                 {
                                     DisplayConfirmationForm(true);
-                                    workforceSchedule.isDone = true;
+                                    //workforceSchedule.isDone = true;
                                 }
                                 else
                                 {
@@ -306,7 +312,7 @@ namespace Main.Forms.AttendanceTerminal
                                 if (_employeeAttendanceData.Add(attendance) > 0)
                                 {
                                     DisplayConfirmationForm(true);
-                                    workforceSchedule.isDone = true;
+                                    //workforceSchedule.isDone = true;
                                 }
                                 else
                                 {
@@ -342,7 +348,7 @@ namespace Main.Forms.AttendanceTerminal
                                 if (_employeeAttendanceData.Add(attendance) > 0)
                                 {
                                     DisplayConfirmationForm(true);
-                                    workforceSchedule.isDone = true;
+                                    //workforceSchedule.isDone = true;
                                 }
                                 else
                                 {
@@ -369,7 +375,7 @@ namespace Main.Forms.AttendanceTerminal
                                 if (_employeeAttendanceData.Add(attendance) > 0)
                                 {
                                     DisplayConfirmationForm(true);
-                                    workforceSchedule.isDone = true;
+                                    //workforceSchedule.isDone = true;
                                 }
                                 else
                                 {
@@ -426,6 +432,8 @@ namespace Main.Forms.AttendanceTerminal
                                     {
                                         DisplayConfirmationForm(true);
                                         workforceSchedule.isDone = true;
+
+                                        _workforceScheduleData.Update(workforceSchedule);
                                     }
                                     else
                                     {
@@ -463,6 +471,8 @@ namespace Main.Forms.AttendanceTerminal
                                     {
                                         DisplayConfirmationForm(true);
                                         workforceSchedule.isDone = true;
+
+                                        _workforceScheduleData.Update(workforceSchedule);
                                     }
                                     else
                                     {
@@ -510,6 +520,8 @@ namespace Main.Forms.AttendanceTerminal
                                         {
                                             DisplayConfirmationForm(true);
                                             workforceSchedule.isDone = true;
+
+                                            _workforceScheduleData.Update(workforceSchedule);
                                         }
                                         else
                                         {
@@ -549,6 +561,8 @@ namespace Main.Forms.AttendanceTerminal
                                         {
                                             DisplayConfirmationForm(true);
                                             workforceSchedule.isDone = true;
+
+                                            _workforceScheduleData.Update(workforceSchedule);
                                         }
                                         else
                                         {

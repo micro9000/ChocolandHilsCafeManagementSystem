@@ -417,7 +417,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
 
 
-            if (WorkforceSchedule != null && WorkforceSchedule.WorkforceSchedules != null)
+            if (WorkforceSchedule != null && WorkforceSchedule.WorkforceSchedules != null && WorkforceSchedule.WorkforceSchedules.Count > 0)
             {
                 var lastWorkForceDate = WorkforceSchedule.WorkforceSchedules.LastOrDefault().WorkDate;
 
@@ -748,5 +748,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             DisplayWorkScheduleInListView();
         }
 
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
