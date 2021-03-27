@@ -63,10 +63,23 @@ namespace Main.Forms.AttendanceTerminal
             this.DPickerFilterAttendanceEnd = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
             this.DPickerFilterAttendanceStart = new System.Windows.Forms.DateTimePicker();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.GBoxEditEmployeeAttendanceControls = new System.Windows.Forms.GroupBox();
+            this.BtnUpdateEmployeeAttendance = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.DPicTimeEditAttendance = new System.Windows.Forms.DateTimePicker();
+            this.DPickerAttendanceDateEditAttendance = new System.Windows.Forms.DateTimePicker();
+            this.RBtnTimeOutEditAttendance = new System.Windows.Forms.RadioButton();
+            this.label6 = new System.Windows.Forms.Label();
+            this.TboxEditAttendanceEmployeeNumber = new System.Windows.Forms.TextBox();
+            this.RBtnTimeINEditAttendance = new System.Windows.Forms.RadioButton();
             this.panelSecondaryBanner.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.GBoxEditEmployeeAttendanceControls.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelSecondaryBanner
@@ -283,6 +296,7 @@ namespace Main.Forms.AttendanceTerminal
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tabControl1.Location = new System.Drawing.Point(0, 95);
             this.tabControl1.Name = "tabControl1";
@@ -372,6 +386,130 @@ namespace Main.Forms.AttendanceTerminal
             this.DPickerFilterAttendanceStart.Size = new System.Drawing.Size(112, 29);
             this.DPickerFilterAttendanceStart.TabIndex = 12;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.GBoxEditEmployeeAttendanceControls);
+            this.tabPage3.Location = new System.Drawing.Point(4, 30);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1065, 151);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Edit Employee Attendance";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // GBoxEditEmployeeAttendanceControls
+            // 
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.BtnUpdateEmployeeAttendance);
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.label8);
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.label7);
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.DPicTimeEditAttendance);
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.DPickerAttendanceDateEditAttendance);
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.RBtnTimeOutEditAttendance);
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.label6);
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.TboxEditAttendanceEmployeeNumber);
+            this.GBoxEditEmployeeAttendanceControls.Controls.Add(this.RBtnTimeINEditAttendance);
+            this.GBoxEditEmployeeAttendanceControls.Location = new System.Drawing.Point(18, 17);
+            this.GBoxEditEmployeeAttendanceControls.Name = "GBoxEditEmployeeAttendanceControls";
+            this.GBoxEditEmployeeAttendanceControls.Size = new System.Drawing.Size(1007, 117);
+            this.GBoxEditEmployeeAttendanceControls.TabIndex = 0;
+            this.GBoxEditEmployeeAttendanceControls.TabStop = false;
+            this.GBoxEditEmployeeAttendanceControls.Text = "Edit controls";
+            this.GBoxEditEmployeeAttendanceControls.Visible = false;
+            // 
+            // BtnUpdateEmployeeAttendance
+            // 
+            this.BtnUpdateEmployeeAttendance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnUpdateEmployeeAttendance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnUpdateEmployeeAttendance.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnUpdateEmployeeAttendance.ForeColor = System.Drawing.Color.White;
+            this.BtnUpdateEmployeeAttendance.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnUpdateEmployeeAttendance.Location = new System.Drawing.Point(749, 55);
+            this.BtnUpdateEmployeeAttendance.Name = "BtnUpdateEmployeeAttendance";
+            this.BtnUpdateEmployeeAttendance.Size = new System.Drawing.Size(115, 31);
+            this.BtnUpdateEmployeeAttendance.TabIndex = 41;
+            this.BtnUpdateEmployeeAttendance.Text = "Submit";
+            this.BtnUpdateEmployeeAttendance.UseVisualStyleBackColor = false;
+            this.BtnUpdateEmployeeAttendance.Click += new System.EventHandler(this.BtnUpdateEmployeeAttendance_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label8.Location = new System.Drawing.Point(564, 61);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(44, 21);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Time";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label7.Location = new System.Drawing.Point(393, 63);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(42, 21);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "Date";
+            // 
+            // DPicTimeEditAttendance
+            // 
+            this.DPicTimeEditAttendance.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.DPicTimeEditAttendance.Location = new System.Drawing.Point(614, 57);
+            this.DPicTimeEditAttendance.Name = "DPicTimeEditAttendance";
+            this.DPicTimeEditAttendance.Size = new System.Drawing.Size(112, 29);
+            this.DPicTimeEditAttendance.TabIndex = 14;
+            // 
+            // DPickerAttendanceDateEditAttendance
+            // 
+            this.DPickerAttendanceDateEditAttendance.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPickerAttendanceDateEditAttendance.Location = new System.Drawing.Point(441, 57);
+            this.DPickerAttendanceDateEditAttendance.Name = "DPickerAttendanceDateEditAttendance";
+            this.DPickerAttendanceDateEditAttendance.Size = new System.Drawing.Size(112, 29);
+            this.DPickerAttendanceDateEditAttendance.TabIndex = 13;
+            // 
+            // RBtnTimeOutEditAttendance
+            // 
+            this.RBtnTimeOutEditAttendance.AutoSize = true;
+            this.RBtnTimeOutEditAttendance.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.RBtnTimeOutEditAttendance.Location = new System.Drawing.Point(264, 27);
+            this.RBtnTimeOutEditAttendance.Name = "RBtnTimeOutEditAttendance";
+            this.RBtnTimeOutEditAttendance.Size = new System.Drawing.Size(99, 25);
+            this.RBtnTimeOutEditAttendance.TabIndex = 12;
+            this.RBtnTimeOutEditAttendance.TabStop = true;
+            this.RBtnTimeOutEditAttendance.Text = "Time-OUT";
+            this.RBtnTimeOutEditAttendance.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label6.Location = new System.Drawing.Point(19, 61);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(140, 21);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Employee Number";
+            // 
+            // TboxEditAttendanceEmployeeNumber
+            // 
+            this.TboxEditAttendanceEmployeeNumber.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TboxEditAttendanceEmployeeNumber.Location = new System.Drawing.Point(165, 58);
+            this.TboxEditAttendanceEmployeeNumber.Name = "TboxEditAttendanceEmployeeNumber";
+            this.TboxEditAttendanceEmployeeNumber.Size = new System.Drawing.Size(208, 29);
+            this.TboxEditAttendanceEmployeeNumber.TabIndex = 9;
+            // 
+            // RBtnTimeINEditAttendance
+            // 
+            this.RBtnTimeINEditAttendance.AutoSize = true;
+            this.RBtnTimeINEditAttendance.Checked = true;
+            this.RBtnTimeINEditAttendance.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.RBtnTimeINEditAttendance.Location = new System.Drawing.Point(165, 27);
+            this.RBtnTimeINEditAttendance.Name = "RBtnTimeINEditAttendance";
+            this.RBtnTimeINEditAttendance.Size = new System.Drawing.Size(84, 25);
+            this.RBtnTimeINEditAttendance.TabIndex = 11;
+            this.RBtnTimeINEditAttendance.TabStop = true;
+            this.RBtnTimeINEditAttendance.Text = "Time-IN";
+            this.RBtnTimeINEditAttendance.UseVisualStyleBackColor = true;
+            // 
             // AttendanceTerminalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -393,6 +531,9 @@ namespace Main.Forms.AttendanceTerminal
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.GBoxEditEmployeeAttendanceControls.ResumeLayout(false);
+            this.GBoxEditEmployeeAttendanceControls.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -432,5 +573,16 @@ namespace Main.Forms.AttendanceTerminal
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker DPickerFilterAttendanceStart;
         private System.Windows.Forms.ColumnHeader LVColumnDate;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox GBoxEditEmployeeAttendanceControls;
+        private System.Windows.Forms.RadioButton RBtnTimeOutEditAttendance;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox TboxEditAttendanceEmployeeNumber;
+        private System.Windows.Forms.RadioButton RBtnTimeINEditAttendance;
+        private System.Windows.Forms.DateTimePicker DPicTimeEditAttendance;
+        private System.Windows.Forms.DateTimePicker DPickerAttendanceDateEditAttendance;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button BtnUpdateEmployeeAttendance;
     }
 }
