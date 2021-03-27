@@ -34,6 +34,9 @@ using Main.Controllers.UserManagementControllers.Validator;
 using Main.Forms.AttendanceTerminal;
 using DataAccess.Data.PayrollManagement.Contracts;
 using DataAccess.Data.PayrollManagement.Implementations;
+using WkHtmlToPdfDotNet.Contracts;
+using WkHtmlToPdfDotNet;
+using Main.Reports;
 
 namespace Main
 {
@@ -98,7 +101,9 @@ namespace Main
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandleExceptionHandler);
             services.AddAutoMapper(currentDomain.GetAssemblies());
-           
+
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
             // settings
             services.Configure<DBConnectionSettings>(confBuilder.GetSection(nameof(DBConnectionSettings)));
             services.AddTransient<IDbConnectionFactory, MySQLConnection>(); // database settings, including connection string
@@ -172,6 +177,7 @@ namespace Main
             services.AddTransient<FrmPayroll>();
             services.AddTransient<AttendanceTerminalForm>();
 
+            services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
 
             //Add Serilog
             var log = new LoggerConfiguration()

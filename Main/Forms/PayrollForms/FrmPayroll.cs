@@ -4,6 +4,7 @@ using DataAccess.Data.PayrollManagement.Contracts;
 using EntitiesShared.PayrollManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Forms.PayrollForms.Controls;
+using Main.Reports;
 using Microsoft.Extensions.Logging;
 using Shared.Helpers;
 using System;
@@ -34,6 +35,7 @@ namespace Main.Forms.PayrollForms
         private readonly IEmployeePayslipBenefitData _employeePayslipBenefitData;
         private readonly IEmployeePayslipDeductionData _employeePayslipDeductionData;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
+        private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
 
         public FrmPayroll(ILogger<FrmPayroll> logger,
                             IEmployeeData employeeData,
@@ -47,7 +49,8 @@ namespace Main.Forms.PayrollForms
                            IEmployeePayslipData employeePayslipData,
                            IEmployeePayslipBenefitData employeePayslipBenefitData,
                            IEmployeePayslipDeductionData employeePayslipDeductionData,
-                           DecimalMinutesToHrsConverter decimalMinutesToHrsConverter)
+                           DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
+                           IEmployeePayslipPDFReport employeePayslipPDFReport)
         {
             InitializeComponent();
             _logger = logger;
@@ -63,6 +66,7 @@ namespace Main.Forms.PayrollForms
             _employeePayslipBenefitData = employeePayslipBenefitData;
             _employeePayslipDeductionData = employeePayslipDeductionData;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
+            _employeePayslipPDFReport = employeePayslipPDFReport;
         }
 
         private void CMStripPayroll_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -72,7 +76,9 @@ namespace Main.Forms.PayrollForms
             if (clickedItem != null && clickedItem.Name == "TStripMenuItemGenerate")
             {
                 DisplayGeneratePayrollControl();
-            }else if (clickedItem != null && clickedItem.Name == "TStripMenuItemHistory")
+
+            }
+            else if (clickedItem != null && clickedItem.Name == "TStripMenuItemHistory")
             {
                 DisplayPayrollHistoryControl();
             }
@@ -354,8 +360,14 @@ namespace Main.Forms.PayrollForms
 
             var paydate = payslipHistoryControlObj.SelectedPayslipPayDate;
 
-            payslipHistoryControlObj.EmployeePayslipsByPaydate = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+            var payslips = _employeePayslipData.GetAllEmpPayslipByPaydate(paydate);
+            payslipHistoryControlObj.EmployeePayslipsByPaydate = payslips;
             payslipHistoryControlObj.DisplayEmployeesInDGV();
+
+            if (payslips != null)
+            {
+                _employeePayslipPDFReport.GenerateEmployeePayslip(payslips.FirstOrDefault());
+            }
         }
 
 

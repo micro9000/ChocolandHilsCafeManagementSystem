@@ -192,5 +192,10 @@ namespace Main.Forms.PayrollForms.Controls
                 OnCancelSelectedEmployeePayslip(EventArgs.Empty);
             }
         }
+
+        private void BtnGeneratePayslipPDF_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
