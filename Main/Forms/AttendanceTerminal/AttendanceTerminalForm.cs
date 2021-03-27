@@ -692,11 +692,11 @@ namespace Main.Forms.AttendanceTerminal
                     return;
                 }
 
-                //if (todayAttendance.IsPaid)
-                //{
-                //    MessageBox.Show($"Invalid transaction, the attendance record you are trying to edit is already mark as paid.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    return;
-                //}
+                if (todayAttendance.IsPaid)
+                {
+                    MessageBox.Show($"Invalid transaction, the attendance record you are trying to edit is already mark as paid.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 if (this.RBtnTimeINEditAttendance.Checked)
                 { // edit time in
