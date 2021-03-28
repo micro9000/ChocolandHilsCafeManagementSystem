@@ -36,7 +36,7 @@ using DataAccess.Data.PayrollManagement.Contracts;
 using DataAccess.Data.PayrollManagement.Implementations;
 using WkHtmlToPdfDotNet.Contracts;
 using WkHtmlToPdfDotNet;
-using Main.Reports;
+using PDFReportGenerators;
 
 namespace Main
 {

@@ -8,9 +8,9 @@ namespace Shared
 {
     public class PayrollSettings
     {
-        public string FirstPayDayOfTheMonth { get; set; }
+        public int FirstPayDayOfTheMonth { get; set; }
 
-        public string SecondPayDayOfTheMonth { get; set; }
+        public int SecondPayDayOfTheMonth { get; set; }
 
         public string GeneratedPDFLoc { get; set; }
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
 
-namespace Main.Reports
+namespace PDFReportGenerators
 {
     public class PayrollPDFReport : IPayrollPDFReport
     {
