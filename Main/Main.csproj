@@ -111,6 +111,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\InventoryControllers\Validator\" />
     <Folder Include="Controllers\PayrollController\" />
     <Folder Include="FormModels\" />
     <Folder Include="Forms\PayrollForms\PdfHtmlTemplates\" />

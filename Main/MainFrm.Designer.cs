@@ -284,6 +284,7 @@ namespace Main
             this.BtnInventorySystem.TabIndex = 4;
             this.BtnInventorySystem.Text = "Inventory";
             this.BtnInventorySystem.UseVisualStyleBackColor = false;
+            this.BtnInventorySystem.Click += new System.EventHandler(this.BtnInventorySystem_Click);
             // 
             // BtnPayrollSystem
             // 

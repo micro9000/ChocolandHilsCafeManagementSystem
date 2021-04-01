@@ -66,6 +66,7 @@ namespace Main.Forms.OtherDataForms
             this.ContextMenuGovernmentItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.GovernmentAgencieToolStripItem});
             this.ContextMenuGovernmentItems.Name = "ContextMenuGovernmentItems";
+            this.ContextMenuGovernmentItems.OwnerItem = this.ToolStripItemGovernment;
             this.ContextMenuGovernmentItems.Size = new System.Drawing.Size(123, 26);
             this.ContextMenuGovernmentItems.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuGovernmentItems_ItemClicked);
             // 

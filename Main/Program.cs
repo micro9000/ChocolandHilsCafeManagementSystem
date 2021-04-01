@@ -39,6 +39,9 @@ using WkHtmlToPdfDotNet;
 using PDFReportGenerators;
 using DataAccess.Data.InventoryManagement.Contracts;
 using DataAccess.Data.InventoryManagement.Implementations;
+using Main.Forms.InventoryManagementForms;
+using Main.Controllers.InventoryControllers.ControllerInterface;
+using Main.Controllers.InventoryControllers;
 
 namespace Main
 {
@@ -175,7 +178,7 @@ namespace Main
             services.AddTransient<ILeaveTypeController, LeaveTypeController>();
             services.AddTransient<IGovernmentController, GovernmentController>();
             services.AddTransient<IUserController, UserController>();
-
+            services.AddTransient<IIngredientCategoryController, IngredientCategoryController>();
 
 
             // forms
@@ -186,6 +189,7 @@ namespace Main
             services.AddTransient<FrmOtherData>();
             services.AddTransient<FrmPayroll>();
             services.AddTransient<AttendanceTerminalForm>();
+            services.AddTransient<FrmInventory>();
 
             services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
             services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();

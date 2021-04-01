@@ -10,5 +10,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IIngredientCategoryData : IDataManagerCRUD<IngredientCategoryModel>
     {
+        List<IngredientCategoryModel> GetAllNotDeleted();
     }
 }

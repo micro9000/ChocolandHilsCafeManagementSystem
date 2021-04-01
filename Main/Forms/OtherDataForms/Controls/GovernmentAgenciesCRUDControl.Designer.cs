@@ -135,11 +135,11 @@ namespace Main.Forms.OtherDataForms.Controls
             this.DGVGovernmentAgencies.AllowUserToAddRows = false;
             this.DGVGovernmentAgencies.AllowUserToDeleteRows = false;
             this.DGVGovernmentAgencies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVGovernmentAgencies.Location = new System.Drawing.Point(335, 133);
+            this.DGVGovernmentAgencies.Location = new System.Drawing.Point(335, 121);
             this.DGVGovernmentAgencies.Name = "DGVGovernmentAgencies";
             this.DGVGovernmentAgencies.ReadOnly = true;
             this.DGVGovernmentAgencies.RowTemplate.Height = 25;
-            this.DGVGovernmentAgencies.Size = new System.Drawing.Size(450, 209);
+            this.DGVGovernmentAgencies.Size = new System.Drawing.Size(450, 221);
             this.DGVGovernmentAgencies.TabIndex = 4;
             this.DGVGovernmentAgencies.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVGovernmentAgencies_CellClick);
             this.DGVGovernmentAgencies.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVGovernmentAgencies_CellMouseEnter);

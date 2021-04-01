@@ -1,5 +1,6 @@
 ﻿using Main.Forms.AttendanceTerminal;
 using Main.Forms.EmployeeManagementForms;
+using Main.Forms.InventoryManagementForms;
 using Main.Forms.OtherDataForms;
 using Main.Forms.PayrollForms;
 using Main.Forms.UserManagementForms;
@@ -23,6 +24,7 @@ namespace Main
         private readonly FrmPayroll _payrollForm;
         private readonly FrmUserManagement _frmUserManagement;
         private readonly AttendanceTerminalForm _attendanceTerminalForm;
+        private readonly FrmInventory _frmInventory;
         private Button currentButton;
         private Form activeForm;
 
@@ -31,7 +33,8 @@ namespace Main
                         FrmOtherData frmOtherData,
                         FrmPayroll payrollForm,
                         FrmUserManagement frmUserManagement,
-                        AttendanceTerminalForm attendanceTerminalForm)
+                        AttendanceTerminalForm attendanceTerminalForm,
+                        FrmInventory frmInventory)
         {
             InitializeComponent();
             _sessions = sessions;
@@ -40,7 +43,7 @@ namespace Main
             _payrollForm = payrollForm;
             _frmUserManagement = frmUserManagement;
             _attendanceTerminalForm = attendanceTerminalForm;
-
+            _frmInventory = frmInventory;
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -173,6 +176,11 @@ namespace Main
             _attendanceTerminalForm.BringToFront();
             _attendanceTerminalForm.Show();
             this.LblRenderedFormTitle.Text = _attendanceTerminalForm.Text;
+        }
+
+        private void BtnInventorySystem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(_frmInventory, sender);
         }
     }
 }

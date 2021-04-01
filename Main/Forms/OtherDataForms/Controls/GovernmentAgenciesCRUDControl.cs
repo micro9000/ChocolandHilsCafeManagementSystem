@@ -197,6 +197,7 @@ namespace Main.Forms.OtherDataForms.Controls
 
                     row.Cells[0].Value = agency.Id;
                     row.Cells[1].Value = agency.GovtAgency;
+                    row.Cells[1].Value = agency.CreatedAt.ToShortDateString();
                     this.DGVGovernmentAgencies.Rows.Add(row);
                 }
             }
