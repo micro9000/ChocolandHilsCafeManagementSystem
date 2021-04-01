@@ -170,7 +170,7 @@ namespace Main
             services.AddTransient<GovernmentAgencyAddUpdateValidator>();
             // Inventory
             services.AddTransient<IngredientAddUpdateValidator>();
-
+            services.AddTransient<IngredientInventoryAddUpdateValidator>();
 
             // controllers
             services.AddTransient<IEmployeeBenefitsDeductionsController, EmployeeBenefitsDeductionsController>();
@@ -184,6 +184,7 @@ namespace Main
             services.AddTransient<IUserController, UserController>();
             services.AddTransient<IIngredientCategoryController, IngredientCategoryController>();
             services.AddTransient<IIngredientController, IngredientController>();
+            services.AddTransient<IIngredientInventoryController, IngredientInventoryController>();
 
 
             // forms

@@ -18,5 +18,11 @@ namespace DataAccess.Data.InventoryManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<IngInventoryTransactionModel> GetAllByIngredient(int ingredientId)
+        {
+            string query = @"SELECT * FROM IngInventoryTransactions WHERE isDeleted=false AND ingredientId=@IngredientId";
+            return this.GetAll(query, new { IngredientId = ingredientId });
+        }
     }
 }

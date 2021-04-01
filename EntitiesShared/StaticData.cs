@@ -23,8 +23,11 @@ namespace EntitiesShared
 
         public enum InventoryTransType
         {
+            NEW,
+            UPDATE,
             INC, // Increase
-            DEC // Decrease
+            DEC, // Decrease
+            DELETE
         }
 
         public static Dictionary<UOM, string> GetUnitOfMeasurements 

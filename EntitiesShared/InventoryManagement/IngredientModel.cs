@@ -26,29 +26,12 @@ namespace EntitiesShared.InventoryManagement
 
         public StaticData.UOM UOM { get; set; }
 
-        private List<IngredientInventoryModel> inventories;
+
         [Write(false)]
         [Computed]
-        public List<IngredientInventoryModel> Inventories
+        public decimal RemainingQtyValue 
         {
-            get { return inventories; }
-            set { inventories = value; }
-        }
-
-        [Write(false)]
-        [Computed]
-        public decimal CurrentQtyValue 
-        { 
-            get
-            {
-                if (this.Inventories != null)
-                {
-                    decimal qtyValue = this.Inventories.Sum(x => x.CurrentQtyValue);
-                    return qtyValue;
-                }
-
-                return 0;
-            }
+            get;set;
         }
     }
 }

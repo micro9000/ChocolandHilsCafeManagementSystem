@@ -14,11 +14,11 @@ namespace Main.Controllers.InventoryControllers
 {
     public class IngredientCategoryController : IIngredientCategoryController
     {
-        private readonly ILogger<LoginFrm> _logger;
+        private readonly ILogger<IngredientCategoryController> _logger;
         private readonly IMapper _mapper;
         private readonly IIngredientCategoryData _ingredientCategoryData;
 
-        public IngredientCategoryController(ILogger<LoginFrm> logger,
+        public IngredientCategoryController(ILogger<IngredientCategoryController> logger,
                                             IMapper mapper,
                                             IIngredientCategoryData ingredientCategoryData)
         {

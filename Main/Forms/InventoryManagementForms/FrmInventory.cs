@@ -19,6 +19,7 @@ namespace Main.Forms.InventoryManagementForms
         private readonly UOMConverter _uOMConverter;
         private readonly IIngredientData _ingredientData;
         private readonly IIngredientCategoryData _ingredientCategoryData;
+        private readonly IIngredientInventoryData _ingredientInventoryData;
         private readonly IIngInventoryTransactionData _ingInventoryTransactionData;
         private readonly IProductCategoryData _productCategoryData;
         private readonly IProductData _productData;
@@ -26,10 +27,12 @@ namespace Main.Forms.InventoryManagementForms
         private readonly IComboSetProductData _comboSetProductData;
         private readonly IIngredientCategoryController _ingredientCategoryController;
         private readonly IIngredientController _ingredientController;
+        private readonly IIngredientInventoryController _ingredientInventoryController;
 
         public FrmInventory(UOMConverter uOMConverter,
                             IIngredientData ingredientData,
                             IIngredientCategoryData ingredientCategoryData,
+                            IIngredientInventoryData ingredientInventoryData,
                             IIngInventoryTransactionData ingInventoryTransactionData,
                             IProductCategoryData productCategoryData,
                             IProductData productData,
@@ -37,12 +40,14 @@ namespace Main.Forms.InventoryManagementForms
                             IComboSetData comboSetData,
                             IComboSetProductData comboSetProductData,
                             IIngredientCategoryController ingredientCategoryController,
-                            IIngredientController ingredientController)
+                            IIngredientController ingredientController,
+                            IIngredientInventoryController ingredientInventoryController)
         {
             InitializeComponent();
             _uOMConverter = uOMConverter;
             _ingredientData = ingredientData;
             _ingredientCategoryData = ingredientCategoryData;
+            _ingredientInventoryData = ingredientInventoryData;
             _ingInventoryTransactionData = ingInventoryTransactionData;
             _productCategoryData = productCategoryData;
             _productData = productData;
@@ -50,6 +55,7 @@ namespace Main.Forms.InventoryManagementForms
             _comboSetProductData = comboSetProductData;
             _ingredientCategoryController = ingredientCategoryController;
             _ingredientController = ingredientController;
+            _ingredientInventoryController = ingredientInventoryController;
         }
 
         private void ContextMenuIngredient_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -78,6 +84,9 @@ namespace Main.Forms.InventoryManagementForms
 
             inventoryControlObj.IngredientSaved += HandleSaveIngredient;
             inventoryControlObj.IngredientDelete += HandleSelectIngredientToDelete;
+
+            inventoryControlObj.IngredientGetInventories += HandleIngredientGetInventories;
+            inventoryControlObj.IngredientInventorySave += HandleIngredientInventorySave;
 
             this.PanelMainContainer.Controls.Add(inventoryControlObj);
         }
@@ -122,7 +131,6 @@ namespace Main.Forms.InventoryManagementForms
 
             inventoryControlObj.CategoryToAddUpdate = _ingredientCategoryData.Get(selectedCategoryId);
             inventoryControlObj.DisplaySelectedCategoryDetails();
-
         }
 
         private void HandleSelectedCategoryToDelete(object sender, EventArgs e)
@@ -237,8 +245,6 @@ namespace Main.Forms.InventoryManagementForms
 
             if (res == DialogResult.OK)
             {
-
-
                 var deleteResults = _ingredientController.Delete(selectedIngredientId);
 
                 string resultMessages = "";
@@ -258,6 +264,50 @@ namespace Main.Forms.InventoryManagementForms
                 else
                 {
                     MessageBox.Show(resultMessages, "Delete category", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+
+        private void HandleIngredientGetInventories(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            inventoryControlObj.SelectedIngredientInventories = _ingredientInventoryData.GetAllByIngredient(selectedIngredientId);
+        }
+
+        private void HandleIngredientInventorySave(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            var ingredientInventory = inventoryControlObj.IngredientInventoryToAddUpdate;
+            bool isNew = inventoryControlObj.IsNewIngredientInventory;
+            string remarks = inventoryControlObj.Remarks;
+
+            if (ingredientInventory != null)
+            {
+                var saveResults = _ingredientInventoryController.Save(ingredientInventory, isNew, remarks);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save inventory", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+                    inventoryControlObj.SelectedIngredientInventories = _ingredientInventoryData.GetAllByIngredient(selectedIngredientId);
+                    inventoryControlObj.DisplayIngredientInventories();
+                    inventoryControlObj.ResetNewUpdateIngredeintInventoryForm();
+
+                    inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
+                    inventoryControlObj.DisplayIngredientInDGV();
+                    //inventoryControlObj.SelectedIngredientInventory = _ingredientInventoryData
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save inventory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }

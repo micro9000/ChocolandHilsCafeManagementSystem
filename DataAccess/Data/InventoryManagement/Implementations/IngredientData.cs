@@ -14,13 +14,16 @@ namespace DataAccess.Data.InventoryManagement.Implementations
     {
         private readonly IDbConnectionFactory _dbConnFactory;
         private readonly IIngredientCategoryData _ingredientCategoryData;
+        private readonly IIngredientInventoryData _ingredientInventoryData;
 
         public IngredientData(IDbConnectionFactory dbConnFactory, 
-                                IIngredientCategoryData ingredientCategoryData) :
+                                IIngredientCategoryData ingredientCategoryData,
+                                IIngredientInventoryData ingredientInventoryData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
             _ingredientCategoryData = ingredientCategoryData;
+            _ingredientInventoryData = ingredientInventoryData;
         }
 
         public bool MassUpdateIngredientsCategory (int previousCategoryId, int newCategoryId)
@@ -88,6 +91,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             foreach(var ing in ingredients)
             {
                 ing.Category = _ingredientCategoryData.Get(ing.CategoryId);
+                ing.RemainingQtyValue = _ingredientInventoryData.GetRemainingQtyValueByIngredient(ing.Id);
             }
 
             return ingredients;

@@ -14,19 +14,11 @@ namespace EntitiesShared.InventoryManagement
 
         public decimal InitialQtyValue { get; set; }
 
-        public decimal CurrentQtyValue { get; set; }
-
-        [Write(false)]
-        [Computed]
-        public decimal RemainingQtyValue
-        {
-            get
-            {
-                return InitialQtyValue - CurrentQtyValue;
-            }
-        }
+        public decimal RemainingQtyValue { get; set; }
 
         public decimal UnitCost { get; set; }
+
+        public DateTime ExpirationDate { get; set; }
 
         public bool IsSoldOut { get; set; }
     }

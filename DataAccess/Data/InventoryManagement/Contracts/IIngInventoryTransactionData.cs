@@ -10,5 +10,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IIngInventoryTransactionData : IDataManagerCRUD<IngInventoryTransactionModel>
     {
+        List<IngInventoryTransactionModel> GetAllByIngredient(int ingredientId);
     }
 }

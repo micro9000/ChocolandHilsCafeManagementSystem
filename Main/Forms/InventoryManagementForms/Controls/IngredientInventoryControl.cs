@@ -26,9 +26,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
         {
             SetDGVIngredientCategoriesFontAndColors();
             SetDGVIngredientListFontAndColors();
+            SetDGVIngredientInventoriesFontAndColors();
+
             DisplayIngredientCategoriesInDGV();
             DisplayUnitOfMeasurementsInCBox();
             DisplayIngredientInDGV();
+
+            this.PropertyIsNewIngredientInventoryChanged += OnIsNewIngredientInventoryUpdate;
+
+            this.MainTabControl.SelectedIndex = this.MainTabControl.TabPages.IndexOf(MainTabIngredientList);
         }
 
         #region Ingredient categories
@@ -268,6 +274,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                     this.CboxIngredientsCategories.Items.Add(item);
                 }
+
+                ComboboxItem itemForFilter;
+
+                foreach (var category in this.IngredientCategories)
+                {
+                    itemForFilter = new ComboboxItem();
+                    itemForFilter.Text = category.Category;
+                    itemForFilter.Value = category.Id;
+
+                    this.CboxFilterByCategory.Items.Add(itemForFilter);
+                }
             }
         }
 
@@ -331,7 +348,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 this.DGVIngredientList.Columns[3].HeaderText = "UOM";
 
                 this.DGVIngredientList.Columns[4].Name = "QtyValue";
-                this.DGVIngredientList.Columns[4].HeaderText = "Qty Value";
+                this.DGVIngredientList.Columns[4].HeaderText = "Rem. Qty Value";
 
 
                 // View inventory button
@@ -366,7 +383,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     row.Cells[1].Value = ing.IngName;
                     row.Cells[2].Value = ing.Category.Category;
                     row.Cells[3].Value = ing.UOM;
-                    row.Cells[4].Value = this.GetUOMFormatted(ing.UOM, ing.CurrentQtyValue);
+                    row.Cells[4].Value = this.GetUOMFormatted(ing.UOM, ing.RemainingQtyValue);
 
                     this.DGVIngredientList.Rows.Add(row);
                 }
@@ -434,10 +451,10 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.IsNewIngredient = true;
         }
 
-        public event EventHandler IngredientViewInventory;
-        protected virtual void OnIngredientViewInventory(EventArgs e)
+        public event EventHandler IngredientGetInventories;
+        protected virtual void OnIngredientGetInventories(EventArgs e)
         {
-            IngredientViewInventory?.Invoke(this, e);
+            IngredientGetInventories?.Invoke(this, e);
         }
 
         public event EventHandler IngredientDelete;
@@ -447,6 +464,14 @@ namespace Main.Forms.InventoryManagementForms.Controls
         }
 
         public int SelectedIngredientId { get; set; }
+        private IngredientModel selectedIngredient;
+
+        public IngredientModel SelectedIngredient
+        {
+            get { return selectedIngredient; }
+            set { selectedIngredient = value; }
+        }
+
 
         private void DGVIngredientList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -455,9 +480,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (DGVIngredientList.CurrentRow != null)
                 {
-                    string ingredientId = DGVIngredientList.CurrentRow.Cells[0].Value.ToString();
-                    SelectedIngredientId = int.Parse(ingredientId);
-                    OnIngredientViewInventory(EventArgs.Empty);
+                    int ingredientId = int.Parse(DGVIngredientList.CurrentRow.Cells[0].Value.ToString());
+                    SelectedIngredient = this.Ingredients.Where(x => x.Id == ingredientId).FirstOrDefault();
+                    SelectedIngredientId = ingredientId;
+
+                    OnIngredientGetInventories(EventArgs.Empty);
+
+                    MoveToInventoryTabAndDisplayIngredientInventories();
                 }
             }
 
@@ -520,13 +549,28 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
-        #endregion
-
         private void BtnSearchIngredient_Click(object sender, EventArgs e)
         {
             string searchStr = this.TboxSearchIngredient.Text;
+            int categoryId = 0;
+
+            if (this.CboxFilterByCategory.SelectedIndex >= 0)
+            {
+                var selectedCategory = this.CboxFilterByCategory.SelectedItem as ComboboxItem;
+                categoryId = int.Parse(selectedCategory.Value.ToString());
+            }
 
             var searchResults = this.Ingredients.Where(x => x.IngName.Contains(searchStr)).ToList();
+
+            if (categoryId > 0 && string.IsNullOrWhiteSpace(searchStr) == false)
+            { // both category and search string
+                searchResults = this.Ingredients.Where(x => x.IngName.Contains(searchStr) && x.CategoryId == categoryId).ToList();
+
+            }else if (categoryId > 0 && string.IsNullOrWhiteSpace(searchStr) == true)
+            {
+                // category only
+                searchResults = this.Ingredients.Where(x => x.CategoryId == categoryId).ToList();
+            }
 
             this.DisplayIngredientInDGV(searchResults);
         }
@@ -536,5 +580,299 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TboxSearchIngredient.Text = "";
             this.DisplayIngredientInDGV(this.Ingredients);
         }
+
+        #endregion
+
+
+        private void SetDGVIngredientInventoriesFontAndColors()
+        {
+            this.DGVIngredientInventories.BackgroundColor = Color.White;
+            this.DGVIngredientInventories.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVIngredientInventories.RowHeadersVisible = false;
+            this.DGVIngredientInventories.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVIngredientInventories.AllowUserToResizeRows = false;
+            this.DGVIngredientInventories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVIngredientInventories.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVIngredientInventories.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVIngredientInventories.MultiSelect = false;
+
+            this.DGVIngredientInventories.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVIngredientInventories.ColumnHeadersHeight = 30;
+        }
+
+
+        private List<IngredientInventoryModel> selectedIngredientInventories;
+
+        public List<IngredientInventoryModel> SelectedIngredientInventories
+        {
+            get { return selectedIngredientInventories; }
+            set { selectedIngredientInventories = value; }
+        }
+
+        public void MoveToInventoryTabAndDisplayIngredientInventories()
+        {
+            if (this.SelectedIngredient == null)
+                return;
+
+            this.LblSelectedIngToViewOrAddInventory.Text = this.SelectedIngredient.IngName;
+            this.LblSelectedIngUOMToViewOrAddInventory.Text = this.SelectedIngredient.UOM.ToString();
+
+            string uom = $"({this.SelectedIngredient.UOM})";
+            this.LblQuantityValueIndicator.Text = uom;
+            this.LblQuantityValueIndicator1.Text = uom;
+            this.LblQuantityValueIndicator2.Text = uom;
+
+            DisplayIngredientInventories();
+
+            this.MainTabControl.SelectedIndex = this.MainTabControl.TabPages.IndexOf(MainTabIngInventories);
+        }
+
+
+        public void DisplayIngredientInventories()
+        {
+            if (this.SelectedIngredient == null)
+                return;
+
+            this.DGVIngredientInventories.Rows.Clear();
+            if (SelectedIngredientInventories != null)
+            {
+                this.DGVIngredientInventories.ColumnCount = 5;
+
+                this.DGVIngredientInventories.Columns[0].Name = "IngInventoryId";
+                this.DGVIngredientInventories.Columns[0].Visible = false;
+
+                this.DGVIngredientInventories.Columns[1].Name = "InitialQtyValue";
+                this.DGVIngredientInventories.Columns[1].HeaderText = "Initial Qty Value";
+
+                this.DGVIngredientInventories.Columns[2].Name = "RemainingQtyValue";
+                this.DGVIngredientInventories.Columns[2].HeaderText = "Remaining Qty Value";
+
+                this.DGVIngredientInventories.Columns[3].Name = "UnitCost";
+                this.DGVIngredientInventories.Columns[3].HeaderText = "Unit Cost";
+
+                this.DGVIngredientInventories.Columns[4].Name = "ExpirationDate";
+                this.DGVIngredientInventories.Columns[4].HeaderText = "Expiration Date";
+
+                // Update button
+                DataGridViewImageColumn btnUpdateImg = new DataGridViewImageColumn();
+                //btnUpdateLeaveTypeImg.Name = "";
+                btnUpdateImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnUpdateImg.Image = Image.FromFile("./Resources/edit-24.png");
+                this.DGVIngredientInventories.Columns.Add(btnUpdateImg);
+
+                // Delete button
+                DataGridViewImageColumn btnDeleteImg = new DataGridViewImageColumn();
+                //btnDeleteLeaveTypeImg.Name = "";
+                btnDeleteImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnDeleteImg.Image = Image.FromFile("./Resources/remove-24.png");
+                this.DGVIngredientInventories.Columns.Add(btnDeleteImg);
+
+                foreach (var item in SelectedIngredientInventories)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVIngredientInventories);
+
+                    row.Cells[0].Value = item.Id;
+                    row.Cells[1].Value = this.GetUOMFormatted(this.SelectedIngredient.UOM, item.InitialQtyValue);
+                    row.Cells[2].Value = this.GetUOMFormatted(this.SelectedIngredient.UOM, item.RemainingQtyValue);
+                    row.Cells[3].Value = item.UnitCost;
+                    row.Cells[4].Value = item.ExpirationDate.ToShortDateString();
+
+                    this.DGVIngredientInventories.Rows.Add(row);
+                }
+            }
+        }
+
+
+        public event EventHandler IngredientInventorySave;
+        protected virtual void OnIngredientInventorySave(EventArgs e)
+        {
+            IngredientInventorySave?.Invoke(this, e);
+        }
+
+        private IngredientInventoryModel ingInventoryToAddUpdate;
+
+        public IngredientInventoryModel IngredientInventoryToAddUpdate
+        {
+            get { return ingInventoryToAddUpdate; }
+            set { ingInventoryToAddUpdate = value; }
+        }
+
+
+        // Use on clicking update button
+        public event PropertyChangedEventHandler PropertyIsNewIngredientInventoryChanged;
+
+        private bool _isNewIngredientInventory = true;
+
+        public bool IsNewIngredientInventory
+        {
+            get { return _isNewIngredientInventory; }
+            set { 
+                _isNewIngredientInventory = value;
+
+                if (PropertyIsNewIngredientInventoryChanged != null)
+                {
+                    PropertyIsNewIngredientInventoryChanged(this, new PropertyChangedEventArgs(IsNewIngredientInventory.ToString()));
+                }
+            }
+        }
+
+
+        private void OnIsNewIngredientInventoryUpdate(object sender, PropertyChangedEventArgs e)
+        {
+            if (IsNewIngredientInventory == true)
+            {
+                this.LblNewOrUpdateInventoryIndicator.Text = "New inventory";
+            }
+            else
+            {
+                this.LblNewOrUpdateInventoryIndicator.Text = "Update inventory";
+            }
+        }
+
+        public string Remarks { get; set; }
+
+        public decimal GetUOMToSmallUOM(StaticData.UOM uom, decimal qtyValue)
+        {
+            decimal newQtyValue = 0;
+
+            switch (uom)
+            {
+                case StaticData.UOM.kg:
+                    newQtyValue = _uOMConverter.kg_to_gram(qtyValue);
+                    break;
+
+                case StaticData.UOM.L:
+                    newQtyValue = _uOMConverter.L_to_ml(qtyValue);
+                    break;
+
+                case StaticData.UOM.pcs:
+                    newQtyValue = qtyValue;
+                    break;
+                default:
+                    qtyValue = 0;
+                    break;
+            }
+
+            return newQtyValue;
+        }
+
+        public decimal GetUOMToBigUOM(StaticData.UOM uom, decimal qtyValue)
+        {
+            decimal newQtyValue = 0;
+
+            switch (uom)
+            {
+                case StaticData.UOM.kg:
+                    newQtyValue = _uOMConverter.gram_to_kg(qtyValue);
+                    break;
+
+                case StaticData.UOM.L:
+                    newQtyValue = _uOMConverter.ml_to_L(qtyValue);
+                    break;
+
+                case StaticData.UOM.pcs:
+                    newQtyValue = qtyValue;
+                    break;
+                default:
+                    qtyValue = 0;
+                    break;
+            }
+
+            return newQtyValue;
+        }
+
+        public void ResetNewUpdateIngredeintInventoryForm()
+        {
+            this.TboxRemarks.Text = "";
+            this.NumUDQtyValForIngInventory.Value = 0;
+            this.NumUDUnitCostForIngInventory.Value = 0;
+            this.DPickerExpirationDateForIngInventory.Value = DateTime.Now;
+            this.IsNewIngredientInventory = true;
+        }
+
+        private void BtnSaveNewIngInventory_Click(object sender, EventArgs e)
+        {
+            this.Remarks = this.TboxRemarks.Text; // Remarks
+            decimal qtyValue = this.NumUDQtyValForIngInventory.Value;
+            decimal unitCost = this.NumUDUnitCostForIngInventory.Value;
+            DateTime expDate = this.DPickerExpirationDateForIngInventory.Value;
+
+            if (expDate <= DateTime.Now)
+            {
+                MessageBox.Show("Invalid Expiration Date", "Expiration date", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (SelectedIngredientId <= 0 || SelectedIngredient == null)
+            {
+                MessageBox.Show("Please select ingredient first.", "No selected ingredient", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            StaticData.UOM selectedIngredientUOM = SelectedIngredient.UOM;
+            decimal newQtyValue = GetUOMToSmallUOM(selectedIngredientUOM, qtyValue);
+
+            if (this.IsNewIngredientInventory)
+            {
+                this.IngredientInventoryToAddUpdate = new IngredientInventoryModel { 
+                    IngredientId = SelectedIngredientId,
+                    InitialQtyValue = newQtyValue,
+                    RemainingQtyValue = newQtyValue,
+                    UnitCost = unitCost,
+                    ExpirationDate = expDate
+                };
+            }
+            else
+            {
+                if (this.IngredientInventoryToAddUpdate != null)
+                {
+                    this.IngredientInventoryToAddUpdate.InitialQtyValue = newQtyValue;
+                    this.IngredientInventoryToAddUpdate.RemainingQtyValue = newQtyValue;
+                    this.IngredientInventoryToAddUpdate.UnitCost = unitCost;
+                    this.IngredientInventoryToAddUpdate.ExpirationDate = expDate;
+                }
+            }
+
+            OnIngredientInventorySave(EventArgs.Empty);
+        }
+
+        private void BtnCancelSaveIngInventory_Click(object sender, EventArgs e)
+        {
+            ResetNewUpdateIngredeintInventoryForm();
+        }
+
+        private void DGVIngredientInventories_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Update button
+            if ((e.ColumnIndex == 5) && e.RowIndex > -1)
+            {
+                if (DGVIngredientInventories.CurrentRow != null && SelectedIngredientInventories != null)
+                {
+                    int inventoryId = int.Parse(DGVIngredientInventories.CurrentRow.Cells[0].Value.ToString());
+
+                    var ingredientInventory = this.SelectedIngredientInventories.Where(x => x.Id == inventoryId).FirstOrDefault();
+
+                    this.IngredientInventoryToAddUpdate = ingredientInventory;
+                    DisplaySelectedInventoryInSaveNewUpdateForm(ingredientInventory);
+
+                    this.IsNewIngredientInventory = false;
+                }
+            }
+        }
+
+        public void DisplaySelectedInventoryInSaveNewUpdateForm(IngredientInventoryModel ingredientInventory)
+        {
+            if (ingredientInventory != null && this.SelectedIngredient != null)
+            {
+                this.NumUDQtyValForIngInventory.Value = this.GetUOMToBigUOM(this.SelectedIngredient.UOM, ingredientInventory.RemainingQtyValue);
+                this.NumUDUnitCostForIngInventory.Value = ingredientInventory.UnitCost;
+                this.DPickerExpirationDateForIngInventory.Value = ingredientInventory.ExpirationDate;
+            }
+        }
+
     }
 }

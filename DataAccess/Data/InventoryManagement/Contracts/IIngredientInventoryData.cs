@@ -10,5 +10,7 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IIngredientInventoryData : IDataManagerCRUD<IngredientInventoryModel>
     {
+        decimal GetRemainingQtyValueByIngredient(int ingredientId);
+        List<IngredientInventoryModel> GetAllByIngredient(int ingredientId);
     }
 }

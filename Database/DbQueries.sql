@@ -505,6 +505,8 @@ CREATE TABLE IF NOT EXISTS IngredientCategories(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM IngredientCategories;
+
 CREATE TABLE IF NOT EXISTS Ingredients(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     categoryId INT NOT NULL,
@@ -517,12 +519,15 @@ CREATE TABLE IF NOT EXISTS Ingredients(
     FOREIGN KEY(categoryId) REFERENCES IngredientCategories(id)
 )ENGINE=INNODB;
 
+SELECT * FROM Ingredients;
+
 CREATE TABLE IF NOT EXISTS IngredientInventory(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	ingredientId INT NOT NULL,
-    initialQtyValue DECIMAL,
-    currentQtyValue DECIMAL,
-    unitCost DECIMAL(9,2),
+    initialQtyValue DECIMAL, -- in grams, ml, or pcs
+    remainingQtyValue DECIMAL,
+    unitCost DECIMAL(9,2), -- unit cost based on unit of measurement
+    expirationDate DATE,
     isSoldOut BOOLEAN DEFAULT False,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -531,20 +536,44 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
+SELECT * FROM IngredientInventory;
+
+SELECT SUM(remainingQtyValue) 
+FROM IngredientInventory
+WHERE isDeleted=false AND isSoldOut=false AND ingredientId=@IngredientId;
+
 CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	ingInventoryId INT NOT NULL,
-    transType CHAR(3), -- INC, DEC
+	ingredientId INT NOT NULL,
+    transType INT, -- See StaticData.cs file under EntitiesShared Project
     qtyVal DECIMAL,
+    unitCost DECIMAL(9,2),
+    expirationDate DATE,
     userId BIGINT NOT NULL,
     remarks VARCHAR(255),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(ingInventoryId) REFERENCES IngredientInventory(id),
+    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id),
     FOREIGN KEY(userId) REFERENCES Users(id)
 )ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS IngredientInventoryScraps(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ingredientId INT NOT NULL,
+    qtyValue DECIMAL,
+    unitCost DECIMAL(9,2), -- unit cost based on unit of measurement
+    expirationDate DATE,
+    actualScrapDate DATE,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
+)ENGINE=INNODB;
+
+SELECT * FROM IngInventoryTransactions;
 
 CREATE TABLE IF NOT EXISTS ProductCategories(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
