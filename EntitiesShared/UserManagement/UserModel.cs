@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.UserManagement
 {
     [Table("Users")]
-    public class UserModel : BaseModel
+    public class UserModel : BaseIntModel
     {
         public string UserName { get; set; }
 

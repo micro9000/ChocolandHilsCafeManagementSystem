@@ -13,5 +13,18 @@ namespace EntitiesShared
             normal,
             admin
         }
+
+        public enum UOM
+        {
+            kg, // Kilogram
+            L, // Liter
+            pcs // Pieces
+        }
+
+        public enum InventoryTransType
+        {
+            INC, // Increase
+            DEC // Decrease
+        }
     }
 }

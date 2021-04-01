@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.EmployeeManagement
 {
     [Table("Employees")]
-    public class EmployeeModel : BaseModel
+    public class EmployeeModel : BaseLongModel
     {
         private string employeeNumber;
 

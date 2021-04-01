@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.EmployeeManagement
 {
     [Table("Holidays")]
-    public class HolidayModel : BaseModel
+    public class HolidayModel : BaseLongModel
     {
         private string holiday;
 

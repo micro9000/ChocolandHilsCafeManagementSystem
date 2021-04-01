@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.EmployeeManagement
 {
     [Table("EmployeeGovtIdCards")]
-    public class EmployeeGovtIdCardModel : BaseModel
+    public class EmployeeGovtIdCardModel : BaseLongModel
     {
         private string employeeNumber;
 

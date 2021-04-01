@@ -112,6 +112,7 @@ namespace Main
             services.AddSingleton<Sessions>(); // application state or session
             services.AddSingleton<Hashing>();
             services.AddSingleton<DecimalMinutesToHrsConverter>();
+            services.AddSingleton<UOMConverter>();
 
             // Data Access services
             services.AddTransient<IUserData, UserData>();

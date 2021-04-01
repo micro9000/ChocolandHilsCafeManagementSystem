@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.OtherDataManagement
 {
     [Table("LeaveTypes")]
-    public class LeaveTypeModel : BaseModel
+    public class LeaveTypeModel : BaseLongModel
     {
         private string leaveType;
 

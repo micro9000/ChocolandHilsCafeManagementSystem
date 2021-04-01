@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.OtherDataManagement
 {
     [Table("GovernmentAgencies")]
-    public class GovernmentAgencyModel : BaseModel
+    public class GovernmentAgencyModel : BaseLongModel
     {
         private string govtAgency;
 

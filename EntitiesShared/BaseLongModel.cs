@@ -7,7 +7,7 @@ using Dapper.Contrib.Extensions;
 
 namespace EntitiesShared
 {
-    public class BaseModel
+    public class BaseLongModel
     {
         private long id;
 

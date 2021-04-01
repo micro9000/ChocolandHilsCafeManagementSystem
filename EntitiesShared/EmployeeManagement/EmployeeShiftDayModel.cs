@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.EmployeeManagement
 {
     [Table("EmployeeShiftDays")]
-    public class EmployeeShiftDayModel : BaseModel
+    public class EmployeeShiftDayModel : BaseLongModel
     {
         private long shiftId;
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.EmployeeManagement
 {
     [Table("EmployeeShifts")]
-    public class EmployeeShiftModel : BaseModel
+    public class EmployeeShiftModel : BaseLongModel
     {
         private string shift;
 

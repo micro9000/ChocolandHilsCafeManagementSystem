@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.PayrollManagement
 {
     [Table("EmployeePayslips")]
-    public class EmployeePayslipModel : BaseModel
+    public class EmployeePayslipModel : BaseLongModel
     {
         private string employeeNumber;
 

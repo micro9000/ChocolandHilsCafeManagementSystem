@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.PayrollManagement
 {
     [Table("EmployeePayslipDeductions")]
-    public class EmployeePayslipDeductionModel : BaseModel
+    public class EmployeePayslipDeductionModel : BaseLongModel
     {
         private long payslipId;
 

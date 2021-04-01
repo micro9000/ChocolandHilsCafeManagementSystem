@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.EmployeeManagement
 {
     [Table("EmployeeLeaves")]
-    public class EmployeeLeaveModel : BaseModel
+    public class EmployeeLeaveModel : BaseLongModel
     {
         private long leaveId;
 

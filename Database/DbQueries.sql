@@ -439,7 +439,7 @@ CREATE TABLE IF NOT EXISTS Roles(
 SELECT * FROM Roles;
 
 CREATE TABLE IF NOT EXISTS Users(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userName CHAR(20) UNIQUE,
     fullName VARCHAR(50),
 	passwordSha512 VARCHAR(255),
@@ -451,7 +451,7 @@ CREATE TABLE IF NOT EXISTS Users(
 )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS UserActivityLog(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userName CHAR(20),
     activity VARCHAR(255),
     createdAt DATETIME DEFAULT NOW()
@@ -460,7 +460,7 @@ CREATE TABLE IF NOT EXISTS UserActivityLog(
 SELECT * FROM Users;
 
 CREATE TABLE IF NOT EXISTS UserRoles(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userId BIGINT NOT NULL,
     roleId INT NOT NULL,
     createdAt DATETIME DEFAULT NOW(),
@@ -491,3 +491,101 @@ SELECT * FROM Users;
 
 INSERT INTO UserRoles (userId, roleId)
 VALUES (1,1), (2,2);
+
+-- --------------------------------------------------------------------------------------
+-- Inventory and POS related tables:
+-- --------------------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS IngredientCategories(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	category VARCHAR(255),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS Ingredients(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    categoryId INT NOT NULL,
+	ingName VARCHAR(255),
+    uom CHAR(3), -- kg(gram), L(ml), pcs(pc)
+    initialMeasurement DECIMAL,
+    currentMeasurement DECIMAL,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(categoryId) REFERENCES IngredientCategories(id)
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ingredientId INT NOT NULL,
+    transType CHAR(3), -- INC, DEC
+    val DECIMAL,
+    userId BIGINT NOT NULL,
+    remarks VARCHAR(255),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id),
+    FOREIGN KEY(userId) REFERENCES Users(id)
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS ProductCategories(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	prodCategory VARCHAR(255),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS Products(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    categoryId INT NOT NULL,
+	prodName VARCHAR(255),
+    price DECIMAL(9,2),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(categoryId) REFERENCES ProductCategories(id)
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS ProductIngredients(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	productId INT NOT NULL,
+    ingredientId INT NOT NULL,
+    measurement DECIMAL,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(productId) REFERENCES Products(id),
+    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS ComboSets(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	setName VARCHAR(255),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS ComboSetProducts(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	comboSetId INT NOT NULL,
+    productId INT NOT NULL,
+    quantity INT,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(comboSetId) REFERENCES ComboSets(id),
+    FOREIGN KEY(productId) REFERENCES Products(id)
+)ENGINE=INNODB;
