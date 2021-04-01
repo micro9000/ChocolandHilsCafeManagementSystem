@@ -37,6 +37,8 @@ using DataAccess.Data.PayrollManagement.Implementations;
 using WkHtmlToPdfDotNet.Contracts;
 using WkHtmlToPdfDotNet;
 using PDFReportGenerators;
+using DataAccess.Data.InventoryManagement.Contracts;
+using DataAccess.Data.InventoryManagement.Implementations;
 
 namespace Main
 {
@@ -134,12 +136,19 @@ namespace Main
             services.AddTransient<IEmployeeShiftDayData, EmployeeShiftDayData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
             services.AddTransient<IWorkforceScheduleData, WorkforceScheduleData>();
-
-            services.AddTransient<IEmployeeBenefitsDeductionsController, EmployeeBenefitsDeductionsController>();
-
             // Other data management
             services.AddTransient<ILeaveTypeData, LeaveTypeData>();
             services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
+
+            // Invetory and Product management
+            services.AddTransient<IIngredientCategoryData, IngredientCategoryData>();
+            services.AddTransient<IIngredientData, IngredientData>();
+            services.AddTransient<IIngInventoryTransactionData, IngInventoryTransactionData>();
+            services.AddTransient<IProductCategoryData, ProductCategoryData>();
+            services.AddTransient<IProductData, ProductData>();
+            services.AddTransient<IProductIngredientData, ProductIngredientData>();
+            services.AddTransient<IComboSetData, ComboSetData>();
+            services.AddTransient<IComboSetProductData, ComboSetProductData>();
 
 
             // Employee Management
@@ -149,25 +158,24 @@ namespace Main
             services.AddTransient<EmployeeShiftAddUpdateValidator>();
             services.AddTransient<EmployeeLeaveAddUpdateValidator>();
             services.AddTransient<HolidayAddUpdateValidator>();
-            // controllers
-            services.AddTransient<IEmployeeController, EmployeeController>();
-            services.AddTransient<IWorkShiftController, WorkShiftController>();
-            services.AddTransient<IEmployeeLeaveController, EmployeeLeaveController>();
-            services.AddTransient<IHolidayController, HolidayController>();
-            services.AddTransient<IWorkforceScheduleController, WorkforceScheduleController>();
-
-
             // Other Data:
             // validator
             services.AddTransient<LeaveTypeAddUpdateValidator>();
             services.AddTransient<UserAddUpdateValidator>();
             services.AddTransient<GovernmentAgencyAddUpdateValidator>();
-            // Controllers
+
+
+            // controllers
+            services.AddTransient<IEmployeeBenefitsDeductionsController, EmployeeBenefitsDeductionsController>();
+            services.AddTransient<IEmployeeController, EmployeeController>();
+            services.AddTransient<IWorkShiftController, WorkShiftController>();
+            services.AddTransient<IEmployeeLeaveController, EmployeeLeaveController>();
+            services.AddTransient<IHolidayController, HolidayController>();
+            services.AddTransient<IWorkforceScheduleController, WorkforceScheduleController>();
             services.AddTransient<ILeaveTypeController, LeaveTypeController>();
             services.AddTransient<IGovernmentController, GovernmentController>();
-
-            // Business logic controllers/services
             services.AddTransient<IUserController, UserController>();
+
 
 
             // forms
