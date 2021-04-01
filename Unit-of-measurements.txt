@@ -2,17 +2,4 @@
 	1gram -> 0.0001kg (1000gr = 1kg)
 2. Litter -> Milliliter(ml)
 	1L = 1000ml
-3. Gallon
-	1gallon = 3.78541 litter
-4. Cup
-	1 = 236.588
-5. Teaspoon
-	1 = 4.92892ml
 6. pieces (pc or pcs) -> Quantity
-7. Box (BX)
-	- quantity
-8. Bottle (BT)
-9. Can (CN)
-10. Package (PA)
-11. Pair(s) (PR)
-12. Set (ST)
