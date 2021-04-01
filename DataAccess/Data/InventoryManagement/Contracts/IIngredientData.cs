@@ -10,5 +10,9 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IIngredientData : IDataManagerCRUD<IngredientModel>
     {
+        bool MassDeleteIngredientsByCategory(int categoryId);
+        bool MassUpdateIngredientsCategory(int previousCategoryId, int newCategoryId);
+        List<IngredientModel> GetAllByCategory(int categoryId);
+        List<IngredientModel> GetAllNotDeleted();
     }
 }

@@ -33,8 +33,7 @@ namespace Main.Forms.InventoryManagementForms
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuIngredient = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.TSItemIngredientCategories = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSItemIngredients = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSItemIngredientInventory = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.PanelMainContainer = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
@@ -62,24 +61,17 @@ namespace Main.Forms.InventoryManagementForms
             // ContextMenuIngredient
             // 
             this.ContextMenuIngredient.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSItemIngredientCategories,
-            this.TSItemIngredients});
+            this.TSItemIngredientInventory});
             this.ContextMenuIngredient.Name = "ContextMenuIngredient";
             this.ContextMenuIngredient.OwnerItem = this.toolStripMenuItem1;
-            this.ContextMenuIngredient.Size = new System.Drawing.Size(134, 48);
+            this.ContextMenuIngredient.Size = new System.Drawing.Size(125, 26);
             this.ContextMenuIngredient.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuIngredient_ItemClicked);
             // 
-            // TSItemIngredientCategories
+            // TSItemIngredientInventory
             // 
-            this.TSItemIngredientCategories.Name = "TSItemIngredientCategories";
-            this.TSItemIngredientCategories.Size = new System.Drawing.Size(133, 22);
-            this.TSItemIngredientCategories.Text = "Categories";
-            // 
-            // TSItemIngredients
-            // 
-            this.TSItemIngredients.Name = "TSItemIngredients";
-            this.TSItemIngredients.Size = new System.Drawing.Size(133, 22);
-            this.TSItemIngredients.Text = "Ingredients";
+            this.TSItemIngredientInventory.Name = "TSItemIngredientInventory";
+            this.TSItemIngredientInventory.Size = new System.Drawing.Size(124, 22);
+            this.TSItemIngredientInventory.Text = "Inventory";
             // 
             // toolStripMenuItem2
             // 
@@ -119,8 +111,7 @@ namespace Main.Forms.InventoryManagementForms
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ContextMenuStrip ContextMenuIngredient;
-        private System.Windows.Forms.ToolStripMenuItem TSItemIngredientCategories;
-        private System.Windows.Forms.ToolStripMenuItem TSItemIngredients;
+        private System.Windows.Forms.ToolStripMenuItem TSItemIngredientInventory;
         private System.Windows.Forms.Panel PanelMainContainer;
     }
 }

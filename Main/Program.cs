@@ -42,6 +42,7 @@ using DataAccess.Data.InventoryManagement.Implementations;
 using Main.Forms.InventoryManagementForms;
 using Main.Controllers.InventoryControllers.ControllerInterface;
 using Main.Controllers.InventoryControllers;
+using Main.Controllers.InventoryControllers.Validator;
 
 namespace Main
 {
@@ -167,6 +168,8 @@ namespace Main
             services.AddTransient<LeaveTypeAddUpdateValidator>();
             services.AddTransient<UserAddUpdateValidator>();
             services.AddTransient<GovernmentAgencyAddUpdateValidator>();
+            // Inventory
+            services.AddTransient<IngredientAddUpdateValidator>();
 
 
             // controllers
@@ -180,6 +183,7 @@ namespace Main
             services.AddTransient<IGovernmentController, GovernmentController>();
             services.AddTransient<IUserController, UserController>();
             services.AddTransient<IIngredientCategoryController, IngredientCategoryController>();
+            services.AddTransient<IIngredientController, IngredientController>();
 
 
             // forms

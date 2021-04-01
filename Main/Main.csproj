@@ -54,6 +54,9 @@
     <None Update="Resources\icons8-home-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\icons8-in-inventory-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\icons8-logout-rounded-left-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -111,7 +114,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\InventoryControllers\Validator\" />
     <Folder Include="Controllers\PayrollController\" />
     <Folder Include="FormModels\" />
     <Folder Include="Forms\PayrollForms\PdfHtmlTemplates\" />

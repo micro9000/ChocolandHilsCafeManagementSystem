@@ -26,5 +26,19 @@ namespace EntitiesShared
             INC, // Increase
             DEC // Decrease
         }
+
+        public static Dictionary<UOM, string> GetUnitOfMeasurements 
+        {
+            get
+            {
+                var uoms = new Dictionary<UOM, string>();
+
+                uoms.Add(UOM.kg, "Kilogram (kg)");
+                uoms.Add(UOM.L, "Liter (L)");
+                uoms.Add(UOM.pcs, "Piece (pc)");
+
+                return uoms;
+            }
+        }
     }
 }
