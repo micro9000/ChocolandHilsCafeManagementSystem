@@ -146,6 +146,7 @@ namespace Main
             // Invetory and Product management
             services.AddTransient<IIngredientCategoryData, IngredientCategoryData>();
             services.AddTransient<IIngredientData, IngredientData>();
+            services.AddTransient<IIngredientInventoryData, IngredientInventoryData>();
             services.AddTransient<IIngInventoryTransactionData, IngInventoryTransactionData>();
             services.AddTransient<IProductCategoryData, ProductCategoryData>();
             services.AddTransient<IProductData, ProductData>();

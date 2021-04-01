@@ -15,9 +15,5 @@ namespace EntitiesShared.InventoryManagement
         public string IngName { get; set; }
 
         public StaticData.UOM UOM { get; set; }
-
-        public decimal InitialMeasurement { get; set; }
-
-        public decimal CurrentMeasurement { get; set; }
     }
 }

@@ -10,11 +10,11 @@ namespace EntitiesShared.InventoryManagement
     [Table("IngInventoryTransactions")]
     public class IngInventoryTransactionModel : BaseIntModel
     {
-        public int IngredientId { get; set; }
+        public int IngInventoryId { get; set; }
 
         public StaticData.InventoryTransType TransType { get; set; }
 
-        public decimal Val { get; set; }
+        public decimal QtyVal { get; set; }
 
         public long UserId { get; set; }
 

@@ -510,8 +510,6 @@ CREATE TABLE IF NOT EXISTS Ingredients(
     categoryId INT NOT NULL,
 	ingName VARCHAR(255),
     uom CHAR(3), -- kg(gram), L(ml), pcs(pc)
-    initialMeasurement DECIMAL,
-    currentMeasurement DECIMAL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
@@ -519,18 +517,32 @@ CREATE TABLE IF NOT EXISTS Ingredients(
     FOREIGN KEY(categoryId) REFERENCES IngredientCategories(id)
 )ENGINE=INNODB;
 
+CREATE TABLE IF NOT EXISTS IngredientInventory(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ingredientId INT NOT NULL,
+    initialQtyValue DECIMAL,
+    currentQtyValue DECIMAL,
+    unitCost DECIMAL(9,2),
+    isSoldOut BOOLEAN DEFAULT False,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
+)ENGINE=INNODB;
+
 CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	ingredientId INT NOT NULL,
+	ingInventoryId INT NOT NULL,
     transType CHAR(3), -- INC, DEC
-    val DECIMAL,
+    qtyVal DECIMAL,
     userId BIGINT NOT NULL,
     remarks VARCHAR(255),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id),
+    FOREIGN KEY(ingInventoryId) REFERENCES IngredientInventory(id),
     FOREIGN KEY(userId) REFERENCES Users(id)
 )ENGINE=INNODB;
 
