@@ -104,6 +104,14 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.label15 = new System.Windows.Forms.Label();
             this.TboxTransactionHistoryRemarks = new System.Windows.Forms.TextBox();
             this.DGVInventoryTransactionHistory = new System.Windows.Forms.DataGridView();
+            this.MainTabExpirationAlert = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.BtnFilterInventoryByExpirationDate = new System.Windows.Forms.Button();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.DPicFilterByExpirationEndDate = new System.Windows.Forms.DateTimePicker();
+            this.DPicFilterByExpirationStartDate = new System.Windows.Forms.DateTimePicker();
+            this.DGVInventoryNearOnExpirationDate = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabIngCategories.SuspendLayout();
@@ -129,6 +137,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.MainTabInventoryTransHistory.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVInventoryTransactionHistory)).BeginInit();
+            this.MainTabExpirationAlert.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVInventoryNearOnExpirationDate)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -159,6 +170,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.MainTabControl.Controls.Add(this.MainTabIngredientList);
             this.MainTabControl.Controls.Add(this.MainTabIngInventories);
             this.MainTabControl.Controls.Add(this.MainTabInventoryTransHistory);
+            this.MainTabControl.Controls.Add(this.MainTabExpirationAlert);
             this.MainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTabControl.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainTabControl.Location = new System.Drawing.Point(0, 59);
@@ -1002,6 +1014,94 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVInventoryTransactionHistory.TabIndex = 0;
             this.DGVInventoryTransactionHistory.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVInventoryTransactionHistory_CellClick);
             // 
+            // MainTabExpirationAlert
+            // 
+            this.MainTabExpirationAlert.Controls.Add(this.groupBox3);
+            this.MainTabExpirationAlert.Controls.Add(this.DGVInventoryNearOnExpirationDate);
+            this.MainTabExpirationAlert.Location = new System.Drawing.Point(4, 29);
+            this.MainTabExpirationAlert.Name = "MainTabExpirationAlert";
+            this.MainTabExpirationAlert.Padding = new System.Windows.Forms.Padding(3);
+            this.MainTabExpirationAlert.Size = new System.Drawing.Size(1139, 530);
+            this.MainTabExpirationAlert.TabIndex = 4;
+            this.MainTabExpirationAlert.Text = "Expiration Alert";
+            this.MainTabExpirationAlert.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.BtnFilterInventoryByExpirationDate);
+            this.groupBox3.Controls.Add(this.label20);
+            this.groupBox3.Controls.Add(this.label21);
+            this.groupBox3.Controls.Add(this.DPicFilterByExpirationEndDate);
+            this.groupBox3.Controls.Add(this.DPicFilterByExpirationStartDate);
+            this.groupBox3.Location = new System.Drawing.Point(6, 68);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(341, 188);
+            this.groupBox3.TabIndex = 11;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Filter by expiration date";
+            // 
+            // BtnFilterInventoryByExpirationDate
+            // 
+            this.BtnFilterInventoryByExpirationDate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnFilterInventoryByExpirationDate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnFilterInventoryByExpirationDate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnFilterInventoryByExpirationDate.ForeColor = System.Drawing.Color.White;
+            this.BtnFilterInventoryByExpirationDate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnFilterInventoryByExpirationDate.Location = new System.Drawing.Point(180, 126);
+            this.BtnFilterInventoryByExpirationDate.Name = "BtnFilterInventoryByExpirationDate";
+            this.BtnFilterInventoryByExpirationDate.Size = new System.Drawing.Size(94, 33);
+            this.BtnFilterInventoryByExpirationDate.TabIndex = 10;
+            this.BtnFilterInventoryByExpirationDate.Text = "Search";
+            this.BtnFilterInventoryByExpirationDate.UseVisualStyleBackColor = false;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(46, 100);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(25, 20);
+            this.label20.TabIndex = 7;
+            this.label20.Text = "To";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(46, 54);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(43, 20);
+            this.label21.TabIndex = 2;
+            this.label21.Text = "From";
+            // 
+            // DPicFilterByExpirationEndDate
+            // 
+            this.DPicFilterByExpirationEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicFilterByExpirationEndDate.Location = new System.Drawing.Point(95, 93);
+            this.DPicFilterByExpirationEndDate.Name = "DPicFilterByExpirationEndDate";
+            this.DPicFilterByExpirationEndDate.Size = new System.Drawing.Size(179, 27);
+            this.DPicFilterByExpirationEndDate.TabIndex = 1;
+            // 
+            // DPicFilterByExpirationStartDate
+            // 
+            this.DPicFilterByExpirationStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicFilterByExpirationStartDate.Location = new System.Drawing.Point(95, 49);
+            this.DPicFilterByExpirationStartDate.Name = "DPicFilterByExpirationStartDate";
+            this.DPicFilterByExpirationStartDate.Size = new System.Drawing.Size(179, 27);
+            this.DPicFilterByExpirationStartDate.TabIndex = 0;
+            // 
+            // DGVInventoryNearOnExpirationDate
+            // 
+            this.DGVInventoryNearOnExpirationDate.AllowUserToAddRows = false;
+            this.DGVInventoryNearOnExpirationDate.AllowUserToDeleteRows = false;
+            this.DGVInventoryNearOnExpirationDate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVInventoryNearOnExpirationDate.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DGVInventoryNearOnExpirationDate.Location = new System.Drawing.Point(361, 3);
+            this.DGVInventoryNearOnExpirationDate.Name = "DGVInventoryNearOnExpirationDate";
+            this.DGVInventoryNearOnExpirationDate.ReadOnly = true;
+            this.DGVInventoryNearOnExpirationDate.RowTemplate.Height = 25;
+            this.DGVInventoryNearOnExpirationDate.Size = new System.Drawing.Size(775, 524);
+            this.DGVInventoryNearOnExpirationDate.TabIndex = 1;
+            this.DGVInventoryNearOnExpirationDate.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVInventoryNearOnExpirationDate_CellClick);
+            // 
             // IngredientInventoryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1048,6 +1148,10 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVInventoryTransactionHistory)).EndInit();
+            this.MainTabExpirationAlert.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVInventoryNearOnExpirationDate)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1129,5 +1233,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.NumericUpDown NumUDIncreaseInventoryQtyValue;
         private System.Windows.Forms.NumericUpDown NumUDDecreaseInventoryQtyValue;
         private System.Windows.Forms.Label LblUOMForUnitCostIndicator;
+        private System.Windows.Forms.TabPage MainTabExpirationAlert;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button BtnFilterInventoryByExpirationDate;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.DateTimePicker DPicFilterByExpirationEndDate;
+        private System.Windows.Forms.DateTimePicker DPicFilterByExpirationStartDate;
+        private System.Windows.Forms.DataGridView DGVInventoryNearOnExpirationDate;
     }
 }

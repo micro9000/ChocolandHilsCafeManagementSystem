@@ -28,10 +28,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
             SetDGVIngredientListFontAndColors();
             SetDGVIngredientInventoriesFontAndColors();
             SetDGVInventoryTransactionHistoryFontAndColors();
+            SetDGVInventoryNearOnExpirationDateFontAndColors();
 
             DisplayIngredientCategoriesInDGV();
             DisplayUnitOfMeasurementsInCBox();
             DisplayIngredientInDGV();
+
+            DisplayIngredientInventoriesNearOnExpirationDate();
 
             this.PropertyIsNewIngredientInventoryChanged += OnIsNewIngredientInventoryUpdate;
 
@@ -680,6 +683,11 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(this.DGVIngredientInventories);
 
+                    if (item.ExpirationDate == DateTime.Now || item.ExpirationDate <= DateTime.Now.AddDays(5))
+                    {
+                        row.DefaultCellStyle.ForeColor = Color.Red;
+                    }
+
                     row.Cells[0].Value = item.Id;
                     row.Cells[1].Value = this.GetUOMFormatted(this.SelectedIngredient.UOM, item.InitialQtyValue);
                     row.Cells[2].Value = this.GetUOMFormatted(this.SelectedIngredient.UOM, item.RemainingQtyValue);
@@ -1097,5 +1105,102 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
+
+        private void SetDGVInventoryNearOnExpirationDateFontAndColors()
+        {
+            this.DGVInventoryNearOnExpirationDate.BackgroundColor = Color.White;
+            this.DGVInventoryNearOnExpirationDate.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVInventoryNearOnExpirationDate.RowHeadersVisible = false;
+            this.DGVInventoryNearOnExpirationDate.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVInventoryNearOnExpirationDate.AllowUserToResizeRows = false;
+            this.DGVInventoryNearOnExpirationDate.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVInventoryNearOnExpirationDate.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVInventoryNearOnExpirationDate.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVInventoryNearOnExpirationDate.MultiSelect = false;
+
+            this.DGVInventoryNearOnExpirationDate.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVInventoryNearOnExpirationDate.ColumnHeadersHeight = 30;
+        }
+
+
+        private List<IngredientInventoryModel> inventoriesNearOnExpirationDate;
+
+        public List<IngredientInventoryModel> InventoriesNearOnExpirationDate
+        {
+            get { return inventoriesNearOnExpirationDate; }
+            set { inventoriesNearOnExpirationDate = value; }
+        }
+
+
+        public void DisplayIngredientInventoriesNearOnExpirationDate()
+        {
+            this.DGVInventoryNearOnExpirationDate.Rows.Clear();
+            if (InventoriesNearOnExpirationDate != null)
+            {
+                this.DGVInventoryNearOnExpirationDate.ColumnCount = 6;
+
+                this.DGVInventoryNearOnExpirationDate.Columns[0].Name = "IngredientIdForNearExp";
+                this.DGVInventoryNearOnExpirationDate.Columns[0].Visible = false;
+
+                this.DGVInventoryNearOnExpirationDate.Columns[1].Name = "IngredientNameForNearExp";
+                this.DGVInventoryNearOnExpirationDate.Columns[1].HeaderText = "Ingredient Name";
+
+                this.DGVInventoryNearOnExpirationDate.Columns[2].Name = "InitialQtyValueForNearExp";
+                this.DGVInventoryNearOnExpirationDate.Columns[2].HeaderText = "Initial Qty Value";
+
+                this.DGVInventoryNearOnExpirationDate.Columns[3].Name = "RemainingQtyValueForNearExp";
+                this.DGVInventoryNearOnExpirationDate.Columns[3].HeaderText = "Remaining Qty Value";
+
+                this.DGVInventoryNearOnExpirationDate.Columns[4].Name = "UnitCostForNearExp";
+                this.DGVInventoryNearOnExpirationDate.Columns[4].HeaderText = "Unit Cost";
+
+                this.DGVInventoryNearOnExpirationDate.Columns[5].Name = "ExpirationDateForNearExp";
+                this.DGVInventoryNearOnExpirationDate.Columns[5].HeaderText = "Expiration Date";
+
+                // View inventory button
+                DataGridViewImageColumn btnViewInventoryImg = new DataGridViewImageColumn();
+                //btnDeleteLeaveTypeImg.Name = "";
+                btnViewInventoryImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnViewInventoryImg.Image = Image.FromFile("./Resources/view-details-24.png");
+                this.DGVInventoryNearOnExpirationDate.Columns.Add(btnViewInventoryImg);
+
+                foreach (var item in InventoriesNearOnExpirationDate)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVInventoryNearOnExpirationDate);
+
+                    row.Cells[0].Value = item.Ingredient.Id; // we need the ingredient id, instead of the inventory id
+                    row.Cells[1].Value = item.Ingredient.IngName;
+                    row.Cells[2].Value = this.GetUOMFormatted(item.Ingredient.UOM, item.InitialQtyValue);
+                    row.Cells[3].Value = this.GetUOMFormatted(item.Ingredient.UOM, item.RemainingQtyValue);
+                    row.Cells[4].Value = item.UnitCost;
+                    row.Cells[5].Value = item.ExpirationDate.ToLongDateString();
+
+                    this.DGVInventoryNearOnExpirationDate.Rows.Add(row);
+                }
+            }
+        }
+
+        private void DGVInventoryNearOnExpirationDate_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // View inventory button
+            if ((e.ColumnIndex == 6) && e.RowIndex > -1)
+            {
+                if (DGVInventoryNearOnExpirationDate.CurrentRow != null)
+                {
+                    int ingredientId = int.Parse(DGVInventoryNearOnExpirationDate.CurrentRow.Cells[0].Value.ToString());
+
+                    SelectedIngredient = this.Ingredients.Where(x => x.Id == ingredientId).FirstOrDefault();
+                    SelectedIngredientId = ingredientId;
+
+                    OnIngredientGetInventories(EventArgs.Empty);
+
+                    MoveToInventoryTabAndDisplayIngredientInventories();
+                }
+            }
+        }
     }
 }

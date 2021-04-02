@@ -536,6 +536,13 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
+SELECT *
+FROM Ingredients AS ING
+JOIN IngredientInventory AS INGINV ON INGINV.ingredientId=ING.id
+WHERE ING.isDeleted=false AND INGINV.isDeleted=false AND INGINV.isSoldOut=false AND 
+(INGINV.expirationDate BETWEEN '' AND '' OR INGINV.expirationDate <= '');
+
+
 SELECT * FROM IngredientInventory;
 
 SELECT SUM(remainingQtyValue) 

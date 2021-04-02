@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace DataAccess.Data.InventoryManagement.Implementations
 {
@@ -43,6 +44,29 @@ namespace DataAccess.Data.InventoryManagement.Implementations
                             WHERE isDeleted=false AND ingredientId=@IngredientId AND id=@Id";
 
             return this.GetFirstOrDefault(query, new { IngredientId = ingredientId, Id = id });
+        }
+
+        public List<IngredientInventoryModel> GetAllByExpirationDateRange (DateTime startDate, DateTime endDate)
+        {
+            string query = @"SELECT *
+                            FROM IngredientInventory AS INGINV
+                            JOIN Ingredients AS ING ON INGINV.ingredientId=ING.id
+                            WHERE ING.isDeleted=false AND INGINV.isDeleted=false AND INGINV.isSoldOut=false AND 
+                                (INGINV.expirationDate BETWEEN @StartDate AND @EndDate OR INGINV.expirationDate <= @StartDate)";
+
+            var results = new List<IngredientInventoryModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<IngredientInventoryModel, IngredientModel, IngredientInventoryModel>(query,
+                    (INGINV, ING) =>
+                    {
+                        INGINV.Ingredient = ING;
+                        return INGINV;
+                    }, new { StartDate = startDate, EndDate = endDate }).ToList();
+            }
+
+            return results;
         }
 
     }

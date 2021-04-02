@@ -92,6 +92,10 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.IncreaseInventoryQtyValueSave += HandleSaveInventoryIncreaseQtyValue;
             inventoryControlObj.DecreaseInventoryQtyValueSave += HandleSaveInventoryDecreaseQtyValue;
 
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddDays(5);
+            inventoryControlObj.InventoriesNearOnExpirationDate = _ingredientInventoryData.GetAllByExpirationDateRange(startDate, endDate);
+
             this.PanelMainContainer.Controls.Add(inventoryControlObj);
         }
 

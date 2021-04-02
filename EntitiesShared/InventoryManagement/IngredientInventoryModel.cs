@@ -12,6 +12,16 @@ namespace EntitiesShared.InventoryManagement
     {
         public int IngredientId { get; set; }
 
+        private IngredientModel _ingredient;
+        [Write(false)]
+        [Computed]
+        public IngredientModel Ingredient
+        {
+            get { return _ingredient; }
+            set { _ingredient = value; }
+        }
+
+
         public decimal InitialQtyValue { get; set; }
 
         public decimal RemainingQtyValue { get; set; }
