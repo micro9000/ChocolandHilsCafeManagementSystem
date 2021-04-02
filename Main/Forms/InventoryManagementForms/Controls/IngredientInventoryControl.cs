@@ -626,6 +626,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             string uom = $"({this.SelectedIngredient.UOM})";
             this.LblQuantityValueIndicator.Text = uom;
+            this.LblUOMForUnitCostIndicator.Text = uom;
             this.LblQuantityValueIndicator1.Text = uom;
             this.LblQuantityValueIndicator2.Text = uom;
 

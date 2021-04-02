@@ -66,6 +66,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TboxRemarks = new System.Windows.Forms.TextBox();
             this.TabInventoryManagementControls = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.LblUOMForUnitCostIndicator = new System.Windows.Forms.Label();
             this.NumUDUnitCostForIngInventory = new System.Windows.Forms.NumericUpDown();
             this.NumUDQtyValForIngInventory = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
@@ -547,6 +548,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.LblUOMForUnitCostIndicator);
             this.tabPage7.Controls.Add(this.NumUDUnitCostForIngInventory);
             this.tabPage7.Controls.Add(this.NumUDQtyValForIngInventory);
             this.tabPage7.Controls.Add(this.label17);
@@ -563,6 +565,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "New/Update";
             this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // LblUOMForUnitCostIndicator
+            // 
+            this.LblUOMForUnitCostIndicator.AutoSize = true;
+            this.LblUOMForUnitCostIndicator.Location = new System.Drawing.Point(95, 84);
+            this.LblUOMForUnitCostIndicator.Name = "LblUOMForUnitCostIndicator";
+            this.LblUOMForUnitCostIndicator.Size = new System.Drawing.Size(19, 20);
+            this.LblUOMForUnitCostIndicator.TabIndex = 16;
+            this.LblUOMForUnitCostIndicator.Text = "()";
             // 
             // NumUDUnitCostForIngInventory
             // 
@@ -642,9 +653,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(17, 84);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(69, 20);
+            this.label12.Size = new System.Drawing.Size(79, 20);
             this.label12.TabIndex = 9;
-            this.label12.Text = "Unit Cost";
+            this.label12.Text = "Unit Cost /";
             // 
             // LblQuantityValueIndicator
             // 
@@ -1117,5 +1128,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Button BtnFilterInventoryTransHistory;
         private System.Windows.Forms.NumericUpDown NumUDIncreaseInventoryQtyValue;
         private System.Windows.Forms.NumericUpDown NumUDDecreaseInventoryQtyValue;
+        private System.Windows.Forms.Label LblUOMForUnitCostIndicator;
     }
 }
