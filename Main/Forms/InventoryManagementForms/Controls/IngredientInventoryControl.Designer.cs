@@ -94,6 +94,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.label8 = new System.Windows.Forms.Label();
             this.DGVIngredientInventories = new System.Windows.Forms.DataGridView();
             this.MainTabInventoryTransHistory = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.BtnFilterInventoryTransHistory = new System.Windows.Forms.Button();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.DPicFilterInventoryTransEndDate = new System.Windows.Forms.DateTimePicker();
+            this.DPicFilterInventoryTransStartDate = new System.Windows.Forms.DateTimePicker();
+            this.label15 = new System.Windows.Forms.Label();
+            this.TboxTransactionHistoryRemarks = new System.Windows.Forms.TextBox();
+            this.DGVInventoryTransactionHistory = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabIngCategories.SuspendLayout();
@@ -114,6 +123,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.tabPage9.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVIngredientInventories)).BeginInit();
+            this.MainTabInventoryTransHistory.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVInventoryTransactionHistory)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -297,7 +309,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 81);
+            this.label3.Location = new System.Drawing.Point(24, 61);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(69, 20);
             this.label3.TabIndex = 3;
@@ -306,7 +318,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // CboxIngredientsCategories
             // 
             this.CboxIngredientsCategories.FormattingEnabled = true;
-            this.CboxIngredientsCategories.Location = new System.Drawing.Point(23, 114);
+            this.CboxIngredientsCategories.Location = new System.Drawing.Point(24, 84);
             this.CboxIngredientsCategories.Name = "CboxIngredientsCategories";
             this.CboxIngredientsCategories.Size = new System.Drawing.Size(306, 28);
             this.CboxIngredientsCategories.TabIndex = 0;
@@ -314,7 +326,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(23, 165);
+            this.label4.Location = new System.Drawing.Point(24, 147);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(118, 20);
             this.label4.TabIndex = 4;
@@ -323,7 +335,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(23, 236);
+            this.label5.Location = new System.Drawing.Point(24, 217);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(196, 20);
             this.label5.TabIndex = 7;
@@ -331,7 +343,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // TboxIngredientName
             // 
-            this.TboxIngredientName.Location = new System.Drawing.Point(23, 200);
+            this.TboxIngredientName.Location = new System.Drawing.Point(24, 170);
             this.TboxIngredientName.Name = "TboxIngredientName";
             this.TboxIngredientName.Size = new System.Drawing.Size(306, 27);
             this.TboxIngredientName.TabIndex = 1;
@@ -343,7 +355,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnCancelSaveIngredientDetails.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelSaveIngredientDetails.ForeColor = System.Drawing.Color.White;
             this.BtnCancelSaveIngredientDetails.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelSaveIngredientDetails.Location = new System.Drawing.Point(214, 322);
+            this.BtnCancelSaveIngredientDetails.Location = new System.Drawing.Point(215, 292);
             this.BtnCancelSaveIngredientDetails.Name = "BtnCancelSaveIngredientDetails";
             this.BtnCancelSaveIngredientDetails.Size = new System.Drawing.Size(115, 47);
             this.BtnCancelSaveIngredientDetails.TabIndex = 9;
@@ -357,7 +369,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnSaveIngredientDetails.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveIngredientDetails.ForeColor = System.Drawing.Color.White;
             this.BtnSaveIngredientDetails.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveIngredientDetails.Location = new System.Drawing.Point(93, 322);
+            this.BtnSaveIngredientDetails.Location = new System.Drawing.Point(94, 292);
             this.BtnSaveIngredientDetails.Name = "BtnSaveIngredientDetails";
             this.BtnSaveIngredientDetails.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveIngredientDetails.TabIndex = 8;
@@ -368,7 +380,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // CBoxUnitOfMeasurements
             // 
             this.CBoxUnitOfMeasurements.FormattingEnabled = true;
-            this.CBoxUnitOfMeasurements.Location = new System.Drawing.Point(23, 270);
+            this.CBoxUnitOfMeasurements.Location = new System.Drawing.Point(24, 240);
             this.CBoxUnitOfMeasurements.Name = "CBoxUnitOfMeasurements";
             this.CBoxUnitOfMeasurements.Size = new System.Drawing.Size(306, 28);
             this.CBoxUnitOfMeasurements.TabIndex = 2;
@@ -566,7 +578,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // NumUDQtyValForIngInventory
             // 
-            this.NumUDQtyValForIngInventory.DecimalPlaces = 4;
+            this.NumUDQtyValForIngInventory.DecimalPlaces = 3;
             this.NumUDQtyValForIngInventory.Location = new System.Drawing.Point(18, 76);
             this.NumUDQtyValForIngInventory.Maximum = new decimal(new int[] {
             10000,
@@ -852,12 +864,111 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // MainTabInventoryTransHistory
             // 
+            this.MainTabInventoryTransHistory.Controls.Add(this.groupBox2);
+            this.MainTabInventoryTransHistory.Controls.Add(this.label15);
+            this.MainTabInventoryTransHistory.Controls.Add(this.TboxTransactionHistoryRemarks);
+            this.MainTabInventoryTransHistory.Controls.Add(this.DGVInventoryTransactionHistory);
             this.MainTabInventoryTransHistory.Location = new System.Drawing.Point(4, 29);
             this.MainTabInventoryTransHistory.Name = "MainTabInventoryTransHistory";
             this.MainTabInventoryTransHistory.Size = new System.Drawing.Size(1139, 530);
             this.MainTabInventoryTransHistory.TabIndex = 2;
             this.MainTabInventoryTransHistory.Text = "Transaction History";
             this.MainTabInventoryTransHistory.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.BtnFilterInventoryTransHistory);
+            this.groupBox2.Controls.Add(this.label19);
+            this.groupBox2.Controls.Add(this.label18);
+            this.groupBox2.Controls.Add(this.DPicFilterInventoryTransEndDate);
+            this.groupBox2.Controls.Add(this.DPicFilterInventoryTransStartDate);
+            this.groupBox2.Location = new System.Drawing.Point(17, 226);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(341, 188);
+            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Filter";
+            // 
+            // BtnFilterInventoryTransHistory
+            // 
+            this.BtnFilterInventoryTransHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnFilterInventoryTransHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnFilterInventoryTransHistory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnFilterInventoryTransHistory.ForeColor = System.Drawing.Color.White;
+            this.BtnFilterInventoryTransHistory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnFilterInventoryTransHistory.Location = new System.Drawing.Point(180, 126);
+            this.BtnFilterInventoryTransHistory.Name = "BtnFilterInventoryTransHistory";
+            this.BtnFilterInventoryTransHistory.Size = new System.Drawing.Size(94, 33);
+            this.BtnFilterInventoryTransHistory.TabIndex = 10;
+            this.BtnFilterInventoryTransHistory.Text = "Search";
+            this.BtnFilterInventoryTransHistory.UseVisualStyleBackColor = false;
+            this.BtnFilterInventoryTransHistory.Click += new System.EventHandler(this.BtnFilterInventoryTransHistory_Click);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(46, 100);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(25, 20);
+            this.label19.TabIndex = 7;
+            this.label19.Text = "To";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(46, 54);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(43, 20);
+            this.label18.TabIndex = 2;
+            this.label18.Text = "From";
+            // 
+            // DPicFilterInventoryTransEndDate
+            // 
+            this.DPicFilterInventoryTransEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicFilterInventoryTransEndDate.Location = new System.Drawing.Point(95, 93);
+            this.DPicFilterInventoryTransEndDate.Name = "DPicFilterInventoryTransEndDate";
+            this.DPicFilterInventoryTransEndDate.Size = new System.Drawing.Size(179, 27);
+            this.DPicFilterInventoryTransEndDate.TabIndex = 1;
+            // 
+            // DPicFilterInventoryTransStartDate
+            // 
+            this.DPicFilterInventoryTransStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicFilterInventoryTransStartDate.Location = new System.Drawing.Point(95, 49);
+            this.DPicFilterInventoryTransStartDate.Name = "DPicFilterInventoryTransStartDate";
+            this.DPicFilterInventoryTransStartDate.Size = new System.Drawing.Size(179, 27);
+            this.DPicFilterInventoryTransStartDate.TabIndex = 0;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label15.Location = new System.Drawing.Point(17, 26);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(74, 20);
+            this.label15.TabIndex = 9;
+            this.label15.Text = "Remarks:";
+            // 
+            // TboxTransactionHistoryRemarks
+            // 
+            this.TboxTransactionHistoryRemarks.Location = new System.Drawing.Point(17, 49);
+            this.TboxTransactionHistoryRemarks.Multiline = true;
+            this.TboxTransactionHistoryRemarks.Name = "TboxTransactionHistoryRemarks";
+            this.TboxTransactionHistoryRemarks.Size = new System.Drawing.Size(341, 103);
+            this.TboxTransactionHistoryRemarks.TabIndex = 8;
+            // 
+            // DGVInventoryTransactionHistory
+            // 
+            this.DGVInventoryTransactionHistory.AllowUserToAddRows = false;
+            this.DGVInventoryTransactionHistory.AllowUserToDeleteRows = false;
+            this.DGVInventoryTransactionHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVInventoryTransactionHistory.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DGVInventoryTransactionHistory.Location = new System.Drawing.Point(364, 0);
+            this.DGVInventoryTransactionHistory.Name = "DGVInventoryTransactionHistory";
+            this.DGVInventoryTransactionHistory.ReadOnly = true;
+            this.DGVInventoryTransactionHistory.RowTemplate.Height = 25;
+            this.DGVInventoryTransactionHistory.Size = new System.Drawing.Size(775, 530);
+            this.DGVInventoryTransactionHistory.TabIndex = 0;
+            this.DGVInventoryTransactionHistory.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVInventoryTransactionHistory_CellClick);
             // 
             // IngredientInventoryControl
             // 
@@ -898,6 +1009,11 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVIngredientInventories)).EndInit();
+            this.MainTabInventoryTransHistory.ResumeLayout(false);
+            this.MainTabInventoryTransHistory.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVInventoryTransactionHistory)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -969,5 +1085,14 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel PanelNewOrUpdateInventoryIndicator;
         private System.Windows.Forms.Label LblNewOrUpdateInventoryIndicator;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox TboxTransactionHistoryRemarks;
+        private System.Windows.Forms.DataGridView DGVInventoryTransactionHistory;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.DateTimePicker DPicFilterInventoryTransEndDate;
+        private System.Windows.Forms.DateTimePicker DPicFilterInventoryTransStartDate;
+        private System.Windows.Forms.Button BtnFilterInventoryTransHistory;
     }
 }

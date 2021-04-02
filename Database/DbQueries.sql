@@ -559,21 +559,8 @@ CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
     FOREIGN KEY(userId) REFERENCES Users(id)
 )ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS IngredientInventoryScraps(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	ingredientId INT NOT NULL,
-    qtyValue DECIMAL,
-    unitCost DECIMAL(9,2), -- unit cost based on unit of measurement
-    expirationDate DATE,
-    actualScrapDate DATE,
-    createdAt DATETIME DEFAULT NOW(),
-    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
-)ENGINE=INNODB;
-
 SELECT * FROM IngInventoryTransactions;
+SELECT * FROM Users;
 
 CREATE TABLE IF NOT EXISTS ProductCategories(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

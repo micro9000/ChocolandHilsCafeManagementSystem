@@ -36,5 +36,14 @@ namespace DataAccess.Data.InventoryManagement.Implementations
 
             return inventories;
         }
+
+        public IngredientInventoryModel GetByIdAndIngredient (int ingredientId, long id)
+        {
+            string query = @"SELECT * FROM IngredientInventory 
+                            WHERE isDeleted=false AND ingredientId=@IngredientId AND id=@Id";
+
+            return this.GetFirstOrDefault(query, new { IngredientId = ingredientId, Id = id });
+        }
+
     }
 }

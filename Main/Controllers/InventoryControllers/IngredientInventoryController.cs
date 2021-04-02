@@ -39,6 +39,51 @@ namespace Main.Controllers.InventoryControllers
             _ingredientInventoryAddUpdateValidator = ingredientInventoryAddUpdateValidator;
         }
 
+
+        public EntityResult<string> Delete (int ingredeintId, long inventoryId, string remarks)
+        {
+            var results = new EntityResult<string>();
+
+            try
+            {
+                var details = _ingredientInventoryData.GetByIdAndIngredient(ingredeintId, inventoryId);
+
+                if (details != null)
+                {
+                    details.IsDeleted = true;
+                    details.DeletedAt = DateTime.Now;
+
+                    results.IsSuccess = _ingredientInventoryData.Update(details);
+                    results.Messages.Add("Inventory deleted.");
+
+                    _ingInventoryTransactionData.Add(new IngInventoryTransactionModel
+                    {
+                        IngredientId = details.IngredientId,
+                        TransType = StaticData.InventoryTransType.DELETE,
+                        QtyVal = details.InitialQtyValue,
+                        UnitCost = details.UnitCost,
+                        ExpirationDate = details.ExpirationDate,
+                        UserId = _sessions.CurrentLoggedInUser.Id,
+                        Remarks = remarks
+                    });
+
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("No changes made.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
+        }
+
         public EntityResult<IngredientInventoryModel> Save (IngredientInventoryModel input, bool isNew, string remarks)
         {
 
@@ -72,7 +117,7 @@ namespace Main.Controllers.InventoryControllers
                         var inventoryDetails = _ingredientInventoryData.Get(newInventoryId);
 
                         _ingInventoryTransactionData.Add(new IngInventoryTransactionModel {
-                            IngredientId = inventoryDetails.Id,
+                            IngredientId = inventoryDetails.IngredientId,
                             TransType = StaticData.InventoryTransType.NEW,
                             QtyVal = inventoryDetails.InitialQtyValue,
                             UnitCost = inventoryDetails.UnitCost,
@@ -107,7 +152,7 @@ namespace Main.Controllers.InventoryControllers
                     {
                         _ingInventoryTransactionData.Add(new IngInventoryTransactionModel
                         {
-                            IngredientId = existingInventory.Id,
+                            IngredientId = existingInventory.IngredientId,
                             TransType = StaticData.InventoryTransType.UPDATE,
                             QtyVal = existingInventory.InitialQtyValue,
                             UnitCost = existingInventory.UnitCost,

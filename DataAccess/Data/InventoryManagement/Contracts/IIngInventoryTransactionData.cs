@@ -10,6 +10,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IIngInventoryTransactionData : IDataManagerCRUD<IngInventoryTransactionModel>
     {
-        List<IngInventoryTransactionModel> GetAllByIngredient(int ingredientId);
+        List<IngInventoryTransactionModel> GetAllByIngredientAndDateRange(int ingredientId, DateTime startDate, DateTime endDate);
     }
 }

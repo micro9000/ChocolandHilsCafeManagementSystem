@@ -12,5 +12,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
     {
         decimal GetRemainingQtyValueByIngredient(int ingredientId);
         List<IngredientInventoryModel> GetAllByIngredient(int ingredientId);
+        IngredientInventoryModel GetByIdAndIngredient(int ingredientId, long id);
     }
 }

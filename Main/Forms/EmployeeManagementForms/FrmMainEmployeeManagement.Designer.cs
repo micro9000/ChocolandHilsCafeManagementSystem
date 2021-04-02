@@ -37,6 +37,11 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_List = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_FileLeave = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_Benefits_Deductions = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemWorkSchedules = new System.Windows.Forms.ToolStripMenuItem();
+            this.WorkSchedulesMenItems = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.WorkShiftsMenItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EmpWorkShiftScheds = new System.Windows.Forms.ToolStripMenuItem();
+            this.HolidaysMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PayrollMenuItems = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AttendanceStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PayslipStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,11 +49,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.DeductionStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SalaryStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LeaveTypesStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemWorkSchedules = new System.Windows.Forms.ToolStripMenuItem();
-            this.WorkSchedulesMenItems = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.WorkShiftsMenItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.EmpWorkShiftScheds = new System.Windows.Forms.ToolStripMenuItem();
-            this.HolidaysMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.FileLeaveSchedStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GovtIdsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,8 +60,8 @@ namespace Main.Forms.EmployeeManagementForms
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStripEmployeeManagement.SuspendLayout();
             this.EmployeeMenuItemsMenuStrip.SuspendLayout();
-            this.PayrollMenuItems.SuspendLayout();
             this.WorkSchedulesMenItems.SuspendLayout();
+            this.PayrollMenuItems.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuStripEmployeeManagement
@@ -118,6 +118,44 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_Benefits_Deductions.Size = new System.Drawing.Size(259, 22);
             this.ToolStripItem_Benefits_Deductions.Text = "Benefits/Deductions/Contributions";
             // 
+            // MenuItemWorkSchedules
+            // 
+            this.MenuItemWorkSchedules.DropDown = this.WorkSchedulesMenItems;
+            this.MenuItemWorkSchedules.Name = "MenuItemWorkSchedules";
+            this.MenuItemWorkSchedules.Size = new System.Drawing.Size(103, 20);
+            this.MenuItemWorkSchedules.Text = "Work Schedules";
+            // 
+            // WorkSchedulesMenItems
+            // 
+            this.WorkSchedulesMenItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.WorkShiftsMenItem,
+            this.EmpWorkShiftScheds,
+            this.HolidaysMenuItem});
+            this.WorkSchedulesMenItems.Name = "WorkSchedulesMenItems";
+            this.WorkSchedulesMenItems.OwnerItem = this.MenuItemWorkSchedules;
+            this.WorkSchedulesMenItems.ShowImageMargin = false;
+            this.WorkSchedulesMenItems.Size = new System.Drawing.Size(186, 70);
+            this.WorkSchedulesMenItems.Text = "Work Schedules";
+            this.WorkSchedulesMenItems.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.WorkSchedulesMenItems_ItemClicked);
+            // 
+            // WorkShiftsMenItem
+            // 
+            this.WorkShiftsMenItem.Name = "WorkShiftsMenItem";
+            this.WorkShiftsMenItem.Size = new System.Drawing.Size(185, 22);
+            this.WorkShiftsMenItem.Text = "Shifts";
+            // 
+            // EmpWorkShiftScheds
+            // 
+            this.EmpWorkShiftScheds.Name = "EmpWorkShiftScheds";
+            this.EmpWorkShiftScheds.Size = new System.Drawing.Size(185, 22);
+            this.EmpWorkShiftScheds.Text = "Employee work schedules";
+            // 
+            // HolidaysMenuItem
+            // 
+            this.HolidaysMenuItem.Name = "HolidaysMenuItem";
+            this.HolidaysMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.HolidaysMenuItem.Text = "Holidays";
+            // 
             // PayrollMenuItems
             // 
             this.PayrollMenuItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -128,7 +166,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.SalaryStripMenuItem,
             this.LeaveTypesStripMenuItem});
             this.PayrollMenuItems.Name = "PayrollMenuItems";
-            this.PayrollMenuItems.RightToLeft = System.Windows.Forms.RightToLeft.Inherit;
             this.PayrollMenuItems.Size = new System.Drawing.Size(137, 136);
             this.PayrollMenuItems.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.PayrollMenuItems_ItemClicked);
             // 
@@ -167,44 +204,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.LeaveTypesStripMenuItem.Name = "LeaveTypesStripMenuItem";
             this.LeaveTypesStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.LeaveTypesStripMenuItem.Text = "Leave Types";
-            // 
-            // MenuItemWorkSchedules
-            // 
-            this.MenuItemWorkSchedules.DropDown = this.WorkSchedulesMenItems;
-            this.MenuItemWorkSchedules.Name = "MenuItemWorkSchedules";
-            this.MenuItemWorkSchedules.Size = new System.Drawing.Size(103, 20);
-            this.MenuItemWorkSchedules.Text = "Work Schedules";
-            // 
-            // WorkSchedulesMenItems
-            // 
-            this.WorkSchedulesMenItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.WorkShiftsMenItem,
-            this.EmpWorkShiftScheds,
-            this.HolidaysMenuItem});
-            this.WorkSchedulesMenItems.Name = "WorkSchedulesMenItems";
-            this.WorkSchedulesMenItems.OwnerItem = this.MenuItemWorkSchedules;
-            this.WorkSchedulesMenItems.ShowImageMargin = false;
-            this.WorkSchedulesMenItems.Size = new System.Drawing.Size(186, 70);
-            this.WorkSchedulesMenItems.Text = "Work Schedules";
-            this.WorkSchedulesMenItems.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.WorkSchedulesMenItems_ItemClicked);
-            // 
-            // WorkShiftsMenItem
-            // 
-            this.WorkShiftsMenItem.Name = "WorkShiftsMenItem";
-            this.WorkShiftsMenItem.Size = new System.Drawing.Size(185, 22);
-            this.WorkShiftsMenItem.Text = "Shifts";
-            // 
-            // EmpWorkShiftScheds
-            // 
-            this.EmpWorkShiftScheds.Name = "EmpWorkShiftScheds";
-            this.EmpWorkShiftScheds.Size = new System.Drawing.Size(185, 22);
-            this.EmpWorkShiftScheds.Text = "Employee work schedules";
-            // 
-            // HolidaysMenuItem
-            // 
-            this.HolidaysMenuItem.Name = "HolidaysMenuItem";
-            this.HolidaysMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.HolidaysMenuItem.Text = "Holidays";
             // 
             // panelContainer
             // 
@@ -278,8 +277,8 @@ namespace Main.Forms.EmployeeManagementForms
             this.MenuStripEmployeeManagement.ResumeLayout(false);
             this.MenuStripEmployeeManagement.PerformLayout();
             this.EmployeeMenuItemsMenuStrip.ResumeLayout(false);
-            this.PayrollMenuItems.ResumeLayout(false);
             this.WorkSchedulesMenItems.ResumeLayout(false);
+            this.PayrollMenuItems.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

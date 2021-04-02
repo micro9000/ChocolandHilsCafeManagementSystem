@@ -27,6 +27,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             SetDGVIngredientCategoriesFontAndColors();
             SetDGVIngredientListFontAndColors();
             SetDGVIngredientInventoriesFontAndColors();
+            SetDGVInventoryTransactionHistoryFontAndColors();
 
             DisplayIngredientCategoriesInDGV();
             DisplayUnitOfMeasurementsInCBox();
@@ -845,6 +846,14 @@ namespace Main.Forms.InventoryManagementForms.Controls
             ResetNewUpdateIngredeintInventoryForm();
         }
 
+
+        public long SelectedInventoryId { get; set; }
+        public event EventHandler IngredientInventoryDelete;
+        protected virtual void OnIngredientInventoryDelete(EventArgs e)
+        {
+            IngredientInventoryDelete?.Invoke(this, e);
+        }
+
         private void DGVIngredientInventories_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Update button
@@ -852,7 +861,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (DGVIngredientInventories.CurrentRow != null && SelectedIngredientInventories != null)
                 {
-                    int inventoryId = int.Parse(DGVIngredientInventories.CurrentRow.Cells[0].Value.ToString());
+                    long inventoryId = long.Parse(DGVIngredientInventories.CurrentRow.Cells[0].Value.ToString());
 
                     var ingredientInventory = this.SelectedIngredientInventories.Where(x => x.Id == inventoryId).FirstOrDefault();
 
@@ -860,6 +869,25 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     DisplaySelectedInventoryInSaveNewUpdateForm(ingredientInventory);
 
                     this.IsNewIngredientInventory = false;
+                }
+            }
+
+
+            // Delete button
+            if ((e.ColumnIndex == 6) && e.RowIndex > -1)
+            {
+                if (string.IsNullOrWhiteSpace(this.TboxRemarks.Text))
+                {
+                    MessageBox.Show("Please provide remarks", "Delete inventory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                if (DGVIngredientInventories.CurrentRow != null && SelectedIngredientInventories != null)
+                {
+                    this.Remarks = this.TboxRemarks.Text; // Remarks
+                    this.SelectedInventoryId = long.Parse(DGVIngredientInventories.CurrentRow.Cells[0].Value.ToString());
+
+                    OnIngredientInventoryDelete(EventArgs.Empty);
                 }
             }
         }
@@ -874,5 +902,114 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
+
+        private void SetDGVInventoryTransactionHistoryFontAndColors()
+        {
+            this.DGVInventoryTransactionHistory.BackgroundColor = Color.White;
+            this.DGVInventoryTransactionHistory.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVInventoryTransactionHistory.RowHeadersVisible = false;
+            this.DGVInventoryTransactionHistory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVInventoryTransactionHistory.AllowUserToResizeRows = false;
+            this.DGVInventoryTransactionHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVInventoryTransactionHistory.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVInventoryTransactionHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVInventoryTransactionHistory.MultiSelect = false;
+
+            this.DGVInventoryTransactionHistory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVInventoryTransactionHistory.ColumnHeadersHeight = 30;
+        }
+
+        private List<IngInventoryTransactionModel> inventoryTransactionModels;
+
+        public List<IngInventoryTransactionModel> InventoryTransactionHistory
+        {
+            get { return inventoryTransactionModels; }
+            set { inventoryTransactionModels = value; }
+        }
+
+
+        public void DisplayInventoryTransactionHistory()
+        {
+            this.DGVInventoryTransactionHistory.Rows.Clear();
+            if (this.InventoryTransactionHistory != null)
+            {
+                this.DGVInventoryTransactionHistory.ColumnCount = 7;
+
+                this.DGVInventoryTransactionHistory.Columns[0].Name = "IngInventoryTransId";
+                this.DGVInventoryTransactionHistory.Columns[0].Visible = false;
+
+                this.DGVInventoryTransactionHistory.Columns[1].Name = "InventoryTransactionType";
+                this.DGVInventoryTransactionHistory.Columns[1].HeaderText = "Transaction Type";
+
+                this.DGVInventoryTransactionHistory.Columns[2].Name = "InventoryTransQtyValue";
+                this.DGVInventoryTransactionHistory.Columns[2].HeaderText = "Qty Value";
+
+                this.DGVInventoryTransactionHistory.Columns[3].Name = "InventoryTransUnitCost";
+                this.DGVInventoryTransactionHistory.Columns[3].HeaderText = "Unit Cost";
+
+                this.DGVInventoryTransactionHistory.Columns[4].Name = "InventoryTransExpirationDate";
+                this.DGVInventoryTransactionHistory.Columns[4].HeaderText = "Expiration Date";
+
+                this.DGVInventoryTransactionHistory.Columns[5].Name = "InventoryTransUser";
+                this.DGVInventoryTransactionHistory.Columns[5].HeaderText = "User";
+
+                this.DGVInventoryTransactionHistory.Columns[6].Name = "InventoryTransDate";
+                this.DGVInventoryTransactionHistory.Columns[6].HeaderText = "Date";
+
+                foreach (var item in InventoryTransactionHistory)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVInventoryTransactionHistory);
+
+                    row.Cells[0].Value = item.Id;
+                    row.Cells[1].Value = item.TransType.ToString();
+                    row.Cells[2].Value = this.GetUOMFormatted(this.SelectedIngredient.UOM, item.QtyVal);
+                    row.Cells[3].Value = item.UnitCost;
+                    row.Cells[4].Value = item.ExpirationDate.ToShortDateString();
+                    row.Cells[5].Value = item.User.FullName;
+                    row.Cells[6].Value = item.CreatedAt.ToShortDateString();
+
+                    this.DGVInventoryTransactionHistory.Rows.Add(row);
+                }
+            }
+        }
+
+
+        public DateTime FilterTransactionStartDate { get; set; }
+        public DateTime FilterTransactionEndDate { get; set; }
+
+        public event EventHandler FilterTransactionHistory;
+        protected virtual void OnFilterTransactionHistory(EventArgs e)
+        {
+            FilterTransactionHistory?.Invoke(this, e);
+        }
+
+        private void BtnFilterInventoryTransHistory_Click(object sender, EventArgs e)
+        {
+            FilterTransactionStartDate = DPicFilterInventoryTransStartDate.Value;
+            FilterTransactionEndDate = DPicFilterInventoryTransEndDate.Value;
+            OnFilterTransactionHistory(EventArgs.Empty);
+        }
+
+        private void DGVInventoryTransactionHistory_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1)
+            {
+                if (DGVInventoryTransactionHistory.CurrentRow != null && this.InventoryTransactionHistory != null)
+                {
+                    long selectedTransactionId = long.Parse(DGVInventoryTransactionHistory.CurrentRow.Cells[0].Value.ToString());
+
+                    var transactionDetails = this.InventoryTransactionHistory.Where(x => x.Id == selectedTransactionId).FirstOrDefault();
+
+                    if (transactionDetails != null)
+                    {
+                        this.TboxTransactionHistoryRemarks.Text = transactionDetails.Remarks;
+                    }
+                }
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Main.Controllers.InventoryControllers.ControllerInterface
 {
     public interface IIngredientInventoryController
     {
+        EntityResult<string> Delete(int ingredeintId, long inventoryId, string remarks);
         EntityResult<IngredientInventoryModel> Save(IngredientInventoryModel input, bool isNew, string remarks);
     }
 }

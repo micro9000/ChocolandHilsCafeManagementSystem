@@ -87,6 +87,8 @@ namespace Main.Forms.InventoryManagementForms
 
             inventoryControlObj.IngredientGetInventories += HandleIngredientGetInventories;
             inventoryControlObj.IngredientInventorySave += HandleIngredientInventorySave;
+            inventoryControlObj.IngredientInventoryDelete += HandleIngredientInventoryDelete;
+            inventoryControlObj.FilterTransactionHistory += HandleFilterTransactionHistory;
 
             this.PanelMainContainer.Controls.Add(inventoryControlObj);
         }
@@ -274,6 +276,13 @@ namespace Main.Forms.InventoryManagementForms
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
             int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
             inventoryControlObj.SelectedIngredientInventories = _ingredientInventoryData.GetAllByIngredient(selectedIngredientId);
+
+            int year = DateTime.Now.Year;
+            DateTime Jan1 = new DateTime(year, 1, 1);
+            DateTime today = DateTime.Now;
+
+            inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, Jan1, today);
+            inventoryControlObj.DisplayInventoryTransactionHistory();
         }
 
         private void HandleIngredientInventorySave(object sender, EventArgs e)
@@ -312,5 +321,53 @@ namespace Main.Forms.InventoryManagementForms
             }
         }
 
+        private void HandleIngredientInventoryDelete(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            int ingredientId = inventoryControlObj.SelectedIngredientId;
+            long inventoryId = inventoryControlObj.SelectedInventoryId;
+            string remarks = inventoryControlObj.Remarks;
+
+            DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                var deleteResults = _ingredientInventoryController.Delete(ingredientId, inventoryId, remarks);
+
+                string resultMessages = "";
+                foreach (var msg in deleteResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (deleteResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Delete inventory", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    inventoryControlObj.SelectedIngredientInventories = _ingredientInventoryData.GetAllByIngredient(ingredientId);
+                    inventoryControlObj.DisplayIngredientInventories();
+                    inventoryControlObj.ResetNewUpdateIngredeintInventoryForm();
+
+                    inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
+                    inventoryControlObj.DisplayIngredientInDGV();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Delete inventory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+
+        private void HandleFilterTransactionHistory(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            DateTime startDate = inventoryControlObj.FilterTransactionStartDate;
+            DateTime endDate = inventoryControlObj.FilterTransactionEndDate;
+
+            inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, startDate, endDate);
+            inventoryControlObj.DisplayInventoryTransactionHistory();
+        }
     }
 }

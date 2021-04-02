@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using EntitiesShared.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,16 @@ namespace EntitiesShared.InventoryManagement
         public DateTime ExpirationDate { get; set; }
 
         public long UserId { get; set; }
+
+        private UserModel user;
+        [Write(false)]
+        [Computed]
+        public UserModel User
+        {
+            get { return user; }
+            set { user = value; }
+        }
+
 
         public string Remarks { get; set; }
     }
