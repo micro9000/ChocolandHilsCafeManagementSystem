@@ -1053,6 +1053,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnFilterInventoryByExpirationDate.TabIndex = 10;
             this.BtnFilterInventoryByExpirationDate.Text = "Search";
             this.BtnFilterInventoryByExpirationDate.UseVisualStyleBackColor = false;
+            this.BtnFilterInventoryByExpirationDate.Click += new System.EventHandler(this.BtnFilterInventoryByExpirationDate_Click);
             // 
             // label20
             // 

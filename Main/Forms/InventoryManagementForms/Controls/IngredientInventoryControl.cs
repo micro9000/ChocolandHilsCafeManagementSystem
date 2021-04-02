@@ -1202,5 +1202,22 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 }
             }
         }
+
+        public DateTime FilterInventoryByExpirationStartDate { get; set; }
+        public DateTime FilterInventoryByExpirationEndDate { get; set; }
+
+        public event EventHandler FilterInventoryByExpirationDate;
+        protected virtual void OnFilterInventoryByExpirationDate(EventArgs e)
+        {
+            FilterInventoryByExpirationDate?.Invoke(this, e);
+        }
+
+        private void BtnFilterInventoryByExpirationDate_Click(object sender, EventArgs e)
+        {
+            this.FilterInventoryByExpirationStartDate = this.DPicFilterByExpirationStartDate.Value;
+            this.FilterInventoryByExpirationEndDate = this.DPicFilterByExpirationEndDate.Value;
+
+            OnFilterInventoryByExpirationDate(EventArgs.Empty);
+        }
     }
 }

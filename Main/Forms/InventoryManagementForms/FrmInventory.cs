@@ -96,6 +96,8 @@ namespace Main.Forms.InventoryManagementForms
             DateTime endDate = startDate.AddDays(5);
             inventoryControlObj.InventoriesNearOnExpirationDate = _ingredientInventoryData.GetAllByExpirationDateRange(startDate, endDate);
 
+            inventoryControlObj.FilterInventoryByExpirationDate += HandleFilterInventoryByExpirationDate;
+
             this.PanelMainContainer.Controls.Add(inventoryControlObj);
         }
 
@@ -469,6 +471,17 @@ namespace Main.Forms.InventoryManagementForms
                 }
             }
 
+        }
+
+
+        private void HandleFilterInventoryByExpirationDate(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            DateTime startDate = inventoryControlObj.FilterInventoryByExpirationStartDate;
+            DateTime endDate = inventoryControlObj.FilterInventoryByExpirationEndDate;
+
+            inventoryControlObj.InventoriesNearOnExpirationDate = _ingredientInventoryData.GetAllByExpirationDateRange(startDate, endDate);
+            inventoryControlObj.DisplayIngredientInventoriesNearOnExpirationDate();
         }
     }
 }
