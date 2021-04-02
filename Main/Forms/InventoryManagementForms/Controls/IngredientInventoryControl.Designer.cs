@@ -60,12 +60,12 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TboxSearchIngredient = new System.Windows.Forms.TextBox();
             this.DGVIngredientList = new System.Windows.Forms.DataGridView();
             this.MainTabIngInventories = new System.Windows.Forms.TabPage();
+            this.PanelNewOrUpdateInventoryIndicator = new System.Windows.Forms.Panel();
+            this.LblNewOrUpdateInventoryIndicator = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.TboxRemarks = new System.Windows.Forms.TextBox();
             this.TabInventoryManagementControls = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.PanelNewOrUpdateInventoryIndicator = new System.Windows.Forms.Panel();
-            this.LblNewOrUpdateInventoryIndicator = new System.Windows.Forms.Label();
             this.NumUDUnitCostForIngInventory = new System.Windows.Forms.NumericUpDown();
             this.NumUDQtyValForIngInventory = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
@@ -76,16 +76,16 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.LblQuantityValueIndicator = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.NumUDIncreaseInventoryQtyValue = new System.Windows.Forms.NumericUpDown();
+            this.BtnCancelIncreaseInventory = new System.Windows.Forms.Button();
+            this.BtnIncreaseInventory = new System.Windows.Forms.Button();
             this.LblQuantityValueIndicator1 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.tabPage9 = new System.Windows.Forms.TabPage();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.NumUDDecreaseInventoryQtyValue = new System.Windows.Forms.NumericUpDown();
+            this.BtnCancelDecreaseInventory = new System.Windows.Forms.Button();
+            this.BtnDecreaseInvetory = new System.Windows.Forms.Button();
             this.LblQuantityValueIndicator2 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.LblSelectedIngUOMToViewOrAddInventory = new System.Windows.Forms.Label();
@@ -114,13 +114,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVIngredientList)).BeginInit();
             this.MainTabIngInventories.SuspendLayout();
+            this.PanelNewOrUpdateInventoryIndicator.SuspendLayout();
             this.TabInventoryManagementControls.SuspendLayout();
             this.tabPage7.SuspendLayout();
-            this.PanelNewOrUpdateInventoryIndicator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumUDUnitCostForIngInventory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumUDQtyValForIngInventory)).BeginInit();
             this.tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUDIncreaseInventoryQtyValue)).BeginInit();
             this.tabPage9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUDDecreaseInventoryQtyValue)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVIngredientInventories)).BeginInit();
             this.MainTabInventoryTransHistory.SuspendLayout();
@@ -480,6 +482,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // MainTabIngInventories
             // 
+            this.MainTabIngInventories.Controls.Add(this.PanelNewOrUpdateInventoryIndicator);
             this.MainTabIngInventories.Controls.Add(this.label13);
             this.MainTabIngInventories.Controls.Add(this.TboxRemarks);
             this.MainTabIngInventories.Controls.Add(this.TabInventoryManagementControls);
@@ -492,6 +495,26 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.MainTabIngInventories.TabIndex = 1;
             this.MainTabIngInventories.Text = "Inventory";
             this.MainTabIngInventories.UseVisualStyleBackColor = true;
+            // 
+            // PanelNewOrUpdateInventoryIndicator
+            // 
+            this.PanelNewOrUpdateInventoryIndicator.BackColor = System.Drawing.Color.LightGray;
+            this.PanelNewOrUpdateInventoryIndicator.Controls.Add(this.LblNewOrUpdateInventoryIndicator);
+            this.PanelNewOrUpdateInventoryIndicator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.PanelNewOrUpdateInventoryIndicator.Location = new System.Drawing.Point(6, 161);
+            this.PanelNewOrUpdateInventoryIndicator.Name = "PanelNewOrUpdateInventoryIndicator";
+            this.PanelNewOrUpdateInventoryIndicator.Size = new System.Drawing.Size(345, 26);
+            this.PanelNewOrUpdateInventoryIndicator.TabIndex = 16;
+            // 
+            // LblNewOrUpdateInventoryIndicator
+            // 
+            this.LblNewOrUpdateInventoryIndicator.AutoSize = true;
+            this.LblNewOrUpdateInventoryIndicator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblNewOrUpdateInventoryIndicator.Location = new System.Drawing.Point(10, 6);
+            this.LblNewOrUpdateInventoryIndicator.Name = "LblNewOrUpdateInventoryIndicator";
+            this.LblNewOrUpdateInventoryIndicator.Size = new System.Drawing.Size(57, 15);
+            this.LblNewOrUpdateInventoryIndicator.TabIndex = 0;
+            this.LblNewOrUpdateInventoryIndicator.Text = "Indicator";
             // 
             // label13
             // 
@@ -508,7 +531,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TboxRemarks.Location = new System.Drawing.Point(10, 48);
             this.TboxRemarks.Multiline = true;
             this.TboxRemarks.Name = "TboxRemarks";
-            this.TboxRemarks.Size = new System.Drawing.Size(341, 103);
+            this.TboxRemarks.Size = new System.Drawing.Size(341, 107);
             this.TboxRemarks.TabIndex = 3;
             // 
             // TabInventoryManagementControls
@@ -516,15 +539,14 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TabInventoryManagementControls.Controls.Add(this.tabPage7);
             this.TabInventoryManagementControls.Controls.Add(this.tabPage8);
             this.TabInventoryManagementControls.Controls.Add(this.tabPage9);
-            this.TabInventoryManagementControls.Location = new System.Drawing.Point(6, 167);
+            this.TabInventoryManagementControls.Location = new System.Drawing.Point(6, 193);
             this.TabInventoryManagementControls.Name = "TabInventoryManagementControls";
             this.TabInventoryManagementControls.SelectedIndex = 0;
-            this.TabInventoryManagementControls.Size = new System.Drawing.Size(349, 359);
+            this.TabInventoryManagementControls.Size = new System.Drawing.Size(349, 333);
             this.TabInventoryManagementControls.TabIndex = 2;
             // 
             // tabPage7
             // 
-            this.tabPage7.Controls.Add(this.PanelNewOrUpdateInventoryIndicator);
             this.tabPage7.Controls.Add(this.NumUDUnitCostForIngInventory);
             this.tabPage7.Controls.Add(this.NumUDQtyValForIngInventory);
             this.tabPage7.Controls.Add(this.label17);
@@ -537,36 +559,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.tabPage7.Location = new System.Drawing.Point(4, 29);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(341, 326);
+            this.tabPage7.Size = new System.Drawing.Size(341, 300);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "New/Update";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
-            // PanelNewOrUpdateInventoryIndicator
-            // 
-            this.PanelNewOrUpdateInventoryIndicator.BackColor = System.Drawing.Color.LightGray;
-            this.PanelNewOrUpdateInventoryIndicator.Controls.Add(this.LblNewOrUpdateInventoryIndicator);
-            this.PanelNewOrUpdateInventoryIndicator.Dock = System.Windows.Forms.DockStyle.Top;
-            this.PanelNewOrUpdateInventoryIndicator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.PanelNewOrUpdateInventoryIndicator.Location = new System.Drawing.Point(3, 3);
-            this.PanelNewOrUpdateInventoryIndicator.Name = "PanelNewOrUpdateInventoryIndicator";
-            this.PanelNewOrUpdateInventoryIndicator.Size = new System.Drawing.Size(335, 26);
-            this.PanelNewOrUpdateInventoryIndicator.TabIndex = 16;
-            // 
-            // LblNewOrUpdateInventoryIndicator
-            // 
-            this.LblNewOrUpdateInventoryIndicator.AutoSize = true;
-            this.LblNewOrUpdateInventoryIndicator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LblNewOrUpdateInventoryIndicator.Location = new System.Drawing.Point(10, 6);
-            this.LblNewOrUpdateInventoryIndicator.Name = "LblNewOrUpdateInventoryIndicator";
-            this.LblNewOrUpdateInventoryIndicator.Size = new System.Drawing.Size(57, 15);
-            this.LblNewOrUpdateInventoryIndicator.TabIndex = 0;
-            this.LblNewOrUpdateInventoryIndicator.Text = "Indicator";
-            // 
             // NumUDUnitCostForIngInventory
             // 
             this.NumUDUnitCostForIngInventory.DecimalPlaces = 2;
-            this.NumUDUnitCostForIngInventory.Location = new System.Drawing.Point(18, 144);
+            this.NumUDUnitCostForIngInventory.Location = new System.Drawing.Point(17, 107);
             this.NumUDUnitCostForIngInventory.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -579,7 +580,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // NumUDQtyValForIngInventory
             // 
             this.NumUDQtyValForIngInventory.DecimalPlaces = 3;
-            this.NumUDQtyValForIngInventory.Location = new System.Drawing.Point(18, 76);
+            this.NumUDQtyValForIngInventory.Location = new System.Drawing.Point(17, 39);
             this.NumUDQtyValForIngInventory.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -592,7 +593,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(18, 185);
+            this.label17.Location = new System.Drawing.Point(17, 148);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(112, 20);
             this.label17.TabIndex = 13;
@@ -601,7 +602,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // DPickerExpirationDateForIngInventory
             // 
             this.DPickerExpirationDateForIngInventory.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DPickerExpirationDateForIngInventory.Location = new System.Drawing.Point(18, 208);
+            this.DPickerExpirationDateForIngInventory.Location = new System.Drawing.Point(17, 171);
             this.DPickerExpirationDateForIngInventory.Name = "DPickerExpirationDateForIngInventory";
             this.DPickerExpirationDateForIngInventory.Size = new System.Drawing.Size(306, 27);
             this.DPickerExpirationDateForIngInventory.TabIndex = 12;
@@ -613,7 +614,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnCancelSaveIngInventory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelSaveIngInventory.ForeColor = System.Drawing.Color.White;
             this.BtnCancelSaveIngInventory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelSaveIngInventory.Location = new System.Drawing.Point(209, 251);
+            this.BtnCancelSaveIngInventory.Location = new System.Drawing.Point(208, 214);
             this.BtnCancelSaveIngInventory.Name = "BtnCancelSaveIngInventory";
             this.BtnCancelSaveIngInventory.Size = new System.Drawing.Size(115, 47);
             this.BtnCancelSaveIngInventory.TabIndex = 11;
@@ -628,7 +629,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnSaveNewIngInventory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveNewIngInventory.ForeColor = System.Drawing.Color.White;
             this.BtnSaveNewIngInventory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveNewIngInventory.Location = new System.Drawing.Point(88, 251);
+            this.BtnSaveNewIngInventory.Location = new System.Drawing.Point(87, 214);
             this.BtnSaveNewIngInventory.Name = "BtnSaveNewIngInventory";
             this.BtnSaveNewIngInventory.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveNewIngInventory.TabIndex = 10;
@@ -639,7 +640,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(18, 121);
+            this.label12.Location = new System.Drawing.Point(17, 84);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(69, 20);
             this.label12.TabIndex = 9;
@@ -648,7 +649,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // LblQuantityValueIndicator
             // 
             this.LblQuantityValueIndicator.AutoSize = true;
-            this.LblQuantityValueIndicator.Location = new System.Drawing.Point(125, 53);
+            this.LblQuantityValueIndicator.Location = new System.Drawing.Point(124, 16);
             this.LblQuantityValueIndicator.Name = "LblQuantityValueIndicator";
             this.LblQuantityValueIndicator.Size = new System.Drawing.Size(19, 20);
             this.LblQuantityValueIndicator.TabIndex = 7;
@@ -657,7 +658,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(18, 53);
+            this.label11.Location = new System.Drawing.Point(17, 16);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(105, 20);
             this.label11.TabIndex = 6;
@@ -665,46 +666,63 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // tabPage8
             // 
-            this.tabPage8.Controls.Add(this.button4);
-            this.tabPage8.Controls.Add(this.button3);
+            this.tabPage8.Controls.Add(this.NumUDIncreaseInventoryQtyValue);
+            this.tabPage8.Controls.Add(this.BtnCancelIncreaseInventory);
+            this.tabPage8.Controls.Add(this.BtnIncreaseInventory);
             this.tabPage8.Controls.Add(this.LblQuantityValueIndicator1);
-            this.tabPage8.Controls.Add(this.textBox5);
             this.tabPage8.Controls.Add(this.label14);
             this.tabPage8.Location = new System.Drawing.Point(4, 29);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(341, 326);
+            this.tabPage8.Size = new System.Drawing.Size(341, 300);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "Increase";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // NumUDIncreaseInventoryQtyValue
             // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button4.Location = new System.Drawing.Point(212, 156);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(115, 47);
-            this.button4.TabIndex = 12;
-            this.button4.Text = "Cancel";
-            this.button4.UseVisualStyleBackColor = false;
+            this.NumUDIncreaseInventoryQtyValue.DecimalPlaces = 3;
+            this.NumUDIncreaseInventoryQtyValue.Location = new System.Drawing.Point(21, 97);
+            this.NumUDIncreaseInventoryQtyValue.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.NumUDIncreaseInventoryQtyValue.Name = "NumUDIncreaseInventoryQtyValue";
+            this.NumUDIncreaseInventoryQtyValue.Size = new System.Drawing.Size(306, 27);
+            this.NumUDIncreaseInventoryQtyValue.TabIndex = 15;
             // 
-            // button3
+            // BtnCancelIncreaseInventory
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(91, 156);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(115, 47);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "Save";
-            this.button3.UseVisualStyleBackColor = false;
+            this.BtnCancelIncreaseInventory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnCancelIncreaseInventory.Enabled = false;
+            this.BtnCancelIncreaseInventory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCancelIncreaseInventory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnCancelIncreaseInventory.ForeColor = System.Drawing.Color.White;
+            this.BtnCancelIncreaseInventory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCancelIncreaseInventory.Location = new System.Drawing.Point(212, 156);
+            this.BtnCancelIncreaseInventory.Name = "BtnCancelIncreaseInventory";
+            this.BtnCancelIncreaseInventory.Size = new System.Drawing.Size(115, 47);
+            this.BtnCancelIncreaseInventory.TabIndex = 12;
+            this.BtnCancelIncreaseInventory.Text = "Cancel";
+            this.BtnCancelIncreaseInventory.UseVisualStyleBackColor = false;
+            this.BtnCancelIncreaseInventory.Click += new System.EventHandler(this.BtnCancelIncreaseInventory_Click);
+            // 
+            // BtnIncreaseInventory
+            // 
+            this.BtnIncreaseInventory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnIncreaseInventory.Enabled = false;
+            this.BtnIncreaseInventory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnIncreaseInventory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnIncreaseInventory.ForeColor = System.Drawing.Color.White;
+            this.BtnIncreaseInventory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnIncreaseInventory.Location = new System.Drawing.Point(91, 156);
+            this.BtnIncreaseInventory.Name = "BtnIncreaseInventory";
+            this.BtnIncreaseInventory.Size = new System.Drawing.Size(115, 47);
+            this.BtnIncreaseInventory.TabIndex = 11;
+            this.BtnIncreaseInventory.Text = "Save";
+            this.BtnIncreaseInventory.UseVisualStyleBackColor = false;
+            this.BtnIncreaseInventory.Click += new System.EventHandler(this.BtnIncreaseInventory_Click);
             // 
             // LblQuantityValueIndicator1
             // 
@@ -714,13 +732,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.LblQuantityValueIndicator1.Size = new System.Drawing.Size(19, 20);
             this.LblQuantityValueIndicator1.TabIndex = 10;
             this.LblQuantityValueIndicator1.Text = "()";
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(21, 97);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(306, 27);
-            this.textBox5.TabIndex = 8;
             // 
             // label14
             // 
@@ -733,45 +744,62 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // tabPage9
             // 
-            this.tabPage9.Controls.Add(this.button5);
-            this.tabPage9.Controls.Add(this.button6);
+            this.tabPage9.Controls.Add(this.NumUDDecreaseInventoryQtyValue);
+            this.tabPage9.Controls.Add(this.BtnCancelDecreaseInventory);
+            this.tabPage9.Controls.Add(this.BtnDecreaseInvetory);
             this.tabPage9.Controls.Add(this.LblQuantityValueIndicator2);
-            this.tabPage9.Controls.Add(this.textBox6);
             this.tabPage9.Controls.Add(this.label16);
             this.tabPage9.Location = new System.Drawing.Point(4, 29);
             this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Size = new System.Drawing.Size(341, 326);
+            this.tabPage9.Size = new System.Drawing.Size(341, 300);
             this.tabPage9.TabIndex = 2;
             this.tabPage9.Text = "Decrease";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // NumUDDecreaseInventoryQtyValue
             // 
-            this.button5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button5.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button5.ForeColor = System.Drawing.Color.White;
-            this.button5.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button5.Location = new System.Drawing.Point(212, 157);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(115, 47);
-            this.button5.TabIndex = 17;
-            this.button5.Text = "Cancel";
-            this.button5.UseVisualStyleBackColor = false;
+            this.NumUDDecreaseInventoryQtyValue.DecimalPlaces = 3;
+            this.NumUDDecreaseInventoryQtyValue.Location = new System.Drawing.Point(21, 98);
+            this.NumUDDecreaseInventoryQtyValue.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.NumUDDecreaseInventoryQtyValue.Name = "NumUDDecreaseInventoryQtyValue";
+            this.NumUDDecreaseInventoryQtyValue.Size = new System.Drawing.Size(306, 27);
+            this.NumUDDecreaseInventoryQtyValue.TabIndex = 16;
             // 
-            // button6
+            // BtnCancelDecreaseInventory
             // 
-            this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button6.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button6.ForeColor = System.Drawing.Color.White;
-            this.button6.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button6.Location = new System.Drawing.Point(91, 157);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(115, 47);
-            this.button6.TabIndex = 16;
-            this.button6.Text = "Save";
-            this.button6.UseVisualStyleBackColor = false;
+            this.BtnCancelDecreaseInventory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnCancelDecreaseInventory.Enabled = false;
+            this.BtnCancelDecreaseInventory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCancelDecreaseInventory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnCancelDecreaseInventory.ForeColor = System.Drawing.Color.White;
+            this.BtnCancelDecreaseInventory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCancelDecreaseInventory.Location = new System.Drawing.Point(212, 157);
+            this.BtnCancelDecreaseInventory.Name = "BtnCancelDecreaseInventory";
+            this.BtnCancelDecreaseInventory.Size = new System.Drawing.Size(115, 47);
+            this.BtnCancelDecreaseInventory.TabIndex = 17;
+            this.BtnCancelDecreaseInventory.Text = "Cancel";
+            this.BtnCancelDecreaseInventory.UseVisualStyleBackColor = false;
+            this.BtnCancelDecreaseInventory.Click += new System.EventHandler(this.BtnCancelDecreaseInventory_Click);
+            // 
+            // BtnDecreaseInvetory
+            // 
+            this.BtnDecreaseInvetory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnDecreaseInvetory.Enabled = false;
+            this.BtnDecreaseInvetory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnDecreaseInvetory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnDecreaseInvetory.ForeColor = System.Drawing.Color.White;
+            this.BtnDecreaseInvetory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnDecreaseInvetory.Location = new System.Drawing.Point(91, 157);
+            this.BtnDecreaseInvetory.Name = "BtnDecreaseInvetory";
+            this.BtnDecreaseInvetory.Size = new System.Drawing.Size(115, 47);
+            this.BtnDecreaseInvetory.TabIndex = 16;
+            this.BtnDecreaseInvetory.Text = "Save";
+            this.BtnDecreaseInvetory.UseVisualStyleBackColor = false;
+            this.BtnDecreaseInvetory.Click += new System.EventHandler(this.BtnDecreaseInvetory_Click);
             // 
             // LblQuantityValueIndicator2
             // 
@@ -781,13 +809,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.LblQuantityValueIndicator2.Size = new System.Drawing.Size(19, 20);
             this.LblQuantityValueIndicator2.TabIndex = 15;
             this.LblQuantityValueIndicator2.Text = "()";
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(21, 98);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(306, 27);
-            this.textBox6.TabIndex = 13;
             // 
             // label16
             // 
@@ -882,7 +903,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox2.Controls.Add(this.label18);
             this.groupBox2.Controls.Add(this.DPicFilterInventoryTransEndDate);
             this.groupBox2.Controls.Add(this.DPicFilterInventoryTransStartDate);
-            this.groupBox2.Location = new System.Drawing.Point(17, 226);
+            this.groupBox2.Location = new System.Drawing.Point(12, 226);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(341, 188);
             this.groupBox2.TabIndex = 10;
@@ -942,7 +963,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label15.Location = new System.Drawing.Point(17, 26);
+            this.label15.Location = new System.Drawing.Point(12, 17);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(74, 20);
             this.label15.TabIndex = 9;
@@ -950,7 +971,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // TboxTransactionHistoryRemarks
             // 
-            this.TboxTransactionHistoryRemarks.Location = new System.Drawing.Point(17, 49);
+            this.TboxTransactionHistoryRemarks.Location = new System.Drawing.Point(12, 40);
             this.TboxTransactionHistoryRemarks.Multiline = true;
             this.TboxTransactionHistoryRemarks.Name = "TboxTransactionHistoryRemarks";
             this.TboxTransactionHistoryRemarks.Size = new System.Drawing.Size(341, 103);
@@ -995,17 +1016,19 @@ namespace Main.Forms.InventoryManagementForms.Controls
             ((System.ComponentModel.ISupportInitialize)(this.DGVIngredientList)).EndInit();
             this.MainTabIngInventories.ResumeLayout(false);
             this.MainTabIngInventories.PerformLayout();
+            this.PanelNewOrUpdateInventoryIndicator.ResumeLayout(false);
+            this.PanelNewOrUpdateInventoryIndicator.PerformLayout();
             this.TabInventoryManagementControls.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
-            this.PanelNewOrUpdateInventoryIndicator.ResumeLayout(false);
-            this.PanelNewOrUpdateInventoryIndicator.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumUDUnitCostForIngInventory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumUDQtyValForIngInventory)).EndInit();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUDIncreaseInventoryQtyValue)).EndInit();
             this.tabPage9.ResumeLayout(false);
             this.tabPage9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUDDecreaseInventoryQtyValue)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVIngredientInventories)).EndInit();
@@ -1064,15 +1087,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Button BtnSaveNewIngInventory;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label LblQuantityValueIndicator;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button BtnIncreaseInventory;
         private System.Windows.Forms.Label LblQuantityValueIndicator1;
-        private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button BtnCancelIncreaseInventory;
+        private System.Windows.Forms.Button BtnCancelDecreaseInventory;
+        private System.Windows.Forms.Button BtnDecreaseInvetory;
         private System.Windows.Forms.Label LblQuantityValueIndicator2;
-        private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.DateTimePicker DPickerExpirationDateForIngInventory;
@@ -1094,5 +1115,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.DateTimePicker DPicFilterInventoryTransEndDate;
         private System.Windows.Forms.DateTimePicker DPicFilterInventoryTransStartDate;
         private System.Windows.Forms.Button BtnFilterInventoryTransHistory;
+        private System.Windows.Forms.NumericUpDown NumUDIncreaseInventoryQtyValue;
+        private System.Windows.Forms.NumericUpDown NumUDDecreaseInventoryQtyValue;
     }
 }

@@ -181,5 +181,109 @@ namespace Main.Controllers.InventoryControllers
             return results;
         }
 
+
+        public EntityResult<IngredientInventoryModel> IncreaseQtyValue (int ingredientId, long inventoryId, decimal qtyValue, string remarks)
+        {
+
+            var results = new EntityResult<IngredientInventoryModel>();
+            results.IsSuccess = false;
+
+            try
+            {
+                var inventoryDetails = _ingredientInventoryData.GetByIdAndIngredient(ingredientId, inventoryId);
+
+                if (inventoryDetails != null)
+                {
+                    inventoryDetails.InitialQtyValue += qtyValue;
+                    inventoryDetails.RemainingQtyValue += qtyValue;
+
+                    if (this._ingredientInventoryData.Update(inventoryDetails))
+                    {
+                        _ingInventoryTransactionData.Add(new IngInventoryTransactionModel
+                        {
+                            IngredientId = inventoryDetails.IngredientId,
+                            TransType = StaticData.InventoryTransType.INCREASE,
+                            QtyVal = qtyValue,
+                            UnitCost = inventoryDetails.UnitCost,
+                            ExpirationDate = inventoryDetails.ExpirationDate,
+                            UserId = _sessions.CurrentLoggedInUser.Id,
+                            Remarks = remarks
+                        });
+
+                        results.IsSuccess = true;
+                        results.Messages.Add("Successfully increase inventory quantity value");
+                        results.Data = inventoryDetails;
+                    }
+                    else
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add("No changes made.");
+                    }
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Inventory details not found.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add(ex.Message);
+            }
+
+            return results;
+        }
+
+        public EntityResult<IngredientInventoryModel> DecreaseQtyValue(int ingredientId, long inventoryId, decimal qtyValue, string remarks)
+        {
+
+            var results = new EntityResult<IngredientInventoryModel>();
+            results.IsSuccess = false;
+
+            try
+            {
+                var inventoryDetails = _ingredientInventoryData.GetByIdAndIngredient(ingredientId, inventoryId);
+
+                if (inventoryDetails != null)
+                {
+                    inventoryDetails.InitialQtyValue -= qtyValue;
+                    inventoryDetails.RemainingQtyValue -= qtyValue;
+
+                    if (this._ingredientInventoryData.Update(inventoryDetails))
+                    {
+                        _ingInventoryTransactionData.Add(new IngInventoryTransactionModel
+                        {
+                            IngredientId = inventoryDetails.IngredientId,
+                            TransType = StaticData.InventoryTransType.DECREASE,
+                            QtyVal = qtyValue,
+                            UnitCost = inventoryDetails.UnitCost,
+                            ExpirationDate = inventoryDetails.ExpirationDate,
+                            UserId = _sessions.CurrentLoggedInUser.Id,
+                            Remarks = remarks
+                        });
+
+                        results.IsSuccess = true;
+                        results.Messages.Add("Successfully decrease inventory quantity value");
+                        results.Data = inventoryDetails;
+                    }
+                    else
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add("No changes made.");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add(ex.Message);
+            }
+
+            return results;
+        }
+
     }
 }

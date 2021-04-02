@@ -89,6 +89,8 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.IngredientInventorySave += HandleIngredientInventorySave;
             inventoryControlObj.IngredientInventoryDelete += HandleIngredientInventoryDelete;
             inventoryControlObj.FilterTransactionHistory += HandleFilterTransactionHistory;
+            inventoryControlObj.IncreaseInventoryQtyValueSave += HandleSaveInventoryIncreaseQtyValue;
+            inventoryControlObj.DecreaseInventoryQtyValueSave += HandleSaveInventoryDecreaseQtyValue;
 
             this.PanelMainContainer.Controls.Add(inventoryControlObj);
         }
@@ -368,6 +370,101 @@ namespace Main.Forms.InventoryManagementForms
 
             inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, startDate, endDate);
             inventoryControlObj.DisplayInventoryTransactionHistory();
+        }
+
+
+        private void HandleSaveInventoryIncreaseQtyValue(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            long selectedInventoryId = inventoryControlObj.SelectedInventoryId;
+            decimal increaseQtyValue = inventoryControlObj.IncreaseInventoryQtyValue;
+            string remarks = inventoryControlObj.Remarks;
+
+            DialogResult res = MessageBox.Show("Continue to increase the quantity value?", "Increase inventory confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (res == DialogResult.Yes)
+            {
+                var increaseResults = _ingredientInventoryController.IncreaseQtyValue(selectedIngredientId, selectedInventoryId, increaseQtyValue, remarks);
+
+                string resultMessages = "";
+                foreach (var msg in increaseResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (increaseResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Increase inventory", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    inventoryControlObj.SelectedIngredientInventories = _ingredientInventoryData.GetAllByIngredient(selectedIngredientId);
+                    inventoryControlObj.DisplayIngredientInventories();
+                    inventoryControlObj.ResetNewUpdateIngredeintInventoryForm();
+
+                    inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
+                    inventoryControlObj.DisplayIngredientInDGV();
+
+
+                    int year = DateTime.Now.Year;
+                    DateTime Jan1 = new DateTime(year, 1, 1);
+                    DateTime today = DateTime.Now;
+
+                    inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, Jan1, today);
+                    inventoryControlObj.DisplayInventoryTransactionHistory();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Increase inventory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+        }
+
+        private void HandleSaveInventoryDecreaseQtyValue(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            long selectedInventoryId = inventoryControlObj.SelectedInventoryId;
+            decimal decreaseQtyValue = inventoryControlObj.DecreaseInventoryQtyValue;
+            string remarks = inventoryControlObj.Remarks;
+
+            DialogResult res = MessageBox.Show("Continue to decrease the quantity value?", "Decrease inventory confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (res == DialogResult.Yes)
+            {
+                var decreaseResults = _ingredientInventoryController.DecreaseQtyValue(selectedIngredientId, selectedInventoryId, decreaseQtyValue, remarks);
+
+                string resultMessages = "";
+                foreach (var msg in decreaseResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (decreaseResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Decrease inventory", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    inventoryControlObj.SelectedIngredientInventories = _ingredientInventoryData.GetAllByIngredient(selectedIngredientId);
+                    inventoryControlObj.DisplayIngredientInventories();
+                    inventoryControlObj.ResetNewUpdateIngredeintInventoryForm();
+
+                    inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
+                    inventoryControlObj.DisplayIngredientInDGV();
+
+
+                    int year = DateTime.Now.Year;
+                    DateTime Jan1 = new DateTime(year, 1, 1);
+                    DateTime today = DateTime.Now;
+
+                    inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, Jan1, today);
+                    inventoryControlObj.DisplayInventoryTransactionHistory();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Decrease inventory", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
         }
     }
 }

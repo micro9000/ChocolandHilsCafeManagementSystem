@@ -263,6 +263,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
         public void DisplayIngredientsInCbox()
         {
+            this.CboxIngredientsCategories.Items.Clear();
+            this.CboxFilterByCategory.Items.Clear();
+
             if (this.IngredientCategories != null)
             {
                 ComboboxItem item;
@@ -727,10 +730,20 @@ namespace Main.Forms.InventoryManagementForms.Controls
             if (IsNewIngredientInventory == true)
             {
                 this.LblNewOrUpdateInventoryIndicator.Text = "New inventory";
+
+                this.BtnIncreaseInventory.Enabled = false;
+                this.BtnCancelIncreaseInventory.Enabled = false;
+                this.BtnDecreaseInvetory.Enabled = false;
+                this.BtnCancelDecreaseInventory.Enabled = false;
             }
             else
             {
                 this.LblNewOrUpdateInventoryIndicator.Text = "Update inventory";
+
+                this.BtnIncreaseInventory.Enabled = true;
+                this.BtnCancelIncreaseInventory.Enabled = true;
+                this.BtnDecreaseInvetory.Enabled = true;
+                this.BtnCancelDecreaseInventory.Enabled = true;
             }
         }
 
@@ -793,6 +806,10 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.NumUDUnitCostForIngInventory.Value = 0;
             this.DPickerExpirationDateForIngInventory.Value = DateTime.Now;
             this.IsNewIngredientInventory = true;
+
+
+            NumUDIncreaseInventoryQtyValue.Value = 0;
+            NumUDDecreaseInventoryQtyValue.Value = 0;
         }
 
         private void BtnSaveNewIngInventory_Click(object sender, EventArgs e)
@@ -862,9 +879,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 if (DGVIngredientInventories.CurrentRow != null && SelectedIngredientInventories != null)
                 {
                     long inventoryId = long.Parse(DGVIngredientInventories.CurrentRow.Cells[0].Value.ToString());
+                    this.SelectedInventoryId = inventoryId;
 
                     var ingredientInventory = this.SelectedIngredientInventories.Where(x => x.Id == inventoryId).FirstOrDefault();
-
                     this.IngredientInventoryToAddUpdate = ingredientInventory;
                     DisplaySelectedInventoryInSaveNewUpdateForm(ingredientInventory);
 
@@ -902,6 +919,73 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
+
+        private void BtnCancelIncreaseInventory_Click(object sender, EventArgs e)
+        {
+            ResetNewUpdateIngredeintInventoryForm();
+        }
+
+        private void BtnCancelDecreaseInventory_Click(object sender, EventArgs e)
+        {
+            ResetNewUpdateIngredeintInventoryForm();
+        }
+
+        public decimal IncreaseInventoryQtyValue { get; set; }
+        public decimal DecreaseInventoryQtyValue { get; set; }
+
+        public event EventHandler IncreaseInventoryQtyValueSave;
+        protected virtual void OnIncreaseInventoryQtyValueSave(EventArgs e)
+        {
+            IncreaseInventoryQtyValueSave?.Invoke(this, e);
+        }
+
+        public event EventHandler DecreaseInventoryQtyValueSave;
+        protected virtual void OnDecreaseInventoryQtyValueSave(EventArgs e)
+        {
+            DecreaseInventoryQtyValueSave?.Invoke(this, e);
+        }
+
+        private void BtnIncreaseInventory_Click(object sender, EventArgs e)
+        {
+            if (NumUDIncreaseInventoryQtyValue.Value > 0 && SelectedIngredient != null)
+            {
+                if (string.IsNullOrWhiteSpace(this.TboxRemarks.Text))
+                {
+                    MessageBox.Show("Please provide remarks", "Delete inventory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                this.Remarks = this.TboxRemarks.Text;
+
+                decimal newQtyValue = GetUOMToSmallUOM(SelectedIngredient.UOM, NumUDIncreaseInventoryQtyValue.Value);
+
+                IncreaseInventoryQtyValue = newQtyValue;
+
+                OnIncreaseInventoryQtyValueSave(EventArgs.Empty);
+
+            }
+        }
+
+        private void BtnDecreaseInvetory_Click(object sender, EventArgs e)
+        {
+            if (NumUDDecreaseInventoryQtyValue.Value > 0 && SelectedIngredient != null)
+            {
+                if (string.IsNullOrWhiteSpace(this.TboxRemarks.Text))
+                {
+                    MessageBox.Show("Please provide remarks", "Delete inventory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                this.Remarks = this.TboxRemarks.Text;
+
+
+                decimal newQtyValue = GetUOMToSmallUOM(SelectedIngredient.UOM, NumUDDecreaseInventoryQtyValue.Value);
+
+                DecreaseInventoryQtyValue = newQtyValue;
+                OnDecreaseInventoryQtyValueSave(EventArgs.Empty);
+
+            }
+        }
 
         private void SetDGVInventoryTransactionHistoryFontAndColors()
         {
@@ -1011,5 +1095,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 }
             }
         }
+
     }
 }

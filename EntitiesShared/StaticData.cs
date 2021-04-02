@@ -25,8 +25,8 @@ namespace EntitiesShared
         {
             NEW,
             UPDATE,
-            INC, // Increase
-            DEC, // Decrease
+            INCREASE, // Increase
+            DECREASE, // Decrease
             DELETE
         }
 
