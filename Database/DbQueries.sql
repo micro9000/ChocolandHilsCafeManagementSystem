@@ -537,8 +537,8 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
 )ENGINE=INNODB;
 
 SELECT *
-FROM Ingredients AS ING
-JOIN IngredientInventory AS INGINV ON INGINV.ingredientId=ING.id
+FROM IngredientInventory AS INGINV
+JOIN Ingredients AS ING ON INGINV.ingredientId=ING.id
 WHERE ING.isDeleted=false AND INGINV.isDeleted=false AND INGINV.isSoldOut=false AND 
 (INGINV.expirationDate BETWEEN '' AND '' OR INGINV.expirationDate <= '');
 
@@ -582,7 +582,9 @@ CREATE TABLE IF NOT EXISTS Products(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     categoryId INT NOT NULL,
 	prodName VARCHAR(255),
-    price DECIMAL(9,2),
+    pricePerOrder DECIMAL(9,2),
+    estimatedNumOrders INT,
+    -- totalCost DECIMAL(9,2), -- can add computed property
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
@@ -590,11 +592,12 @@ CREATE TABLE IF NOT EXISTS Products(
     FOREIGN KEY(categoryId) REFERENCES ProductCategories(id)
 )ENGINE=INNODB;
 
+-- Per order
 CREATE TABLE IF NOT EXISTS ProductIngredients(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	productId INT NOT NULL,
     ingredientId INT NOT NULL,
-    measurement DECIMAL,
+    qtyValue DECIMAL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,

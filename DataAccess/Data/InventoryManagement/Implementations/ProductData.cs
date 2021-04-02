@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace DataAccess.Data.InventoryManagement.Implementations
 {
@@ -17,6 +18,62 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
+        }
+
+        public bool MassUpdateProductCategory (int previousCategoryId, int newCategoryId)
+        {
+            var productsUnderPrevCategory = this.GetAllByCategory(previousCategoryId);
+
+            if (productsUnderPrevCategory == null)
+                return true;
+
+            if (productsUnderPrevCategory != null && productsUnderPrevCategory.Count == 0)
+            {
+                return true;
+            }
+
+            string query = @"UPDATE Products SET categoryId=@NewCategoryId 
+                            WHERE isDeleted=false AND categoryId=@PreviousCategoryId";
+
+            int rowsAffected = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                rowsAffected = conn.Execute(query,
+                        new
+                        {
+                            NewCategoryId = newCategoryId,
+                            PreviousCategoryId = previousCategoryId
+                        });
+                conn.Close();
+            }
+
+            return rowsAffected > 0;
+        }
+
+        public bool MassDeleteProductsByCategory(int categoryId)
+        {
+            string query = @"UPDATE Products SET isDeleted=true 
+                            WHERE isDeleted=false AND categoryId=@Categoryid";
+
+            int rowsAffected = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                rowsAffected = conn.Execute(query,
+                        new
+                        {
+                            Categoryid = categoryId
+                        });
+                conn.Close();
+            }
+
+            return rowsAffected > 0;
+        }
+
+        public List<ProductModel> GetAllByCategory(int categoryId)
+        {
+            string query = @"SELECT * FROM Products WHERE isDeleted=false AND categoryId=@CategoryId";
+
+            return this.GetAll(query, new { CategoryId = categoryId });
         }
     }
 }

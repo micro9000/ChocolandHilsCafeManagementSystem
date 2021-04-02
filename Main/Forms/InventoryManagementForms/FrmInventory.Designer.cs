@@ -35,9 +35,12 @@ namespace Main.Forms.InventoryManagementForms
             this.ContextMenuIngredient = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.TSItemIngredientInventory = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuProducts = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.TSItemProductInventory = new System.Windows.Forms.ToolStripMenuItem();
             this.PanelMainContainer = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.ContextMenuIngredient.SuspendLayout();
+            this.ContextMenuProducts.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -75,9 +78,24 @@ namespace Main.Forms.InventoryManagementForms
             // 
             // toolStripMenuItem2
             // 
+            this.toolStripMenuItem2.DropDown = this.ContextMenuProducts;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(61, 20);
             this.toolStripMenuItem2.Text = "Product";
+            // 
+            // ContextMenuProducts
+            // 
+            this.ContextMenuProducts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSItemProductInventory});
+            this.ContextMenuProducts.Name = "ContextMenuProducts";
+            this.ContextMenuProducts.Size = new System.Drawing.Size(125, 26);
+            this.ContextMenuProducts.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuProducts_ItemClicked);
+            // 
+            // TSItemProductInventory
+            // 
+            this.TSItemProductInventory.Name = "TSItemProductInventory";
+            this.TSItemProductInventory.Size = new System.Drawing.Size(124, 22);
+            this.TSItemProductInventory.Text = "Inventory";
             // 
             // PanelMainContainer
             // 
@@ -100,6 +118,7 @@ namespace Main.Forms.InventoryManagementForms
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ContextMenuIngredient.ResumeLayout(false);
+            this.ContextMenuProducts.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -113,5 +132,7 @@ namespace Main.Forms.InventoryManagementForms
         private System.Windows.Forms.ContextMenuStrip ContextMenuIngredient;
         private System.Windows.Forms.ToolStripMenuItem TSItemIngredientInventory;
         private System.Windows.Forms.Panel PanelMainContainer;
+        private System.Windows.Forms.ContextMenuStrip ContextMenuProducts;
+        private System.Windows.Forms.ToolStripMenuItem TSItemProductInventory;
     }
 }

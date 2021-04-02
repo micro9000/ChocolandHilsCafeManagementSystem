@@ -28,6 +28,7 @@ namespace Main.Forms.InventoryManagementForms
         private readonly IIngredientCategoryController _ingredientCategoryController;
         private readonly IIngredientController _ingredientController;
         private readonly IIngredientInventoryController _ingredientInventoryController;
+        private readonly IProductCategoryController _productCategoryController;
 
         public FrmInventory(UOMConverter uOMConverter,
                             IIngredientData ingredientData,
@@ -41,7 +42,8 @@ namespace Main.Forms.InventoryManagementForms
                             IComboSetProductData comboSetProductData,
                             IIngredientCategoryController ingredientCategoryController,
                             IIngredientController ingredientController,
-                            IIngredientInventoryController ingredientInventoryController)
+                            IIngredientInventoryController ingredientInventoryController,
+                            IProductCategoryController productCategoryController)
         {
             InitializeComponent();
             _uOMConverter = uOMConverter;
@@ -56,6 +58,7 @@ namespace Main.Forms.InventoryManagementForms
             _ingredientCategoryController = ingredientCategoryController;
             _ingredientController = ingredientController;
             _ingredientInventoryController = ingredientInventoryController;
+            _productCategoryController = productCategoryController;
         }
 
         private void ContextMenuIngredient_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -65,6 +68,16 @@ namespace Main.Forms.InventoryManagementForms
             if (clickedItem != null && clickedItem.Name == "TSItemIngredientInventory")
             {
                 DisplayIgredientInventoryControl();
+            }
+        }
+
+
+        private void ContextMenuProducts_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem clickedItem = e.ClickedItem;
+            if (clickedItem != null && clickedItem.Name == "TSItemProductInventory")
+            {
+                DisplayProductInventoryControl();
             }
         }
 
@@ -152,7 +165,7 @@ namespace Main.Forms.InventoryManagementForms
 
             if (res == DialogResult.OK)
             {
-                DialogResult deleteIngredietns = MessageBox.Show("Do you want to delete ingredients belongs to this category?", "Delete confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                DialogResult deleteIngredietns = MessageBox.Show("Do you want to delete ingredients under in this category?", "Delete confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 bool continueToDeleteCategory = false;
                 bool continueToDeleteIngredientsUnderThisCategory = false;
@@ -160,7 +173,7 @@ namespace Main.Forms.InventoryManagementForms
                 if (deleteIngredietns == DialogResult.Yes)
                 {
                     // Delete all ingredients
-                    DialogResult continueToDeleteIngredients = MessageBox.Show("You are going to delete ingredients under this category, do you want to continue?", "Delete confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult continueToDeleteIngredients = MessageBox.Show("You are going to delete ingredients under in this category, do you want to continue?", "Delete confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     continueToDeleteCategory = (continueToDeleteIngredients == DialogResult.Yes);
                     continueToDeleteIngredientsUnderThisCategory = (continueToDeleteIngredients == DialogResult.Yes);
 
@@ -192,7 +205,8 @@ namespace Main.Forms.InventoryManagementForms
 
                     if (deleteResults.IsSuccess)
                     {
-                        _ingredientData.MassDeleteIngredientsByCategory(selectedCategoryId);
+                        if (continueToDeleteIngredientsUnderThisCategory)
+                            _ingredientData.MassDeleteIngredientsByCategory(selectedCategoryId); // delete ingredients under in this category
 
                         MessageBox.Show(resultMessages, "Delete category", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         inventoryControlObj.ResetForm();
@@ -483,5 +497,132 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.InventoriesNearOnExpirationDate = _ingredientInventoryData.GetAllByExpirationDateRange(startDate, endDate);
             inventoryControlObj.DisplayIngredientInventoriesNearOnExpirationDate();
         }
+
+
+        // ##########################################
+        // Product inventory event handlers:
+        // ##########################################
+
+
+        public void DisplayProductInventoryControl()
+        {
+            this.PanelMainContainer.Controls.Clear();
+            var inventoryControlObj = new ProductInventoryControl();
+            inventoryControlObj.Location = new Point(this.ClientSize.Width / 2 - inventoryControlObj.Size.Width / 2, this.ClientSize.Height / 2 - inventoryControlObj.Size.Height / 2);
+            inventoryControlObj.Anchor = AnchorStyles.None;
+
+            inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();
+
+            inventoryControlObj.ProductCategorySave += HandleProductCategorySaved;
+            inventoryControlObj.SelectCategoryToDelete += HandleSelectedProductCategoryToDelete;
+
+            this.PanelMainContainer.Controls.Add(inventoryControlObj);
+        }
+
+        private void HandleProductCategorySaved(object sender, EventArgs e)
+        {
+            ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
+
+            var newCategory = inventoryControlObj.ProductCategoryToAddUpdate;
+            bool isNew = inventoryControlObj.IsNewProductCategory;
+
+            if (newCategory != null)
+            {
+                var saveResults = _productCategoryController.Save(newCategory, isNew);
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save category details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    inventoryControlObj.ResetProductCategoryForm();
+                    inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();
+                    inventoryControlObj.DisplayProductCategoriesInDGV();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save category details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+            }
+
+        }
+
+
+        private void HandleSelectedProductCategoryToDelete(object sender, EventArgs e)
+        {
+            ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
+            int selectedCategoryId = inventoryControlObj.SelectedCategoryId;
+
+            DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                DialogResult deleteIngredietns = MessageBox.Show("Do you want to delete products under in this category?", "Delete confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                bool continueToDeleteCategory = false;
+                bool continueToDeleteIngredientsUnderThisCategory = false;
+
+                if (deleteIngredietns == DialogResult.Yes)
+                {
+                    // Delete all ingredients
+                    DialogResult continueToDeleteIngredients = MessageBox.Show("You are going to delete products under in this category, do you want to continue?", "Delete confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    continueToDeleteCategory = (continueToDeleteIngredients == DialogResult.Yes);
+                    continueToDeleteIngredientsUnderThisCategory = (continueToDeleteIngredients == DialogResult.Yes);
+
+                }
+                else if (deleteIngredietns == DialogResult.No)
+                {
+                    // Reassign to other category
+
+                    FrmReassignProductsToOtherCategory frmReassignCategory = new FrmReassignProductsToOtherCategory(_productCategoryData, _productData, selectedCategoryId);
+
+                    frmReassignCategory.ShowDialog();
+
+                    continueToDeleteCategory = (frmReassignCategory.IsDone == true && frmReassignCategory.IsCancelled == false);
+                }
+                else
+                {
+                    continueToDeleteCategory = false;
+                }
+
+                if (continueToDeleteCategory)
+                {
+                    var deleteResults = _productCategoryController.Delete(selectedCategoryId);
+
+                    string resultMessages = "";
+                    foreach (var msg in deleteResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (deleteResults.IsSuccess)
+                    {
+                        
+                        if (continueToDeleteIngredientsUnderThisCategory)
+                            _productData.MassDeleteProductsByCategory(selectedCategoryId);// Delete all producta
+
+                        MessageBox.Show(resultMessages, "Delete category", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        inventoryControlObj.ResetProductCategoryForm();
+                        inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();
+                        inventoryControlObj.DisplayProductCategoriesInDGV();
+
+                        //inventoryControlObj.ResetIngredientForm();
+                        //inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
+                        //inventoryControlObj.DisplayIngredientInDGV();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Delete category", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+
+            }
+
+        }
+
     }
 }

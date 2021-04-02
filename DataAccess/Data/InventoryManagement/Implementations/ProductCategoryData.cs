@@ -18,5 +18,11 @@ namespace DataAccess.Data.InventoryManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<ProductCategoryModel> GetAllNotDeleted()
+        {
+            string query = @"SELECT * FROM ProductCategories WHERE isDeleted=false";
+            return this.GetAll(query);
+        }
     }
 }
