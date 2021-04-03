@@ -112,7 +112,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVEmployeeList.Name = "DGVEmployeeList";
             this.DGVEmployeeList.ReadOnly = true;
             this.DGVEmployeeList.RowTemplate.Height = 25;
-            this.DGVEmployeeList.Size = new System.Drawing.Size(716, 623);
+            this.DGVEmployeeList.Size = new System.Drawing.Size(716, 618);
             this.DGVEmployeeList.TabIndex = 7;
             // 
             // groupBox2
@@ -133,7 +133,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVShiftList.AllowUserToDeleteRows = false;
             this.DGVShiftList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVShiftList.Dock = System.Windows.Forms.DockStyle.Top;
-            this.DGVShiftList.Location = new System.Drawing.Point(3, 19);
+            this.DGVShiftList.Location = new System.Drawing.Point(3, 23);
             this.DGVShiftList.Name = "DGVShiftList";
             this.DGVShiftList.ReadOnly = true;
             this.DGVShiftList.RowTemplate.Height = 25;
@@ -177,7 +177,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxSunday.AutoSize = true;
             this.CBoxSunday.Location = new System.Drawing.Point(318, 32);
             this.CBoxSunday.Name = "CBoxSunday";
-            this.CBoxSunday.Size = new System.Drawing.Size(46, 19);
+            this.CBoxSunday.Size = new System.Drawing.Size(52, 24);
             this.CBoxSunday.TabIndex = 56;
             this.CBoxSunday.Tag = "Sun-7";
             this.CBoxSunday.Text = "Sun";
@@ -188,7 +188,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxSaturday.AutoSize = true;
             this.CBoxSaturday.Location = new System.Drawing.Point(270, 32);
             this.CBoxSaturday.Name = "CBoxSaturday";
-            this.CBoxSaturday.Size = new System.Drawing.Size(42, 19);
+            this.CBoxSaturday.Size = new System.Drawing.Size(49, 24);
             this.CBoxSaturday.TabIndex = 55;
             this.CBoxSaturday.Tag = "Sat-6";
             this.CBoxSaturday.Text = "Sat";
@@ -199,7 +199,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxFriday.AutoSize = true;
             this.CBoxFriday.Location = new System.Drawing.Point(225, 32);
             this.CBoxFriday.Name = "CBoxFriday";
-            this.CBoxFriday.Size = new System.Drawing.Size(39, 19);
+            this.CBoxFriday.Size = new System.Drawing.Size(44, 24);
             this.CBoxFriday.TabIndex = 54;
             this.CBoxFriday.Tag = "Fri-5";
             this.CBoxFriday.Text = "Fri";
@@ -210,7 +210,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxThursday.AutoSize = true;
             this.CBoxThursday.Location = new System.Drawing.Point(173, 32);
             this.CBoxThursday.Name = "CBoxThursday";
-            this.CBoxThursday.Size = new System.Drawing.Size(46, 19);
+            this.CBoxThursday.Size = new System.Drawing.Size(52, 24);
             this.CBoxThursday.TabIndex = 53;
             this.CBoxThursday.Tag = "Thu-4";
             this.CBoxThursday.Text = "Thu";
@@ -221,7 +221,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxWednesday.AutoSize = true;
             this.CBoxWednesday.Location = new System.Drawing.Point(117, 32);
             this.CBoxWednesday.Name = "CBoxWednesday";
-            this.CBoxWednesday.Size = new System.Drawing.Size(50, 19);
+            this.CBoxWednesday.Size = new System.Drawing.Size(58, 24);
             this.CBoxWednesday.TabIndex = 52;
             this.CBoxWednesday.Tag = "Wed-3";
             this.CBoxWednesday.Text = "Wed";
@@ -232,7 +232,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxMonday.AutoSize = true;
             this.CBoxMonday.Location = new System.Drawing.Point(9, 32);
             this.CBoxMonday.Name = "CBoxMonday";
-            this.CBoxMonday.Size = new System.Drawing.Size(51, 19);
+            this.CBoxMonday.Size = new System.Drawing.Size(58, 24);
             this.CBoxMonday.TabIndex = 50;
             this.CBoxMonday.Tag = "Mon-1";
             this.CBoxMonday.Text = "Mon";
@@ -243,7 +243,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxTuesday.AutoSize = true;
             this.CBoxTuesday.Location = new System.Drawing.Point(66, 32);
             this.CBoxTuesday.Name = "CBoxTuesday";
-            this.CBoxTuesday.Size = new System.Drawing.Size(45, 19);
+            this.CBoxTuesday.Size = new System.Drawing.Size(52, 24);
             this.CBoxTuesday.TabIndex = 51;
             this.CBoxTuesday.Tag = "Tue-2";
             this.CBoxTuesday.Text = "Tue";
@@ -254,6 +254,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tabControl1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tabControl1.Location = new System.Drawing.Point(0, 94);
             this.tabControl1.Name = "tabControl1";
@@ -265,10 +266,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Controls.Add(this.DGVEmployeeList);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1227, 629);
+            this.tabPage1.Size = new System.Drawing.Size(1227, 624);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Employee Shift";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -344,11 +345,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVScheduledWorkforceByDate.AllowUserToDeleteRows = false;
             this.DGVScheduledWorkforceByDate.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVScheduledWorkforceByDate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DGVScheduledWorkforceByDate.Location = new System.Drawing.Point(3, 19);
+            this.DGVScheduledWorkforceByDate.Location = new System.Drawing.Point(3, 23);
             this.DGVScheduledWorkforceByDate.Name = "DGVScheduledWorkforceByDate";
             this.DGVScheduledWorkforceByDate.ReadOnly = true;
             this.DGVScheduledWorkforceByDate.RowTemplate.Height = 25;
-            this.DGVScheduledWorkforceByDate.Size = new System.Drawing.Size(762, 210);
+            this.DGVScheduledWorkforceByDate.Size = new System.Drawing.Size(762, 206);
             this.DGVScheduledWorkforceByDate.TabIndex = 8;
             this.DGVScheduledWorkforceByDate.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVScheduledWorkforceByDate_CellClick);
             // 
@@ -369,11 +370,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVEmployeeListToSchedule.AllowUserToDeleteRows = false;
             this.DGVEmployeeListToSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVEmployeeListToSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DGVEmployeeListToSchedule.Location = new System.Drawing.Point(3, 19);
+            this.DGVEmployeeListToSchedule.Location = new System.Drawing.Point(3, 23);
             this.DGVEmployeeListToSchedule.Name = "DGVEmployeeListToSchedule";
             this.DGVEmployeeListToSchedule.ReadOnly = true;
             this.DGVEmployeeListToSchedule.RowTemplate.Height = 25;
-            this.DGVEmployeeListToSchedule.Size = new System.Drawing.Size(762, 260);
+            this.DGVEmployeeListToSchedule.Size = new System.Drawing.Size(762, 256);
             this.DGVEmployeeListToSchedule.TabIndex = 8;
             // 
             // groupBox1

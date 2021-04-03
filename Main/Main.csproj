@@ -63,6 +63,9 @@
     <None Update="Resources\icons8-management-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\icons8-plus-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\icons8-save-26.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -115,7 +118,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\PayrollController\" />
-    <Folder Include="FormModels\" />
     <Folder Include="Forms\PayrollForms\PdfHtmlTemplates\" />
   </ItemGroup>
 

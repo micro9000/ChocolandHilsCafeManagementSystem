@@ -507,11 +507,12 @@ namespace Main.Forms.InventoryManagementForms
         public void DisplayProductInventoryControl()
         {
             this.PanelMainContainer.Controls.Clear();
-            var inventoryControlObj = new ProductInventoryControl();
+            var inventoryControlObj = new ProductInventoryControl(_uOMConverter);
             inventoryControlObj.Location = new Point(this.ClientSize.Width / 2 - inventoryControlObj.Size.Width / 2, this.ClientSize.Height / 2 - inventoryControlObj.Size.Height / 2);
             inventoryControlObj.Anchor = AnchorStyles.None;
 
             inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();
+            inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
 
             inventoryControlObj.ProductCategorySave += HandleProductCategorySaved;
             inventoryControlObj.SelectCategoryToDelete += HandleSelectedProductCategoryToDelete;
