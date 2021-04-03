@@ -31,7 +31,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
 
         public List<IngredientInventoryModel> GetAllByIngredient(int ingredientId)
         {
-            string query = @"SELECT * FROM IngredientInventory WHERE isDeleted=false AND ingredientId=@IngredientId";
+            string query = @"SELECT * FROM IngredientInventory WHERE isDeleted=false AND isSoldOut=false AND ingredientId=@IngredientId";
 
             var inventories = this.GetAll(query, new { IngredientId = ingredientId });
 
@@ -41,7 +41,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
         public IngredientInventoryModel GetByIdAndIngredient (int ingredientId, long id)
         {
             string query = @"SELECT * FROM IngredientInventory 
-                            WHERE isDeleted=false AND ingredientId=@IngredientId AND id=@Id";
+                            WHERE isDeleted=false AND isSoldOut=false AND ingredientId=@IngredientId AND id=@Id";
 
             return this.GetFirstOrDefault(query, new { IngredientId = ingredientId, Id = id });
         }

@@ -17,16 +17,19 @@ namespace EntitiesShared
         public enum UOM
         {
             kg, // Kilogram
-            L, // Liter
-            pcs // Pieces
+            L, // Liter,
+            pcs, // Pieces
+            pc,
+            g, // grams
+            ml,
         }
 
         public enum InventoryTransType
         {
             NEW,
             UPDATE,
-            INCREASE, // Increase
-            DECREASE, // Decrease
+            INCREASE,
+            DECREASE,
             DELETE
         }
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataAccess.Data.InventoryManagement.Contracts;
+using Main.Controllers.InventoryControllers;
 using Main.Controllers.InventoryControllers.ControllerInterface;
 using Main.Forms.InventoryManagementForms.Controls;
 using Shared.Helpers;
@@ -29,6 +30,8 @@ namespace Main.Forms.InventoryManagementForms
         private readonly IIngredientController _ingredientController;
         private readonly IIngredientInventoryController _ingredientInventoryController;
         private readonly IProductCategoryController _productCategoryController;
+        private readonly IProductController _productController;
+        private readonly IIngredientInventoryManager _ingredientInventoryManager;
 
         public FrmInventory(UOMConverter uOMConverter,
                             IIngredientData ingredientData,
@@ -43,7 +46,9 @@ namespace Main.Forms.InventoryManagementForms
                             IIngredientCategoryController ingredientCategoryController,
                             IIngredientController ingredientController,
                             IIngredientInventoryController ingredientInventoryController,
-                            IProductCategoryController productCategoryController)
+                            IProductCategoryController productCategoryController,
+                            IProductController productController,
+                            IIngredientInventoryManager ingredientInventoryManager)
         {
             InitializeComponent();
             _uOMConverter = uOMConverter;
@@ -59,7 +64,11 @@ namespace Main.Forms.InventoryManagementForms
             _ingredientController = ingredientController;
             _ingredientInventoryController = ingredientInventoryController;
             _productCategoryController = productCategoryController;
+            _productController = productController;
+            _ingredientInventoryManager = ingredientInventoryManager;
         }
+
+
 
         private void ContextMenuIngredient_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -507,15 +516,20 @@ namespace Main.Forms.InventoryManagementForms
         public void DisplayProductInventoryControl()
         {
             this.PanelMainContainer.Controls.Clear();
-            var inventoryControlObj = new ProductInventoryControl(_uOMConverter);
+            var inventoryControlObj = new ProductInventoryControl(_uOMConverter, _ingredientInventoryManager);
             inventoryControlObj.Location = new Point(this.ClientSize.Width / 2 - inventoryControlObj.Size.Width / 2, this.ClientSize.Height / 2 - inventoryControlObj.Size.Height / 2);
             inventoryControlObj.Anchor = AnchorStyles.None;
 
             inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();
             inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
+            inventoryControlObj.ExistingProducts = _productData.GetAllNotDeleted();
 
             inventoryControlObj.ProductCategorySave += HandleProductCategorySaved;
             inventoryControlObj.SelectCategoryToDelete += HandleSelectedProductCategoryToDelete;
+            inventoryControlObj.ProductSave += HandleProductSaved;
+            inventoryControlObj.GetProductExistingIngredients += HandleGetProductExistingIngredients;
+            inventoryControlObj.GetProductDetailsAndDispalyInForm += HandleGetProductDetailsAndDispalyInForm;
+            inventoryControlObj.RefreshProductList += HandleRefreshProductList;
 
             this.PanelMainContainer.Controls.Add(inventoryControlObj);
         }
@@ -611,6 +625,9 @@ namespace Main.Forms.InventoryManagementForms
                         inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();
                         inventoryControlObj.DisplayProductCategoriesInDGV();
 
+                        inventoryControlObj.ExistingProducts = _productData.GetAllNotDeleted();
+                        inventoryControlObj.DisplayExistingProductsInDGV(inventoryControlObj.ExistingProducts);
+
                         //inventoryControlObj.ResetIngredientForm();
                         //inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
                         //inventoryControlObj.DisplayIngredientInDGV();
@@ -625,5 +642,64 @@ namespace Main.Forms.InventoryManagementForms
 
         }
 
+
+        private void HandleProductSaved(object sender, EventArgs e)
+        {
+            ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
+
+            var productDetails = inventoryControlObj.ProductToAddUpdate;
+            bool isNew = inventoryControlObj.IsNewProduct;
+            var ingredients = inventoryControlObj.ProductSelectedIngredients;
+
+            if (productDetails != null)
+            {
+                var saveResults = _productController.Save(ingredients, productDetails, isNew);
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save product details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    inventoryControlObj.ClearProductDetailsForm();
+
+                    inventoryControlObj.ExistingProducts = _productData.GetAllNotDeleted();
+                    inventoryControlObj.DisplayExistingProductsInDGV(inventoryControlObj.ExistingProducts);
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save product details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+            }
+
+        }
+
+        private void HandleGetProductExistingIngredients(object sender, EventArgs e)
+        {
+            ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
+            int productId = inventoryControlObj.SelectedExistingProductId;
+            inventoryControlObj.ExistingProductIngredients = _productIngredientData.GetAllByProduct(productId);
+            inventoryControlObj.DisplayProductsExistingIngredientsInDGV();
+        }
+
+        private void HandleGetProductDetailsAndDispalyInForm(object sender, EventArgs e)
+        {
+            ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
+            int productId = inventoryControlObj.SelectedExistingProductId;
+
+            inventoryControlObj.ProductToAddUpdate = _productData.Get(productId);
+            inventoryControlObj.ProductSelectedIngredients = _productIngredientData.GetAllByProduct(productId);
+            inventoryControlObj.DisplayProductDetailsAndIngredientsInFormAndDGV();
+        }
+
+        private void HandleRefreshProductList(object sender, EventArgs e)
+        {
+            ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
+            inventoryControlObj.ExistingProducts = _productData.GetAllNotDeleted();
+            inventoryControlObj.DisplayExistingProductsInDGV(inventoryControlObj.ExistingProducts);
+        }
     }
 }

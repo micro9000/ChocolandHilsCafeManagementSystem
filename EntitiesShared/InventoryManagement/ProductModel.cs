@@ -12,8 +12,18 @@ namespace EntitiesShared.InventoryManagement
     {
         public int CategoryId { get; set; }
 
+        private ProductCategoryModel category;
+        [Write(false)]
+        [Computed]
+        public ProductCategoryModel Category
+        {
+            get { return category; }
+            set { category = value; }
+        }
+
+
         public string ProdName { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal PricePerOrder { get; set; }
     }
 }

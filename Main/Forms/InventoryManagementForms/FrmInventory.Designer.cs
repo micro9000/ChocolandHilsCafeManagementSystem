@@ -88,6 +88,7 @@ namespace Main.Forms.InventoryManagementForms
             this.ContextMenuProducts.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TSItemProductInventory});
             this.ContextMenuProducts.Name = "ContextMenuProducts";
+            this.ContextMenuProducts.OwnerItem = this.toolStripMenuItem2;
             this.ContextMenuProducts.Size = new System.Drawing.Size(125, 26);
             this.ContextMenuProducts.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuProducts_ItemClicked);
             // 

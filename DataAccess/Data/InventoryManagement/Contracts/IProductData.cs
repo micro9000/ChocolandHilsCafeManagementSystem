@@ -13,5 +13,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
         bool MassUpdateProductCategory(int previousCategoryId, int newCategoryId);
         bool MassDeleteProductsByCategory(int categoryId);
         List<ProductModel> GetAllByCategory(int categoryId);
+        List<ProductModel> GetAllNotDeleted();
     }
 }

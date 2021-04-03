@@ -69,11 +69,51 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return rowsAffected > 0;
         }
 
+
         public List<ProductModel> GetAllByCategory(int categoryId)
         {
-            string query = @"SELECT * FROM Products WHERE isDeleted=false AND categoryId=@CategoryId";
+           
+            string query = @"SELECT *
+                            FROM Products AS P
+                            JOIN ProductCategories AS PC ON P.categoryId = PC.id
+                            WHERE P.isDeleted=false AND P.categoryId=@CategoryId";
 
-            return this.GetAll(query, new { CategoryId = categoryId });
+            List<ProductModel> results = new List<ProductModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<ProductModel, ProductCategoryModel, ProductModel>(query,
+                    (P, PC) =>
+                    {
+                        P.Category = PC;
+                        return P;
+                    }, new { CategoryId = categoryId }).ToList();
+            }
+
+            return results;
         }
+
+        public List<ProductModel> GetAllNotDeleted()
+        {
+            string query = @"SELECT *
+                            FROM Products AS P
+                            JOIN ProductCategories AS PC ON P.categoryId = PC.id
+                            WHERE P.isDeleted=false";
+
+            List<ProductModel> results = new List<ProductModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<ProductModel, ProductCategoryModel, ProductModel>(query,
+                    (P, PC) =>
+                    {
+                        P.Category = PC;
+                        return P;
+                    }).ToList();
+            }
+
+            return results;
+        }
+
     }
 }

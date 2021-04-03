@@ -584,11 +584,19 @@ CREATE TABLE IF NOT EXISTS Products(
     FOREIGN KEY(categoryId) REFERENCES ProductCategories(id)
 )ENGINE=INNODB;
 
+SELECT * FROM Products;
+
+SELECT *
+FROM Products AS P
+JOIN ProductCategories AS PC ON P.categoryId = PC.id
+WHERE P.isDeleted=false;
+
 -- Per order
 CREATE TABLE IF NOT EXISTS ProductIngredients(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	productId INT NOT NULL,
     ingredientId INT NOT NULL,
+    uom INT,
     qtyValue DECIMAL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -597,6 +605,13 @@ CREATE TABLE IF NOT EXISTS ProductIngredients(
     FOREIGN KEY(productId) REFERENCES Products(id),
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
+
+SELECT *
+FROM ProductIngredients AS PI
+JOIN Ingredients AS ING ON PI.ingredientId=ING.id
+WHERE PI.isDeleted=false;
+
+SELECT * FROM ProductIngredients;
 
 CREATE TABLE IF NOT EXISTS ComboSets(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

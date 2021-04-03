@@ -171,6 +171,8 @@ namespace Main
             // Inventory
             services.AddTransient<IngredientAddUpdateValidator>();
             services.AddTransient<IngredientInventoryAddUpdateValidator>();
+            services.AddTransient<ProductAddUpdateValidator>();
+            services.AddTransient<ProductIngredientAddUpdateValidator>();
 
             // controllers
             services.AddTransient<IEmployeeBenefitsDeductionsController, EmployeeBenefitsDeductionsController>();
@@ -182,10 +184,13 @@ namespace Main
             services.AddTransient<ILeaveTypeController, LeaveTypeController>();
             services.AddTransient<IGovernmentController, GovernmentController>();
             services.AddTransient<IUserController, UserController>();
+
+            services.AddTransient<IIngredientInventoryManager, IngredientInventoryManager>();
             services.AddTransient<IIngredientCategoryController, IngredientCategoryController>();
             services.AddTransient<IIngredientController, IngredientController>();
             services.AddTransient<IIngredientInventoryController, IngredientInventoryController>();
             services.AddTransient<IProductCategoryController, ProductCategoryController>();
+            services.AddTransient<IProductController, ProductController>();
 
 
             // forms
