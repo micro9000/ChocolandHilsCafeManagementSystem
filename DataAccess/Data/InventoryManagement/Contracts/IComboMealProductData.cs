@@ -10,5 +10,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IComboMealProductData : IDataManagerCRUD<ComboMealProductModel>
     {
+        List<ComboMealProductModel> GetAllByComboMeal(long comboMealId);
     }
 }

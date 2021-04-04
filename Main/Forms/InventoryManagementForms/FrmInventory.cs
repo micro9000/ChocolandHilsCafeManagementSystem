@@ -32,6 +32,8 @@ namespace Main.Forms.InventoryManagementForms
         private readonly IProductCategoryController _productCategoryController;
         private readonly IProductController _productController;
         private readonly IIngredientInventoryManager _ingredientInventoryManager;
+        private readonly IComboMealController _comboMealController;
+        private readonly IComboMealData _comboMealData;
 
         public FrmInventory(UOMConverter uOMConverter,
                             IIngredientData ingredientData,
@@ -48,7 +50,9 @@ namespace Main.Forms.InventoryManagementForms
                             IIngredientInventoryController ingredientInventoryController,
                             IProductCategoryController productCategoryController,
                             IProductController productController,
-                            IIngredientInventoryManager ingredientInventoryManager)
+                            IIngredientInventoryManager ingredientInventoryManager,
+                            IComboMealController comboMealController,
+                            IComboMealData comboMealData)
         {
             InitializeComponent();
             _uOMConverter = uOMConverter;
@@ -66,6 +70,8 @@ namespace Main.Forms.InventoryManagementForms
             _productCategoryController = productCategoryController;
             _productController = productController;
             _ingredientInventoryManager = ingredientInventoryManager;
+            _comboMealController = comboMealController;
+            _comboMealData = comboMealData;
         }
 
 
@@ -533,6 +539,7 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();
             inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
             inventoryControlObj.ExistingProducts = _productData.GetAllNotDeleted();
+            inventoryControlObj.ExistingComboMeals = _comboMealData.GetAllNotDeleted();
 
             inventoryControlObj.ProductCategorySave += HandleProductCategorySaved;
             inventoryControlObj.SelectCategoryToDelete += HandleSelectedProductCategoryToDelete;
@@ -541,8 +548,12 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.GetProductDetailsAndDispalyInForm += HandleGetProductDetailsAndDispalyInForm;
             inventoryControlObj.RefreshProductList += HandleRefreshProductList;
 
+            inventoryControlObj.SaveComboMeal += HandleSaveComboMeal;
+            inventoryControlObj.DeleteComboMeal += HandleDeleteComboMeal;
+
             this.PanelMainContainer.Controls.Add(inventoryControlObj);
         }
+
 
         private void HandleProductCategorySaved(object sender, EventArgs e)
         {
@@ -711,5 +722,69 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.ExistingProducts = _productData.GetAllNotDeleted();
             inventoryControlObj.DisplayExistingProductsInDGV(inventoryControlObj.ExistingProducts);
         }
+
+        // #########################################################
+
+        private void HandleSaveComboMeal(object sender, EventArgs e)
+        {
+            ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
+            var comboMealDetails = inventoryControlObj.ComboMealToAddUpdate;
+            var comboMealProducts = inventoryControlObj.ComboMealProductsToAddUpdate;
+            var isNew = inventoryControlObj.IsNewComboMeal;
+
+            if (comboMealDetails != null && comboMealProducts != null && comboMealProducts.Count > 0)
+            {
+                var saveResults = _comboMealController.Save(comboMealDetails, comboMealProducts, isNew);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save combo meal details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    inventoryControlObj.ExistingComboMeals = _comboMealData.GetAllNotDeleted();
+                    inventoryControlObj.DisplayComboMealsInDGV(inventoryControlObj.ExistingComboMeals);
+                    inventoryControlObj.ClearComboMealForm();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save combo meal details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void HandleDeleteComboMeal(object sender, EventArgs e)
+        {
+            ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
+            var comboMealId = inventoryControlObj.SelectedComboMealId;
+
+
+            DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                var deleteResults = _comboMealController.Delete(comboMealId);
+
+                string resultMessages = "";
+                foreach (var msg in deleteResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                MessageBox.Show(resultMessages, "Delete Combo meal", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (deleteResults.IsSuccess)
+                {
+                    inventoryControlObj.ExistingComboMeals = _comboMealData.GetAllNotDeleted();
+                    inventoryControlObj.DisplayComboMealsInDGV(inventoryControlObj.ExistingComboMeals);
+                    inventoryControlObj.ClearComboMealForm();
+                }
+            }
+        }
+
     }
 }

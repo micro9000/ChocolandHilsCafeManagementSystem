@@ -1,6 +1,9 @@
 CREATE DATABASE ChocolandHilsCafeDb;
 USE ChocolandHilsCafeDb;
 
+CREATE DATABASE ChocolandHilsCafeDb2;
+USE ChocolandHilsCafeDb2;
+
 -- https://www.khanacademy.org/math/cc-third-grade-math/imp-measurement-and-data/imp-mass/v/intuition-for-grams#:~:text=.%20...%E2%80%9D-,To%20convert%20grams%20to%20kilograms%2C%20divide%20by%201%2C000.,30%2C000%20grams%20is%2030%20kilograms.
 
 -- Employee management, attendance and payroll related tables:
@@ -461,7 +464,7 @@ SELECT * FROM Users;
 
 CREATE TABLE IF NOT EXISTS UserRoles(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    userId BIGINT NOT NULL,
+    userId INT NOT NULL,
     roleId INT NOT NULL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -613,11 +616,15 @@ SELECT * FROM Ingredients;
 CREATE TABLE IF NOT EXISTS ComboMeals(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	title VARCHAR(255),
+    price DECIMAL(9,2),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+
+SELECT * FROM ComboMeals;
 
 
 CREATE TABLE IF NOT EXISTS ComboMealProducts(
@@ -632,3 +639,11 @@ CREATE TABLE IF NOT EXISTS ComboMealProducts(
     FOREIGN KEY(comboMealId) REFERENCES ComboMeals(id),
     FOREIGN KEY(productId) REFERENCES Products(id)
 )ENGINE=INNODB;
+
+select * from ComboMealProducts;
+
+SELECT * 
+FROM ComboMealProducts AS CMP
+JOIN Products AS PRD ON CMP.productId=PRD.id
+JOIN ProductCategories AS PRDCAT ON PRD.categoryId=PRDCAT.Id
+WHERE CMP.isDeleted=false AND PRD.isDeleted=false AND CMP.comboMealId=1;

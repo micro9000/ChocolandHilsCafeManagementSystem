@@ -12,14 +12,16 @@ namespace EntitiesShared.InventoryManagement
     {
         public string Title { get; set; }
 
-        //private List<ComboMealProductModel> products;
-        //[Write(false)]
-        //[Computed]
-        //public List<ComboMealProductModel> Products
-        //{
-        //    get { return products; }
-        //    set { products = value; }
-        //}
+        public decimal Price { get; set; }
+
+        private List<ComboMealProductModel> products;
+        [Write(false)]
+        [Computed]
+        public List<ComboMealProductModel> Products
+        {
+            get { return products; }
+            set { products = value; }
+        }
 
     }
 }

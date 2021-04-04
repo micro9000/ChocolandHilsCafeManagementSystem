@@ -44,8 +44,10 @@ namespace Main.Forms.InventoryManagementForms.Controls
             DisplayExistingProductsInDGV(this.ExistingProducts);
             DisplayProductsInDGVForComboMeal(this.ExistingProducts);
             DisplayIngredientInDGV(Ingredients);
+            DisplayComboMealsInDGV(this.ExistingComboMeals);
 
             this.PropertyIsIsNewProductChanged += OnisNewProductUpdate;
+            this.PropertyIsNewComboMealChanged += OnIsNewComboMealUpdate;
 
         }
 
@@ -1225,8 +1227,39 @@ namespace Main.Forms.InventoryManagementForms.Controls
             set { _comboMealProductsToAddUpdate = value; }
         }
 
-        public bool IsNewComboMeal { get; set; }
 
+        public long SelectedComboMealId { get; set; }
+
+
+        public event PropertyChangedEventHandler PropertyIsNewComboMealChanged;
+        private bool isNewComboMeal = true;
+
+        public bool IsNewComboMeal
+        {
+            get { return isNewComboMeal; }
+            set {
+                isNewComboMeal = value; 
+
+                if (PropertyIsNewComboMealChanged != null)
+                {
+                    PropertyIsNewComboMealChanged(this, new PropertyChangedEventArgs(IsNewComboMeal.ToString()));
+                }
+            }
+        }
+
+        private void OnIsNewComboMealUpdate(object sender, PropertyChangedEventArgs e)
+        {
+            if (IsNewComboMeal)
+            {
+                BtnCancelSaveComboMeal.Visible = false;
+                LblAddOrUpdateComboMealIndicator.Text = "Add New Combo Meal";
+            }
+            else
+            {
+                BtnCancelSaveComboMeal.Visible = true;
+                LblAddOrUpdateComboMealIndicator.Text = "Update Combo Meal";
+            }
+        }
 
         private void SetDGVProductListForComboMealFontAndColors()
         {
@@ -1245,6 +1278,43 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             this.DGVProductListForComboMeal.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DGVProductListForComboMeal.ColumnHeadersHeight = 30;
+
+            // --------------------------------------
+
+            this.DGVComboMealList.BackgroundColor = Color.White;
+            this.DGVComboMealList.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVComboMealList.RowHeadersVisible = false;
+            this.DGVComboMealList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVComboMealList.AllowUserToResizeRows = false;
+            this.DGVComboMealList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVComboMealList.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVComboMealList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVComboMealList.MultiSelect = false;
+
+            this.DGVComboMealList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVComboMealList.ColumnHeadersHeight = 30;
+
+
+            // --------------------------------------
+
+            this.DGVComboMealExistingProducts.BackgroundColor = Color.White;
+            this.DGVComboMealExistingProducts.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVComboMealExistingProducts.RowHeadersVisible = false;
+            this.DGVComboMealExistingProducts.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVComboMealExistingProducts.AllowUserToResizeRows = false;
+            this.DGVComboMealExistingProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVComboMealExistingProducts.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVComboMealExistingProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVComboMealExistingProducts.MultiSelect = false;
+
+            this.DGVComboMealExistingProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVComboMealExistingProducts.ColumnHeadersHeight = 30;
         }
 
 
@@ -1309,7 +1379,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
         private void DGVProductListForComboMeal_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
             if ((e.ColumnIndex == 5) && e.RowIndex > -1)
             {
                 DGVProductListForComboMeal.CurrentCell = DGVProductListForComboMeal[e.ColumnIndex, e.RowIndex];
@@ -1319,19 +1388,44 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
+
+        public void ClearProductListInComboMealTab()
+        {
+            foreach (DataGridViewRow row in this.DGVProductListForComboMeal.Rows)
+            {
+                row.Cells["selectProductCkbox"].Value = (bool)false;
+                row.Cells["selectedProductQty"].Value = 0;
+            }
+        }
+
+        public void ClearComboMealForm()
+        {
+            this.TboxComboMealTitle.Text = "";
+            this.NumUpDownComboMealPrice.Value = 0;
+            this.IsNewComboMeal = true;
+            this.ComboMealToAddUpdate = null;
+            this.ComboMealProductsToAddUpdate = new List<ComboMealProductModel>();
+            this.SelectedComboMealId = 0;
+
+            ClearProductListInComboMealTab();
+        }
+
+
         private void BtnSaveComboMeal_Click(object sender, EventArgs e)
         {
-            this.ComboMealProductsToAddUpdate = new List<ComboMealProductModel>();
+            if (this.IsNewComboMeal)
+                this.ComboMealProductsToAddUpdate = new List<ComboMealProductModel>();
 
             foreach (DataGridViewRow row in this.DGVProductListForComboMeal.Rows)
             {
                 bool isSelected = Convert.ToBoolean(row.Cells["selectProductCkbox"].Value);
 
+                long selectedProductId = long.Parse(row.Cells["ProductId"].Value.ToString());
+                string qtyValueTmp = row.Cells["selectedProductQty"].Value != null ? row.Cells["selectedProductQty"].Value.ToString() : "";
+
+
                 if (isSelected)
                 {
-                    long selectedProductId = long.Parse(row.Cells["ProductId"].Value.ToString());
-                    string qtyValueTmp = row.Cells["selectedProductQty"].Value != null ? row.Cells["selectedProductQty"].Value.ToString() : "";
-
                     if (string.IsNullOrWhiteSpace(qtyValueTmp))
                     {
                         MessageBox.Show("Kindly provide quantity for all selected products", "Product quantity", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -1350,10 +1444,33 @@ namespace Main.Forms.InventoryManagementForms.Controls
                         return;
                     }
 
-                    ComboMealProductsToAddUpdate.Add(new ComboMealProductModel { 
-                        Quantity = qty,
-                        ProductId = selectedProductId
-                    });
+                    var existingProd = ComboMealProductsToAddUpdate.Where(x => x.ProductId == selectedProductId).FirstOrDefault();
+
+                    if (existingProd == null)
+                    {
+                        ComboMealProductsToAddUpdate.Add(new ComboMealProductModel
+                        {
+                            Quantity = qty,
+                            ProductId = selectedProductId
+                        });
+                    }
+                    else
+                    {
+                        existingProd.Quantity = qty;
+                    }
+                }
+                else
+                {
+                    if (ComboMealProductsToAddUpdate != null)
+                    {
+                        var existingProd = ComboMealProductsToAddUpdate.Where(x => x.ProductId == selectedProductId).FirstOrDefault();
+
+                        if (existingProd != null)
+                        {
+                            existingProd.IsDeleted = true;
+                            existingProd.DeletedAt = DateTime.Now;
+                        }
+                    }
                 }
             }
 
@@ -1366,7 +1483,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             if (string.IsNullOrWhiteSpace(TboxComboMealTitle.Text))
             {
-                MessageBox.Show("Kindly provide combo title", "Combo title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Kindly provide combo meal title", "Combo meal title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (NumUpDownComboMealPrice.Value <= 0)
+            {
+                MessageBox.Show("Kindly provide combo meal price", "Combo meal price", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
@@ -1374,7 +1497,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 this.ComboMealToAddUpdate = new ComboMealModel
                 {
-                    Title = TboxComboMealTitle.Text
+                    Title = TboxComboMealTitle.Text,
+                    Price = NumUpDownComboMealPrice.Value
                 };
 
                 OnSaveComboMeal(EventArgs.Empty);
@@ -1384,10 +1508,189 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 if (this.ComboMealToAddUpdate != null)
                 {
                     this.ComboMealToAddUpdate.Title = TboxComboMealTitle.Text;
+                    this.ComboMealToAddUpdate.Price = NumUpDownComboMealPrice.Value;
                     OnSaveComboMeal(EventArgs.Empty);
                 }
             }
         }
 
+        private List<ComboMealModel> _comboMeals;
+
+        public List<ComboMealModel> ExistingComboMeals
+        {
+            get { return _comboMeals; }
+            set { _comboMeals = value; }
+        }
+
+        public void DisplayComboMealsInDGV(List<ComboMealModel> comboMealsToDisplay)
+        {
+            this.DGVComboMealList.Rows.Clear();
+
+            if (comboMealsToDisplay != null)
+            {
+                this.DGVComboMealList.ColumnCount = 3;
+
+                this.DGVComboMealList.Columns[0].Name = "ComboMealId";
+                this.DGVComboMealList.Columns[0].Visible = false;
+
+                this.DGVComboMealList.Columns[1].Name = "ComboMealTitle";
+                this.DGVComboMealList.Columns[1].HeaderText = "Title";
+
+                this.DGVComboMealList.Columns[2].Name = "ComboMealPrice";
+                this.DGVComboMealList.Columns[2].HeaderText = "Price";
+
+                // Update button
+                DataGridViewImageColumn btnUpdateImg = new DataGridViewImageColumn();
+                //btnUpdateLeaveTypeImg.Name = "";
+                btnUpdateImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnUpdateImg.Image = Image.FromFile("./Resources/edit-24.png");
+                this.DGVComboMealList.Columns.Add(btnUpdateImg);
+
+                // Delete button
+                DataGridViewImageColumn btnDeleteImg = new DataGridViewImageColumn();
+                //btnDeleteLeaveTypeImg.Name = "";
+                btnDeleteImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnDeleteImg.Image = Image.FromFile("./Resources/remove-24.png");
+                this.DGVComboMealList.Columns.Add(btnDeleteImg);
+
+                foreach (var item in comboMealsToDisplay)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVComboMealList);
+
+                    row.Cells[0].Value = item.Id;
+                    row.Cells[0].ReadOnly = true;
+
+                    row.Cells[1].Value = item.Title;
+                    row.Cells[1].ReadOnly = true;
+
+                    row.Cells[2].Value = item.Price;
+                    row.Cells[2].ReadOnly = true;
+
+                    this.DGVComboMealList.Rows.Add(row);
+                }
+            }
+        }
+
+
+        public void DisplayComboMealProducts(List<ComboMealProductModel> comboMealProducts)
+        {
+            this.DGVComboMealExistingProducts.Rows.Clear();
+
+            if (comboMealProducts != null)
+            {
+                this.DGVComboMealExistingProducts.ColumnCount = 5;
+
+                this.DGVComboMealExistingProducts.Columns[0].Name = "ProductId";
+                this.DGVComboMealExistingProducts.Columns[0].Visible = false;
+
+                this.DGVComboMealExistingProducts.Columns[1].Name = "Category";
+                this.DGVComboMealExistingProducts.Columns[1].HeaderText = "Category";
+
+                this.DGVComboMealExistingProducts.Columns[2].Name = "ProductName";
+                this.DGVComboMealExistingProducts.Columns[2].HeaderText = "Name";
+
+                this.DGVComboMealExistingProducts.Columns[3].Name = "PricePerOrder";
+                this.DGVComboMealExistingProducts.Columns[3].HeaderText = "Price per order";
+
+                this.DGVComboMealExistingProducts.Columns[4].Name = "Quantity";
+                this.DGVComboMealExistingProducts.Columns[4].HeaderText = "Quantity";
+
+                foreach (var item in comboMealProducts)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVComboMealExistingProducts);
+
+                    row.Cells[0].Value = item.Id;
+                    row.Cells[0].ReadOnly = true;
+
+                    row.Cells[1].Value = item.Product.Category.ProdCategory;
+                    row.Cells[1].ReadOnly = true;
+
+                    row.Cells[2].Value = item.Product.ProdName;
+                    row.Cells[2].ReadOnly = true;
+
+                    row.Cells[3].Value = item.Product.PricePerOrder;
+                    row.Cells[3].ReadOnly = true;
+
+                    row.Cells[4].Value = item.Quantity;
+                    row.Cells[4].ReadOnly = true;
+
+                    this.DGVComboMealExistingProducts.Rows.Add(row);
+                }
+            }
+        }
+
+
+        public event EventHandler DeleteComboMeal;
+        protected virtual void OnDeleteComboMeal(EventArgs e)
+        {
+            DeleteComboMeal?.Invoke(this, e);
+        }
+
+        private void DGVComboMealList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1 && this.ExistingComboMeals != null)
+            {
+                long comboMealId = long.Parse(DGVComboMealList.CurrentRow.Cells[0].Value.ToString());
+
+                var comboMealProducts = this.ExistingComboMeals.Where(x => x.Id == comboMealId).Select(x => x.Products).FirstOrDefault();
+
+                DisplayComboMealProducts(comboMealProducts);
+            }
+
+            // update button
+            if ((e.ColumnIndex == 3) && e.RowIndex > -1 && this.ExistingComboMeals != null)
+            {
+                if (DGVComboMealList.CurrentRow != null)
+                {
+                    ClearComboMealForm();
+
+                    long comboMealId = long.Parse(DGVComboMealList.CurrentRow.Cells[0].Value.ToString());
+
+                    var existingComboMeal = this.ExistingComboMeals.Where(x => x.Id == comboMealId).FirstOrDefault();
+                    var comboMealProducts = existingComboMeal.Products;
+
+                    this.IsNewComboMeal = false;
+                    this.ComboMealToAddUpdate = existingComboMeal;
+                    this.ComboMealProductsToAddUpdate = comboMealProducts;
+
+                    if (this.ComboMealToAddUpdate != null)
+                    {
+                        this.TboxComboMealTitle.Text = this.ComboMealToAddUpdate.Title;
+                        this.NumUpDownComboMealPrice.Value = this.ComboMealToAddUpdate.Price;
+
+                        foreach(DataGridViewRow row in this.DGVProductListForComboMeal.Rows)
+                        {
+                            long selectedProductId = long.Parse(row.Cells["ProductId"].Value.ToString());
+
+                            var comboMealProdTmp = this.ComboMealProductsToAddUpdate.Where(x => x.ProductId == selectedProductId).FirstOrDefault();
+
+                            if (comboMealProdTmp != null)
+                            {
+                                row.Cells["selectProductCkbox"].Value = (bool)true;
+                                row.Cells["selectedProductQty"].Value = comboMealProdTmp.Quantity;
+                            }
+                        }
+
+
+                        this.TabControlComboMeals.SelectedIndex = this.TabControlComboMeals.TabPages.IndexOf(TabComboMealAddUpdate);
+                    }
+                }
+            }
+
+
+            // Delete button
+            if ((e.ColumnIndex == 4) && e.RowIndex > -1 && this.ExistingComboMeals != null)
+            {
+                this.SelectedComboMealId = long.Parse(DGVComboMealList.CurrentRow.Cells[0].Value.ToString());
+                OnDeleteComboMeal(EventArgs.Empty);
+            }
+        }
+
+        private void BtnCancelSaveComboMeal_Click(object sender, EventArgs e)
+        {
+            ClearComboMealForm();
+        }
     }
 }

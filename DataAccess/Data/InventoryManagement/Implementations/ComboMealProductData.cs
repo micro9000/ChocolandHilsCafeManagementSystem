@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace DataAccess.Data.InventoryManagement.Implementations
 {
@@ -17,6 +18,30 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
+        }
+
+        public List<ComboMealProductModel> GetAllByComboMeal(long comboMealId)
+        {
+            string query = @"SELECT * 
+                            FROM ComboMealProducts AS CMP
+                            JOIN Products AS PRD ON CMP.productId=PRD.id
+                            JOIN ProductCategories AS PRDCAT ON PRD.categoryId=PRDCAT.Id
+                            WHERE CMP.isDeleted=false AND PRD.isDeleted=false AND CMP.comboMealId=@ComboMealId";
+
+            var results = new List<ComboMealProductModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<ComboMealProductModel, ProductModel, ProductCategoryModel, ComboMealProductModel>(query,
+                    (CMP, PRD, PRDCAT) =>
+                    {
+                        PRD.Category = PRDCAT;
+                        CMP.Product = PRD;
+                        return CMP;
+                    }, new { ComboMealId = comboMealId }).ToList();
+            }
+
+            return results;
         }
     }
 }

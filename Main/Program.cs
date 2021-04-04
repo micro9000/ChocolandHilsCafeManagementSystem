@@ -191,7 +191,7 @@ namespace Main
             services.AddTransient<IIngredientInventoryController, IngredientInventoryController>();
             services.AddTransient<IProductCategoryController, ProductCategoryController>();
             services.AddTransient<IProductController, ProductController>();
-
+            services.AddTransient<IComboMealController, ComboMealController>();
 
             // forms
             services.AddTransient<MainFrm>();

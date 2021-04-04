@@ -80,15 +80,21 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.DGVProductList = new System.Windows.Forms.DataGridView();
             this.MainTabComboSet = new System.Windows.Forms.TabPage();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.TabControlComboMeals = new System.Windows.Forms.TabControl();
+            this.TabComboMealAddUpdate = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.LblAddOrUpdateComboMealIndicator = new System.Windows.Forms.Label();
             this.DGVProductListForComboMeal = new System.Windows.Forms.DataGridView();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.NumUpDownComboMealPrice = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.BtnCancelSaveComboMeal = new System.Windows.Forms.Button();
             this.TboxComboMealTitle = new System.Windows.Forms.TextBox();
             this.BtnSaveComboMeal = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.TabComboMealList = new System.Windows.Forms.TabPage();
+            this.DGVComboMealList = new System.Windows.Forms.DataGridView();
+            this.DGVComboMealExistingProducts = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabProdCategory.SuspendLayout();
@@ -110,10 +116,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVProductList)).BeginInit();
             this.MainTabComboSet.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.TabControlComboMeals.SuspendLayout();
+            this.TabComboMealAddUpdate.SuspendLayout();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVProductListForComboMeal)).BeginInit();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDownComboMealPrice)).BeginInit();
+            this.TabComboMealList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVComboMealList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVComboMealExistingProducts)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -736,7 +747,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // MainTabComboSet
             // 
-            this.MainTabComboSet.Controls.Add(this.tabControl1);
+            this.MainTabComboSet.Controls.Add(this.TabControlComboMeals);
             this.MainTabComboSet.Location = new System.Drawing.Point(4, 29);
             this.MainTabComboSet.Name = "MainTabComboSet";
             this.MainTabComboSet.Padding = new System.Windows.Forms.Padding(3);
@@ -745,28 +756,49 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.MainTabComboSet.Text = "Combo Meals";
             this.MainTabComboSet.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
+            // TabControlComboMeals
             // 
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(3, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1074, 539);
-            this.tabControl1.TabIndex = 0;
+            this.TabControlComboMeals.Controls.Add(this.TabComboMealAddUpdate);
+            this.TabControlComboMeals.Controls.Add(this.TabComboMealList);
+            this.TabControlComboMeals.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TabControlComboMeals.Location = new System.Drawing.Point(3, 3);
+            this.TabControlComboMeals.Name = "TabControlComboMeals";
+            this.TabControlComboMeals.SelectedIndex = 0;
+            this.TabControlComboMeals.Size = new System.Drawing.Size(1074, 539);
+            this.TabControlComboMeals.TabIndex = 0;
             // 
-            // tabPage2
+            // TabComboMealAddUpdate
             // 
-            this.tabPage2.Controls.Add(this.DGVProductListForComboMeal);
-            this.tabPage2.Controls.Add(this.groupBox5);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1066, 506);
-            this.tabPage2.TabIndex = 0;
-            this.tabPage2.Text = "Add/Update";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.TabComboMealAddUpdate.Controls.Add(this.panel2);
+            this.TabComboMealAddUpdate.Controls.Add(this.DGVProductListForComboMeal);
+            this.TabComboMealAddUpdate.Controls.Add(this.groupBox5);
+            this.TabComboMealAddUpdate.Location = new System.Drawing.Point(4, 29);
+            this.TabComboMealAddUpdate.Name = "TabComboMealAddUpdate";
+            this.TabComboMealAddUpdate.Padding = new System.Windows.Forms.Padding(3);
+            this.TabComboMealAddUpdate.Size = new System.Drawing.Size(1066, 506);
+            this.TabComboMealAddUpdate.TabIndex = 0;
+            this.TabComboMealAddUpdate.Text = "Add/Update";
+            this.TabComboMealAddUpdate.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.LightGray;
+            this.panel2.Controls.Add(this.LblAddOrUpdateComboMealIndicator);
+            this.panel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.panel2.Location = new System.Drawing.Point(84, 43);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(299, 26);
+            this.panel2.TabIndex = 57;
+            // 
+            // LblAddOrUpdateComboMealIndicator
+            // 
+            this.LblAddOrUpdateComboMealIndicator.AutoSize = true;
+            this.LblAddOrUpdateComboMealIndicator.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblAddOrUpdateComboMealIndicator.Location = new System.Drawing.Point(10, 6);
+            this.LblAddOrUpdateComboMealIndicator.Name = "LblAddOrUpdateComboMealIndicator";
+            this.LblAddOrUpdateComboMealIndicator.Size = new System.Drawing.Size(130, 15);
+            this.LblAddOrUpdateComboMealIndicator.TabIndex = 0;
+            this.LblAddOrUpdateComboMealIndicator.Text = "Add New Combo Meal";
             // 
             // DGVProductListForComboMeal
             // 
@@ -783,6 +815,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.label14);
+            this.groupBox5.Controls.Add(this.NumUpDownComboMealPrice);
             this.groupBox5.Controls.Add(this.label10);
             this.groupBox5.Controls.Add(this.BtnCancelSaveComboMeal);
             this.groupBox5.Controls.Add(this.TboxComboMealTitle);
@@ -795,12 +829,37 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Combo Meal";
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label14.ForeColor = System.Drawing.Color.Black;
+            this.label14.Location = new System.Drawing.Point(16, 117);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(44, 21);
+            this.label14.TabIndex = 52;
+            this.label14.Text = "Price";
+            // 
+            // NumUpDownComboMealPrice
+            // 
+            this.NumUpDownComboMealPrice.BackColor = System.Drawing.Color.White;
+            this.NumUpDownComboMealPrice.DecimalPlaces = 2;
+            this.NumUpDownComboMealPrice.Location = new System.Drawing.Point(16, 141);
+            this.NumUpDownComboMealPrice.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.NumUpDownComboMealPrice.Name = "NumUpDownComboMealPrice";
+            this.NumUpDownComboMealPrice.Size = new System.Drawing.Size(265, 27);
+            this.NumUpDownComboMealPrice.TabIndex = 51;
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label10.ForeColor = System.Drawing.Color.Black;
-            this.label10.Location = new System.Drawing.Point(16, 77);
+            this.label10.Location = new System.Drawing.Point(16, 43);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(39, 21);
             this.label10.TabIndex = 25;
@@ -813,19 +872,20 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnCancelSaveComboMeal.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelSaveComboMeal.ForeColor = System.Drawing.Color.White;
             this.BtnCancelSaveComboMeal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelSaveComboMeal.Location = new System.Drawing.Point(45, 162);
+            this.BtnCancelSaveComboMeal.Location = new System.Drawing.Point(45, 200);
             this.BtnCancelSaveComboMeal.Name = "BtnCancelSaveComboMeal";
             this.BtnCancelSaveComboMeal.Size = new System.Drawing.Size(115, 47);
             this.BtnCancelSaveComboMeal.TabIndex = 46;
             this.BtnCancelSaveComboMeal.Text = "Cancel";
             this.BtnCancelSaveComboMeal.UseVisualStyleBackColor = false;
             this.BtnCancelSaveComboMeal.Visible = false;
+            this.BtnCancelSaveComboMeal.Click += new System.EventHandler(this.BtnCancelSaveComboMeal_Click);
             // 
             // TboxComboMealTitle
             // 
             this.TboxComboMealTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TboxComboMealTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TboxComboMealTitle.Location = new System.Drawing.Point(16, 110);
+            this.TboxComboMealTitle.Location = new System.Drawing.Point(16, 76);
             this.TboxComboMealTitle.Name = "TboxComboMealTitle";
             this.TboxComboMealTitle.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.TboxComboMealTitle.Size = new System.Drawing.Size(265, 29);
@@ -838,7 +898,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnSaveComboMeal.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveComboMeal.ForeColor = System.Drawing.Color.White;
             this.BtnSaveComboMeal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveComboMeal.Location = new System.Drawing.Point(166, 162);
+            this.BtnSaveComboMeal.Location = new System.Drawing.Point(166, 200);
             this.BtnSaveComboMeal.Name = "BtnSaveComboMeal";
             this.BtnSaveComboMeal.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveComboMeal.TabIndex = 2;
@@ -846,15 +906,43 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnSaveComboMeal.UseVisualStyleBackColor = false;
             this.BtnSaveComboMeal.Click += new System.EventHandler(this.BtnSaveComboMeal_Click);
             // 
-            // tabPage3
+            // TabComboMealList
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1066, 506);
-            this.tabPage3.TabIndex = 1;
-            this.tabPage3.Text = "List";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.TabComboMealList.Controls.Add(this.DGVComboMealList);
+            this.TabComboMealList.Controls.Add(this.DGVComboMealExistingProducts);
+            this.TabComboMealList.Location = new System.Drawing.Point(4, 29);
+            this.TabComboMealList.Name = "TabComboMealList";
+            this.TabComboMealList.Padding = new System.Windows.Forms.Padding(3);
+            this.TabComboMealList.Size = new System.Drawing.Size(1066, 506);
+            this.TabComboMealList.TabIndex = 1;
+            this.TabComboMealList.Text = "List";
+            this.TabComboMealList.UseVisualStyleBackColor = true;
+            // 
+            // DGVComboMealList
+            // 
+            this.DGVComboMealList.AllowUserToAddRows = false;
+            this.DGVComboMealList.AllowUserToDeleteRows = false;
+            this.DGVComboMealList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVComboMealList.Dock = System.Windows.Forms.DockStyle.Left;
+            this.DGVComboMealList.Location = new System.Drawing.Point(3, 3);
+            this.DGVComboMealList.Name = "DGVComboMealList";
+            this.DGVComboMealList.ReadOnly = true;
+            this.DGVComboMealList.RowTemplate.Height = 25;
+            this.DGVComboMealList.Size = new System.Drawing.Size(450, 500);
+            this.DGVComboMealList.TabIndex = 57;
+            this.DGVComboMealList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVComboMealList_CellClick);
+            // 
+            // DGVComboMealExistingProducts
+            // 
+            this.DGVComboMealExistingProducts.AllowUserToAddRows = false;
+            this.DGVComboMealExistingProducts.AllowUserToDeleteRows = false;
+            this.DGVComboMealExistingProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVComboMealExistingProducts.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DGVComboMealExistingProducts.Location = new System.Drawing.Point(483, 3);
+            this.DGVComboMealExistingProducts.Name = "DGVComboMealExistingProducts";
+            this.DGVComboMealExistingProducts.RowTemplate.Height = 25;
+            this.DGVComboMealExistingProducts.Size = new System.Drawing.Size(580, 500);
+            this.DGVComboMealExistingProducts.TabIndex = 56;
             // 
             // ProductInventoryControl
             // 
@@ -893,11 +981,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVProductList)).EndInit();
             this.MainTabComboSet.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.TabControlComboMeals.ResumeLayout(false);
+            this.TabComboMealAddUpdate.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVProductListForComboMeal)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDownComboMealPrice)).EndInit();
+            this.TabComboMealList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVComboMealList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVComboMealExistingProducts)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -956,14 +1050,20 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Label LblTotalCostFromAddingNewProduct;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TabPage MainTabComboSet;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabControl TabControlComboMeals;
+        private System.Windows.Forms.TabPage TabComboMealAddUpdate;
+        private System.Windows.Forms.TabPage TabComboMealList;
         private System.Windows.Forms.DataGridView DGVProductListForComboMeal;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button BtnCancelSaveComboMeal;
         private System.Windows.Forms.TextBox TboxComboMealTitle;
         private System.Windows.Forms.Button BtnSaveComboMeal;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown NumUpDownComboMealPrice;
+        private System.Windows.Forms.DataGridView DGVComboMealExistingProducts;
+        private System.Windows.Forms.DataGridView DGVComboMealList;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label LblAddOrUpdateComboMealIndicator;
     }
 }

@@ -10,9 +10,18 @@ namespace EntitiesShared.InventoryManagement
     [Table("ComboMealProducts")]
     public class ComboMealProductModel : BaseLongModel
     {
-        public long ComboSetId { get; set; }
+        public long ComboMealId { get; set; }
 
         public long ProductId { get; set; }
+
+        private ProductModel product;
+        [Write(false)]
+        [Computed]
+        public ProductModel Product
+        {
+            get { return product; }
+            set { product = value; }
+        }
 
         public int Quantity { get; set; }
     }

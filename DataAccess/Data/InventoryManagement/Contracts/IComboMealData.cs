@@ -10,5 +10,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IComboMealData : IDataManagerCRUD<ComboMealModel>
     {
+        List<ComboMealModel> GetAllNotDeleted();
     }
 }

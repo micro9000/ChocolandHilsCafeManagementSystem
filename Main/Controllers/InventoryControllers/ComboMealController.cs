@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Main.Controllers.InventoryControllers
 {
@@ -30,6 +31,38 @@ namespace Main.Controllers.InventoryControllers
             _comboMealProductData = comboMealProductData;
         }
 
+        public EntityResult<string> Delete(long ingredientId)
+        {
+            var results = new EntityResult<string>();
+
+            try
+            {
+                var details = _comboMealData.Get(ingredientId);
+
+                if (details != null)
+                {
+                    details.IsDeleted = true;
+                    details.DeletedAt = DateTime.Now;
+
+                    results.IsSuccess = _comboMealData.Update(details);
+                    results.Messages.Add("Combo Meal deleted.");
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("No changes made.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
+        }
+
         public EntityResult<ComboMealModel> Save (ComboMealModel comboMeal, List<ComboMealProductModel> products, bool isNew)
         {
             var results = new EntityResult<ComboMealModel>();
@@ -46,17 +79,98 @@ namespace Main.Controllers.InventoryControllers
 
                 if (isNew)
                 {
-                    //int newComboMealId = _comboMealData.Add(comboMeal);
+                    using (var transaction = new TransactionScope())
+                    {
+                        long newComboMealId = _comboMealData.Add(comboMeal);
 
-                    //if (newComboMealId > 0)
-                    //{
+                        if (newComboMealId > 0)
+                        {
+                            var newComboMeal = _comboMealData.Get(newComboMealId);
 
-                    //}
-                    //else
-                    //{
-                    //    results.IsSuccess = false;
-                    //    results.Messages.Add("Unable to add new ingredient, kindly check system logs for possible errors.");
-                    //}
+                            foreach(var prod in products)
+                            {
+                                _comboMealProductData.Add(new ComboMealProductModel {
+                                    ComboMealId = newComboMealId,
+                                    ProductId = prod.ProductId,
+                                    Quantity = prod.Quantity
+                                });
+                            }
+
+                            results.IsSuccess = true;
+                            results.Messages.Add("Successfully add new combo meal.");
+                            results.Data = newComboMeal;
+                        }
+                        else
+                        {
+                            results.IsSuccess = false;
+                            results.Messages.Add("Unable to add new ingredient, kindly check system logs for possible errors.");
+                        }
+
+                        transaction.Complete();
+                    }
+
+                }
+                else
+                {
+                    var comboMealDetails = _comboMealData.Get(comboMeal.Id);
+                    
+                    if (comboMealDetails == null)
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add($"Combo meal details not found!");
+                        return results;
+                    }
+                    var comboMealExistingProds = _comboMealProductData.GetAllByComboMeal(comboMealDetails.Id);
+
+                    _mapper.Map(comboMeal, comboMealDetails);
+
+                    using (var transaction = new TransactionScope())
+                    {
+                        this._comboMealData.Update(comboMealDetails);
+
+                        if (comboMealExistingProds == null)
+                        {
+                            // insert all
+                            foreach (var prod in products)
+                            {
+                                _comboMealProductData.Add(new ComboMealProductModel
+                                {
+                                    ComboMealId = comboMealDetails.Id,
+                                    ProductId = prod.ProductId,
+                                    Quantity = prod.Quantity
+                                });
+                            }
+                        }
+                        else
+                        {
+                            foreach (var prod in products)
+                            {
+                                var existingProd = comboMealExistingProds.Where(x => x.ProductId == prod.ProductId).FirstOrDefault();
+
+                                if (existingProd == null)
+                                {
+                                    _comboMealProductData.Add(new ComboMealProductModel
+                                    {
+                                        ComboMealId = comboMealDetails.Id,
+                                        ProductId = prod.ProductId,
+                                        Quantity = prod.Quantity
+                                    });
+                                }
+                                else
+                                {
+                                    _mapper.Map(prod, existingProd);
+                                    _comboMealProductData.Update(existingProd);
+                                }
+                            }
+                        }
+
+                        transaction.Complete();
+                    }
+
+
+                    results.IsSuccess = true;
+                    results.Messages.Add("Successfully update ingredient.");
+                    results.Data = comboMealDetails;
                 }
             }
             catch (Exception ex)
