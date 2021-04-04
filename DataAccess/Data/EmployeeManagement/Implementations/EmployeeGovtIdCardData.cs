@@ -37,7 +37,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return idCards;
         }
 
-        public List<EmployeeGovtIdCardModel> GetAllByGovtAgency(int govtAgencyId)
+        public List<EmployeeGovtIdCardModel> GetAllByGovtAgency(long govtAgencyId)
         {
             string query = @"SELECT * FROM EmployeeGovtIdCards
                             WHERE isDeleted=false AND govtAgencyId=@GovtAgencyId";

@@ -20,7 +20,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public List<ProductIngredientModel> GetAllByProduct (int productId)
+        public List<ProductIngredientModel> GetAllByProduct (long productId)
         {
             string query = @"SELECT *
                             FROM ProductIngredients AS PI
@@ -43,7 +43,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
         }
 
 
-        public List<ProductIngredientModel> GetAllByIngredient (int ingredientId)
+        public List<ProductIngredientModel> GetAllByIngredient (long ingredientId)
         {
             string query = @"SELECT *
                             FROM ProductIngredients AS PI

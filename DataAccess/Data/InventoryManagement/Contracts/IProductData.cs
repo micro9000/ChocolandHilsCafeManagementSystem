@@ -10,9 +10,9 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IProductData : IDataManagerCRUD<ProductModel>
     {
-        bool MassUpdateProductCategory(int previousCategoryId, int newCategoryId);
-        bool MassDeleteProductsByCategory(int categoryId);
-        List<ProductModel> GetAllByCategory(int categoryId);
+        bool MassUpdateProductCategory(long previousCategoryId, long newCategoryId);
+        bool MassDeleteProductsByCategory(long categoryId);
+        List<ProductModel> GetAllByCategory(long categoryId);
         List<ProductModel> GetAllNotDeleted();
     }
 }

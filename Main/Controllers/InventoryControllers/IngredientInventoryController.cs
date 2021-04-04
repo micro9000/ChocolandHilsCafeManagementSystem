@@ -40,7 +40,7 @@ namespace Main.Controllers.InventoryControllers
         }
 
 
-        public EntityResult<string> Delete (int ingredeintId, long inventoryId, string remarks)
+        public EntityResult<string> Delete (long ingredeintId, long inventoryId, string remarks)
         {
             var results = new EntityResult<string>();
 
@@ -182,7 +182,7 @@ namespace Main.Controllers.InventoryControllers
         }
 
 
-        public EntityResult<IngredientInventoryModel> IncreaseQtyValue (int ingredientId, long inventoryId, decimal qtyValue, string remarks)
+        public EntityResult<IngredientInventoryModel> IncreaseQtyValue (long ingredientId, long inventoryId, decimal qtyValue, string remarks)
         {
 
             var results = new EntityResult<IngredientInventoryModel>();
@@ -236,7 +236,7 @@ namespace Main.Controllers.InventoryControllers
             return results;
         }
 
-        public EntityResult<IngredientInventoryModel> DecreaseQtyValue(int ingredientId, long inventoryId, decimal qtyValue, string remarks)
+        public EntityResult<IngredientInventoryModel> DecreaseQtyValue(long ingredientId, long inventoryId, decimal qtyValue, string remarks)
         {
 
             var results = new EntityResult<IngredientInventoryModel>();

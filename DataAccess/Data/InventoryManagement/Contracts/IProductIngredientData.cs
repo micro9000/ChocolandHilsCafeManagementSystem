@@ -10,7 +10,7 @@ namespace DataAccess.Data.InventoryManagement.Contracts
 {
     public interface IProductIngredientData : IDataManagerCRUD<ProductIngredientModel>
     {
-        List<ProductIngredientModel> GetAllByProduct(int productId);
-        List<ProductIngredientModel> GetAllByIngredient(int ingredientId);
+        List<ProductIngredientModel> GetAllByProduct(long productId);
+        List<ProductIngredientModel> GetAllByIngredient(long ingredientId);
     }
 }

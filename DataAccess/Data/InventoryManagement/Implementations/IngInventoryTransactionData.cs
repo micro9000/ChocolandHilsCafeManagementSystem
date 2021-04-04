@@ -22,7 +22,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             _userData = userData;
         }
 
-        public List<IngInventoryTransactionModel> GetAllByIngredientAndDateRange(int ingredientId, DateTime startDate, DateTime endDate)
+        public List<IngInventoryTransactionModel> GetAllByIngredientAndDateRange(long ingredientId, DateTime startDate, DateTime endDate)
         {
             string query = @"SELECT * FROM IngInventoryTransactions 
                             WHERE isDeleted=false AND ingredientId=@IngredientId AND createdAt BETWEEN @StartDate AND @EndDate

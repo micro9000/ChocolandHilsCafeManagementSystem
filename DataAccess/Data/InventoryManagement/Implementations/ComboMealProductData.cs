@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data.InventoryManagement.Implementations
 {
-    public class ComboSetProductData : DataManagerCRUD<ComboSetProductModel>, IComboSetProductData
+    public class ComboMealProductData : DataManagerCRUD<ComboMealProductModel>, IComboMealProductData
     {
         private readonly IDbConnectionFactory _dbConnFactory;
 
-        public ComboSetProductData(IDbConnectionFactory dbConnFactory) :
+        public ComboMealProductData(IDbConnectionFactory dbConnFactory) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;

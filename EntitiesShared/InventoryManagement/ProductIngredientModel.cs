@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.InventoryManagement
 {
     [Table("ProductIngredients")]
-    public class ProductIngredientModel : BaseIntModel
+    public class ProductIngredientModel : BaseLongModel
     {
         public long ProductId { get; set; }
 
@@ -23,7 +23,7 @@ namespace EntitiesShared.InventoryManagement
         }
 
 
-        public int IngredientId { get; set; }
+        public long IngredientId { get; set; }
 
 
         private IngredientModel _ingredient;

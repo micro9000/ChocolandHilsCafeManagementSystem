@@ -26,7 +26,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             _ingredientInventoryData = ingredientInventoryData;
         }
 
-        public bool MassUpdateIngredientsCategory (int previousCategoryId, int newCategoryId)
+        public bool MassUpdateIngredientsCategory (long previousCategoryId, long newCategoryId)
         {
             var ingredientsUnderPrevCategory = this.GetAllByCategory(previousCategoryId);
 
@@ -56,7 +56,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
         }
 
 
-        public bool MassDeleteIngredientsByCategory(int categoryId)
+        public bool MassDeleteIngredientsByCategory(long categoryId)
         {
             string query = @"UPDATE Ingredients SET isDeleted=true 
                             WHERE isDeleted=false AND categoryId=@Categoryid";
@@ -75,7 +75,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return rowsAffected > 0;
         }
 
-        public List<IngredientModel> GetAllByCategory (int categoryId)
+        public List<IngredientModel> GetAllByCategory (long categoryId)
         {
             string query = @"SELECT * FROM Ingredients WHERE isDeleted=false AND categoryId=@CategoryId";
 

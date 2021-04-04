@@ -121,6 +121,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\PayrollController\" />
+    <Folder Include="Forms\POSManagementForms\" />
     <Folder Include="Forms\PayrollForms\PdfHtmlTemplates\" />
   </ItemGroup>
 

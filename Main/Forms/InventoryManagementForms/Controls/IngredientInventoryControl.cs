@@ -173,7 +173,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             ResetForm();
         }
 
-        public int SelectedCategoryId { get; set; }
+        public long SelectedCategoryId { get; set; }
         public event EventHandler SelectCategoryToUpdate;
         protected virtual void OnSelectCategoryToUpdate(EventArgs e)
         {
@@ -204,7 +204,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 {
                     string categoryId = DGVIngredientCategories.CurrentRow.Cells[0].Value.ToString();
 
-                    SelectedCategoryId = int.Parse(categoryId);
+                    SelectedCategoryId = long.Parse(categoryId);
 
                     this.BtnCancelUpdate.Visible = true;
                     this.IsSaveNew = false;
@@ -219,7 +219,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 if (DGVIngredientCategories.CurrentRow != null)
                 {
                     string categoryId = DGVIngredientCategories.CurrentRow.Cells[0].Value.ToString();
-                    SelectedCategoryId = int.Parse(categoryId);
+                    SelectedCategoryId = long.Parse(categoryId);
                     OnSelectCategoryToDelete(EventArgs.Empty);
                 }
             }
@@ -437,7 +437,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 {
                     this.IngredientToAddUpdate = new IngredientModel
                     {
-                        CategoryId = int.Parse(selectedCategory.Value.ToString()),
+                        CategoryId = long.Parse(selectedCategory.Value.ToString()),
                         UOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), selectedUOM.Value.ToString()),
                         IngName = ingredientName
                     };
@@ -446,7 +446,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 }
                 else
                 {
-                    this.IngredientToAddUpdate.CategoryId = int.Parse(selectedCategory.Value.ToString());
+                    this.IngredientToAddUpdate.CategoryId = long.Parse(selectedCategory.Value.ToString());
                     this.IngredientToAddUpdate.UOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), selectedUOM.Value.ToString());
                     this.IngredientToAddUpdate.IngName = ingredientName;
 
@@ -483,7 +483,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             IngredientDelete?.Invoke(this, e);
         }
 
-        public int SelectedIngredientId { get; set; }
+        public long SelectedIngredientId { get; set; }
         private IngredientModel selectedIngredient;
 
         public IngredientModel SelectedIngredient
@@ -500,7 +500,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (DGVIngredientList.CurrentRow != null)
                 {
-                    int ingredientId = int.Parse(DGVIngredientList.CurrentRow.Cells[0].Value.ToString());
+                    long ingredientId = long.Parse(DGVIngredientList.CurrentRow.Cells[0].Value.ToString());
                     SelectedIngredient = this.Ingredients.Where(x => x.Id == ingredientId).FirstOrDefault();
                     SelectedIngredientId = ingredientId;
 
@@ -515,7 +515,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (DGVIngredientList.CurrentRow != null)
                 {
-                    int ingredientId = int.Parse(DGVIngredientList.CurrentRow.Cells[0].Value.ToString());
+                    long ingredientId = long.Parse(DGVIngredientList.CurrentRow.Cells[0].Value.ToString());
 
                     SelectedIngredient = this.Ingredients.Where(x => x.Id == ingredientId).FirstOrDefault();
                     SelectedIngredientId = ingredientId;
@@ -532,7 +532,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 if (DGVIngredientList.CurrentRow != null)
                 {
                     string ingredientId = DGVIngredientList.CurrentRow.Cells[0].Value.ToString();
-                    DisplaySelectedIngredientInForm(int.Parse(ingredientId));
+                    DisplaySelectedIngredientInForm(long.Parse(ingredientId));
                 }
             }
 
@@ -542,13 +542,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 if (DGVIngredientList.CurrentRow != null)
                 {
                     string ingredientId = DGVIngredientList.CurrentRow.Cells[0].Value.ToString();
-                    SelectedIngredientId = int.Parse(ingredientId);
+                    SelectedIngredientId = long.Parse(ingredientId);
                     OnIngredientDelete(EventArgs.Empty);
                 }
             }
         }
 
-        public void DisplaySelectedIngredientInForm(int ingredientId)
+        public void DisplaySelectedIngredientInForm(long ingredientId)
         {
             if(this.Ingredients != null)
             {
@@ -564,7 +564,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     for (int i = 0; i < this.CboxIngredientsCategories.Items.Count; i++)
                     {
                         var item = this.CboxIngredientsCategories.Items[i] as ComboboxItem;
-                        if (int.Parse(item.Value.ToString()) == ingredientDetails.CategoryId)
+                        if (long.Parse(item.Value.ToString()) == ingredientDetails.CategoryId)
                         {
                             this.CboxIngredientsCategories.SelectedIndex = i;
                             break;
@@ -587,12 +587,12 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private void BtnSearchIngredient_Click(object sender, EventArgs e)
         {
             string searchStr = this.TboxSearchIngredient.Text;
-            int categoryId = 0;
+            long categoryId = 0;
 
             if (this.CboxFilterByCategory.SelectedIndex >= 0)
             {
                 var selectedCategory = this.CboxFilterByCategory.SelectedItem as ComboboxItem;
-                categoryId = int.Parse(selectedCategory.Value.ToString());
+                categoryId = long.Parse(selectedCategory.Value.ToString());
             }
 
             var searchResults = this.Ingredients.Where(x => x.IngName.Contains(searchStr)).ToList();
@@ -1236,7 +1236,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (DGVInventoryNearOnExpirationDate.CurrentRow != null)
                 {
-                    int ingredientId = int.Parse(DGVInventoryNearOnExpirationDate.CurrentRow.Cells[0].Value.ToString());
+                    long ingredientId = long.Parse(DGVInventoryNearOnExpirationDate.CurrentRow.Cells[0].Value.ToString());
 
                     SelectedIngredient = this.Ingredients.Where(x => x.Id == ingredientId).FirstOrDefault();
                     SelectedIngredientId = ingredientId;

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace EntitiesShared.InventoryManagement
 {
     [Table("IngInventoryTransactions")]
-    public class IngInventoryTransactionModel : BaseIntModel
+    public class IngInventoryTransactionModel : BaseLongModel
     {
-        public int IngredientId { get; set; }
+        public long IngredientId { get; set; }
 
         public StaticData.InventoryTransType TransType { get; set; }
 

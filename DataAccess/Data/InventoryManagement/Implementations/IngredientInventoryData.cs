@@ -20,7 +20,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public decimal GetRemainingQtyValueByIngredient(int ingredientId)
+        public decimal GetRemainingQtyValueByIngredient(long ingredientId)
         {
             string query = @"SELECT SUM(remainingQtyValue) as remainingQtyValue
                             FROM IngredientInventory
@@ -29,7 +29,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return this.GetValue<decimal>(query, new { IngredientId = ingredientId });
         }
 
-        public List<IngredientInventoryModel> GetAllByIngredient(int ingredientId)
+        public List<IngredientInventoryModel> GetAllByIngredient(long ingredientId)
         {
             string query = @"SELECT * FROM IngredientInventory WHERE isDeleted=false AND isSoldOut=false AND ingredientId=@IngredientId";
 
@@ -38,7 +38,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return inventories;
         }
 
-        public IngredientInventoryModel GetByIdAndIngredient (int ingredientId, long id)
+        public IngredientInventoryModel GetByIdAndIngredient (long ingredientId, long id)
         {
             string query = @"SELECT * FROM IngredientInventory 
                             WHERE isDeleted=false AND isSoldOut=false AND ingredientId=@IngredientId AND id=@Id";

@@ -25,7 +25,7 @@ namespace Main.Forms.InventoryManagementForms
         private readonly IProductCategoryData _productCategoryData;
         private readonly IProductData _productData;
         private readonly IProductIngredientData _productIngredientData;
-        private readonly IComboSetProductData _comboSetProductData;
+        private readonly IComboMealProductData _comboSetProductData;
         private readonly IIngredientCategoryController _ingredientCategoryController;
         private readonly IIngredientController _ingredientController;
         private readonly IIngredientInventoryController _ingredientInventoryController;
@@ -41,8 +41,8 @@ namespace Main.Forms.InventoryManagementForms
                             IProductCategoryData productCategoryData,
                             IProductData productData,
                             IProductIngredientData productIngredientData,
-                            IComboSetData comboSetData,
-                            IComboSetProductData comboSetProductData,
+                            IComboMealData comboSetData,
+                            IComboMealProductData comboSetProductData,
                             IIngredientCategoryController ingredientCategoryController,
                             IIngredientController ingredientController,
                             IIngredientInventoryController ingredientInventoryController,
@@ -128,7 +128,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleIngredientCalculateProductsCanMake(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int ingredientId = inventoryControlObj.SelectedIngredientId;
+            long ingredientId = inventoryControlObj.SelectedIngredientId;
 
             inventoryControlObj.ProductIngredientsToCalculate = _productIngredientData.GetAllByIngredient(ingredientId);
         }
@@ -169,7 +169,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleSelectedCategoryToUpdate(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int selectedCategoryId = inventoryControlObj.SelectedCategoryId;
+            long selectedCategoryId = inventoryControlObj.SelectedCategoryId;
 
             inventoryControlObj.CategoryToAddUpdate = _ingredientCategoryData.Get(selectedCategoryId);
             inventoryControlObj.DisplaySelectedCategoryDetails();
@@ -178,7 +178,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleSelectedCategoryToDelete(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int selectedCategoryId = inventoryControlObj.SelectedCategoryId;
+            long selectedCategoryId = inventoryControlObj.SelectedCategoryId;
 
             DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
@@ -282,7 +282,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleSelectIngredientToDelete(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            long selectedIngredientId = inventoryControlObj.SelectedIngredientId;
 
             DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
@@ -315,7 +315,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleIngredientGetInventories(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            long selectedIngredientId = inventoryControlObj.SelectedIngredientId;
             inventoryControlObj.SelectedIngredientInventories = _ingredientInventoryData.GetAllByIngredient(selectedIngredientId);
 
             int year = DateTime.Now.Year;
@@ -346,7 +346,7 @@ namespace Main.Forms.InventoryManagementForms
                 if (saveResults.IsSuccess)
                 {
                     MessageBox.Show(resultMessages, "Save inventory", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+                    long selectedIngredientId = inventoryControlObj.SelectedIngredientId;
                     inventoryControlObj.SelectedIngredientInventories = _ingredientInventoryData.GetAllByIngredient(selectedIngredientId);
                     inventoryControlObj.DisplayIngredientInventories();
                     inventoryControlObj.ResetNewUpdateIngredeintInventoryForm();
@@ -365,7 +365,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleIngredientInventoryDelete(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int ingredientId = inventoryControlObj.SelectedIngredientId;
+            long ingredientId = inventoryControlObj.SelectedIngredientId;
             long inventoryId = inventoryControlObj.SelectedInventoryId;
             string remarks = inventoryControlObj.Remarks;
 
@@ -403,7 +403,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleFilterTransactionHistory(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            long selectedIngredientId = inventoryControlObj.SelectedIngredientId;
             DateTime startDate = inventoryControlObj.FilterTransactionStartDate;
             DateTime endDate = inventoryControlObj.FilterTransactionEndDate;
 
@@ -415,7 +415,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleSaveInventoryIncreaseQtyValue(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            long selectedIngredientId = inventoryControlObj.SelectedIngredientId;
             long selectedInventoryId = inventoryControlObj.SelectedInventoryId;
             decimal increaseQtyValue = inventoryControlObj.IncreaseInventoryQtyValue;
             string remarks = inventoryControlObj.Remarks;
@@ -462,7 +462,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleSaveInventoryDecreaseQtyValue(object sender, EventArgs e)
         {
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
-            int selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            long selectedIngredientId = inventoryControlObj.SelectedIngredientId;
             long selectedInventoryId = inventoryControlObj.SelectedInventoryId;
             decimal decreaseQtyValue = inventoryControlObj.DecreaseInventoryQtyValue;
             string remarks = inventoryControlObj.Remarks;
@@ -580,7 +580,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleSelectedProductCategoryToDelete(object sender, EventArgs e)
         {
             ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
-            int selectedCategoryId = inventoryControlObj.SelectedCategoryId;
+            long selectedCategoryId = inventoryControlObj.SelectedCategoryId;
 
             DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
@@ -690,7 +690,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleGetProductExistingIngredients(object sender, EventArgs e)
         {
             ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
-            int productId = inventoryControlObj.SelectedExistingProductId;
+            long productId = inventoryControlObj.SelectedExistingProductId;
             inventoryControlObj.ExistingProductIngredients = _productIngredientData.GetAllByProduct(productId);
             inventoryControlObj.DisplayProductsExistingIngredientsInDGV();
         }
@@ -698,7 +698,7 @@ namespace Main.Forms.InventoryManagementForms
         private void HandleGetProductDetailsAndDispalyInForm(object sender, EventArgs e)
         {
             ProductInventoryControl inventoryControlObj = (ProductInventoryControl)sender;
-            int productId = inventoryControlObj.SelectedExistingProductId;
+            long productId = inventoryControlObj.SelectedExistingProductId;
 
             inventoryControlObj.ProductToAddUpdate = _productData.Get(productId);
             inventoryControlObj.ProductSelectedIngredients = _productIngredientData.GetAllByProduct(productId);

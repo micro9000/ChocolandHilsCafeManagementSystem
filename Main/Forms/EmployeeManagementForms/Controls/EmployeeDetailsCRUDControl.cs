@@ -540,7 +540,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 if (selectedGovtAgency != null)
                 {
-                    int selectedGovtAgencyId = int.Parse(selectedGovtAgency.Value.ToString());
+                    long selectedGovtAgencyId = long.Parse(selectedGovtAgency.Value.ToString());
 
                     var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
                                             x.EmployeeGovtIdCard.GovtAgencyId == selectedGovtAgencyId).FirstOrDefault();

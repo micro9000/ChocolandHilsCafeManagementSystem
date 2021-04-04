@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EntitiesShared.InventoryManagement
 {
     [Table("ProductCategories")]
-    public class ProductCategoryModel : BaseIntModel
+    public class ProductCategoryModel : BaseLongModel
     {
         public string ProdCategory { get; set; }
     }

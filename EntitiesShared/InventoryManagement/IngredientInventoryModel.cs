@@ -10,7 +10,7 @@ namespace EntitiesShared.InventoryManagement
     [Table("IngredientInventory")]
     public class IngredientInventoryModel : BaseLongModel
     {
-        public int IngredientId { get; set; }
+        public long IngredientId { get; set; }
 
         private IngredientModel _ingredient;
         [Write(false)]

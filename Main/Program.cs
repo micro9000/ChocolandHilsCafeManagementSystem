@@ -152,8 +152,8 @@ namespace Main
             services.AddTransient<IProductCategoryData, ProductCategoryData>();
             services.AddTransient<IProductData, ProductData>();
             services.AddTransient<IProductIngredientData, ProductIngredientData>();
-            services.AddTransient<IComboSetData, ComboSetData>();
-            services.AddTransient<IComboSetProductData, ComboSetProductData>();
+            services.AddTransient<IComboMealData, ComboMealData>();
+            services.AddTransient<IComboMealProductData, ComboMealProductData>();
 
 
             // Employee Management

@@ -20,7 +20,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public bool MassUpdateProductCategory (int previousCategoryId, int newCategoryId)
+        public bool MassUpdateProductCategory (long previousCategoryId, long newCategoryId)
         {
             var productsUnderPrevCategory = this.GetAllByCategory(previousCategoryId);
 
@@ -50,7 +50,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return rowsAffected > 0;
         }
 
-        public bool MassDeleteProductsByCategory(int categoryId)
+        public bool MassDeleteProductsByCategory(long categoryId)
         {
             string query = @"UPDATE Products SET isDeleted=true 
                             WHERE isDeleted=false AND categoryId=@Categoryid";
@@ -70,7 +70,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
         }
 
 
-        public List<ProductModel> GetAllByCategory(int categoryId)
+        public List<ProductModel> GetAllByCategory(long categoryId)
         {
            
             string query = @"SELECT *

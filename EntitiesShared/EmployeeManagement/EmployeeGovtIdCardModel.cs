@@ -20,9 +20,9 @@ namespace EntitiesShared.EmployeeManagement
         }
 
 
-        private int govtAgencyId;
+        private long govtAgencyId;
 
-        public int GovtAgencyId
+        public long GovtAgencyId
         {
             get { return govtAgencyId; }
             set { govtAgencyId = value; }

@@ -12,7 +12,7 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
     {
         List<EmployeeGovtIdCardModel> GetAllByEmployeeNumber(string employeeNumber);
 
-        List<EmployeeGovtIdCardModel> GetAllByGovtAgency(int govtAgencyId);
+        List<EmployeeGovtIdCardModel> GetAllByGovtAgency(long govtAgencyId);
 
         EmployeeGovtIdCardModel GetByEmployeeIdNumber(string employeeIdNumber);
     }

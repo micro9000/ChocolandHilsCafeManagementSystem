@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data.InventoryManagement.Contracts
 {
-    public interface IComboSetData : IDataManagerCRUD<ComboSetModel>
+    public interface IComboMealProductData : IDataManagerCRUD<ComboMealProductModel>
     {
     }
 }

@@ -140,7 +140,7 @@ SELECT COUNT(*) as count FROM Employees
 WHERE isDeleted=false AND empNumYear = '2021';
 
 CREATE TABLE IF NOT EXISTS GovernmentAgencies(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     govtAgency VARCHAR(255),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -153,7 +153,7 @@ SELECT * FROM GovernmentAgencies;
 CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
-    govtAgencyId INT NOT NULL,
+    govtAgencyId BIGINT NOT NULL,
     employeeIdNumber VARCHAR(50) UNIQUE,
     employeeContribution DECIMAL(5,2),
     employerContribution DECIMAL(5,2),
@@ -451,7 +451,7 @@ CREATE TABLE IF NOT EXISTS Users(
 )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS UserActivityLog(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userName CHAR(20),
     activity VARCHAR(255),
     createdAt DATETIME DEFAULT NOW()
@@ -497,7 +497,7 @@ VALUES (1,1), (2,2);
 -- --------------------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS IngredientCategories(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	category VARCHAR(255),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -508,8 +508,8 @@ CREATE TABLE IF NOT EXISTS IngredientCategories(
 SELECT * FROM IngredientCategories;
 
 CREATE TABLE IF NOT EXISTS Ingredients(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    categoryId INT NOT NULL,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    categoryId BIGINT NOT NULL,
 	ingName VARCHAR(255),
     uom CHAR(3), -- kg(gram), L(ml), pcs(pc)
     createdAt DATETIME DEFAULT NOW(),
@@ -522,8 +522,8 @@ CREATE TABLE IF NOT EXISTS Ingredients(
 SELECT * FROM Ingredients;
 
 CREATE TABLE IF NOT EXISTS IngredientInventory(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	ingredientId INT NOT NULL,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ingredientId BIGINT NOT NULL,
     initialQtyValue DECIMAL, -- in grams, ml, or pcs
     remainingQtyValue DECIMAL,
     unitCost DECIMAL(9,2), -- unit cost based on unit of measurement
@@ -536,12 +536,12 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
-SELECT * FROM IngredientInventory;
+SELECT * FROM IngredientInventory WHERE ingredientId=10 AND isDeleted=false;
 
 
 CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	ingredientId INT NOT NULL,
+	ingredientId BIGINT NOT NULL,
     transType INT, -- See StaticData.cs file under EntitiesShared Project
     qtyVal DECIMAL,
     unitCost DECIMAL(9,2),
@@ -560,7 +560,7 @@ SELECT * FROM IngInventoryTransactions;
 SELECT * FROM Users;
 
 CREATE TABLE IF NOT EXISTS ProductCategories(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	prodCategory VARCHAR(255),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -571,8 +571,8 @@ CREATE TABLE IF NOT EXISTS ProductCategories(
 SELECT * FROM ProductCategories;
 
 CREATE TABLE IF NOT EXISTS Products(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    categoryId INT NOT NULL,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    categoryId BIGINT NOT NULL,
 	prodName VARCHAR(255),
     pricePerOrder DECIMAL(9,2),
     -- estimatedNumOrders INT,
@@ -593,9 +593,9 @@ WHERE P.isDeleted=false;
 
 -- Per order
 CREATE TABLE IF NOT EXISTS ProductIngredients(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	productId INT NOT NULL,
-    ingredientId INT NOT NULL,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	productId BIGINT NOT NULL,
+    ingredientId BIGINT NOT NULL,
     uom INT,
     qtyValue DECIMAL,
     createdAt DATETIME DEFAULT NOW(),
@@ -606,31 +606,29 @@ CREATE TABLE IF NOT EXISTS ProductIngredients(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
-SELECT *
-FROM ProductIngredients AS PI
-JOIN Ingredients AS ING ON PI.ingredientId=ING.id
-WHERE PI.isDeleted=false;
 
-SELECT * FROM ProductIngredients;
+SELECT * FROM Ingredients;
 
-CREATE TABLE IF NOT EXISTS ComboSets(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	setName VARCHAR(255),
+
+CREATE TABLE IF NOT EXISTS ComboMeals(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(255),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
-CREATE TABLE IF NOT EXISTS ComboSetProducts(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	comboSetId INT NOT NULL,
-    productId INT NOT NULL,
+
+CREATE TABLE IF NOT EXISTS ComboMealProducts(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	comboMealId BIGINT NOT NULL,
+    productId BIGINT NOT NULL,
     quantity INT,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(comboSetId) REFERENCES ComboSets(id),
+    FOREIGN KEY(comboMealId) REFERENCES ComboMeals(id),
     FOREIGN KEY(productId) REFERENCES Products(id)
 )ENGINE=INNODB;

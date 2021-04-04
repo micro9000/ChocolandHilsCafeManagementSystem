@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace EntitiesShared.InventoryManagement
 {
-    [Table("ComboSetProducts")]
-    public class ComboSetProductModel : BaseIntModel
+    [Table("ComboMealProducts")]
+    public class ComboMealProductModel : BaseLongModel
     {
-        public int ComboSetId { get; set; }
+        public long ComboSetId { get; set; }
 
-        public int ProductId { get; set; }
+        public long ProductId { get; set; }
 
         public int Quantity { get; set; }
     }

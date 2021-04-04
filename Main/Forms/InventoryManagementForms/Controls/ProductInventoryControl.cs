@@ -36,13 +36,14 @@ namespace Main.Forms.InventoryManagementForms.Controls
             SetDGVIngredientListToSelectFontAndColors();
             SetDGVSelectedIngredientsFontAndColors();
             SetDGVProductListAndDGVProductExistingIngredientsFontAndColors();
+            SetDGVProductListForComboMealFontAndColors();
 
             SetDGVSelectedIngredientsColumns();
 
             DisplayProductCategoriesInDGV();
             DisplayExistingProductsInDGV(this.ExistingProducts);
+            DisplayProductsInDGVForComboMeal(this.ExistingProducts);
             DisplayIngredientInDGV(Ingredients);
-
 
             this.PropertyIsIsNewProductChanged += OnisNewProductUpdate;
 
@@ -83,7 +84,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             set { productCategoryToAddUpdate = value; }
         }
 
-        public int SelectedProductCategoryId { get; set; }
+        public long SelectedProductCategoryId { get; set; }
 
         public bool IsNewProductCategory { get; set; } = true;
 
@@ -207,7 +208,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
-        public int SelectedCategoryId { get; set; }
+        public long SelectedCategoryId { get; set; }
         //public event EventHandler SelectCategoryToUpdate;
         //protected virtual void OnSelectCategoryToUpdate(EventArgs e)
         //{
@@ -237,7 +238,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 {
                     string categoryId = DGVProrductCategories.CurrentRow.Cells[0].Value.ToString();
 
-                    SelectedCategoryId = int.Parse(categoryId);
+                    SelectedCategoryId = long.Parse(categoryId);
 
                     this.BtnCancelUpdateCategory.Visible = true;
                     this.IsNewProductCategory = false;
@@ -255,7 +256,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 if (DGVProrductCategories.CurrentRow != null)
                 {
                     string categoryId = DGVProrductCategories.CurrentRow.Cells[0].Value.ToString();
-                    SelectedCategoryId = int.Parse(categoryId);
+                    SelectedCategoryId = long.Parse(categoryId);
                     OnSelectCategoryToDelete(EventArgs.Empty);
                 }
             }
@@ -434,7 +435,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
-        public int SelectedExistingProductId { get; set; }
+        public long SelectedExistingProductId { get; set; }
 
         public event EventHandler GetProductExistingIngredients;
         protected virtual void OnGetProductExistingIngredients(EventArgs e)
@@ -454,7 +455,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (DGVProductList.CurrentRow != null && this.ExistingProducts != null)
                 {
-                    SelectedExistingProductId = int.Parse(DGVProductList.CurrentRow.Cells[0].Value.ToString());
+                    SelectedExistingProductId = long.Parse(DGVProductList.CurrentRow.Cells[0].Value.ToString());
                     OnGetProductExistingIngredients(EventArgs.Empty);
                 }
             }
@@ -464,7 +465,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (DGVProductList.CurrentRow != null && this.ProductCategories != null)
                 {
-                    SelectedExistingProductId = int.Parse(DGVProductList.CurrentRow.Cells[0].Value.ToString());
+                    SelectedExistingProductId = long.Parse(DGVProductList.CurrentRow.Cells[0].Value.ToString());
                     OnGetProductDetailsAndDispalyInForm(EventArgs.Empty);
                 }
             }
@@ -479,9 +480,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
             set { _ingredients = value; }
         }
 
-        private Dictionary<int, IngredientModel> selectedIngredients = new Dictionary<int, IngredientModel>();
+        private Dictionary<long, IngredientModel> selectedIngredients = new Dictionary<long, IngredientModel>();
 
-        public Dictionary<int, IngredientModel> SelectedIngredients
+        public Dictionary<long, IngredientModel> SelectedIngredients
         {
             get { return selectedIngredients; }
             set { selectedIngredients = value; }
@@ -592,7 +593,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 {
                     foreach (DataGridViewRow row in this.DGVIngredientListToSelect.Rows)
                     {
-                        int ingredientIdTemp = int.Parse(row.Cells["IngredientId"].Value.ToString());
+                        long ingredientIdTemp = long.Parse(row.Cells["IngredientId"].Value.ToString());
                         if (this.SelectedIngredients.ContainsKey(ingredientIdTemp))
                         {
                             row.Cells["selectIngredientCkbox"].Value = (bool)true;
@@ -764,7 +765,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 }
 
                 bool isSelected = Convert.ToBoolean(this.DGVIngredientListToSelect.CurrentRow.Cells["selectIngredientCkbox"].Value);
-                int ingredientId = int.Parse(this.DGVIngredientListToSelect.CurrentRow.Cells["IngredientId"].Value.ToString());
+                long ingredientId = long.Parse(this.DGVIngredientListToSelect.CurrentRow.Cells["IngredientId"].Value.ToString());
 
                 if (isSelected)
                 {
@@ -785,7 +786,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                         {
                             foreach (DataGridViewRow row in this.DGVSelectedIngredients.Rows)
                             {
-                                int tempIngredientId = int.Parse(row.Cells["IngredientId"].Value.ToString());
+                                long tempIngredientId = long.Parse(row.Cells["IngredientId"].Value.ToString());
 
                                 if (tempIngredientId == ingredientId)
                                 {
@@ -811,7 +812,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (row.Cells["UOMToUse"].Value != null)
                 {
-                    int ingredientId = int.Parse(row.Cells["IngredientId"].Value.ToString());
+                    long ingredientId = long.Parse(row.Cells["IngredientId"].Value.ToString());
                     decimal qtyValue = decimal.Parse(row.Cells["selectedIngredientAmount"].Value.ToString());
                     var selectedUOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), row.Cells["UOMToUse"].Value.ToString());
 
@@ -841,7 +842,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (DGVSelectedIngredients.CurrentRow != null)
                 {
-                    int ingredientId = int.Parse(DGVSelectedIngredients.CurrentRow.Cells[0].Value.ToString());
+                    long ingredientId = long.Parse(DGVSelectedIngredients.CurrentRow.Cells[0].Value.ToString());
 
                     if (this.SelectedIngredients.ContainsKey(ingredientId))
                     {
@@ -851,7 +852,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                             foreach (DataGridViewRow row in this.DGVIngredientListToSelect.Rows)
                             {
-                                int ingredientIdTemp = int.Parse(row.Cells["IngredientId"].Value.ToString());
+                                long ingredientIdTemp = long.Parse(row.Cells["IngredientId"].Value.ToString());
 
                                 if (ingredientIdTemp == ingredientId)
                                 {
@@ -903,7 +904,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             set { _productSelectedIngredients = value; }
         }
 
-        public void MarkAsDeletedExistingIngredientIfUpdate(int ingredientId)
+        public void MarkAsDeletedExistingIngredientIfUpdate(long ingredientId)
         {
             if (this.ProductSelectedIngredients != null)
             {
@@ -978,7 +979,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
 
             var selectedCategory = this.CboxCategories.SelectedItem as ComboboxItem;
-            int categoryId = int.Parse(selectedCategory.Value.ToString());
+            long categoryId = long.Parse(selectedCategory.Value.ToString());
 
             if (string.IsNullOrEmpty(TboxProductName.Text))
             {
@@ -1006,7 +1007,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             foreach (DataGridViewRow row in this.DGVSelectedIngredients.Rows)
             {
-                int tempIngredientId = int.Parse(row.Cells["IngredientId"].Value.ToString());
+                long tempIngredientId = long.Parse(row.Cells["IngredientId"].Value.ToString());
                 string ingredientNmae = row.Cells["Ingredient"].Value.ToString();
                 string uom = row.Cells["UOMToUse"].Value != null ? row.Cells["UOMToUse"].Value.ToString() : "";
                 string qtyValueTmp = row.Cells["selectedIngredientAmount"].Value != null ? row.Cells["selectedIngredientAmount"].Value.ToString() : "";
@@ -1079,7 +1080,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
         {
             this.IsNewProduct = true;
             this.ProductToAddUpdate = null;
-            this.SelectedIngredients = new Dictionary<int, IngredientModel>();
+            this.SelectedIngredients = new Dictionary<long, IngredientModel>();
             this.ProductSelectedIngredients = new List<ProductIngredientModel>();
             this.DGVSelectedIngredients.Rows.Clear();
             this.UncheckSelectedProductsInDGV();
@@ -1098,7 +1099,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
         public void DisplayProductDetailsAndIngredientsInFormAndDGV()
         {
-            this.SelectedIngredients = new Dictionary<int, IngredientModel>();
+            this.SelectedIngredients = new Dictionary<long, IngredientModel>();
             this.DGVSelectedIngredients.Rows.Clear();
             this.UncheckSelectedProductsInDGV();
 
@@ -1108,7 +1109,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 for (var i=0; i< this.CboxCategories.Items.Count; i++)
                 {
                     var item = this.CboxCategories.Items[i] as ComboboxItem;
-                    if (int.Parse(item.Value.ToString()) == this.ProductToAddUpdate.CategoryId)
+                    if (long.Parse(item.Value.ToString()) == this.ProductToAddUpdate.CategoryId)
                     {
                         this.CboxCategories.SelectedIndex = i;
                         break;
@@ -1124,7 +1125,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                     foreach (DataGridViewRow row in this.DGVIngredientListToSelect.Rows)
                     {
-                        int ingredientIdInTheDGV = int.Parse(row.Cells["IngredientId"].Value.ToString());
+                        long ingredientIdInTheDGV = long.Parse(row.Cells["IngredientId"].Value.ToString());
                         var existingIngredientDetails = this.ProductSelectedIngredients.Where(x => x.IngredientId == ingredientIdInTheDGV).FirstOrDefault();
 
                         if (existingIngredientDetails != null)
@@ -1157,13 +1158,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
         {
             if (this.ExistingProducts != null)
             {
-                int categoryId = 0;
+                long categoryId = 0;
                 string productName = this.TboxProductNameForFiltering.Text;
 
                 if (this.CboxCategoryForFilteringProducts.SelectedIndex >= 0)
                 {
                     var selectedCategory = this.CboxCategoryForFilteringProducts.SelectedItem as ComboboxItem;
-                    categoryId = int.Parse(selectedCategory.Value.ToString());
+                    categoryId = long.Parse(selectedCategory.Value.ToString());
                 }
 
                 List<ProductModel> searchResults = new List<ProductModel>();
@@ -1194,6 +1195,198 @@ namespace Main.Forms.InventoryManagementForms.Controls
             OnRefreshProductList(EventArgs.Empty);
             this.TboxProductNameForFiltering.Text = "";
             this.CboxCategoryForFilteringProducts.SelectedIndex = -1;
+        }
+
+
+        // ######################################################################################
+        // ######################################################################################
+        // ######################################################################################
+
+        public event EventHandler SaveComboMeal;
+        protected virtual void OnSaveComboMeal(EventArgs e)
+        {
+            SaveComboMeal?.Invoke(this, e);
+        }
+
+        private ComboMealModel _comboMealToAddUpdate;
+
+        public ComboMealModel ComboMealToAddUpdate
+        {
+            get { return _comboMealToAddUpdate; }
+            set { _comboMealToAddUpdate = value; }
+        }
+
+
+        private List<ComboMealProductModel> _comboMealProductsToAddUpdate = new List<ComboMealProductModel>();
+
+        public List<ComboMealProductModel> ComboMealProductsToAddUpdate
+        {
+            get { return _comboMealProductsToAddUpdate; }
+            set { _comboMealProductsToAddUpdate = value; }
+        }
+
+        public bool IsNewComboMeal { get; set; }
+
+
+        private void SetDGVProductListForComboMealFontAndColors()
+        {
+            this.DGVProductListForComboMeal.BackgroundColor = Color.White;
+            this.DGVProductListForComboMeal.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVProductListForComboMeal.RowHeadersVisible = false;
+            this.DGVProductListForComboMeal.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVProductListForComboMeal.AllowUserToResizeRows = false;
+            this.DGVProductListForComboMeal.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVProductListForComboMeal.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVProductListForComboMeal.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVProductListForComboMeal.MultiSelect = false;
+
+            this.DGVProductListForComboMeal.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVProductListForComboMeal.ColumnHeadersHeight = 30;
+        }
+
+
+        public void DisplayProductsInDGVForComboMeal(List<ProductModel> products)
+        {
+            this.DGVProductListForComboMeal.Rows.Clear();
+
+            if (products != null)
+            {
+                this.DGVProductListForComboMeal.ColumnCount = 4;
+
+                this.DGVProductListForComboMeal.Columns[0].Name = "ProductId";
+                this.DGVProductListForComboMeal.Columns[0].Visible = false;
+
+                this.DGVProductListForComboMeal.Columns[1].Name = "Category";
+                this.DGVProductListForComboMeal.Columns[1].HeaderText = "Category";
+
+                this.DGVProductListForComboMeal.Columns[2].Name = "ProductName";
+                this.DGVProductListForComboMeal.Columns[2].HeaderText = "Name";
+
+                this.DGVProductListForComboMeal.Columns[3].Name = "PricePerOrder";
+                this.DGVProductListForComboMeal.Columns[3].HeaderText = "Price per order";
+
+                // checkbox
+                DataGridViewCheckBoxColumn selectChbx = new DataGridViewCheckBoxColumn();
+                selectChbx.HeaderText = "Select";
+                selectChbx.Name = "selectProductCkbox";
+                selectChbx.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                selectChbx.ReadOnly = false;
+                this.DGVProductListForComboMeal.Columns.Add(selectChbx);
+
+                // quantity
+                NumericUpDownColumn numTextBox = new NumericUpDownColumn();
+                numTextBox.HeaderText = "Quantity";
+                numTextBox.Name = "selectedProductQty";
+                numTextBox.DefaultCellStyle.BackColor = Color.Bisque;
+                numTextBox.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                numTextBox.ReadOnly = false;
+                this.DGVProductListForComboMeal.Columns.Add(numTextBox);
+
+                foreach (var product in products)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVProductListForComboMeal);
+
+                    row.Cells[0].Value = product.Id;
+                    row.Cells[0].ReadOnly = true;
+
+                    row.Cells[1].Value = product.Category.ProdCategory;
+                    row.Cells[1].ReadOnly = true;
+
+                    row.Cells[2].Value = product.ProdName;
+                    row.Cells[2].ReadOnly = true;
+
+                    row.Cells[3].Value = product.PricePerOrder;
+                    row.Cells[3].ReadOnly = true;
+
+                    this.DGVProductListForComboMeal.Rows.Add(row);
+                }
+            }
+        }
+
+        private void DGVProductListForComboMeal_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if ((e.ColumnIndex == 5) && e.RowIndex > -1)
+            {
+                DGVProductListForComboMeal.CurrentCell = DGVProductListForComboMeal[e.ColumnIndex, e.RowIndex];
+                DGVProductListForComboMeal.BeginEdit(true);
+                string numUpDownVal = DGVProductListForComboMeal.CurrentCell.Value != null ? DGVProductListForComboMeal.CurrentCell.Value.ToString() : "";
+                ((NumericUpDown)DGVProductListForComboMeal.EditingControl).Select(0, numUpDownVal.Length);
+            }
+        }
+
+        private void BtnSaveComboMeal_Click(object sender, EventArgs e)
+        {
+            this.ComboMealProductsToAddUpdate = new List<ComboMealProductModel>();
+
+            foreach (DataGridViewRow row in this.DGVProductListForComboMeal.Rows)
+            {
+                bool isSelected = Convert.ToBoolean(row.Cells["selectProductCkbox"].Value);
+
+                if (isSelected)
+                {
+                    long selectedProductId = long.Parse(row.Cells["ProductId"].Value.ToString());
+                    string qtyValueTmp = row.Cells["selectedProductQty"].Value != null ? row.Cells["selectedProductQty"].Value.ToString() : "";
+
+                    if (string.IsNullOrWhiteSpace(qtyValueTmp))
+                    {
+                        MessageBox.Show("Kindly provide quantity for all selected products", "Product quantity", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+
+                    if (int.TryParse(qtyValueTmp, out int qty) == false)
+                    {
+                        MessageBox.Show("Invalid quantity", "Product quantity", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+
+                    if (qty <= 0)
+                    {
+                        MessageBox.Show("Kindly provide quantity for all selected products", "Product quantity", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+
+                    ComboMealProductsToAddUpdate.Add(new ComboMealProductModel { 
+                        Quantity = qty,
+                        ProductId = selectedProductId
+                    });
+                }
+            }
+
+
+            if (ComboMealProductsToAddUpdate.Count <= 1)
+            {
+                MessageBox.Show("Kindly select at least 2 products.", "Products", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(TboxComboMealTitle.Text))
+            {
+                MessageBox.Show("Kindly provide combo title", "Combo title", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (this.IsNewComboMeal)
+            {
+                this.ComboMealToAddUpdate = new ComboMealModel
+                {
+                    Title = TboxComboMealTitle.Text
+                };
+
+                OnSaveComboMeal(EventArgs.Empty);
+            }
+            else
+            {
+                if (this.ComboMealToAddUpdate != null)
+                {
+                    this.ComboMealToAddUpdate.Title = TboxComboMealTitle.Text;
+                    OnSaveComboMeal(EventArgs.Empty);
+                }
+            }
         }
 
     }

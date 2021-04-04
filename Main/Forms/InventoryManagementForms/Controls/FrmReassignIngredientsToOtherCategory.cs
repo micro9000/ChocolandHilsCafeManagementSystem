@@ -19,7 +19,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
         public FrmReassignIngredientsToOtherCategory(IIngredientData ingredientData,
                                                     IIngredientCategoryData ingredientCategoryData,
-                                                    int categoryIdToDelete)
+                                                    long categoryIdToDelete)
         {
             InitializeComponent();
             _ingredientData = ingredientData;
@@ -31,7 +31,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
         public bool IsCancelled { get; set; } = false;
         public bool IsDone { get; set; }
 
-        public int CategoryIdToDelete { get; set; }
+        public long CategoryIdToDelete { get; set; }
 
         private void FrmReassignIngredientsToOtherCategory_Load(object sender, EventArgs e)
         {
@@ -68,7 +68,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                 if (selectedCategory != null)
                 {
-                    int selectedCategoryId = int.Parse(selectedCategory.Value.ToString());
+                    long selectedCategoryId = long.Parse(selectedCategory.Value.ToString());
 
                     bool isUpdated = _ingredientData.MassUpdateIngredientsCategory(CategoryIdToDelete, selectedCategoryId);
 

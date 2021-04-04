@@ -19,7 +19,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
         public FrmReassignProductsToOtherCategory(IProductCategoryData productCategoryData,
                                                    IProductData productData,
-                                                   int categoryIdToDelete)
+                                                   long categoryIdToDelete)
         {
             InitializeComponent();
             _productCategoryData = productCategoryData;
@@ -32,7 +32,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
         public bool IsCancelled { get; set; } = false;
         public bool IsDone { get; set; }
 
-        public int CategoryIdToDelete { get; set; }
+        public long CategoryIdToDelete { get; set; }
 
         private void FrmReassignProductsToOtherCategory_Load(object sender, EventArgs e)
         {
@@ -70,7 +70,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                 if (selectedCategory != null)
                 {
-                    int selectedCategoryId = int.Parse(selectedCategory.Value.ToString());
+                    long selectedCategoryId = long.Parse(selectedCategory.Value.ToString());
 
                     bool isUpdated = _productData.MassUpdateProductCategory(CategoryIdToDelete, selectedCategoryId);
 

@@ -72,7 +72,7 @@ namespace Main.Controllers.InventoryControllers
         }
 
 
-        public decimal GetProductIngredientCost(int ingredientId, decimal prodIngredientQtyValue, StaticData.UOM prodIngredientUOM)
+        public decimal GetProductIngredientCost(long ingredientId, decimal prodIngredientQtyValue, StaticData.UOM prodIngredientUOM)
         {
             ProductIngredientInventoryDeductionFromList = new List<ProductIngredientInventoryDeduction>();
             var ingredeintDetails = _ingredientData.Get(ingredientId);

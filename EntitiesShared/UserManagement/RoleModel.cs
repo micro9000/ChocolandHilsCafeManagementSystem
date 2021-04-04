@@ -9,7 +9,7 @@ using static EntitiesShared.StaticData;
 namespace EntitiesShared.UserManagement
 {
     [Table("Roles")]
-    public class RoleModel : BaseIntModel
+    public class RoleModel : BaseLongModel
     {
         public UserRole RoleKey { get; set; }
     }

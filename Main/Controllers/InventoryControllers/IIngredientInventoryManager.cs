@@ -9,6 +9,6 @@ namespace Main.Controllers.InventoryControllers
 {
     public interface IIngredientInventoryManager
     {
-        decimal GetProductIngredientCost(int ingredientId, decimal prodIngredientQtyValue, StaticData.UOM prodIngredientUOM);
+        decimal GetProductIngredientCost(long ingredientId, decimal prodIngredientQtyValue, StaticData.UOM prodIngredientUOM);
     }
 }

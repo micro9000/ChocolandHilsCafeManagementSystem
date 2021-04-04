@@ -41,7 +41,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TbxCategory = new System.Windows.Forms.TextBox();
             this.BtnSaveCategory = new System.Windows.Forms.Button();
             this.MainTabAddProduct = new System.Windows.Forms.TabPage();
-            this.BtnCompute = new System.Windows.Forms.Button();
             this.PanelNewOrUpdateInventoryIndicator = new System.Windows.Forms.Panel();
             this.LblNewOrUpdateProductIndicator = new System.Windows.Forms.Label();
             this.SelectIngredientsTabControl = new System.Windows.Forms.TabControl();
@@ -51,11 +50,12 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TboxSearchIngredients = new System.Windows.Forms.TextBox();
             this.DGVIngredientListToSelect = new System.Windows.Forms.DataGridView();
             this.TabItemEnterIngredientAmount = new System.Windows.Forms.TabPage();
+            this.BtnCompute = new System.Windows.Forms.Button();
             this.DGVSelectedIngredients = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.LblTotalCostFromAddingNewProduct = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.NumUpDownPricePerOrder = new System.Windows.Forms.NumericUpDown();
             this.LblNumberOfSelectedIngredients = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -79,6 +79,16 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVProductExistingIngredients = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.DGVProductList = new System.Windows.Forms.DataGridView();
+            this.MainTabComboSet = new System.Windows.Forms.TabPage();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.DGVProductListForComboMeal = new System.Windows.Forms.DataGridView();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.BtnCancelSaveComboMeal = new System.Windows.Forms.Button();
+            this.TboxComboMealTitle = new System.Windows.Forms.TextBox();
+            this.BtnSaveComboMeal = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabProdCategory.SuspendLayout();
@@ -99,6 +109,11 @@ namespace Main.Forms.InventoryManagementForms.Controls
             ((System.ComponentModel.ISupportInitialize)(this.DGVProductExistingIngredients)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVProductList)).BeginInit();
+            this.MainTabComboSet.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVProductListForComboMeal)).BeginInit();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -128,6 +143,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.MainTabControl.Controls.Add(this.MainTabProdCategory);
             this.MainTabControl.Controls.Add(this.MainTabAddProduct);
             this.MainTabControl.Controls.Add(this.MainTabProducts);
+            this.MainTabControl.Controls.Add(this.MainTabComboSet);
             this.MainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTabControl.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainTabControl.Location = new System.Drawing.Point(0, 59);
@@ -151,7 +167,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(60, 359);
+            this.label1.Location = new System.Drawing.Point(142, 404);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(793, 74);
             this.label1.TabIndex = 55;
@@ -163,7 +179,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVProrductCategories.AllowUserToAddRows = false;
             this.DGVProrductCategories.AllowUserToDeleteRows = false;
             this.DGVProrductCategories.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVProrductCategories.Location = new System.Drawing.Point(403, 28);
+            this.DGVProrductCategories.Location = new System.Drawing.Point(485, 73);
             this.DGVProrductCategories.Name = "DGVProrductCategories";
             this.DGVProrductCategories.ReadOnly = true;
             this.DGVProrductCategories.RowTemplate.Height = 25;
@@ -178,7 +194,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.GBoxIngredeitnCategoryForm.Controls.Add(this.TbxCategory);
             this.GBoxIngredeitnCategoryForm.Controls.Add(this.BtnSaveCategory);
             this.GBoxIngredeitnCategoryForm.ForeColor = System.Drawing.Color.Black;
-            this.GBoxIngredeitnCategoryForm.Location = new System.Drawing.Point(60, 28);
+            this.GBoxIngredeitnCategoryForm.Location = new System.Drawing.Point(142, 73);
             this.GBoxIngredeitnCategoryForm.Name = "GBoxIngredeitnCategoryForm";
             this.GBoxIngredeitnCategoryForm.Size = new System.Drawing.Size(299, 284);
             this.GBoxIngredeitnCategoryForm.TabIndex = 53;
@@ -251,21 +267,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.MainTabAddProduct.TabIndex = 1;
             this.MainTabAddProduct.Text = "Add Product";
             this.MainTabAddProduct.UseVisualStyleBackColor = true;
-            // 
-            // BtnCompute
-            // 
-            this.BtnCompute.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnCompute.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnCompute.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnCompute.ForeColor = System.Drawing.Color.White;
-            this.BtnCompute.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCompute.Location = new System.Drawing.Point(527, 14);
-            this.BtnCompute.Name = "BtnCompute";
-            this.BtnCompute.Size = new System.Drawing.Size(91, 34);
-            this.BtnCompute.TabIndex = 57;
-            this.BtnCompute.Text = "Compute";
-            this.BtnCompute.UseVisualStyleBackColor = false;
-            this.BtnCompute.Click += new System.EventHandler(this.BtnCompute_Click);
             // 
             // PanelNewOrUpdateInventoryIndicator
             // 
@@ -376,6 +377,21 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TabItemEnterIngredientAmount.Text = "Ingredients Amount";
             this.TabItemEnterIngredientAmount.UseVisualStyleBackColor = true;
             // 
+            // BtnCompute
+            // 
+            this.BtnCompute.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnCompute.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCompute.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnCompute.ForeColor = System.Drawing.Color.White;
+            this.BtnCompute.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCompute.Location = new System.Drawing.Point(527, 14);
+            this.BtnCompute.Name = "BtnCompute";
+            this.BtnCompute.Size = new System.Drawing.Size(91, 34);
+            this.BtnCompute.TabIndex = 57;
+            this.BtnCompute.Text = "Compute";
+            this.BtnCompute.UseVisualStyleBackColor = false;
+            this.BtnCompute.Click += new System.EventHandler(this.BtnCompute_Click);
+            // 
             // DGVSelectedIngredients
             // 
             this.DGVSelectedIngredients.AllowUserToAddRows = false;
@@ -421,17 +437,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.LblTotalCostFromAddingNewProduct.TabIndex = 52;
             this.LblTotalCostFromAddingNewProduct.Text = "0";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(100, 289);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(80, 21);
-            this.label11.TabIndex = 51;
-            this.label11.Text = "Total Cost:";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -442,6 +447,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.label5.Size = new System.Drawing.Size(113, 21);
             this.label5.TabIndex = 50;
             this.label5.Text = "Price per order";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label11.ForeColor = System.Drawing.Color.Black;
+            this.label11.Location = new System.Drawing.Point(100, 289);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(80, 21);
+            this.label11.TabIndex = 51;
+            this.label11.Text = "Total Cost:";
             // 
             // NumUpDownPricePerOrder
             // 
@@ -718,6 +734,128 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVProductList.TabIndex = 1;
             this.DGVProductList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVProductList_CellClick);
             // 
+            // MainTabComboSet
+            // 
+            this.MainTabComboSet.Controls.Add(this.tabControl1);
+            this.MainTabComboSet.Location = new System.Drawing.Point(4, 29);
+            this.MainTabComboSet.Name = "MainTabComboSet";
+            this.MainTabComboSet.Padding = new System.Windows.Forms.Padding(3);
+            this.MainTabComboSet.Size = new System.Drawing.Size(1080, 545);
+            this.MainTabComboSet.TabIndex = 3;
+            this.MainTabComboSet.Text = "Combo Meals";
+            this.MainTabComboSet.UseVisualStyleBackColor = true;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(1074, 539);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.DGVProductListForComboMeal);
+            this.tabPage2.Controls.Add(this.groupBox5);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1066, 506);
+            this.tabPage2.TabIndex = 0;
+            this.tabPage2.Text = "Add/Update";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // DGVProductListForComboMeal
+            // 
+            this.DGVProductListForComboMeal.AllowUserToAddRows = false;
+            this.DGVProductListForComboMeal.AllowUserToDeleteRows = false;
+            this.DGVProductListForComboMeal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVProductListForComboMeal.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DGVProductListForComboMeal.Location = new System.Drawing.Point(483, 3);
+            this.DGVProductListForComboMeal.Name = "DGVProductListForComboMeal";
+            this.DGVProductListForComboMeal.RowTemplate.Height = 25;
+            this.DGVProductListForComboMeal.Size = new System.Drawing.Size(580, 500);
+            this.DGVProductListForComboMeal.TabIndex = 55;
+            this.DGVProductListForComboMeal.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVProductListForComboMeal_CellClick);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label10);
+            this.groupBox5.Controls.Add(this.BtnCancelSaveComboMeal);
+            this.groupBox5.Controls.Add(this.TboxComboMealTitle);
+            this.groupBox5.Controls.Add(this.BtnSaveComboMeal);
+            this.groupBox5.ForeColor = System.Drawing.Color.Black;
+            this.groupBox5.Location = new System.Drawing.Point(84, 75);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(299, 284);
+            this.groupBox5.TabIndex = 54;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Combo Meal";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label10.ForeColor = System.Drawing.Color.Black;
+            this.label10.Location = new System.Drawing.Point(16, 77);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(39, 21);
+            this.label10.TabIndex = 25;
+            this.label10.Text = "Title";
+            // 
+            // BtnCancelSaveComboMeal
+            // 
+            this.BtnCancelSaveComboMeal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnCancelSaveComboMeal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCancelSaveComboMeal.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnCancelSaveComboMeal.ForeColor = System.Drawing.Color.White;
+            this.BtnCancelSaveComboMeal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCancelSaveComboMeal.Location = new System.Drawing.Point(45, 162);
+            this.BtnCancelSaveComboMeal.Name = "BtnCancelSaveComboMeal";
+            this.BtnCancelSaveComboMeal.Size = new System.Drawing.Size(115, 47);
+            this.BtnCancelSaveComboMeal.TabIndex = 46;
+            this.BtnCancelSaveComboMeal.Text = "Cancel";
+            this.BtnCancelSaveComboMeal.UseVisualStyleBackColor = false;
+            this.BtnCancelSaveComboMeal.Visible = false;
+            // 
+            // TboxComboMealTitle
+            // 
+            this.TboxComboMealTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TboxComboMealTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TboxComboMealTitle.Location = new System.Drawing.Point(16, 110);
+            this.TboxComboMealTitle.Name = "TboxComboMealTitle";
+            this.TboxComboMealTitle.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.TboxComboMealTitle.Size = new System.Drawing.Size(265, 29);
+            this.TboxComboMealTitle.TabIndex = 24;
+            // 
+            // BtnSaveComboMeal
+            // 
+            this.BtnSaveComboMeal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnSaveComboMeal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSaveComboMeal.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnSaveComboMeal.ForeColor = System.Drawing.Color.White;
+            this.BtnSaveComboMeal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSaveComboMeal.Location = new System.Drawing.Point(166, 162);
+            this.BtnSaveComboMeal.Name = "BtnSaveComboMeal";
+            this.BtnSaveComboMeal.Size = new System.Drawing.Size(115, 47);
+            this.BtnSaveComboMeal.TabIndex = 2;
+            this.BtnSaveComboMeal.Text = "Save";
+            this.BtnSaveComboMeal.UseVisualStyleBackColor = false;
+            this.BtnSaveComboMeal.Click += new System.EventHandler(this.BtnSaveComboMeal_Click);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(1066, 506);
+            this.tabPage3.TabIndex = 1;
+            this.tabPage3.Text = "List";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
             // ProductInventoryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -754,6 +892,12 @@ namespace Main.Forms.InventoryManagementForms.Controls
             ((System.ComponentModel.ISupportInitialize)(this.DGVProductExistingIngredients)).EndInit();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVProductList)).EndInit();
+            this.MainTabComboSet.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVProductListForComboMeal)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -811,5 +955,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Button BtnCompute;
         private System.Windows.Forms.Label LblTotalCostFromAddingNewProduct;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TabPage MainTabComboSet;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.DataGridView DGVProductListForComboMeal;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button BtnCancelSaveComboMeal;
+        private System.Windows.Forms.TextBox TboxComboMealTitle;
+        private System.Windows.Forms.Button BtnSaveComboMeal;
     }
 }

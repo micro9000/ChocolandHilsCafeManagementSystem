@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace EntitiesShared.InventoryManagement
 {
     [Table("Products")]
-    public class ProductModel : BaseIntModel
+    public class ProductModel : BaseLongModel
     {
-        public int CategoryId { get; set; }
+        public long CategoryId { get; set; }
 
         private ProductCategoryModel category;
         [Write(false)]
