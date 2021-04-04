@@ -112,6 +112,21 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DPicFilterByExpirationEndDate = new System.Windows.Forms.DateTimePicker();
             this.DPicFilterByExpirationStartDate = new System.Windows.Forms.DateTimePicker();
             this.DGVInventoryNearOnExpirationDate = new System.Windows.Forms.DataGridView();
+            this.MainTabIngredientCalculator = new System.Windows.Forms.TabPage();
+            this.BtnClearCalculatorTab = new System.Windows.Forms.Button();
+            this.BtnCalculateIngredientProductCanMake = new System.Windows.Forms.Button();
+            this.label26 = new System.Windows.Forms.Label();
+            this.NumUpDownUnitCostForCalculator = new System.Windows.Forms.NumericUpDown();
+            this.NumUpDownQtyValueForCalculator = new System.Windows.Forms.NumericUpDown();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.LblUnitOfMeasurementInCalculator = new System.Windows.Forms.Label();
+            this.LblIngredientNameInCalculator = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.DGVProductsToCalculateIngredients = new System.Windows.Forms.DataGridView();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabIngCategories.SuspendLayout();
@@ -140,6 +155,11 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.MainTabExpirationAlert.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVInventoryNearOnExpirationDate)).BeginInit();
+            this.MainTabIngredientCalculator.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDownUnitCostForCalculator)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDownQtyValueForCalculator)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVProductsToCalculateIngredients)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -171,6 +191,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.MainTabControl.Controls.Add(this.MainTabIngInventories);
             this.MainTabControl.Controls.Add(this.MainTabInventoryTransHistory);
             this.MainTabControl.Controls.Add(this.MainTabExpirationAlert);
+            this.MainTabControl.Controls.Add(this.MainTabIngredientCalculator);
             this.MainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTabControl.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainTabControl.Location = new System.Drawing.Point(0, 59);
@@ -1103,6 +1124,181 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVInventoryNearOnExpirationDate.TabIndex = 1;
             this.DGVInventoryNearOnExpirationDate.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVInventoryNearOnExpirationDate_CellClick);
             // 
+            // MainTabIngredientCalculator
+            // 
+            this.MainTabIngredientCalculator.Controls.Add(this.BtnClearCalculatorTab);
+            this.MainTabIngredientCalculator.Controls.Add(this.BtnCalculateIngredientProductCanMake);
+            this.MainTabIngredientCalculator.Controls.Add(this.label26);
+            this.MainTabIngredientCalculator.Controls.Add(this.NumUpDownUnitCostForCalculator);
+            this.MainTabIngredientCalculator.Controls.Add(this.NumUpDownQtyValueForCalculator);
+            this.MainTabIngredientCalculator.Controls.Add(this.label27);
+            this.MainTabIngredientCalculator.Controls.Add(this.label28);
+            this.MainTabIngredientCalculator.Controls.Add(this.label29);
+            this.MainTabIngredientCalculator.Controls.Add(this.groupBox4);
+            this.MainTabIngredientCalculator.Controls.Add(this.DGVProductsToCalculateIngredients);
+            this.MainTabIngredientCalculator.Location = new System.Drawing.Point(4, 29);
+            this.MainTabIngredientCalculator.Name = "MainTabIngredientCalculator";
+            this.MainTabIngredientCalculator.Padding = new System.Windows.Forms.Padding(3);
+            this.MainTabIngredientCalculator.Size = new System.Drawing.Size(1139, 530);
+            this.MainTabIngredientCalculator.TabIndex = 5;
+            this.MainTabIngredientCalculator.Text = "Calculator";
+            this.MainTabIngredientCalculator.UseVisualStyleBackColor = true;
+            // 
+            // BtnClearCalculatorTab
+            // 
+            this.BtnClearCalculatorTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnClearCalculatorTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnClearCalculatorTab.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnClearCalculatorTab.ForeColor = System.Drawing.Color.White;
+            this.BtnClearCalculatorTab.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnClearCalculatorTab.Location = new System.Drawing.Point(101, 408);
+            this.BtnClearCalculatorTab.Name = "BtnClearCalculatorTab";
+            this.BtnClearCalculatorTab.Size = new System.Drawing.Size(115, 47);
+            this.BtnClearCalculatorTab.TabIndex = 24;
+            this.BtnClearCalculatorTab.Text = "Clear";
+            this.BtnClearCalculatorTab.UseVisualStyleBackColor = false;
+            // 
+            // BtnCalculateIngredientProductCanMake
+            // 
+            this.BtnCalculateIngredientProductCanMake.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnCalculateIngredientProductCanMake.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCalculateIngredientProductCanMake.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnCalculateIngredientProductCanMake.ForeColor = System.Drawing.Color.White;
+            this.BtnCalculateIngredientProductCanMake.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCalculateIngredientProductCanMake.Location = new System.Drawing.Point(222, 408);
+            this.BtnCalculateIngredientProductCanMake.Name = "BtnCalculateIngredientProductCanMake";
+            this.BtnCalculateIngredientProductCanMake.Size = new System.Drawing.Size(115, 47);
+            this.BtnCalculateIngredientProductCanMake.TabIndex = 23;
+            this.BtnCalculateIngredientProductCanMake.Text = "Calculate";
+            this.BtnCalculateIngredientProductCanMake.UseVisualStyleBackColor = false;
+            this.BtnCalculateIngredientProductCanMake.Click += new System.EventHandler(this.BtnCalculateIngredientProductCanMake_Click);
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(109, 330);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(19, 20);
+            this.label26.TabIndex = 22;
+            this.label26.Text = "()";
+            // 
+            // NumUpDownUnitCostForCalculator
+            // 
+            this.NumUpDownUnitCostForCalculator.DecimalPlaces = 2;
+            this.NumUpDownUnitCostForCalculator.Location = new System.Drawing.Point(31, 353);
+            this.NumUpDownUnitCostForCalculator.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.NumUpDownUnitCostForCalculator.Name = "NumUpDownUnitCostForCalculator";
+            this.NumUpDownUnitCostForCalculator.Size = new System.Drawing.Size(306, 27);
+            this.NumUpDownUnitCostForCalculator.TabIndex = 21;
+            // 
+            // NumUpDownQtyValueForCalculator
+            // 
+            this.NumUpDownQtyValueForCalculator.DecimalPlaces = 3;
+            this.NumUpDownQtyValueForCalculator.Location = new System.Drawing.Point(31, 285);
+            this.NumUpDownQtyValueForCalculator.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.NumUpDownQtyValueForCalculator.Name = "NumUpDownQtyValueForCalculator";
+            this.NumUpDownQtyValueForCalculator.Size = new System.Drawing.Size(306, 27);
+            this.NumUpDownQtyValueForCalculator.TabIndex = 20;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(31, 330);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(79, 20);
+            this.label27.TabIndex = 19;
+            this.label27.Text = "Unit Cost /";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(138, 262);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(19, 20);
+            this.label28.TabIndex = 18;
+            this.label28.Text = "()";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(31, 262);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(105, 20);
+            this.label29.TabIndex = 17;
+            this.label29.Text = "Quantity Value";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.LblUnitOfMeasurementInCalculator);
+            this.groupBox4.Controls.Add(this.LblIngredientNameInCalculator);
+            this.groupBox4.Controls.Add(this.label24);
+            this.groupBox4.Controls.Add(this.label25);
+            this.groupBox4.Location = new System.Drawing.Point(6, 15);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(349, 214);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Selected Ingredient";
+            // 
+            // LblUnitOfMeasurementInCalculator
+            // 
+            this.LblUnitOfMeasurementInCalculator.AutoSize = true;
+            this.LblUnitOfMeasurementInCalculator.Location = new System.Drawing.Point(25, 161);
+            this.LblUnitOfMeasurementInCalculator.Name = "LblUnitOfMeasurementInCalculator";
+            this.LblUnitOfMeasurementInCalculator.Size = new System.Drawing.Size(66, 20);
+            this.LblUnitOfMeasurementInCalculator.TabIndex = 10;
+            this.LblUnitOfMeasurementInCalculator.Text = "kg/L/pcs";
+            // 
+            // LblIngredientNameInCalculator
+            // 
+            this.LblIngredientNameInCalculator.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblIngredientNameInCalculator.Location = new System.Drawing.Point(25, 65);
+            this.LblIngredientNameInCalculator.Name = "LblIngredientNameInCalculator";
+            this.LblIngredientNameInCalculator.Size = new System.Drawing.Size(304, 50);
+            this.LblIngredientNameInCalculator.TabIndex = 9;
+            this.LblIngredientNameInCalculator.Text = "-";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label24.Location = new System.Drawing.Point(25, 128);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(215, 20);
+            this.label24.TabIndex = 8;
+            this.label24.Text = "Unit of Measurement (UOM):";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label25.Location = new System.Drawing.Point(25, 31);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(129, 20);
+            this.label25.TabIndex = 6;
+            this.label25.Text = "Ingredient name:";
+            // 
+            // DGVProductsToCalculateIngredients
+            // 
+            this.DGVProductsToCalculateIngredients.AllowUserToAddRows = false;
+            this.DGVProductsToCalculateIngredients.AllowUserToDeleteRows = false;
+            this.DGVProductsToCalculateIngredients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVProductsToCalculateIngredients.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DGVProductsToCalculateIngredients.Location = new System.Drawing.Point(361, 3);
+            this.DGVProductsToCalculateIngredients.Name = "DGVProductsToCalculateIngredients";
+            this.DGVProductsToCalculateIngredients.ReadOnly = true;
+            this.DGVProductsToCalculateIngredients.RowTemplate.Height = 25;
+            this.DGVProductsToCalculateIngredients.Size = new System.Drawing.Size(775, 524);
+            this.DGVProductsToCalculateIngredients.TabIndex = 2;
+            // 
             // IngredientInventoryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1153,6 +1349,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVInventoryNearOnExpirationDate)).EndInit();
+            this.MainTabIngredientCalculator.ResumeLayout(false);
+            this.MainTabIngredientCalculator.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDownUnitCostForCalculator)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDownQtyValueForCalculator)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVProductsToCalculateIngredients)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1242,5 +1445,22 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.DateTimePicker DPicFilterByExpirationEndDate;
         private System.Windows.Forms.DateTimePicker DPicFilterByExpirationStartDate;
         private System.Windows.Forms.DataGridView DGVInventoryNearOnExpirationDate;
+        private System.Windows.Forms.TabPage MainTabIngredientCalculator;
+        private System.Windows.Forms.DataGridView DGVProductsToCalculateIngredients;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label LblUnitOfMeasurementInCalculator;
+        private System.Windows.Forms.Label LblIngredientNameInCalculator;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.NumericUpDown NumUpDownUnitCostForCalculator;
+        private System.Windows.Forms.NumericUpDown NumUpDownQtyValueForCalculator;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Button BtnClearCalculatorTab;
+        private System.Windows.Forms.Button BtnCalculateIngredientProductCanMake;
     }
 }

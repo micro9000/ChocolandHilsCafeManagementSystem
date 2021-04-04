@@ -36,6 +36,9 @@
     <None Update="Resources\attendance-white-301.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\calculator-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\checkbox-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

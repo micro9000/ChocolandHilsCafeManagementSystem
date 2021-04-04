@@ -42,5 +42,30 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return results;
         }
 
+
+        public List<ProductIngredientModel> GetAllByIngredient (int ingredientId)
+        {
+            string query = @"SELECT *
+                            FROM ProductIngredients AS PI
+                            JOIN Products AS PRD ON PI.productId=PRD.id
+                            JOIN ProductCategories AS PRDCAT ON PRD.categoryId=PRDCAT.id
+                            WHERE PI.ingredientId=@IngredientId";
+
+            var results = new List<ProductIngredientModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<ProductIngredientModel, ProductModel, ProductCategoryModel, ProductIngredientModel>(query,
+                    (PI, PRD, PRDCAT) =>
+                    {
+                        PRD.Category = PRDCAT;
+                        PI.Product = PRD;
+                        return PI;
+                    }, new { IngredientId = ingredientId }).ToList();
+            }
+
+            return results;
+        }
+
     }
 }

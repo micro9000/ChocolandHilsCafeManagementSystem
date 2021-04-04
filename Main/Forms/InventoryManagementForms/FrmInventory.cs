@@ -114,6 +114,8 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.IncreaseInventoryQtyValueSave += HandleSaveInventoryIncreaseQtyValue;
             inventoryControlObj.DecreaseInventoryQtyValueSave += HandleSaveInventoryDecreaseQtyValue;
 
+            inventoryControlObj.IngredientCalculateProductsCanMake += HandleIngredientCalculateProductsCanMake;
+
             DateTime startDate = DateTime.Now;
             DateTime endDate = startDate.AddDays(5);
             inventoryControlObj.InventoriesNearOnExpirationDate = _ingredientInventoryData.GetAllByExpirationDateRange(startDate, endDate);
@@ -121,6 +123,14 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.FilterInventoryByExpirationDate += HandleFilterInventoryByExpirationDate;
 
             this.PanelMainContainer.Controls.Add(inventoryControlObj);
+        }
+
+        private void HandleIngredientCalculateProductsCanMake(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            int ingredientId = inventoryControlObj.SelectedIngredientId;
+
+            inventoryControlObj.ProductIngredientsToCalculate = _productIngredientData.GetAllByIngredient(ingredientId);
         }
 
         private void HandleIngredientCategorySaved(object sender, EventArgs e)

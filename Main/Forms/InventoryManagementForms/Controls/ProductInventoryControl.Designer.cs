@@ -53,6 +53,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TabItemEnterIngredientAmount = new System.Windows.Forms.TabPage();
             this.DGVSelectedIngredients = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.LblTotalCostFromAddingNewProduct = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.NumUpDownPricePerOrder = new System.Windows.Forms.NumericUpDown();
             this.LblNumberOfSelectedIngredients = new System.Windows.Forms.Label();
@@ -77,8 +79,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVProductExistingIngredients = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.DGVProductList = new System.Windows.Forms.DataGridView();
-            this.LblTotalCostFromAddingNewProduct = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabProdCategory.SuspendLayout();
@@ -239,7 +239,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // MainTabAddProduct
             // 
-            this.MainTabAddProduct.Controls.Add(this.BtnCompute);
             this.MainTabAddProduct.Controls.Add(this.PanelNewOrUpdateInventoryIndicator);
             this.MainTabAddProduct.Controls.Add(this.SelectIngredientsTabControl);
             this.MainTabAddProduct.Controls.Add(this.groupBox1);
@@ -260,9 +259,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnCompute.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCompute.ForeColor = System.Drawing.Color.White;
             this.BtnCompute.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCompute.Location = new System.Drawing.Point(171, 401);
+            this.BtnCompute.Location = new System.Drawing.Point(527, 14);
             this.BtnCompute.Name = "BtnCompute";
-            this.BtnCompute.Size = new System.Drawing.Size(115, 47);
+            this.BtnCompute.Size = new System.Drawing.Size(91, 34);
             this.BtnCompute.TabIndex = 57;
             this.BtnCompute.Text = "Compute";
             this.BtnCompute.UseVisualStyleBackColor = false;
@@ -367,6 +366,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // TabItemEnterIngredientAmount
             // 
+            this.TabItemEnterIngredientAmount.Controls.Add(this.BtnCompute);
             this.TabItemEnterIngredientAmount.Controls.Add(this.DGVSelectedIngredients);
             this.TabItemEnterIngredientAmount.Location = new System.Drawing.Point(4, 29);
             this.TabItemEnterIngredientAmount.Name = "TabItemEnterIngredientAmount";
@@ -381,20 +381,20 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVSelectedIngredients.AllowUserToAddRows = false;
             this.DGVSelectedIngredients.AllowUserToDeleteRows = false;
             this.DGVSelectedIngredients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVSelectedIngredients.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DGVSelectedIngredients.Location = new System.Drawing.Point(3, 3);
+            this.DGVSelectedIngredients.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.DGVSelectedIngredients.Location = new System.Drawing.Point(3, 54);
             this.DGVSelectedIngredients.MultiSelect = false;
             this.DGVSelectedIngredients.Name = "DGVSelectedIngredients";
             this.DGVSelectedIngredients.RowTemplate.Height = 25;
-            this.DGVSelectedIngredients.Size = new System.Drawing.Size(615, 500);
+            this.DGVSelectedIngredients.Size = new System.Drawing.Size(615, 449);
             this.DGVSelectedIngredients.TabIndex = 0;
             this.DGVSelectedIngredients.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVSelectedIngredients_CellClick);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.LblTotalCostFromAddingNewProduct);
-            this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.NumUpDownPricePerOrder);
             this.groupBox1.Controls.Add(this.LblNumberOfSelectedIngredients);
             this.groupBox1.Controls.Add(this.label6);
@@ -405,10 +405,32 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.groupBox1.ForeColor = System.Drawing.Color.Black;
             this.groupBox1.Location = new System.Drawing.Point(27, 51);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(380, 333);
+            this.groupBox1.Size = new System.Drawing.Size(380, 344);
             this.groupBox1.TabIndex = 54;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Product Info";
+            // 
+            // LblTotalCostFromAddingNewProduct
+            // 
+            this.LblTotalCostFromAddingNewProduct.AutoSize = true;
+            this.LblTotalCostFromAddingNewProduct.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblTotalCostFromAddingNewProduct.ForeColor = System.Drawing.Color.Black;
+            this.LblTotalCostFromAddingNewProduct.Location = new System.Drawing.Point(186, 289);
+            this.LblTotalCostFromAddingNewProduct.Name = "LblTotalCostFromAddingNewProduct";
+            this.LblTotalCostFromAddingNewProduct.Size = new System.Drawing.Size(19, 21);
+            this.LblTotalCostFromAddingNewProduct.TabIndex = 52;
+            this.LblTotalCostFromAddingNewProduct.Text = "0";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label11.ForeColor = System.Drawing.Color.Black;
+            this.label11.Location = new System.Drawing.Point(100, 289);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(80, 21);
+            this.label11.TabIndex = 51;
+            this.label11.Text = "Total Cost:";
             // 
             // label5
             // 
@@ -503,7 +525,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnCancelSaveProductDetails.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelSaveProductDetails.ForeColor = System.Drawing.Color.White;
             this.BtnCancelSaveProductDetails.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelSaveProductDetails.Location = new System.Drawing.Point(50, 401);
+            this.BtnCancelSaveProductDetails.Location = new System.Drawing.Point(171, 436);
             this.BtnCancelSaveProductDetails.Name = "BtnCancelSaveProductDetails";
             this.BtnCancelSaveProductDetails.Size = new System.Drawing.Size(115, 47);
             this.BtnCancelSaveProductDetails.TabIndex = 46;
@@ -519,7 +541,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnSaveProductDetails.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveProductDetails.ForeColor = System.Drawing.Color.White;
             this.BtnSaveProductDetails.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveProductDetails.Location = new System.Drawing.Point(292, 401);
+            this.BtnSaveProductDetails.Location = new System.Drawing.Point(292, 436);
             this.BtnSaveProductDetails.Name = "BtnSaveProductDetails";
             this.BtnSaveProductDetails.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveProductDetails.TabIndex = 2;
@@ -695,28 +717,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVProductList.Size = new System.Drawing.Size(616, 519);
             this.DGVProductList.TabIndex = 1;
             this.DGVProductList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVProductList_CellClick);
-            // 
-            // LblTotalCostFromAddingNewProduct
-            // 
-            this.LblTotalCostFromAddingNewProduct.AutoSize = true;
-            this.LblTotalCostFromAddingNewProduct.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblTotalCostFromAddingNewProduct.ForeColor = System.Drawing.Color.Black;
-            this.LblTotalCostFromAddingNewProduct.Location = new System.Drawing.Point(185, 296);
-            this.LblTotalCostFromAddingNewProduct.Name = "LblTotalCostFromAddingNewProduct";
-            this.LblTotalCostFromAddingNewProduct.Size = new System.Drawing.Size(19, 21);
-            this.LblTotalCostFromAddingNewProduct.TabIndex = 52;
-            this.LblTotalCostFromAddingNewProduct.Text = "0";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(27, 296);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(80, 21);
-            this.label11.TabIndex = 51;
-            this.label11.Text = "Total Cost:";
             // 
             // ProductInventoryControl
             // 

@@ -11,5 +11,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
     public interface IProductIngredientData : IDataManagerCRUD<ProductIngredientModel>
     {
         List<ProductIngredientModel> GetAllByProduct(int productId);
+        List<ProductIngredientModel> GetAllByIngredient(int ingredientId);
     }
 }

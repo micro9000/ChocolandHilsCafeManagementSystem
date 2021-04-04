@@ -71,6 +71,7 @@ namespace Main.Controllers.InventoryControllers
             return actualCost;
         }
 
+
         public decimal GetProductIngredientCost(int ingredientId, decimal prodIngredientQtyValue, StaticData.UOM prodIngredientUOM)
         {
             ProductIngredientInventoryDeductionFromList = new List<ProductIngredientInventoryDeduction>();

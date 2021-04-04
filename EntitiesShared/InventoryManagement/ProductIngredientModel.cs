@@ -12,6 +12,17 @@ namespace EntitiesShared.InventoryManagement
     {
         public long ProductId { get; set; }
 
+
+        private ProductModel _product;
+        [Write(false)]
+        [Computed]
+        public ProductModel Product
+        {
+            get { return _product; }
+            set { _product = value; }
+        }
+
+
         public int IngredientId { get; set; }
 
 
@@ -23,7 +34,6 @@ namespace EntitiesShared.InventoryManagement
             get { return _ingredient; }
             set { _ingredient = value; }
         }
-
 
 
         public StaticData.UOM UOM { get; set; }

@@ -29,6 +29,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             SetDGVIngredientInventoriesFontAndColors();
             SetDGVInventoryTransactionHistoryFontAndColors();
             SetDGVInventoryNearOnExpirationDateFontAndColors();
+            SetDGVProductsToCalculateIngredientsFontAndColors();
 
             DisplayIngredientCategoriesInDGV();
             DisplayUnitOfMeasurementsInCBox();
@@ -365,6 +366,12 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 btnViewInventoryImg.Image = Image.FromFile("./Resources/view-details-24.png");
                 this.DGVIngredientList.Columns.Add(btnViewInventoryImg);
 
+                // View inventory button
+                DataGridViewImageColumn btnCalculatorImg = new DataGridViewImageColumn();
+                //btnDeleteLeaveTypeImg.Name = "";
+                btnCalculatorImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnCalculatorImg.Image = Image.FromFile("./Resources/calculator-24.png");
+                this.DGVIngredientList.Columns.Add(btnCalculatorImg);
 
                 // Update button
                 DataGridViewImageColumn btnUpdateImg = new DataGridViewImageColumn();
@@ -464,6 +471,12 @@ namespace Main.Forms.InventoryManagementForms.Controls
             IngredientGetInventories?.Invoke(this, e);
         }
 
+        public event EventHandler IngredientCalculateProductsCanMake;
+        protected virtual void OnIngredientCalculateProductsCanMake(EventArgs e)
+        {
+            IngredientCalculateProductsCanMake?.Invoke(this, e);
+        }
+
         public event EventHandler IngredientDelete;
         protected virtual void OnIngredientDelete(EventArgs e)
         {
@@ -497,9 +510,24 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 }
             }
 
+            // Calcualator button
+            if ((e.ColumnIndex == 6) && e.RowIndex > -1)
+            {
+                if (DGVIngredientList.CurrentRow != null)
+                {
+                    int ingredientId = int.Parse(DGVIngredientList.CurrentRow.Cells[0].Value.ToString());
+
+                    SelectedIngredient = this.Ingredients.Where(x => x.Id == ingredientId).FirstOrDefault();
+                    SelectedIngredientId = ingredientId;
+
+                    OnIngredientCalculateProductsCanMake(EventArgs.Empty);
+
+                    MoveToCalcualtorTabAndDisplayProductsUsingThatIngredient();
+                }
+            }
 
             // Update button
-            if ((e.ColumnIndex == 6) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 7) && e.RowIndex > -1)
             {
                 if (DGVIngredientList.CurrentRow != null)
                 {
@@ -509,7 +537,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
 
             // Delete button
-            if ((e.ColumnIndex == 7) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 8) && e.RowIndex > -1)
             {
                 if (DGVIngredientList.CurrentRow != null)
                 {
@@ -636,6 +664,20 @@ namespace Main.Forms.InventoryManagementForms.Controls
             DisplayIngredientInventories();
 
             this.MainTabControl.SelectedIndex = this.MainTabControl.TabPages.IndexOf(MainTabIngInventories);
+        }
+
+
+        public void MoveToCalcualtorTabAndDisplayProductsUsingThatIngredient()
+        {
+            if (this.SelectedIngredient == null)
+                return;
+
+            this.LblIngredientNameInCalculator.Text = this.SelectedIngredient.IngName;
+            this.LblUnitOfMeasurementInCalculator.Text = this.SelectedIngredient.UOM.ToString();
+
+            DisplayProductIngredientsToCalculateInDGV();
+
+            this.MainTabControl.SelectedIndex = this.MainTabControl.TabPages.IndexOf(MainTabIngredientCalculator);
         }
 
 
@@ -807,6 +849,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             return newQtyValue;
         }
+
+
+
 
         public void ResetNewUpdateIngredeintInventoryForm()
         {
@@ -1218,6 +1263,107 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.FilterInventoryByExpirationEndDate = this.DPicFilterByExpirationEndDate.Value;
 
             OnFilterInventoryByExpirationDate(EventArgs.Empty);
+        }
+
+
+        private List<ProductIngredientModel> _productIngredientsToCalculate;
+
+        public List<ProductIngredientModel> ProductIngredientsToCalculate
+        {
+            get { return _productIngredientsToCalculate; }
+            set { _productIngredientsToCalculate = value; }
+        }
+
+        private void SetDGVProductsToCalculateIngredientsFontAndColors()
+        {
+            this.DGVProductsToCalculateIngredients.BackgroundColor = Color.White;
+            this.DGVProductsToCalculateIngredients.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVProductsToCalculateIngredients.RowHeadersVisible = false;
+            this.DGVProductsToCalculateIngredients.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVProductsToCalculateIngredients.AllowUserToResizeRows = false;
+            this.DGVProductsToCalculateIngredients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVProductsToCalculateIngredients.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVProductsToCalculateIngredients.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVProductsToCalculateIngredients.MultiSelect = false;
+
+            this.DGVProductsToCalculateIngredients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVProductsToCalculateIngredients.ColumnHeadersHeight = 30;
+        }
+
+
+        public decimal GetEstimatedNumberOfOrders(StaticData.UOM ingredientUOM, decimal ingredientQtyValue, StaticData.UOM prodIngredientUOMToUse, decimal prodIngredientRequiredQtyValue)
+        {
+            decimal numberOfOrders = 0;
+
+            if ((ingredientUOM == StaticData.UOM.kg && prodIngredientUOMToUse == StaticData.UOM.g) ||
+                    (ingredientUOM == StaticData.UOM.L && prodIngredientUOMToUse == StaticData.UOM.ml))
+            {
+                decimal smallUOMQtyValue = this.GetUOMToSmallUOM(ingredientUOM, ingredientQtyValue);
+                numberOfOrders = smallUOMQtyValue / prodIngredientRequiredQtyValue;
+            }
+            else
+            {
+                numberOfOrders = ingredientQtyValue / prodIngredientRequiredQtyValue;
+            }
+
+            return numberOfOrders;
+        }
+
+        public void DisplayProductIngredientsToCalculateInDGV()
+        {
+            this.DGVProductsToCalculateIngredients.Rows.Clear();
+            if (ProductIngredientsToCalculate != null)
+            {
+                this.DGVProductsToCalculateIngredients.ColumnCount = 5;
+
+                this.DGVProductsToCalculateIngredients.Columns[0].Name = "ProductIngredientId";
+                this.DGVProductsToCalculateIngredients.Columns[0].Visible = false;
+
+                this.DGVProductsToCalculateIngredients.Columns[1].Name = "CategoryName";
+                this.DGVProductsToCalculateIngredients.Columns[1].HeaderText = "Prod. Category";
+
+                this.DGVProductsToCalculateIngredients.Columns[2].Name = "ProductName";
+                this.DGVProductsToCalculateIngredients.Columns[2].HeaderText = "Product";
+
+                this.DGVProductsToCalculateIngredients.Columns[3].Name = "ProductReqQtyValue";
+                this.DGVProductsToCalculateIngredients.Columns[3].HeaderText = "Prod Req Qty Value";
+
+                this.DGVProductsToCalculateIngredients.Columns[4].Name = "NumberOfOrderCanMake";
+                this.DGVProductsToCalculateIngredients.Columns[4].HeaderText = "# of orders can make";
+
+                decimal ingredientQtyValue = NumUpDownQtyValueForCalculator.Value;
+                //decimal unitCost = NumUpDownUnitCostForCalculator.Value;
+
+                StaticData.UOM selectedIngredientUOM = SelectedIngredient.UOM;
+
+                //GetUOMToSmallUOM(selectedIngredientUOM, ingredientQtyValue);
+                decimal newQtyValue = 0;
+
+                foreach (var item in ProductIngredientsToCalculate)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVProductsToCalculateIngredients);
+
+                    row.Cells[0].Value = item.Id;
+                    row.Cells[1].Value = item.Product.Category.ProdCategory;
+                    row.Cells[2].Value = item.Product.ProdName;
+                    row.Cells[3].Value = $"{item.QtyValue} {item.UOM}";
+
+                    newQtyValue = GetEstimatedNumberOfOrders(selectedIngredientUOM, ingredientQtyValue, item.UOM, item.QtyValue);
+
+                    row.Cells[4].Value = $"{newQtyValue.ToString("0.##")} orders";
+
+                    this.DGVProductsToCalculateIngredients.Rows.Add(row);
+                }
+            }
+        }
+
+        private void BtnCalculateIngredientProductCanMake_Click(object sender, EventArgs e)
+        {
+            DisplayProductIngredientsToCalculateInDGV();
         }
     }
 }
