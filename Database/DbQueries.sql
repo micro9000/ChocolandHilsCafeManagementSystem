@@ -118,9 +118,6 @@ CREATE TABLE IF NOT EXISTS Employees(
     FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id)
 )ENGINE=INNODB;
 ALTER TABLE Employees 
-ADD CONSTRAINT employees_ibfk_1 
-FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id);
-ALTER TABLE Employees 
 ADD COLUMN isQuit BOOLEAN DEFAULT False;
 ALTER TABLE Employees 
 ADD COLUMN quitDate DATE;
@@ -379,8 +376,6 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 ALTER TABLE EmployeePayslips
-ADD COLUMN numOfDays INT;
-ALTER TABLE EmployeePayslips
 ADD COLUMN isCancel BOOLEAN DEFAULT False;
 ALTER TABLE EmployeePayslips
 ADD COLUMN employerGovtContributionTotal DECIMAL(9,2) DEFAULT 0;
@@ -549,7 +544,7 @@ CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
     qtyVal DECIMAL,
     unitCost DECIMAL(9,2),
     expirationDate DATE,
-    userId BIGINT NOT NULL,
+    userId INT NOT NULL,
     remarks VARCHAR(255),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -578,14 +573,14 @@ CREATE TABLE IF NOT EXISTS Products(
     categoryId BIGINT NOT NULL,
 	prodName VARCHAR(255),
     pricePerOrder DECIMAL(9,2),
-    -- estimatedNumOrders INT,
-    -- totalCost DECIMAL(9,2), -- can add computed property
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(categoryId) REFERENCES ProductCategories(id)
 )ENGINE=INNODB;
+ALTER TABLE Products
+DROP COLUMN estimatedNumOrders; -- If you have this column in your table, just run this query to remove
 
 SELECT * FROM Products;
 
@@ -642,8 +637,3 @@ CREATE TABLE IF NOT EXISTS ComboMealProducts(
 
 select * from ComboMealProducts;
 
-SELECT * 
-FROM ComboMealProducts AS CMP
-JOIN Products AS PRD ON CMP.productId=PRD.id
-JOIN ProductCategories AS PRDCAT ON PRD.categoryId=PRDCAT.Id
-WHERE CMP.isDeleted=false AND PRD.isDeleted=false AND CMP.comboMealId=1;

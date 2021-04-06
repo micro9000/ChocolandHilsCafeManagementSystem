@@ -17,7 +17,10 @@ namespace Main.Controllers.EmployeeManagementControllers.Validator
             RuleFor(e => e.FirstName).NotEmpty();
             RuleFor(e => e.LastName).NotEmpty();
             RuleFor(e => e.Address).NotEmpty();
-            RuleFor(e => e.MobileNumber).NotEmpty();
+            RuleFor(e => e.MobileNumber).NotEmpty()
+                   .MinimumLength(11)
+                   .MaximumLength(13)
+                   .WithMessage("Mobile number must be 11 or 13 numbers");
             RuleFor(e => e.EmailAddress).NotEmpty().EmailAddress();
             RuleFor(e => e.BirthDate).NotEmpty();
             RuleFor(e => e.BranchAssign).NotEmpty();
