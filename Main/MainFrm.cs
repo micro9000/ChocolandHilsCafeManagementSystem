@@ -1,9 +1,12 @@
-﻿using Main.Forms.AttendanceTerminal;
+﻿using DataAccess.Data.InventoryManagement.Contracts;
+using Main.Forms.AttendanceTerminal;
 using Main.Forms.EmployeeManagementForms;
 using Main.Forms.InventoryManagementForms;
 using Main.Forms.OtherDataForms;
 using Main.Forms.PayrollForms;
 using Main.Forms.UserManagementForms;
+using Microsoft.Extensions.Options;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,31 +22,40 @@ namespace Main
     public partial class MainFrm : Form
     {
         private readonly Sessions _sessions;
+        private readonly OtherSettings _otherSettings;
         private readonly FrmMainEmployeeManagement _frmMainEmployeeManagement;
         private readonly FrmOtherData _frmOtherData;
         private readonly FrmPayroll _payrollForm;
         private readonly FrmUserManagement _frmUserManagement;
         private readonly AttendanceTerminalForm _attendanceTerminalForm;
         private readonly FrmInventory _frmInventory;
+        private readonly HomeFrm _frmHome;
+        private readonly IIngredientInventoryData _ingredientInventoryData;
         private Button currentButton;
         private Form activeForm;
 
         public MainFrm(Sessions sessions,
+                        IOptions<OtherSettings> otherSettingsOptions,
                         FrmMainEmployeeManagement frmMainEmployeeManagement,
                         FrmOtherData frmOtherData,
                         FrmPayroll payrollForm,
                         FrmUserManagement frmUserManagement,
                         AttendanceTerminalForm attendanceTerminalForm,
-                        FrmInventory frmInventory)
+                        FrmInventory frmInventory,
+                        HomeFrm frmHome,
+                        IIngredientInventoryData ingredientInventoryData)
         {
             InitializeComponent();
             _sessions = sessions;
+            _otherSettings = otherSettingsOptions.Value;
             _frmMainEmployeeManagement = frmMainEmployeeManagement;
             _frmOtherData = frmOtherData;
             _payrollForm = payrollForm;
             _frmUserManagement = frmUserManagement;
             _attendanceTerminalForm = attendanceTerminalForm;
             _frmInventory = frmInventory;
+            _frmHome = frmHome;
+            _ingredientInventoryData = ingredientInventoryData;
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -54,14 +66,7 @@ namespace Main
 
 
         public void DisplayHomeControl() {
-            var homeControlObj = new HomeControl();
-            //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
-            homeControlObj.Location = new Point(this.ClientSize.Width / 2 - homeControlObj.Size.Width / 2, this.ClientSize.Height / 2 - homeControlObj.Size.Height / 2);
-            homeControlObj.Anchor = AnchorStyles.None;
-
-            homeControlObj.Greeting = $"Welcome back {_sessions.CurrentLoggedInUser.FullName}!";
-
-            this.panelMainBody.Controls.Add(homeControlObj);
+            
         }
 
 
@@ -71,9 +76,6 @@ namespace Main
             {
                 this.LblCurrentUserName.Text = _sessions.CurrentLoggedInUser.FullName;
                 this.LblCurrentUserRoles.Text = _sessions.CurrentLoggedInUser.Role.Role.RoleKey.ToString();
-
-                //DisplayHomeControl();
-
 
                 if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.normal)
                 {
@@ -85,6 +87,17 @@ namespace Main
                     this.BtnUserMgnment.Visible = false;
                     this.BtnOtherData.Visible = false;
                 }
+            }
+
+
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddDays(_otherSettings.NumDaysNotifyUserForInventoryExpDate);
+            int notificationCountForInventory = _ingredientInventoryData.GetCountOfIngredientInventoryByExpirationDate(startDate, endDate);
+            if (notificationCountForInventory > 0)
+            {
+                this.BtnInventorySystem.Text = $"Inventory ({notificationCountForInventory})";
+                this.BtnInventorySystem.ForeColor = Color.Red;
+                ToolTipForNavButtons.SetToolTip(this.BtnInventorySystem, $"{notificationCountForInventory} ingredient(s) inventory near on expiration date");
             }
         }
 
@@ -181,6 +194,11 @@ namespace Main
         private void BtnInventorySystem_Click(object sender, EventArgs e)
         {
             OpenChildForm(_frmInventory, sender);
+        }
+
+        private void BtnGoToHomeFrm_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(_frmHome, sender);
         }
     }
 }

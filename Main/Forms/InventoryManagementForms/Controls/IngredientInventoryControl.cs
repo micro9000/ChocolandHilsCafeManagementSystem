@@ -1185,6 +1185,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVInventoryNearOnExpirationDate.Rows.Clear();
             if (InventoriesNearOnExpirationDate != null)
             {
+                MainTabExpirationAlert.Text = $"Expiration Alert ({InventoriesNearOnExpirationDate.Count})";
+
                 this.DGVInventoryNearOnExpirationDate.ColumnCount = 6;
 
                 this.DGVInventoryNearOnExpirationDate.Columns[0].Name = "IngredientIdForNearExp";

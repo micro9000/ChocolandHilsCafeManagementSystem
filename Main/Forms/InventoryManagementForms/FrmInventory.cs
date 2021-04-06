@@ -11,6 +11,8 @@ using DataAccess.Data.InventoryManagement.Contracts;
 using Main.Controllers.InventoryControllers;
 using Main.Controllers.InventoryControllers.ControllerInterface;
 using Main.Forms.InventoryManagementForms.Controls;
+using Microsoft.Extensions.Options;
+using Shared;
 using Shared.Helpers;
 
 namespace Main.Forms.InventoryManagementForms
@@ -18,6 +20,7 @@ namespace Main.Forms.InventoryManagementForms
     public partial class FrmInventory : Form
     {
         private readonly UOMConverter _uOMConverter;
+        private readonly OtherSettings _otherSettings;
         private readonly IIngredientData _ingredientData;
         private readonly IIngredientCategoryData _ingredientCategoryData;
         private readonly IIngredientInventoryData _ingredientInventoryData;
@@ -36,6 +39,7 @@ namespace Main.Forms.InventoryManagementForms
         private readonly IComboMealData _comboMealData;
 
         public FrmInventory(UOMConverter uOMConverter,
+                            IOptions<OtherSettings> otherSettingsOptions,
                             IIngredientData ingredientData,
                             IIngredientCategoryData ingredientCategoryData,
                             IIngredientInventoryData ingredientInventoryData,
@@ -56,6 +60,7 @@ namespace Main.Forms.InventoryManagementForms
         {
             InitializeComponent();
             _uOMConverter = uOMConverter;
+            _otherSettings = otherSettingsOptions.Value;
             _ingredientData = ingredientData;
             _ingredientCategoryData = ingredientCategoryData;
             _ingredientInventoryData = ingredientInventoryData;
@@ -123,7 +128,7 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.IngredientCalculateProductsCanMake += HandleIngredientCalculateProductsCanMake;
 
             DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddDays(5);
+            DateTime endDate = startDate.AddDays(_otherSettings.NumDaysNotifyUserForInventoryExpDate);
             inventoryControlObj.InventoriesNearOnExpirationDate = _ingredientInventoryData.GetAllByExpirationDateRange(startDate, endDate);
 
             inventoryControlObj.FilterInventoryByExpirationDate += HandleFilterInventoryByExpirationDate;

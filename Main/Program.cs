@@ -113,6 +113,7 @@ namespace Main
             // settings
             services.Configure<DBConnectionSettings>(confBuilder.GetSection(nameof(DBConnectionSettings)));
             services.Configure<PayrollSettings>(confBuilder.GetSection(nameof(PayrollSettings)));
+            services.Configure<OtherSettings>(confBuilder.GetSection(nameof(OtherSettings)));
             services.AddTransient<IDbConnectionFactory, MySQLConnection>(); // database settings, including connection string
 
             services.AddSingleton<Sessions>(); // application state or session
@@ -194,6 +195,7 @@ namespace Main
             services.AddTransient<IComboMealController, ComboMealController>();
 
             // forms
+            services.AddTransient<HomeFrm>();
             services.AddTransient<MainFrm>();
             services.AddTransient<FrmUserManagement>();
             services.AddTransient<LoginFrm>();

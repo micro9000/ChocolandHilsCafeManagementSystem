@@ -14,5 +14,6 @@ namespace DataAccess.Data.InventoryManagement.Contracts
         List<IngredientInventoryModel> GetAllByIngredient(long ingredientId);
         IngredientInventoryModel GetByIdAndIngredient(long ingredientId, long id);
         List<IngredientInventoryModel> GetAllByExpirationDateRange(DateTime startDate, DateTime endDate);
+        int GetCountOfIngredientInventoryByExpirationDate(DateTime startDate, DateTime endDate);
     }
 }

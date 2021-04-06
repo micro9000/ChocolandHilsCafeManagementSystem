@@ -69,5 +69,15 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return results;
         }
 
+
+        public int GetCountOfIngredientInventoryByExpirationDate(DateTime startDate, DateTime endDate)
+        {
+            string query = @"SELECT COUNT(*) as count
+                            FROM IngredientInventory
+                            WHERE expirationDate BETWEEN @StartDate AND @EndDate OR expirationDate <= @StartDate;";
+
+            return this.GetValue<int>(query, new { StartDate = startDate, EndDate = endDate });
+        }
+
     }
 }

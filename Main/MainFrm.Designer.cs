@@ -29,6 +29,7 @@ namespace Main
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrm));
             this.panelSidebar = new System.Windows.Forms.Panel();
             this.BtnAttendanceTerminal = new System.Windows.Forms.Button();
@@ -48,10 +49,11 @@ namespace Main
             this.panelMainBanner = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panelSecondaryBanner = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.BtnGoToHomeFrm = new System.Windows.Forms.Button();
             this.LblRenderedFormTitle = new System.Windows.Forms.Label();
             this.panelMainBody = new System.Windows.Forms.Panel();
             this.EmployeeManagementToolStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolTipForNavButtons = new System.Windows.Forms.ToolTip(this.components);
             this.panelSidebar.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelMainBanner.SuspendLayout();
@@ -354,7 +356,7 @@ namespace Main
             // panelSecondaryBanner
             // 
             this.panelSecondaryBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.panelSecondaryBanner.Controls.Add(this.button1);
+            this.panelSecondaryBanner.Controls.Add(this.BtnGoToHomeFrm);
             this.panelSecondaryBanner.Controls.Add(this.LblRenderedFormTitle);
             this.panelSecondaryBanner.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelSecondaryBanner.Location = new System.Drawing.Point(229, 0);
@@ -362,27 +364,28 @@ namespace Main
             this.panelSecondaryBanner.Size = new System.Drawing.Size(875, 67);
             this.panelSecondaryBanner.TabIndex = 1;
             // 
-            // button1
+            // BtnGoToHomeFrm
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(0, 0);
-            this.button1.Name = "button1";
-            this.button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.button1.Size = new System.Drawing.Size(95, 67);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Home";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.UseVisualStyleBackColor = false;
+            this.BtnGoToHomeFrm.BackColor = System.Drawing.Color.Transparent;
+            this.BtnGoToHomeFrm.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnGoToHomeFrm.Dock = System.Windows.Forms.DockStyle.Left;
+            this.BtnGoToHomeFrm.FlatAppearance.BorderSize = 0;
+            this.BtnGoToHomeFrm.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.BtnGoToHomeFrm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.BtnGoToHomeFrm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnGoToHomeFrm.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnGoToHomeFrm.ForeColor = System.Drawing.Color.White;
+            this.BtnGoToHomeFrm.Image = ((System.Drawing.Image)(resources.GetObject("BtnGoToHomeFrm.Image")));
+            this.BtnGoToHomeFrm.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnGoToHomeFrm.Location = new System.Drawing.Point(0, 0);
+            this.BtnGoToHomeFrm.Name = "BtnGoToHomeFrm";
+            this.BtnGoToHomeFrm.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.BtnGoToHomeFrm.Size = new System.Drawing.Size(95, 67);
+            this.BtnGoToHomeFrm.TabIndex = 7;
+            this.BtnGoToHomeFrm.Text = "Home";
+            this.BtnGoToHomeFrm.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BtnGoToHomeFrm.UseVisualStyleBackColor = false;
+            this.BtnGoToHomeFrm.Click += new System.EventHandler(this.BtnGoToHomeFrm_Click);
             // 
             // LblRenderedFormTitle
             // 
@@ -455,9 +458,10 @@ namespace Main
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button BtnUserLogout;
         private System.Windows.Forms.Label LblRenderedFormTitle;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnGoToHomeFrm;
         private System.Windows.Forms.Button BtnUserMgnment;
         private System.Windows.Forms.Button BtnOtherData;
         private System.Windows.Forms.Button BtnAttendanceTerminal;
+        private System.Windows.Forms.ToolTip ToolTipForNavButtons;
     }
 }
