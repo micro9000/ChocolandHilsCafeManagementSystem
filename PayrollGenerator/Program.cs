@@ -115,7 +115,6 @@ namespace PayrollGenerator
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
 
             var ConfBuilder = GetConfigurationBuilder();
             var host = ConfigureServices();
@@ -147,7 +146,7 @@ namespace PayrollGenerator
 
             var payslipGenerator = ActivatorUtilities.CreateInstance<PayslipGenerator>(host.Services);
 
-            RecurringJob.AddOrUpdate(() => payslipGenerator.GeneratePayslip(), Cron.Minutely);
+            RecurringJob.AddOrUpdate(() => payslipGenerator.GeneratePayslip(), Cron.Daily);
 
             HostFactory.Run(configure =>
             {
