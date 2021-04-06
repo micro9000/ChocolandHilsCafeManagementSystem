@@ -15,7 +15,7 @@ namespace Main.Controllers.UserManagementControllers.Validator
             this.CascadeMode = CascadeMode.Stop;
             RuleFor(x => x.UserName).NotEmpty();
             RuleFor(x => x.FullName).NotEmpty();
-            RuleFor(x => x.Password).NotEmpty();
+            RuleFor(x => x.Password).NotEmpty().MinimumLength(5);
         }
     }
 }

@@ -436,6 +436,7 @@ CREATE TABLE IF NOT EXISTS Roles(
 
 SELECT * FROM Roles;
 
+-- you can store employee number as userName
 CREATE TABLE IF NOT EXISTS Users(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userName CHAR(20) UNIQUE,

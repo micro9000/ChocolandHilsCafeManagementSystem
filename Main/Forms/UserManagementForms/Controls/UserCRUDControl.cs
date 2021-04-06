@@ -122,6 +122,13 @@ namespace Main.Forms.UserManagementForms.Controls
             GetUserInformationOnSelect?.Invoke(this, e);
         }
 
+        // Event handler for delete employee
+        public event EventHandler DeleteEmployeeOnSelect;
+        protected virtual void OnDeleteEmployeeOnSelect(EventArgs e)
+        {
+            DeleteEmployeeOnSelect?.Invoke(this, e);
+        }
+
         private long selectedUserId;
 
         public long SelectedUserId
@@ -270,7 +277,15 @@ namespace Main.Forms.UserManagementForms.Controls
                 btnUpdateImg.Image = Image.FromFile("./Resources/edit-24.png");
                 this.DGVUsers.Columns.Add(btnUpdateImg);
 
-                foreach(var user in this.Users)
+
+                // Delete button
+                DataGridViewImageColumn btnDeleteLeaveTypeImg = new DataGridViewImageColumn();
+                //btnDeleteLeaveTypeImg.Name = "";
+                btnDeleteLeaveTypeImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnDeleteLeaveTypeImg.Image = Image.FromFile("./Resources/remove-24.png");
+                this.DGVUsers.Columns.Add(btnDeleteLeaveTypeImg);
+
+                foreach (var user in this.Users)
                 {
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(this.DGVUsers);
@@ -305,6 +320,21 @@ namespace Main.Forms.UserManagementForms.Controls
                     {
                         this.SelectedUserId = userIdLong;
                         this.OnGetUserInformationOnSelect(EventArgs.Empty);
+                    }
+                }
+            }
+
+            // delete button
+            if (e.RowIndex > -1 && (e.ColumnIndex == 6))
+            {
+                if (this.DGVUsers.CurrentRow != null)
+                {
+                    string userId = this.DGVUsers.CurrentRow.Cells[0].Value.ToString();
+
+                    if (long.TryParse(userId, out long userIdLong))
+                    {
+                        this.SelectedUserId = userIdLong;
+                        this.OnDeleteEmployeeOnSelect(EventArgs.Empty);
                     }
                 }
             }

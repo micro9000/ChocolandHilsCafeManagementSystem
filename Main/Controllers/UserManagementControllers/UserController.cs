@@ -155,6 +155,34 @@ namespace Main.Controllers.UserManagementControllers
             return results;
         }
 
+        public EntityResult<UserModel> GetByUsername(string userName)
+        {
+            var results = new EntityResult<UserModel>();
+            try
+            {
+                var user = _userData.GetUserByUserName(userName);
+
+                if (user != null)
+                {
+                    user.Role = _userRoleData.GetUserRole(user.Id);
+                    results.IsSuccess = true;
+                    results.Messages.Add("Successfully retrieve user data.");
+                    results.Data = user;
+                    return results;
+                }
+
+                results.IsSuccess = false;
+                results.Messages.Add("User not found.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
+        }
+
         public EntityResult<UserModel> Save(UserAddUpdateModel input, bool isNew)
         {
             var results = new EntityResult<UserModel>();
@@ -187,6 +215,13 @@ namespace Main.Controllers.UserManagementControllers
 
                 var userDetails = _userData.GetUserByUserName(input.UserName);
 
+                if (userDetails != null && isNew == true)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Duplicate username, kindly use other username.");
+                    return results;
+                }
+
                 if (userDetails == null && isNew == true)
                 {
                     var newUser = new UserModel
@@ -218,49 +253,46 @@ namespace Main.Controllers.UserManagementControllers
                         transaction.Complete();
                     }
                 }
-                else 
+                else if (userDetails != null && isNew == false)
                 {
-                    if (userDetails != null)
+                    userDetails.FullName = input.FullName;
+                    userDetails.UserName = input.UserName;
+                    userDetails.PasswordSha512 = hashedPassword;
+                    userDetails.IsActive = input.IsActive;
+
+                    var userRole = _userRoleData.GetUserRole(userDetails.Id);
+
+                    using (var transaction = new TransactionScope())
                     {
-                        userDetails.FullName = input.FullName;
-                        userDetails.UserName = input.UserName;
-                        userDetails.PasswordSha512 = hashedPassword;
-                        userDetails.IsActive = input.IsActive;
-
-                        var userRole = _userRoleData.GetUserRole(userDetails.Id);
-
-                        using (var transaction = new TransactionScope())
+                        if (_userData.Update(userDetails))
                         {
-                            if (_userData.Update(userDetails))
+                            if (userRole != null)
                             {
-                                if (userRole != null)
-                                {
-                                    userRole.RoleId = roleDetails.Id;
-                                    _userRoleData.Update(userRole);
-                                }
-                                else
-                                {
-                                    _userRoleData.Add(new UserRoleModel { UserId = userDetails.Id, RoleId = roleDetails.Id });
-                                }
-
-                                results.IsSuccess = true;
-                                results.Messages.Add("Successfully update user.");
-                                results.Data = userDetails;
+                                userRole.RoleId = roleDetails.Id;
+                                _userRoleData.Update(userRole);
                             }
                             else
                             {
-                                results.IsSuccess = false;
-                                results.Messages.Add("No changes made.");
+                                _userRoleData.Add(new UserRoleModel { UserId = userDetails.Id, RoleId = roleDetails.Id });
                             }
 
-                            transaction.Complete();
+                            results.IsSuccess = true;
+                            results.Messages.Add("Successfully update user.");
+                            results.Data = userDetails;
                         }
+                        else
+                        {
+                            results.IsSuccess = false;
+                            results.Messages.Add("No changes made.");
+                        }
+
+                        transaction.Complete();
                     }
-                    else
-                    {
-                        results.IsSuccess = false;
-                        results.Messages.Add($"{input.UserName} not found!");
-                    }
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Invalid transaction, kindly cancel this request or reopen this application.");
                 }
             }
             catch (Exception ex)

@@ -19,6 +19,7 @@ namespace Main.Controllers.UserManagementControllers
         ListOfEntityResult<UserModel> Search(string searchStr);
 
         EntityResult<UserModel> GetById(long userId);
+        EntityResult<UserModel> GetByUsername(string userName);
         ListOfEntityResult<UserModel> GetAll();
     }
 }

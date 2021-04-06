@@ -49,6 +49,7 @@ namespace Main.Forms.UserManagementForms
             userCRUDControlObj.Users = _userController.GetAll().Data;
 
             userCRUDControlObj.SavedUserInfo += HandleSavedUser;
+            userCRUDControlObj.DeleteEmployeeOnSelect += HandleDeleteUser;
             userCRUDControlObj.SearchByEmployeeNumber += HandleSearchByEmployeeNumber;
             userCRUDControlObj.GetUserInformationOnSelect += HandleGetUserInformationOnSelect;
 
@@ -88,6 +89,38 @@ namespace Main.Forms.UserManagementForms
             }
         }
 
+
+        private void HandleDeleteUser(object sender, EventArgs e)
+        {
+            UserCRUDControl userCRUDControlObj = (UserCRUDControl)sender;
+
+            DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                long selectedUserId = userCRUDControlObj.SelectedUserId;
+
+                var deleteResult = _userController.Delete(selectedUserId);
+
+                string resultMessages = "";
+                foreach (var msg in deleteResult.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                MessageBox.Show(resultMessages, "Save user details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (deleteResult.IsSuccess)
+                {
+                    userCRUDControlObj.ResetForm();
+                    userCRUDControlObj.Users = _userController.GetAll().Data;
+                    userCRUDControlObj.DisplayUsers();
+                }
+            }
+
+            
+        }
+
         private void HandleSearchByEmployeeNumber(object sender, EventArgs e)
         {
             UserCRUDControl userCRUDControlObj = (UserCRUDControl)sender;
@@ -120,6 +153,9 @@ namespace Main.Forms.UserManagementForms
                 userCRUDControlObj.DisplaySelectedUserInfo();
             }
         }
+
+
+
 
         private void HandleSearchUser(object sender, EventArgs e)
         {
