@@ -114,5 +114,11 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
             return employees;
         }
+
+
+        public bool MoveEmployeesIntoOtherBranch(long previousBranchId, long newBranchId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

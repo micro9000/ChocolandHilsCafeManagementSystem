@@ -39,6 +39,8 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IEmployeeDeductionData _employeeDeductionData;
         private readonly IWorkforceScheduleController _workforceScheduleController;
         private readonly IWorkforceScheduleData _workforceScheduleData;
+        private readonly IEmployeePositionController _employeePositionController;
+        private readonly IEmployeePositionData _employeePositionData;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
@@ -57,7 +59,9 @@ namespace Main.Forms.EmployeeManagementForms
                                 IEmployeeBenefitData employeeBenefitData,
                                 IEmployeeDeductionData employeeDeductionData,
                                 IWorkforceScheduleController workforceScheduleController,
-                                IWorkforceScheduleData workforceScheduleData)
+                                IWorkforceScheduleData workforceScheduleData,
+                                IEmployeePositionController employeePositionController,
+                                IEmployeePositionData employeePositionData)
         {
             InitializeComponent();
             _logger = logger;
@@ -78,6 +82,8 @@ namespace Main.Forms.EmployeeManagementForms
             _employeeDeductionData = employeeDeductionData;
             _workforceScheduleController = workforceScheduleController;
             _workforceScheduleData = workforceScheduleData;
+            _employeePositionController = employeePositionController;
+            _employeePositionData = employeePositionData;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -101,6 +107,10 @@ namespace Main.Forms.EmployeeManagementForms
             else if (clickedItem != null && clickedItem.Name == "ToolStripItem_Benefits_Deductions")
             {
                 DisplayBenefitDeductionCRUDControl();
+            }
+            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_PositionAndSalaryRate")
+            {
+                DisplayEmpPositionWithSalaryRateCRUDControl();
             }
         }
 
@@ -131,9 +141,9 @@ namespace Main.Forms.EmployeeManagementForms
             this.panelContainer.Controls.Clear();
 
             var controlToDisplay = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter);
-            //addUpdateEmployeeUserControl.Dock = DockStyle.Fill;
+            //controlToDisplay.Dock = DockStyle.Fill;
             controlToDisplay.Location = new Point(this.ClientSize.Width / 2 - controlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - controlToDisplay.Size.Height / 2);
-            controlToDisplay.Anchor = AnchorStyles.None;
+            //controlToDisplay.Anchor = (AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left);
 
             controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
             controlToDisplay.WorkShifts = _workShiftController.GetAll().Data;
@@ -993,7 +1003,7 @@ namespace Main.Forms.EmployeeManagementForms
                 }
                 else
                 {
-                    MessageBox.Show(resultMessages, "Save shift details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(resultMessages, "Save deduction details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
 
@@ -1045,5 +1055,93 @@ namespace Main.Forms.EmployeeManagementForms
         }
 
         #endregion
+
+
+        public void DisplayEmpPositionWithSalaryRateCRUDControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var controlObj = new EmpPositionWithSalaryRateCRUDControl();
+            controlObj.Location = new Point(this.ClientSize.Width / 2 - controlObj.Size.Width / 2, this.ClientSize.Height / 2 - controlObj.Size.Height / 2);
+            controlObj.Anchor = AnchorStyles.None;
+
+            controlObj.Positions = _employeePositionData.GetAllNotDeleted();
+
+            controlObj.PositionSaved += HandleSaveEmployeePosition;
+            controlObj.DeletePosition += HandleDeleteEmployeePosition;
+
+            this.panelContainer.Controls.Add(controlObj);
+        }
+
+
+        private void HandleSaveEmployeePosition(object sender, EventArgs e)
+        {
+            EmpPositionWithSalaryRateCRUDControl controlObj = (EmpPositionWithSalaryRateCRUDControl)sender;
+            var positiionDetails = controlObj.PositionToAddUpdate;
+            var isNew = controlObj.IsSaveNew;
+
+            if (positiionDetails != null)
+            {
+                var saveResults = _employeePositionController.Save(positiionDetails, isNew);
+
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, "Save position details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    controlObj.ResetForm();
+                    controlObj.Positions = _employeePositionData.GetAllNotDeleted();
+                    controlObj.DisplayPositionList();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Save position details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+        }
+
+
+        private void HandleDeleteEmployeePosition(object sender, EventArgs e)
+        {
+            EmpPositionWithSalaryRateCRUDControl controlObj = (EmpPositionWithSalaryRateCRUDControl)sender;
+            long positionId = controlObj.SelectedPositionIdToDelete;
+
+            if (positionId > 0)
+            {
+                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+                if (res == DialogResult.OK)
+                {
+                    var deleteResults = _employeePositionController.Delete(positionId);
+
+                    string resultMessages = "";
+                    foreach (var msg in deleteResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (deleteResults.IsSuccess)
+                    {
+                        MessageBox.Show(resultMessages, "Delete position details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        controlObj.ResetForm();
+                        controlObj.Positions = _employeePositionData.GetAllNotDeleted();
+                        controlObj.DisplayPositionList();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Delete position details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                
+            }
+
+        }
     }
 }

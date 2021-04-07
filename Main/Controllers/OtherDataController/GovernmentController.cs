@@ -16,12 +16,12 @@ namespace Main.Controllers.OtherDataController
 {
     public class GovernmentController : IGovernmentController
     {
-        private readonly ILogger<LoginFrm> _logger;
+        private readonly ILogger<GovernmentController> _logger;
         private readonly IMapper _mapper;
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly GovernmentAgencyAddUpdateValidator _governmentAgencyAddUpdateValidator;
 
-        public GovernmentController(ILogger<LoginFrm> logger,
+        public GovernmentController(ILogger<GovernmentController> logger,
                                 IMapper mapper,
                                 IGovernmentAgencyData governmentAgencyData,
                                 GovernmentAgencyAddUpdateValidator governmentAgencyAddUpdateValidator)

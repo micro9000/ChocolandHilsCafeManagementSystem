@@ -37,17 +37,22 @@ namespace Main.Forms.OtherDataForms
             this.ToolStripItemScheduleSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuScheduleSettings = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ToolStripItemLeaveType = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuBranches = new System.Windows.Forms.ToolStripMenuItem();
+            this.ContextMenuBranchesSettings = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ToolStripMenuBranchesList = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.OtherMenuStrip.SuspendLayout();
             this.ContextMenuGovernmentItems.SuspendLayout();
             this.ContextMenuScheduleSettings.SuspendLayout();
+            this.ContextMenuBranchesSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // OtherMenuStrip
             // 
             this.OtherMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripItemGovernment,
-            this.ToolStripItemScheduleSettings});
+            this.ToolStripItemScheduleSettings,
+            this.ToolStripMenuBranches});
             this.OtherMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.OtherMenuStrip.Name = "OtherMenuStrip";
             this.OtherMenuStrip.Size = new System.Drawing.Size(800, 24);
@@ -98,6 +103,27 @@ namespace Main.Forms.OtherDataForms
             this.ToolStripItemLeaveType.Size = new System.Drawing.Size(135, 22);
             this.ToolStripItemLeaveType.Text = "Leave types";
             // 
+            // ToolStripMenuBranches
+            // 
+            this.ToolStripMenuBranches.DropDown = this.ContextMenuBranchesSettings;
+            this.ToolStripMenuBranches.Name = "ToolStripMenuBranches";
+            this.ToolStripMenuBranches.Size = new System.Drawing.Size(67, 20);
+            this.ToolStripMenuBranches.Text = "Branches";
+            // 
+            // ContextMenuBranchesSettings
+            // 
+            this.ContextMenuBranchesSettings.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuBranchesList});
+            this.ContextMenuBranchesSettings.Name = "ContextMenuBranchesSettings";
+            this.ContextMenuBranchesSettings.Size = new System.Drawing.Size(93, 26);
+            this.ContextMenuBranchesSettings.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuBranchesSettings_ItemClicked);
+            // 
+            // ToolStripMenuBranchesList
+            // 
+            this.ToolStripMenuBranchesList.Name = "ToolStripMenuBranchesList";
+            this.ToolStripMenuBranchesList.Size = new System.Drawing.Size(92, 22);
+            this.ToolStripMenuBranchesList.Text = "List";
+            // 
             // panelContainer
             // 
             this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -120,6 +146,7 @@ namespace Main.Forms.OtherDataForms
             this.OtherMenuStrip.PerformLayout();
             this.ContextMenuGovernmentItems.ResumeLayout(false);
             this.ContextMenuScheduleSettings.ResumeLayout(false);
+            this.ContextMenuBranchesSettings.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,5 +162,8 @@ namespace Main.Forms.OtherDataForms
         private System.Windows.Forms.ContextMenuStrip ContextMenuScheduleSettings;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItemScheduleSettings;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItemLeaveType;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuBranches;
+        private System.Windows.Forms.ContextMenuStrip ContextMenuBranchesSettings;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuBranchesList;
     }
 }

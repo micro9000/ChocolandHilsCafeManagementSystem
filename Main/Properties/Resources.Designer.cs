@@ -83,6 +83,16 @@ namespace Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_bell_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-bell-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_home_24 {
             get {
                 object obj = ResourceManager.GetObject("icons8-home-24", resourceCulture);

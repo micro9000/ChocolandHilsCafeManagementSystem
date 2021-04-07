@@ -37,6 +37,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_List = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_FileLeave = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_Benefits_Deductions = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripItem_PositionAndSalaryRate = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemWorkSchedules = new System.Windows.Forms.ToolStripMenuItem();
             this.WorkSchedulesMenItems = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.WorkShiftsMenItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,10 +89,10 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_DetailsCRUD,
             this.ToolStripItem_List,
             this.ToolStripItem_FileLeave,
-            this.ToolStripItem_Benefits_Deductions});
+            this.ToolStripItem_Benefits_Deductions,
+            this.ToolStripItem_PositionAndSalaryRate});
             this.EmployeeMenuItemsMenuStrip.Name = "EmployeeMenuItems";
-            this.EmployeeMenuItemsMenuStrip.OwnerItem = this.MenuItemEmployee;
-            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(260, 92);
+            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(260, 114);
             this.EmployeeMenuItemsMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.EmployeeMenuItemsMenuStrip_ItemClicked);
             // 
             // ToolStripItem_DetailsCRUD
@@ -117,6 +118,12 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_Benefits_Deductions.Name = "ToolStripItem_Benefits_Deductions";
             this.ToolStripItem_Benefits_Deductions.Size = new System.Drawing.Size(259, 22);
             this.ToolStripItem_Benefits_Deductions.Text = "Benefits/Deductions/Contributions";
+            // 
+            // ToolStripItem_PositionAndSalaryRate
+            // 
+            this.ToolStripItem_PositionAndSalaryRate.Name = "ToolStripItem_PositionAndSalaryRate";
+            this.ToolStripItem_PositionAndSalaryRate.Size = new System.Drawing.Size(259, 22);
+            this.ToolStripItem_PositionAndSalaryRate.Text = "Position and Salary Rates";
             // 
             // MenuItemWorkSchedules
             // 
@@ -313,5 +320,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ToolStripMenuItem EmpWorkShiftScheds;
         private System.Windows.Forms.ToolStripMenuItem HolidaysMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItem_Benefits_Deductions;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripItem_PositionAndSalaryRate;
     }
 }

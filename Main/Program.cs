@@ -130,6 +130,8 @@ namespace Main
             services.AddTransient<IHolidayData, HolidayData>();
             services.AddTransient<IEmployeeAttendanceData, EmployeeAttendanceData>();
             services.AddTransient<IEmployeeBenefitData, EmployeeBenefitData>();
+            services.AddTransient<IBranchData, BranchData>();
+            services.AddTransient<IEmployeePositionData, EmployeePositionData>();
             services.AddTransient<IEmployeeData, EmployeeData>();
             services.AddTransient<IEmployeeDeductionData, EmployeeDeductionData>();
             services.AddTransient<IEmployeeLeaveData, EmployeeLeaveData>();
@@ -164,11 +166,13 @@ namespace Main
             services.AddTransient<EmployeeShiftAddUpdateValidator>();
             services.AddTransient<EmployeeLeaveAddUpdateValidator>();
             services.AddTransient<HolidayAddUpdateValidator>();
+            services.AddTransient<EmployeePositionAddUpdateValidator>();
             // Other Data:
             // validator
             services.AddTransient<LeaveTypeAddUpdateValidator>();
             services.AddTransient<UserAddUpdateValidator>();
             services.AddTransient<GovernmentAgencyAddUpdateValidator>();
+            services.AddTransient<BranchAddUpdateValidator>();
             // Inventory
             services.AddTransient<IngredientAddUpdateValidator>();
             services.AddTransient<IngredientInventoryAddUpdateValidator>();
@@ -184,6 +188,8 @@ namespace Main
             services.AddTransient<IWorkforceScheduleController, WorkforceScheduleController>();
             services.AddTransient<ILeaveTypeController, LeaveTypeController>();
             services.AddTransient<IGovernmentController, GovernmentController>();
+            services.AddTransient<IBranchInfoController, BranchInfoController>();
+            services.AddTransient<IEmployeePositionController, EmployeePositionController>();
             services.AddTransient<IUserController, UserController>();
 
             services.AddTransient<IIngredientInventoryManager, IngredientInventoryManager>();

@@ -15,5 +15,7 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
         EmployeeModel GetByEmployeeNumber(string employeeNumber);
         List<EmployeeModel> GetAllByDateHire(DateTime dateHire);
         List<EmployeeModel> Search(string search);
+
+        bool MoveEmployeesIntoOtherBranch(long previousBranchId, long newBranchId);
     }
 }

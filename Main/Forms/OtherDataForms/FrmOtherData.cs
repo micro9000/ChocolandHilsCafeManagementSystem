@@ -1,4 +1,5 @@
-﻿using Main.Controllers.OtherDataController.ControllerInterface;
+﻿using DataAccess.Data.OtherDataManagement.Contracts;
+using Main.Controllers.OtherDataController.ControllerInterface;
 using Main.Forms.OtherDataForms.Controls;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,15 +19,21 @@ namespace Main.Forms.OtherDataForms
         private readonly ILogger<FrmOtherData> _logger;
         private readonly ILeaveTypeController _leaveTypeController;
         private readonly IGovernmentController _governmentController;
+        private readonly IBranchInfoController _branchInfoController;
+        private readonly IBranchData _branchData;
 
         public FrmOtherData(ILogger<FrmOtherData> logger,
                                 ILeaveTypeController leaveTypeController,
-                                IGovernmentController governmentController)
+                                IGovernmentController governmentController,
+                                IBranchInfoController branchInfoController,
+                                IBranchData branchData)
         {
             InitializeComponent();
             _logger = logger;
             _leaveTypeController = leaveTypeController;
             _governmentController = governmentController;
+            _branchInfoController = branchInfoController;
+            _branchData = branchData;
         }
 
         private void ContextMenuGovernmentItems_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -230,6 +237,97 @@ namespace Main.Forms.OtherDataForms
                     }
                 }
 
+            }
+        }
+
+
+        // ####################33
+        private void ContextMenuBranchesSettings_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem clickedItem = e.ClickedItem;
+
+            if (clickedItem != null && clickedItem.Name == "ToolStripMenuBranchesList")
+            {
+                DisplayBranchCRUDControl();
+            }
+        }
+
+        private void DisplayBranchCRUDControl()
+        {
+            this.panelContainer.Controls.Clear();
+
+            var controlObj = new BranchInfoCRUDControl();
+            //leaveTypeControl.Dock = DockStyle.Fill;
+            controlObj.Location = new Point(this.ClientSize.Width / 2 - controlObj.Size.Width / 2, this.ClientSize.Height / 2 - controlObj.Size.Height / 2);
+            controlObj.Anchor = AnchorStyles.None;
+
+            controlObj.Branches = _branchData.GetAllNotDeleted();
+
+            controlObj.BranchSaved += HandleBranchSaved;
+            controlObj.DeleteBranch += HandleBranchDelete;
+
+            this.panelContainer.Controls.Add(controlObj);
+        }
+
+
+        private void HandleBranchSaved(object sender, EventArgs e)
+        {
+            BranchInfoCRUDControl controlObj = (BranchInfoCRUDControl)sender;
+
+            var branchDetails = controlObj.BranchToAddUpdate;
+            bool isNew = controlObj.IsSaveNew;
+
+            var saveResults = _branchInfoController.Save(branchDetails, isNew);
+            string resultMessages = "";
+            foreach (var msg in saveResults.Messages)
+            {
+                resultMessages += msg + "\n";
+            }
+
+            if (saveResults.IsSuccess)
+            {
+                MessageBox.Show(resultMessages, "Save branch details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                controlObj.ResetForm();
+                controlObj.Branches = _branchData.GetAllNotDeleted();
+                controlObj.DisplayBranchList();
+            }
+            else
+            {
+                MessageBox.Show(resultMessages, "Save branch details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+        }
+
+        private void HandleBranchDelete(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                BranchInfoCRUDControl controlObj = (BranchInfoCRUDControl)sender;
+
+                long selectedBranchId = controlObj.SelectedBranchIdToDelete;
+
+                var saveResults = _branchInfoController.Delete(selectedBranchId);
+                string resultMessages = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (saveResults.IsSuccess)
+                {
+                    // TODO: Reassign employees under this branch we are going to delete
+
+                    MessageBox.Show(resultMessages, "Delete branch details.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    controlObj.ResetForm();
+                    controlObj.Branches = _branchData.GetAllNotDeleted();
+                    controlObj.DisplayBranchList();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, "Delete branch details.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 

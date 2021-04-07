@@ -103,6 +103,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LVColumnLate = new System.Windows.Forms.ColumnHeader();
             this.LVColumnUnderTime = new System.Windows.Forms.ColumnHeader();
             this.LVColumnOvertime = new System.Windows.Forms.ColumnHeader();
+            this.LVColumnIsPaid = new System.Windows.Forms.ColumnHeader();
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.BtnFilterAttendanceHistory = new System.Windows.Forms.Button();
@@ -132,7 +133,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.PanelResignedIndicator = new System.Windows.Forms.Panel();
             this.LblResignedDate = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
-            this.LVColumnIsPaid = new System.Windows.Forms.ColumnHeader();
             this.EmployeeBasicInfo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -936,6 +936,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.LVColumnOvertime.Text = "OT";
             // 
+            // LVColumnIsPaid
+            // 
+            this.LVColumnIsPaid.Text = "Status";
+            this.LVColumnIsPaid.Width = 100;
+            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -1265,11 +1270,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label24.Size = new System.Drawing.Size(94, 25);
             this.label24.TabIndex = 50;
             this.label24.Text = "Resigned:";
-            // 
-            // LVColumnIsPaid
-            // 
-            this.LVColumnIsPaid.Text = "Status";
-            this.LVColumnIsPaid.Width = 100;
             // 
             // EmployeeDetailsCRUDControl
             // 

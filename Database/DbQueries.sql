@@ -96,6 +96,33 @@ CREATE TABLE IF NOT EXISTS Holidays(
 
 SELECT * FROM Holidays;
 
+CREATE TABLE IF NOT EXISTS Branches(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	branchName VARCHAR(255),
+    tellNo VARCHAR(100),
+    address VARCHAR(255),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+SELECT * FROM Branches;
+
+
+CREATE TABLE IF NOT EXISTS EmployeePositions(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(255),
+	salaryRate DECIMAL(9,2),
+    halfMonthRate DECIMAL(9,2),
+    dailyRate DECIMAL(9,2),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+
 CREATE TABLE IF NOT EXISTS Employees(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8) UNIQUE, -- 20210001, 02, 03 (will always change the first 4 numbers, based on current year
