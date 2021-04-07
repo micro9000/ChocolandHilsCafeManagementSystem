@@ -104,7 +104,7 @@ namespace Main.Forms.InventoryManagementForms
         public void DisplayIgredientInventoryControl()
         {
             this.PanelMainContainer.Controls.Clear();
-            var inventoryControlObj = new IngredientInventoryControl(_uOMConverter);
+            var inventoryControlObj = new IngredientInventoryControl(_uOMConverter, _otherSettings);
             inventoryControlObj.Location = new Point(this.ClientSize.Width / 2 - inventoryControlObj.Size.Width / 2, this.ClientSize.Height / 2 - inventoryControlObj.Size.Height / 2);
             inventoryControlObj.Anchor = AnchorStyles.None;
 

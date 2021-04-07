@@ -1,5 +1,6 @@
 ﻿using EntitiesShared;
 using EntitiesShared.InventoryManagement;
+using Shared;
 using Shared.CustomModels;
 using Shared.Helpers;
 using System;
@@ -16,10 +17,11 @@ namespace Main.Forms.InventoryManagementForms.Controls
 {
     public partial class IngredientInventoryControl : UserControl
     {
-        public IngredientInventoryControl(UOMConverter uOMConverter)
+        public IngredientInventoryControl(UOMConverter uOMConverter, OtherSettings otherSettings)
         {
             InitializeComponent();
             _uOMConverter = uOMConverter;
+            _otherSettings = otherSettings;
         }
 
         private void IngredientInventoryControl_Load(object sender, EventArgs e)
@@ -407,6 +409,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
         private IngredientModel _ingredientToAddUpdate;
         private readonly UOMConverter _uOMConverter;
+        private readonly OtherSettings _otherSettings;
 
         public IngredientModel IngredientToAddUpdate
         {
@@ -725,7 +728,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(this.DGVIngredientInventories);
 
-                    if (item.ExpirationDate == DateTime.Now || item.ExpirationDate <= DateTime.Now.AddDays(5))
+                    if (item.ExpirationDate == DateTime.Now || item.ExpirationDate <= DateTime.Now.AddDays(_otherSettings.NumDaysNotifyUserForInventoryExpDate))
                     {
                         row.DefaultCellStyle.ForeColor = Color.Red;
                     }
