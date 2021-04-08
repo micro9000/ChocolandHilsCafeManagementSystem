@@ -13,8 +13,7 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
     {
         EntityResult<EmployeeDetailsModel> SaveEmployeeDetails(bool isNewEmployee, 
                                                                 EmployeeModel employee, 
-                                                                List<EmployeeGovtIdCardTempModel> idCards,
-                                                                EmployeeSalaryRateModel salaryRate);
+                                                                List<EmployeeGovtIdCardTempModel> idCards);
 
         void SaveEmployeeImageFileName(string employeeNumber, string fileName);
 
@@ -23,7 +22,7 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
         EntityResult<EmployeeModel> GetByEmployeeNumber(string employeeNumber);
         List<EmployeeGovtIdCardTempModel> GetAllEmployeeIdCardsMapToCustomModel(string employeeNumber);
 
-        EntityResult<EmployeeSalaryRateModel> GetEmployeeSalaryRateByEmployeeNumber(string employeeNumber);
+        //EntityResult<EmployeeSalaryRateModel> GetEmployeeSalaryRateByEmployeeNumber(string employeeNumber);
 
         ListOfEntityResult<EmployeeModel> GetAll();
         ListOfEntityResult<EmployeeModel> Search(string searchString);

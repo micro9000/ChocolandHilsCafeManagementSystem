@@ -35,7 +35,6 @@ namespace PayrollGenerator.Services
         private readonly IEmployeePayslipBenefitData _employeePayslipBenefitData;
         private readonly IEmployeePayslipData _employeePayslipData;
         private readonly IEmployeePayslipDeductionData _employeePayslipDeductionData;
-        private readonly IEmployeeSalaryRateData _employeeSalaryRateData;
         private readonly IEmployeeShiftData _employeeShiftData;
         private readonly IEmployeeShiftDayData _employeeShiftDayData;
         private readonly IEmployeeGovtIdCardData _employeeGovtIdCardData;
@@ -52,7 +51,6 @@ namespace PayrollGenerator.Services
                                 IEmployeePayslipBenefitData employeePayslipBenefitData,
                                 IEmployeePayslipData employeePayslipData,
                                 IEmployeePayslipDeductionData employeePayslipDeductionData,
-                                IEmployeeSalaryRateData employeeSalaryRateData,
                                 IEmployeeShiftData employeeShiftData,
                                 IEmployeeShiftDayData employeeShiftDayData,
                                 IEmployeeGovtIdCardData employeeGovtIdCardData,
@@ -69,7 +67,6 @@ namespace PayrollGenerator.Services
             _employeePayslipBenefitData = employeePayslipBenefitData;
             _employeePayslipData = employeePayslipData;
             _employeePayslipDeductionData = employeePayslipDeductionData;
-            _employeeSalaryRateData = employeeSalaryRateData;
             _employeeShiftData = employeeShiftData;
             _employeeShiftDayData = employeeShiftDayData;
             _employeeGovtIdCardData = employeeGovtIdCardData;
@@ -124,11 +121,11 @@ namespace PayrollGenerator.Services
                 }
                 totalDays += totalLeaveDays;
 
-                if (employee.SalaryRates == null)
+                if (employee.Position == null)
                     throw new Exception($"{employee.FullName} don't have salary rate. Kindly update employee details");
 
                 decimal netBasicSalary = empAttendanceRec.Sum(x => x.TotalDailySalary);
-                netBasicSalary += employee.SalaryRates.DailyRate * totalLeaveDays;
+                netBasicSalary += employee.Position.DailyRate * totalLeaveDays;
 
                 // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
                 decimal lateDeductions = empAttendanceRec.Sum(x => x.LateTotalDeduction);
@@ -187,9 +184,9 @@ namespace PayrollGenerator.Services
                                     StartShiftDate = this.ShiftStartDate,
                                     EndShiftDate = this.ShiftEndDate,
                                     PayDate = this.PayDate,
-                                    SalaryRate = emp.SalaryRates.SalaryRate,
-                                    HalfMonthRate = emp.SalaryRates.HalfMonthRate,
-                                    DailyRate = emp.SalaryRates.DailyRate,
+                                    SalaryRate = emp.Position.SalaryRate,
+                                    HalfMonthRate = emp.Position.HalfMonthRate,
+                                    DailyRate = emp.Position.DailyRate,
                                     NumOfDays = empPaydateComputation.NumberOfDays,
                                     Late = empPaydateComputation.Late,
                                     LateTotalDeduction = empPaydateComputation.LateTotalDeduction,

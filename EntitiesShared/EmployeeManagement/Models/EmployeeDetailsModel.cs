@@ -26,12 +26,12 @@ namespace EntitiesShared.EmployeeManagement.Models
         }
 
 
-        private EmployeeSalaryRateModel employeeSalary;
+        //private EmployeeSalaryRateModel employeeSalary;
 
-        public EmployeeSalaryRateModel EmployeeSalary
-        {
-            get { return employeeSalary; }
-            set { employeeSalary = value; }
-        }
+        //public EmployeeSalaryRateModel EmployeeSalary
+        //{
+        //    get { return employeeSalary; }
+        //    set { employeeSalary = value; }
+        //}
     }
 }

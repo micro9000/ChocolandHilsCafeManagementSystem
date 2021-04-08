@@ -257,9 +257,9 @@ namespace Main.Forms.PayrollForms.Controls
                         row.Cells[0].Value = employee.EmployeeNumber;
                         row.Cells[1].Value = employee.FullName;
 
-                        if (employee.SalaryRates != null)
+                        if (employee.Position != null)
                         {
-                            row.Cells[2].Value = employee.SalaryRates.DailyRate;
+                            row.Cells[2].Value = employee.Position.DailyRate;
                         }
 
                         var currentEmpAttendanceRec = this.AttendanceHistory.Where(x => x.EmployeeNumber == employee.EmployeeNumber).ToList();
@@ -616,11 +616,11 @@ namespace Main.Forms.PayrollForms.Controls
                 }
                 totalDays += totalLeaveDays;
 
-                if (employee.SalaryRates == null)
-                    throw new Exception($"{employee.FullName} don't have salary rate. Kindly update employee details");
+                if (employee.Position == null)
+                    throw new Exception($"{employee.FullName} don't have position and salary rate. Kindly update employee details");
 
                 decimal netBasicSalary = currentEmpAttendanceRec.Sum(x => x.TotalDailySalary);
-                netBasicSalary += employee.SalaryRates.DailyRate * totalLeaveDays;
+                netBasicSalary += employee.Position.DailyRate * totalLeaveDays;
 
                 // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
                 decimal lateDeductions = currentEmpAttendanceRec.Sum(x => x.LateTotalDeduction);

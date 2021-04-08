@@ -54,6 +54,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.DGVEmployeeListToSchedule = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BtnDeleteSchedule = new System.Windows.Forms.Button();
             this.BtnUpdateSelectedDateWorkForce = new System.Windows.Forms.Button();
             this.BtnGenerateWorkforceSchedule = new System.Windows.Forms.Button();
             this.LViewScheduleDates = new System.Windows.Forms.ListView();
@@ -64,6 +65,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.DPicWorkScheduleStartFrom = new System.Windows.Forms.DateTimePicker();
+            this.BtnUndoChanges = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeList)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -276,14 +278,15 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.BtnUndoChanges);
             this.tabPage2.Controls.Add(this.BtnSelectAllEmployees);
             this.tabPage2.Controls.Add(this.BtnSaveWorkforceSchedule);
             this.tabPage2.Controls.Add(this.panel2);
             this.tabPage2.Controls.Add(this.groupBox1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1227, 629);
+            this.tabPage2.Size = new System.Drawing.Size(1227, 624);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Workforce Schedule";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -379,6 +382,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.BtnDeleteSchedule);
             this.groupBox1.Controls.Add(this.BtnUpdateSelectedDateWorkForce);
             this.groupBox1.Controls.Add(this.BtnGenerateWorkforceSchedule);
             this.groupBox1.Controls.Add(this.LViewScheduleDates);
@@ -393,6 +397,22 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling";
+            // 
+            // BtnDeleteSchedule
+            // 
+            this.BtnDeleteSchedule.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnDeleteSchedule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnDeleteSchedule.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnDeleteSchedule.ForeColor = System.Drawing.Color.White;
+            this.BtnDeleteSchedule.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnDeleteSchedule.Location = new System.Drawing.Point(285, 508);
+            this.BtnDeleteSchedule.Name = "BtnDeleteSchedule";
+            this.BtnDeleteSchedule.Size = new System.Drawing.Size(89, 30);
+            this.BtnDeleteSchedule.TabIndex = 52;
+            this.BtnDeleteSchedule.Text = "Delete";
+            this.BtnDeleteSchedule.UseVisualStyleBackColor = false;
+            this.BtnDeleteSchedule.Visible = false;
+            this.BtnDeleteSchedule.Click += new System.EventHandler(this.BtnDeleteSchedule_Click);
             // 
             // BtnUpdateSelectedDateWorkForce
             // 
@@ -499,6 +519,21 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DPicWorkScheduleStartFrom.Size = new System.Drawing.Size(168, 29);
             this.DPicWorkScheduleStartFrom.TabIndex = 0;
             // 
+            // BtnUndoChanges
+            // 
+            this.BtnUndoChanges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnUndoChanges.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnUndoChanges.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnUndoChanges.ForeColor = System.Drawing.Color.White;
+            this.BtnUndoChanges.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnUndoChanges.Location = new System.Drawing.Point(964, 561);
+            this.BtnUndoChanges.Name = "BtnUndoChanges";
+            this.BtnUndoChanges.Size = new System.Drawing.Size(116, 49);
+            this.BtnUndoChanges.TabIndex = 54;
+            this.BtnUndoChanges.Text = "Undo Changes";
+            this.BtnUndoChanges.UseVisualStyleBackColor = false;
+            this.BtnUndoChanges.Click += new System.EventHandler(this.BtnUndoChanges_Click);
+            // 
             // ManageEmpWorkScheduleControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -568,5 +603,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button BtnSelectAllEmployees;
+        private System.Windows.Forms.Button BtnDeleteSchedule;
+        private System.Windows.Forms.Button BtnUndoChanges;
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using DataAccess.Data.OtherDataManagement.Contracts;
 
 namespace DataAccess.Data.EmployeeManagement.Implementations
 {
@@ -14,16 +15,19 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
     {
         private readonly IDbConnectionFactory _dbConnFactory;
         private readonly IEmployeeShiftData _employeeShiftData;
-        private readonly IEmployeeSalaryRateData _employeeSalaryRateData;
+        private readonly IEmployeePositionData _employeePositionData;
+        private readonly IBranchData _branchData;
 
         public EmployeeData(IDbConnectionFactory dbConnFactory, 
                             IEmployeeShiftData employeeShiftData,
-                            IEmployeeSalaryRateData employeeSalaryRateData) :
+                            IEmployeePositionData employeePositionData,
+                            IBranchData branchData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
             _employeeShiftData = employeeShiftData;
-            _employeeSalaryRateData = employeeSalaryRateData;
+            _employeePositionData = employeePositionData;
+            _branchData = branchData;
         }
 
         public List<EmployeeModel> GetAllNotDeleted()
@@ -37,7 +41,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                 foreach (var emp in employees)
                 {
                     emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
-                    emp.SalaryRates = _employeeSalaryRateData.GetByEmployeeNumber(emp.EmployeeNumber);
+                    emp.Position = _employeePositionData.Get(emp.PositionId);
+                    emp.Branch = _branchData.Get(emp.BranchId);
                 }
             }
             
@@ -47,8 +52,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         public long GetCountByEmpNumYear(DateTime dateHire)
         {
             string query = @"SELECT COUNT(*) as count FROM Employees 
-                            WHERE isDeleted=false AND 
-                            empNumYear = @YearHire";
+                            WHERE empNumYear = @YearHire";
 
             return this.GetValue<long>(query, new { YearHire = dateHire.Year });
         }
@@ -65,7 +69,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                 foreach (var emp in employees)
                 {
                     emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
-                    emp.SalaryRates = _employeeSalaryRateData.GetByEmployeeNumber(emp.EmployeeNumber);
+                    emp.Position = _employeePositionData.Get(emp.PositionId);
+                    emp.Branch = _branchData.Get(emp.BranchId);
                 }
             }
             
@@ -82,7 +87,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             if (emp != null)
             {
                 emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
-                emp.SalaryRates = _employeeSalaryRateData.GetByEmployeeNumber(emp.EmployeeNumber);
+                emp.Position = _employeePositionData.Get(emp.PositionId);
+                emp.Branch = _branchData.Get(emp.BranchId);
             }
 
             return emp;
@@ -108,7 +114,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                 foreach (var emp in employees)
                 {
                     emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
-                    emp.SalaryRates = _employeeSalaryRateData.GetByEmployeeNumber(emp.EmployeeNumber);
+                    emp.Position = _employeePositionData.Get(emp.PositionId);
+                    emp.Branch = _branchData.Get(emp.BranchId);
                 }
             }
 

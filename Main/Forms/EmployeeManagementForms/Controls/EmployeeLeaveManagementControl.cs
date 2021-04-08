@@ -235,7 +235,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             if (this.Employee != null)
             {
                 this.LblSelectedEmployeeFullname.Text = $"{this.Employee.LastName.ToUpper()} {this.Employee.FirstName}, {this.Employee.MiddleName}";
-                this.LblEmployeePosition.Text = this.Employee.Position;
+                this.LblEmployeePosition.Text = this.Employee.Position.Title;
             }
         }
 

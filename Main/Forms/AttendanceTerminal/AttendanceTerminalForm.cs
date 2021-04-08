@@ -208,9 +208,9 @@ namespace Main.Forms.AttendanceTerminal
 
                 if (empDetails != null)
                 {
-                    if (empDetails.SalaryRates == null)
+                    if (empDetails.Position == null)
                     {
-                        MessageBox.Show($"{empDetails.FullName} don't have salary rate. Kindly update employee details", "Salary Rate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"{empDetails.FullName} don't have position and salary rate. Kindly update employee details", "Salary Rate", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -455,7 +455,7 @@ namespace Main.Forms.AttendanceTerminal
                                 todayAttendance.FirstTimeOut = todaysDateAndTime;
                                 todayAttendance.FirstHalfHrs = firstTimeOutHrs;
 
-                                var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                                var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
 
                                 todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                                 todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
@@ -494,7 +494,7 @@ namespace Main.Forms.AttendanceTerminal
                                 todayAttendance.FirstHalfHrs = firstTimeOutHrs;
                                 todayAttendance.FirstHalfUnderTimeMins = underTime;
 
-                                var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                                var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
 
                                 todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                                 todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
@@ -547,7 +547,7 @@ namespace Main.Forms.AttendanceTerminal
 
                                     todayAttendance.SecondHalfUnderTimeMins = underTime;
 
-                                    var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                                    var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
 
                                     todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                                     todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
@@ -588,7 +588,7 @@ namespace Main.Forms.AttendanceTerminal
 
                                     todayAttendance.OverTimeMins = overTimeHrs;
 
-                                    var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                                    var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
 
                                     todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                                     todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
@@ -654,9 +654,9 @@ namespace Main.Forms.AttendanceTerminal
 
             if (empDetails != null)
             {
-                if (empDetails.SalaryRates == null)
+                if (empDetails.Position == null)
                 {
-                    MessageBox.Show($"{empDetails.FullName} don't have salary rate. Kindly update employee details", "Salary Rate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{empDetails.FullName} don't have position and salary rate. Kindly update employee details", "Salary Rate", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -721,7 +721,7 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.FirstHalfLateMins = lateMins;
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
 
@@ -759,7 +759,7 @@ namespace Main.Forms.AttendanceTerminal
                         }
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = 0;
 
@@ -801,7 +801,7 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.SecondHalfLateMins = 0;
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = 0;
 
@@ -845,7 +845,7 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.SecondHalfLateMins = lateMins;
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
 
@@ -888,7 +888,7 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.SecondHalfLateMins = 0;
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = 0;
 
@@ -957,7 +957,7 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.SecondHalfUnderTimeMins = 0;
 
 
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
 
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
@@ -994,7 +994,7 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.FirstHalfHrs = firstTimeOutHrs;
                         todayAttendance.FirstHalfUnderTimeMins = underTime;
 
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
 
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
@@ -1049,7 +1049,7 @@ namespace Main.Forms.AttendanceTerminal
 
                             todayAttendance.SecondHalfUnderTimeMins = underTime;
 
-                            var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
 
                             todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                             todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
@@ -1091,7 +1091,7 @@ namespace Main.Forms.AttendanceTerminal
 
                             todayAttendance.OverTimeMins = overTimeHrs;
 
-                            var dailyRateComputation = GetDailySalaryComputation(empDetails.SalaryRates.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
 
                             todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                             todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;

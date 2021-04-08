@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using EntitiesShared.OtherDataManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,22 +96,45 @@ namespace EntitiesShared.EmployeeManagement
             set { emailAddress = value; }
         }
 
-        private string position;
+        //private string position;
+        //// TODO: Delete this column or property
+        //public string Position
+        //{
+        //    get { return position; }
+        //    set { position = value; }
+        //}
 
-        public string Position
+        //private string branchAssign;
+        //// TODO: Delete this column or property
+        //public string BranchAssign
+        //{
+        //    get { return branchAssign; }
+        //    set { branchAssign = value; }
+        //}
+
+        public long BranchId { get; set; }
+
+        private BranchModel branch;
+        [Write(false)]
+        [Computed]
+        public BranchModel Branch
+        {
+            get { return branch; }
+            set { branch = value; }
+        }
+
+
+        public long PositionId { get; set; }
+
+        private EmployeePositionModel position;
+        [Write(false)]
+        [Computed]
+        public EmployeePositionModel Position
         {
             get { return position; }
             set { position = value; }
         }
 
-
-        private string branchAssign;
-
-        public string BranchAssign
-        {
-            get { return branchAssign; }
-            set { branchAssign = value; }
-        }
 
         private DateTime dateHire;
 
@@ -150,13 +174,13 @@ namespace EntitiesShared.EmployeeManagement
         }
 
 
-        private EmployeeSalaryRateModel salaryRates;
-        [Write(false)]
-        [Computed]
-        public EmployeeSalaryRateModel SalaryRates
-        {
-            get { return salaryRates; }
-            set { salaryRates = value; }
-        }
+        //private EmployeeSalaryRateModel salaryRates;
+        //[Write(false)]
+        //[Computed]
+        //public EmployeeSalaryRateModel SalaryRates
+        //{
+        //    get { return salaryRates; }
+        //    set { salaryRates = value; }
+        //}
     }
 }

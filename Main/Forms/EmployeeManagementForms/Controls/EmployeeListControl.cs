@@ -133,7 +133,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[3].Value = employee.BirthDate.ToShortDateString();
                     row.Cells[4].Value = employee.MobileNumber;
                     row.Cells[5].Value = employee.EmailAddress;
-                    row.Cells[6].Value = employee.BranchAssign;
+                    row.Cells[6].Value = (employee.Branch != null) ? employee.Branch.BranchName : "";
                     row.Cells[7].Value = employee.DateHire.ToShortDateString();
                     row.Cells[8].Value = employee.Shift.Shift;
                     row.Cells[9].Value = employee.CreatedAt.ToShortDateString();

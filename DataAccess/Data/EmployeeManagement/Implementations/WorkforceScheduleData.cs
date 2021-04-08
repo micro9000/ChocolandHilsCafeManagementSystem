@@ -48,7 +48,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
         public List<WorkforceScheduleModel> GetAllNotYetDone()
         {
-            string query = @"SELECT * FROM WorkforceSchedules WHERE isDeleted=false AND isDone = false";
+            string query = @"SELECT * FROM WorkforceSchedules WHERE isDeleted=false AND isDone=false ORDER BY workDate ASC";
 
             var results = this.GetAll(query);
 
@@ -66,11 +66,34 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         }
 
 
+        public List<WorkforceScheduleModel> GetAllNotYetDone(DateTime dateNow)
+        {
+            string query = @"SELECT * FROM WorkforceSchedules 
+                                WHERE isDeleted=false AND isDone=false AND workDate >= @TodayDate
+                                ORDER BY workDate ASC";
+
+            var results = this.GetAll(query, new { TodayDate = dateNow.ToString("yyyy-MM-dd")});
+
+            if (results != null)
+            {
+                foreach (var sched in results)
+                {
+                    // need to do this, to get also the employee shift
+                    sched.Employee = _employeeData.GetByEmployeeNumber(sched.EmployeeNumber);
+                }
+            }
+
+            return results;
+
+        }
+
+
         public List<WorkforceScheduleModel> GetAllForEmpAttendance(DateTime startDate, DateTime endDate, string employeeNumber)
         {
             string query = @"SELECT *
                             FROM WorkforceSchedules 
-                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND workDate BETWEEN @StartDate AND @EndDate";
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND workDate BETWEEN @StartDate AND @EndDate
+                            ORDER BY workDate ASC";
 
             return this.GetAll(query, new { 
                 StartDate = startDate.ToString("yyyy-MM-dd"), 

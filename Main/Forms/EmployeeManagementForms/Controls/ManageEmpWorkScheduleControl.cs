@@ -488,7 +488,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LViewScheduleDates.Items.Clear();
             foreach (var workSched in WorkforceSchedule.WorkForceByDate)
             {
-                var row = new string[] { workSched.Key.ToLongDateString(), workSched.Value.Count.ToString() };
+                var row = new string[] { workSched.Key.ToShortDateString(), workSched.Value.Count.ToString() };
 
                 var listViewItem = new ListViewItem(row);
                 //listViewItem.BackColor = Color.Brown;
@@ -520,6 +520,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVScheduledWorkforceByDate.Columns[3].Name = "Shift2";
                 this.DGVScheduledWorkforceByDate.Columns[3].HeaderText = "Shift";
                 this.DGVScheduledWorkforceByDate.Columns[3].Visible = true;
+
 
                 // Delete button
                 DataGridViewImageColumn btnDeleteLeaveTypeImg = new DataGridViewImageColumn();
@@ -562,6 +563,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             if (LViewScheduleDates.SelectedItems.Count > 0)
             {
+                this.BtnDeleteSchedule.Visible = true; // dispaly delete button
+
                 string selectedItem = LViewScheduleDates.SelectedItems[0].Tag as string;
                 DateTime selectedDay = DateTime.Parse(selectedItem);
 
@@ -573,6 +576,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     // remove the employee, we will just remove that employee on a particular date
                     DisplayWorkForce(workForce, selectedItem);
                 }
+            }
+            else
+            {
+                this.BtnDeleteSchedule.Visible = false;
             }
         }
 
@@ -751,6 +758,72 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void tabPage2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void BtnDeleteSchedule_Click(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (res == DialogResult.OK)
+            {
+                if (LViewScheduleDates.SelectedItems.Count > 0)
+                {
+                    this.BtnDeleteSchedule.Visible = true; // dispaly delete button
+
+                    LViewScheduleDates.SelectedItems[0].ForeColor = Color.Red;
+
+                    string selectedItem = LViewScheduleDates.SelectedItems[0].Tag as string;
+                    DateTime selectedDay = DateTime.Parse(selectedItem);
+
+                    LViewScheduleDates.SelectedItems[0].Text = $"{selectedDay.ToShortDateString()} - to delete";
+
+                    var workForce = WorkforceSchedule.WorkForceByDate[selectedDay];
+
+                    if (workForce != null)
+                    {
+                        foreach (var employee in workForce)
+                        {
+                            employee.IsDeleted = true;
+                            employee.DeletedAt = DateTime.Now;
+
+                            if (WorkforceSchedule.WorkforceSchedules != null)
+                            {
+                                // if there is existing workforce schedule in our database
+                                // check if the employee we remove on the datagridview
+                                // is also existing in our database, if yes, then delete the record
+                                var workForceInDatabase = WorkforceSchedule.WorkforceSchedules
+                                                                .Where(x =>
+                                                                    x.WorkDate == selectedDay &&
+                                                                    x.EmployeeNumber == employee.EmployeeNumber
+                                                                ).FirstOrDefault();
+
+                                if (workForceInDatabase != null)
+                                {
+                                    // mark as deleted
+                                    workForceInDatabase.IsDeleted = true;
+                                    workForceInDatabase.DeletedAt = DateTime.Now;
+                                }
+                            }
+                        }
+
+                        // need to pass the date key, so if the admin user
+                        // remove the employee, we will just remove that employee on a particular date
+                        DisplayWorkForce(workForce, selectedItem);
+                    }
+                }
+            }
+
+            
+        }
+
+        public event EventHandler UndoWorkForceChangesInFormOnly;
+        protected virtual void OnUndoWorkForceChangesInFormOnly(EventArgs e)
+        {
+            UndoWorkForceChangesInFormOnly?.Invoke(this, e);
+        }
+        private void BtnUndoChanges_Click(object sender, EventArgs e)
+        {
+            OnUndoWorkForceChangesInFormOnly(EventArgs.Empty);
         }
     }
 }

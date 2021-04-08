@@ -30,6 +30,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void InitializeComponent()
         {
             this.EmployeeBasicInfo = new System.Windows.Forms.TabPage();
+            this.CBoxPositions = new System.Windows.Forms.ComboBox();
+            this.CBoxBranches = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.TbxSalaryRate = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -45,13 +47,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxShiftList = new System.Windows.Forms.ComboBox();
             this.TbxMiddleInitial = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.TbxEmpPosition = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.TbxEmail = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.TbxBranchAssign = new System.Windows.Forms.TextBox();
             this.DTPicBirthDate = new System.Windows.Forms.DateTimePicker();
             this.DTPicHireDate = new System.Windows.Forms.DateTimePicker();
             this.TbxMobileNumber = new System.Windows.Forms.TextBox();
@@ -155,6 +155,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // EmployeeBasicInfo
             // 
+            this.EmployeeBasicInfo.Controls.Add(this.CBoxPositions);
+            this.EmployeeBasicInfo.Controls.Add(this.CBoxBranches);
             this.EmployeeBasicInfo.Controls.Add(this.groupBox1);
             this.EmployeeBasicInfo.Controls.Add(this.groupBox2);
             this.EmployeeBasicInfo.Controls.Add(this.LblShiftWorkingDays);
@@ -162,13 +164,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeBasicInfo.Controls.Add(this.CBoxShiftList);
             this.EmployeeBasicInfo.Controls.Add(this.TbxMiddleInitial);
             this.EmployeeBasicInfo.Controls.Add(this.label16);
-            this.EmployeeBasicInfo.Controls.Add(this.TbxEmpPosition);
             this.EmployeeBasicInfo.Controls.Add(this.label15);
             this.EmployeeBasicInfo.Controls.Add(this.label8);
             this.EmployeeBasicInfo.Controls.Add(this.TbxEmail);
             this.EmployeeBasicInfo.Controls.Add(this.label6);
             this.EmployeeBasicInfo.Controls.Add(this.label4);
-            this.EmployeeBasicInfo.Controls.Add(this.TbxBranchAssign);
             this.EmployeeBasicInfo.Controls.Add(this.DTPicBirthDate);
             this.EmployeeBasicInfo.Controls.Add(this.DTPicHireDate);
             this.EmployeeBasicInfo.Controls.Add(this.TbxMobileNumber);
@@ -188,6 +188,22 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeBasicInfo.Text = "Basic Information";
             this.EmployeeBasicInfo.UseVisualStyleBackColor = true;
             // 
+            // CBoxPositions
+            // 
+            this.CBoxPositions.FormattingEnabled = true;
+            this.CBoxPositions.Location = new System.Drawing.Point(383, 382);
+            this.CBoxPositions.Name = "CBoxPositions";
+            this.CBoxPositions.Size = new System.Drawing.Size(267, 29);
+            this.CBoxPositions.TabIndex = 58;
+            // 
+            // CBoxBranches
+            // 
+            this.CBoxBranches.FormattingEnabled = true;
+            this.CBoxBranches.Location = new System.Drawing.Point(383, 274);
+            this.CBoxBranches.Name = "CBoxBranches";
+            this.CBoxBranches.Size = new System.Drawing.Size(267, 29);
+            this.CBoxBranches.TabIndex = 57;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.TbxSalaryRate);
@@ -206,6 +222,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // TbxSalaryRate
             // 
             this.TbxSalaryRate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TbxSalaryRate.Enabled = false;
             this.TbxSalaryRate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TbxSalaryRate.Location = new System.Drawing.Point(184, 26);
             this.TbxSalaryRate.Name = "TbxSalaryRate";
@@ -226,6 +243,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // TboxHalfMonthRate
             // 
             this.TboxHalfMonthRate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TboxHalfMonthRate.Enabled = false;
             this.TboxHalfMonthRate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TboxHalfMonthRate.Location = new System.Drawing.Point(184, 61);
             this.TboxHalfMonthRate.Name = "TboxHalfMonthRate";
@@ -246,6 +264,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // TbxDailySalaryRate
             // 
             this.TbxDailySalaryRate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TbxDailySalaryRate.Enabled = false;
             this.TbxDailySalaryRate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TbxDailySalaryRate.Location = new System.Drawing.Point(184, 96);
             this.TbxDailySalaryRate.Name = "TbxDailySalaryRate";
@@ -341,15 +360,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label16.TabIndex = 46;
             this.label16.Text = "Middle name";
             // 
-            // TbxEmpPosition
-            // 
-            this.TbxEmpPosition.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TbxEmpPosition.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TbxEmpPosition.Location = new System.Drawing.Point(385, 335);
-            this.TbxEmpPosition.Name = "TbxEmpPosition";
-            this.TbxEmpPosition.Size = new System.Drawing.Size(265, 29);
-            this.TbxEmpPosition.TabIndex = 44;
-            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -402,16 +412,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label4.Size = new System.Drawing.Size(94, 20);
             this.label4.TabIndex = 27;
             this.label4.Text = "Date of birth";
-            // 
-            // TbxBranchAssign
-            // 
-            this.TbxBranchAssign.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TbxBranchAssign.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TbxBranchAssign.Location = new System.Drawing.Point(383, 223);
-            this.TbxBranchAssign.Multiline = true;
-            this.TbxBranchAssign.Name = "TbxBranchAssign";
-            this.TbxBranchAssign.Size = new System.Drawing.Size(265, 83);
-            this.TbxBranchAssign.TabIndex = 32;
             // 
             // DTPicBirthDate
             // 
@@ -1320,13 +1320,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.TabPage EmployeeBasicInfo;
         private System.Windows.Forms.TextBox TbxMiddleInitial;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox TbxEmpPosition;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox TbxEmail;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox TbxBranchAssign;
         private System.Windows.Forms.DateTimePicker DTPicBirthDate;
         private System.Windows.Forms.DateTimePicker DTPicHireDate;
         private System.Windows.Forms.TextBox TbxMobileNumber;
@@ -1421,5 +1419,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.ColumnHeader LVColumnIsPaid;
+        private System.Windows.Forms.ComboBox CBoxBranches;
+        private System.Windows.Forms.ComboBox CBoxPositions;
     }
 }

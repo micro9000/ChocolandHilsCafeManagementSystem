@@ -25,6 +25,7 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
+        private readonly IBranchData _branchData;
         private readonly IEmployeeShiftDayData _employeeShiftDayData;
         private readonly IEmployeeController _employeeController;
         private readonly IEmployeePayslipData _employeePayslipData;
@@ -46,6 +47,7 @@ namespace Main.Forms.EmployeeManagementForms
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                                 IGovernmentAgencyData governmentAgencyData,
                                 IEmployeeLeaveData employeeLeaveData,
+                                IBranchData branchData,
                                 IEmployeeShiftDayData employeeShiftDayData,
                                 IEmployeeController employeeController,
                                 IEmployeePayslipData employeePayslipData,
@@ -68,6 +70,7 @@ namespace Main.Forms.EmployeeManagementForms
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _governmentAgencyData = governmentAgencyData;
             _employeeLeaveData = employeeLeaveData;
+            _branchData = branchData;
             _employeeShiftDayData = employeeShiftDayData;
             _employeeController = employeeController;
             _employeePayslipData = employeePayslipData;
@@ -147,6 +150,8 @@ namespace Main.Forms.EmployeeManagementForms
 
             controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
             controlToDisplay.WorkShifts = _workShiftController.GetAll().Data;
+            controlToDisplay.Branches = _branchData.GetAllNotDeleted();
+            controlToDisplay.Positions = _employeePositionData.GetAllNotDeleted();
             // TODO: add the existing emp. govt. ids from our database and use the CustomModels -> EmployeeGovtIdCardTempModel.cs
 
             // event added
@@ -169,8 +174,7 @@ namespace Main.Forms.EmployeeManagementForms
 
             var saveResults = _employeeController.SaveEmployeeDetails(employeeCRUDControlObj.IsNew,
                                                                       employeeCRUDControlObj.Employee,
-                                                                       employeeCRUDControlObj.EmployeeGovtIdCards,
-                                                                       employeeCRUDControlObj.EmployeeSalary);
+                                                                       employeeCRUDControlObj.EmployeeGovtIdCards);
 
             string resultMessages = "";
             foreach (var msg in saveResults.Messages)
@@ -220,7 +224,7 @@ namespace Main.Forms.EmployeeManagementForms
             if (employeeDetails != null && employeeDetails.IsSuccess && employeeDetails.Data != null)
             {
                 employeeCRUDControlObj.EmployeeGovtIdCards = _employeeController.GetAllEmployeeIdCardsMapToCustomModel(employeeDetails.Data.EmployeeNumber);
-                employeeCRUDControlObj.EmployeeSalary = _employeeController.GetEmployeeSalaryRateByEmployeeNumber(employeeDetails.Data.EmployeeNumber).Data;
+                //employeeCRUDControlObj.EmployeeSalary = _employeeController.GetEmployeeSalaryRateByEmployeeNumber(employeeDetails.Data.EmployeeNumber).Data;
                 employeeCRUDControlObj.DisplayEmployeeDetails(employeeDetails.Data);
 
 
@@ -364,21 +368,24 @@ namespace Main.Forms.EmployeeManagementForms
 
             employeeDetailsCRUDControl.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
             employeeDetailsCRUDControl.WorkShifts = _workShiftController.GetAll().Data;
+            employeeDetailsCRUDControl.Branches = _branchData.GetAllNotDeleted();
+            employeeDetailsCRUDControl.Positions = _employeePositionData.GetAllNotDeleted();
 
             // event added
             employeeDetailsCRUDControl.EmployeeSaved += this.HandleEmployeeSaved;
-            employeeDetailsCRUDControl.PropertyChanged += this.OnEmployeeNumberEnter;
+            employeeDetailsCRUDControl.PropertyChanged += this.OnEmployeeNumberEnter; // automatically executed once we assign the employee number below
             employeeDetailsCRUDControl.WorkShiftSelected += HandleSelectedWorkShiftToGetOtherInfo;
             employeeDetailsCRUDControl.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
 
             employeeDetailsCRUDControl.Location = new Point(this.ClientSize.Width / 2 - employeeDetailsCRUDControl.Size.Width / 2, this.ClientSize.Height / 2 - employeeDetailsCRUDControl.Size.Height / 2);
             employeeDetailsCRUDControl.Anchor = AnchorStyles.None;
             employeeDetailsCRUDControl.UpdateEmployeeDetails();
+            employeeDetailsCRUDControl.LoadOtherComboBoxData(); // Load combobox data, in order to select on displaying employee details
 
             employeeDetailsCRUDControl.TbxEmployeeNumber.Text = selectedEmployeeNumber;
-            employeeDetailsCRUDControl.EmployeeNumber = selectedEmployeeNumber;
+            employeeDetailsCRUDControl.EmployeeNumber = selectedEmployeeNumber; // <---- here, once this code executed, the PropertyChanged += this.OnEmployeeNumberEnter; will execute
 
-            this.panelContainer.Controls.Add(employeeDetailsCRUDControl);
+            this.panelContainer.Controls.Add(employeeDetailsCRUDControl); 
 
             // TODO: Use this method to display all information related to the employee
         }
@@ -546,6 +553,7 @@ namespace Main.Forms.EmployeeManagementForms
             manageEmpWorkScheduleControlObj.ShiftSelected += HandleShiftSelectedToGetAdditionalDetails;
             manageEmpWorkScheduleControlObj.EmployeeShiftUpdated += HandleUpdateEmployeeShift;
             manageEmpWorkScheduleControlObj.SaveWorkforceSchedule += HandleSaveWorkforceSchedule;
+            manageEmpWorkScheduleControlObj.UndoWorkForceChangesInFormOnly += HandleUndoChangesOnWorkforceScheduleFormOnly;
 
             //manageEmpWorkScheduleControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
 
@@ -569,6 +577,12 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
+        private void HandleUndoChangesOnWorkforceScheduleFormOnly(object sender, EventArgs e)
+        {
+            ManageEmpWorkScheduleControl manageEmpWorkScheduleControlObj = (ManageEmpWorkScheduleControl)sender;
+            manageEmpWorkScheduleControlObj.WorkforceSchedule = _workforceScheduleController.GetWorkforceSchedule();
+            manageEmpWorkScheduleControlObj.DisplayWorkScheduleInListView();
+        }
 
         private void HandleUpdateEmployeeShift(object sender, EventArgs e)
         {

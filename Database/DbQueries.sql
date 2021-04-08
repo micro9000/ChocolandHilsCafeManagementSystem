@@ -122,6 +122,8 @@ CREATE TABLE IF NOT EXISTS EmployeePositions(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM EmployeePositions;
+
 
 CREATE TABLE IF NOT EXISTS Employees(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -137,12 +139,16 @@ CREATE TABLE IF NOT EXISTS Employees(
     dateHire DATE NOT NULL,
     empNumYear CHAR(4),
     position VARCHAR(50),
+    branchId BIGINT,
+    positionId BIGINT,
     shiftId BIGINT NOT NULL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id)
+    FOREIGN KEY (shiftId) REFERENCES EmployeeShifts(id),
+    FOREIGN KEY (branchId) REFERENCES Branches(id),
+    FOREIGN KEY (positionId) REFERENCES EmployeePositions(id)
 )ENGINE=INNODB;
 ALTER TABLE Employees 
 ADD COLUMN isQuit BOOLEAN DEFAULT False;
@@ -150,6 +156,19 @@ ALTER TABLE Employees
 ADD COLUMN quitDate DATE;
 ALTER TABLE Employees
 ADD COLUMN imageFileName VARCHAR(500);
+
+-- Run this query to add this columns
+-- or just drop the whole database to start again, so can set the foreign keys for these ids and ignore below alter queries
+ALTER TABLE Employees 
+ADD COLUMN branchId BIGINT;
+ALTER TABLE Employees 
+ADD COLUMN positionId BIGINT;
+
+-- Run these queries to drop these old columns:
+ALTER TABLE Employees
+DROP COLUMN branchAssign;
+ALTER TABLE Employees
+DROP COLUMN position;
 
 
 SELECT * FROM Employees;
@@ -193,19 +212,23 @@ CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
 
 SELECT * FROM EmployeeGovtIdCards;
 
-CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    employeeNumber CHAR(8),
-    salaryRate DECIMAL(9,2),
-    halfMonthRate DECIMAL(9,2),
-    dailyRate DECIMAL(9,2),
-    increase DECIMAL DEFAULT 0,
-    increaseDate DATE,
-    createdAt DATETIME DEFAULT NOW(),
-    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False
-)ENGINE=INNODB;
+-- DROP THIS TABLE, WE DON'T NEED THIS ANYMORE <----------------------------------------------------------------
+drop table EmployeeSalaryRate;
+-- CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
+-- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     employeeNumber CHAR(8),
+--     salaryRate DECIMAL(9,2),
+--     halfMonthRate DECIMAL(9,2),
+--     dailyRate DECIMAL(9,2),
+--     increase DECIMAL DEFAULT 0,
+--     increaseDate DATE,
+--     createdAt DATETIME DEFAULT NOW(),
+--     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+--     deletedAt DATETIME,
+--     isDeleted BOOLEAN DEFAULT False
+-- )ENGINE=INNODB;
+
+
 
 SELECT * FROM EmployeeSalaryRate;
 

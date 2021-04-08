@@ -63,6 +63,24 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
+        private List<BranchModel> branches;
+
+        public List<BranchModel> Branches
+        {
+            get { return branches; }
+            set { branches = value; }
+        }
+
+        private List<EmployeePositionModel> positions;
+
+        public List<EmployeePositionModel> Positions
+        {
+            get { return positions; }
+            set { positions = value; }
+        }
+
+
+
         private List<EmployeeShiftDayModel> workShiftDays = new List<EmployeeShiftDayModel>();
 
         public List<EmployeeShiftDayModel> WorkShiftDays
@@ -89,13 +107,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
-        private EmployeeSalaryRateModel employeeSalary;
+        //private EmployeeSalaryRateModel employeeSalary;
 
-        public EmployeeSalaryRateModel EmployeeSalary
-        {
-            get { return employeeSalary; }
-            set { employeeSalary = value; }
-        }
+        //public EmployeeSalaryRateModel EmployeeSalary
+        //{
+        //    get { return employeeSalary; }
+        //    set { employeeSalary = value; }
+        //}
 
 
 
@@ -188,6 +206,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void EmployeeDetailsCRUDControl_Load(object sender, EventArgs e)
         {
+            LoadOtherComboBoxData();
+        }
+
+
+        public void LoadOtherComboBoxData()
+        {
             // Govt. agencies load in combo box
             if (this.GovtAgencies != null)
             {
@@ -214,7 +238,33 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 }
             }
 
+            // Branches load in combo box
+            if (this.Branches != null)
+            {
+                ComboboxItem item;
+                foreach (var branch in this.Branches)
+                {
+                    item = new ComboboxItem();
+                    item.Text = branch.BranchName;
+                    item.Value = branch.Id;
+                    this.CBoxBranches.Items.Add(item);
+                }
+            }
+
+            // Positions load in combo box
+            if (this.Positions != null)
+            {
+                ComboboxItem item;
+                foreach (var position in this.Positions)
+                {
+                    item = new ComboboxItem();
+                    item.Text = position.Title;
+                    item.Value = position.Id;
+                    this.CBoxPositions.Items.Add(item);
+                }
+            }
         }
+
 
         public void ClearForm()
         {
@@ -239,11 +289,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TbxMobileNumber.Text = "";
             this.DTPicHireDate.Value = DateTime.Now;
             this.TbxAddress.Text = "";
-            this.TbxBranchAssign.Text = "";
             this.TbxEmail.Text = "";
-            this.TbxEmpPosition.Text = "";
             this.TbxEmployeeNumber.Text = "";
             this.CboxGovtAgencies.SelectedIndex = -1;
+            this.CBoxBranches.SelectedIndex = -1;
+            this.CBoxPositions.SelectedIndex = -1;
 
             this.CBoxShiftList.SelectedIndex = -1;
             this.LblShiftWorkingDays.Text = "";
@@ -285,9 +335,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.TbxMobileNumber.Text = employeeDetails.MobileNumber;
                 this.DTPicHireDate.Value = employeeDetails.DateHire;
                 this.TbxAddress.Text = employeeDetails.Address;
-                this.TbxBranchAssign.Text = employeeDetails.BranchAssign;
                 this.TbxEmail.Text = employeeDetails.EmailAddress;
-                this.TbxEmpPosition.Text = employeeDetails.Position;
 
                 if (employeeDetails.IsQuit == true)
                 {
@@ -316,8 +364,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 }
 
 
-                var shift = employeeDetails.Shift;
-
                 for(int i=0; i < this.CBoxShiftList.Items.Count; i++)
                 {
                     var item = this.CBoxShiftList.Items[i] as ComboboxItem;
@@ -328,11 +374,42 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     }
                 }
 
+                for(int i=0; i<this.CBoxBranches.Items.Count; i++)
+                {
+                    var item = this.CBoxBranches.Items[i] as ComboboxItem;
+                    if (long.Parse(item.Value.ToString()) == employeeDetails.BranchId)
+                    {
+                        this.CBoxBranches.SelectedIndex = i;
+                        break;
+                    }
+                }
+
+                // Select position
+                for (int i = 0; i < this.CBoxPositions.Items.Count; i++)
+                {
+                    var item = this.CBoxPositions.Items[i] as ComboboxItem;
+                    if (long.Parse(item.Value.ToString()) == employeeDetails.PositionId)
+                    {
+                        this.CBoxPositions.SelectedIndex = i;
+                        break;
+                    }
+                }
+                // Display salary rate based on position selected
+                if (employeeDetails.Position != null)
+                {
+                    this.TbxSalaryRate.Text = employeeDetails.Position.SalaryRate.ToString();
+                    this.TboxHalfMonthRate.Text = employeeDetails.Position.HalfMonthRate.ToString();
+                    this.TbxDailySalaryRate.Text = employeeDetails.Position.DailyRate.ToString();
+                }
+                
+
+
+                var shift = employeeDetails.Shift;
                 this.WorkShiftDays = shift.ShiftDays;
                 DisplayWorkShiftDays();
 
                 DisplayEmployeeGovtIds();
-                DisplayEmployeeSalaryRate();
+                //DisplayEmployeeSalaryRate();
             }
         }
 
@@ -369,15 +446,15 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
-        private void DisplayEmployeeSalaryRate()
-        {
-            if (this.EmployeeSalary != null)
-            {
-                this.TbxSalaryRate.Text = this.EmployeeSalary.SalaryRate.ToString();
-                this.TboxHalfMonthRate.Text = this.EmployeeSalary.HalfMonthRate.ToString();
-                this.TbxDailySalaryRate.Text = this.EmployeeSalary.DailyRate.ToString();
-            }
-        }
+        //private void DisplayEmployeeSalaryRate()
+        //{
+        //    if (this.EmployeeSalary != null)
+        //    {
+        //        this.TbxSalaryRate.Text = this.EmployeeSalary.SalaryRate.ToString();
+        //        this.TboxHalfMonthRate.Text = this.EmployeeSalary.HalfMonthRate.ToString();
+        //        this.TbxDailySalaryRate.Text = this.EmployeeSalary.DailyRate.ToString();
+        //    }
+        //}
 
 
         public string UploadEmployeeImage(string employeeNum)
@@ -420,17 +497,32 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             //    return;
             //}
 
-
+            // Workshift
             var selectedWorkShift = this.CBoxShiftList.SelectedItem as ComboboxItem;
-
             if (selectedWorkShift == null)
             {
                 MessageBox.Show("Kindly choose emplooyee shift.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-
             long selectedWorkShiftId = long.Parse(selectedWorkShift.Value.ToString());
 
+            // Branch
+            var selectedBranch = this.CBoxBranches.SelectedItem as ComboboxItem;
+            if (selectedBranch == null)
+            {
+                MessageBox.Show("Kindly choose branch.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            long selectedBranchId = long.Parse(selectedBranch.Value.ToString());
+
+            // Position
+            var selectedPosition = this.CBoxPositions.SelectedItem as ComboboxItem;
+            if (selectedPosition == null)
+            {
+                MessageBox.Show("Kindly choose employee position.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            long selectedPositionId = long.Parse(selectedPosition.Value.ToString());
 
             Employee = new EmployeeModel
             {
@@ -441,46 +533,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 MobileNumber = this.TbxMobileNumber.Text,
                 DateHire = this.DTPicHireDate.Value,
                 Address = this.TbxAddress.Text,
-                BranchAssign = this.TbxBranchAssign.Text,
                 EmailAddress = this.TbxEmail.Text,
-                Position = this.TbxEmpPosition.Text,
-                ShiftId = selectedWorkShiftId
+                ShiftId = selectedWorkShiftId,
+                BranchId = selectedBranchId,
+                PositionId = selectedPositionId
             };
 
             if (this.IsNew == false)
             {
                 Employee.EmployeeNumber = this.TbxEmployeeNumber.Text;
             }
-
-
-            decimal salaryRate = 0;
-            decimal halfMonthSalaryRate = 0;
-            decimal dailySalaryRate = 0;
-
-            if (decimal.TryParse(this.TbxSalaryRate.Text, out salaryRate) == false)
-            {
-                MessageBox.Show("Invalid salary rate", "Convert salary to decimal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (decimal.TryParse(this.TboxHalfMonthRate.Text, out halfMonthSalaryRate) == false)
-            {
-                MessageBox.Show("Invalid half month rate", "Convert half month to decimal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (decimal.TryParse(this.TbxDailySalaryRate.Text, out dailySalaryRate) == false)
-            {
-                MessageBox.Show("Invalid daily salary rate", "Convert daily salary to decimal", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            EmployeeSalary = new EmployeeSalaryRateModel
-            {
-                SalaryRate = salaryRate,
-                HalfMonthRate = halfMonthSalaryRate,
-                DailyRate = dailySalaryRate
-            };
 
             OnEmployeeSaved(EventArgs.Empty);
         }
@@ -765,41 +827,41 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
 
 
-        public bool CheckIfDayOff(DateTime workDay)
+        public bool CheckIfNotDayOff(DateTime workDay)
         {
             if (WorkShiftDays == null)
                 return true;
 
             string[] workdays = WorkShiftDays.Select(x => x.DayName).ToList().ToArray();
-            return workdays.Contains(workDay.ToString("ddd", CultureInfo.InvariantCulture)) == false;
+
+            var workDayName = workDay.ToString("ddd", CultureInfo.InvariantCulture);
+
+            return workdays.Contains(workDayName) ;
+        }
+
+
+        public bool CheckIfEmpHaveScheduledShift(DateTime workDay)
+        {
+            var workforceSched = WorkforceSchedules != null ? WorkforceSchedules.Where(x => x.WorkDate == workDay).FirstOrDefault() : null;
+            return workforceSched != null;
         }
 
         public bool CheckIfAbsentOnEmpShift(DateTime workDay)
         {
             var workforceSched = WorkforceSchedules != null ? WorkforceSchedules.Where(x => x.WorkDate == workDay).FirstOrDefault() : null;
 
-            bool isAbsentOnWorkSched = workforceSched == null ? true : workDay > DateTime.Now && workforceSched.isDone == false;
+            bool isAbsentOnWorkSched = workforceSched == null ? 
+                                        true : 
+                                        (workDay.Date < DateTime.Now.Date && workforceSched.isDone == false);
 
-            return CheckIfDayOff(workDay) == false && isAbsentOnWorkSched == true;
+            return CheckIfNotDayOff(workDay) == true && isAbsentOnWorkSched == true;
         }
 
 
 
         private void AddThisAttendanceRecordToListView (EmployeeAttendanceModel attendance, DateTime day)
         {
-
-            if (attendance == null && CheckIfAbsentOnEmpShift(day))
-            { // for absent
-                var row = new string[]
-                {
-                    day.ToShortDateString(),
-                    day.ToString("ddd", CultureInfo.InvariantCulture),
-                    "", "", "AWOL"
-                };
-
-                AddThisToAttendanceListView(AttendanceRecordType.awol, day, new AttendanceRecord { record = row });
-
-            }else if (attendance == null && CheckIfDayOff(day) == true)
+            if (attendance == null && CheckIfNotDayOff(day) == false)
             {
                 var row = new string[]
                 {
@@ -810,35 +872,58 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 AddThisToAttendanceListView(AttendanceRecordType.off, day, new AttendanceRecord { record = row });
             }
-
-            if (attendance != null)
+            else if (attendance == null && CheckIfEmpHaveScheduledShift(day) == false)
             {
-                DateTime firstTimeOut = DateTime.Now;
-                if (attendance.FirstTimeOut == DateTime.MinValue)
-                {
-                    firstTimeOut = attendance.Shift.EarlyTimeOut;
-                }
-                else
-                {
-                    firstTimeOut = attendance.FirstTimeOut;
-                }
+                var row = new string[]
+                        {
+                            day.ToShortDateString(),
+                            day.ToString("ddd", CultureInfo.InvariantCulture),
+                            "", "", "NO shift sched"
+                        };
 
-                string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm")} {firstTimeOut.ToString("hh:mm")}";
-
-                string secondTimeINandOUT = "";
-
-                if (attendance.IsTimeOutProvided)
-                {
-                    secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
-                }
-
-                string whoDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalHrs); //attendance.FirstHalfHrs + attendance.SecondHalfHrs
-                string late = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalLate); // attendance.FirstHalfLateMins + attendance.SecondHalfLateMins
-                string underTime = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalUnderTime); //attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins
-                string overTime = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.OverTimeMins);
-
+                AddThisToAttendanceListView(AttendanceRecordType.error, day, new AttendanceRecord { record = row });
+            }
+            else  if (attendance == null && CheckIfAbsentOnEmpShift(day))
+            { // for absent
                 var row = new string[]
                 {
+                    day.ToShortDateString(),
+                    day.ToString("ddd", CultureInfo.InvariantCulture),
+                    "", "", "AWOL"
+                };
+
+                AddThisToAttendanceListView(AttendanceRecordType.awol, day, new AttendanceRecord { record = row });
+
+            }else 
+            {
+                if (attendance != null)
+                {
+                    DateTime firstTimeOut = DateTime.Now;
+                    if (attendance.FirstTimeOut == DateTime.MinValue)
+                    {
+                        firstTimeOut = attendance.Shift.EarlyTimeOut;
+                    }
+                    else
+                    {
+                        firstTimeOut = attendance.FirstTimeOut;
+                    }
+
+                    string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm")} {firstTimeOut.ToString("hh:mm")}";
+
+                    string secondTimeINandOUT = "";
+
+                    if (attendance.IsTimeOutProvided)
+                    {
+                        secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
+                    }
+
+                    string whoDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalHrs); //attendance.FirstHalfHrs + attendance.SecondHalfHrs
+                    string late = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalLate); // attendance.FirstHalfLateMins + attendance.SecondHalfLateMins
+                    string underTime = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalUnderTime); //attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins
+                    string overTime = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.OverTimeMins);
+
+                    var row = new string[]
+                    {
                     attendance.WorkDate.ToShortDateString(),
                     day.ToString("ddd", CultureInfo.InvariantCulture),
                     attendance.Shift.Shift,
@@ -850,11 +935,25 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     underTime,
                     overTime,
                     attendance.IsPaid ? "Paid" : ""
-                };
+                    };
 
 
-                AddThisToAttendanceListView(AttendanceRecordType.timeInOut, day, new AttendanceRecord { record = row });
+                    AddThisToAttendanceListView(AttendanceRecordType.timeInOut, day, new AttendanceRecord { record = row });
+                }
+                else
+                {
+                    if (day.Date < DateTime.Now.Date)
+                    {
+                        var row = new string[]
+                        {
+                            day.ToShortDateString(),
+                            day.ToString("ddd", CultureInfo.InvariantCulture),
+                            "", "", "NO Attendance record"
+                        };
 
+                        AddThisToAttendanceListView(AttendanceRecordType.error, day, new AttendanceRecord { record = row });
+                    }
+                }
             }
         }
 
@@ -949,7 +1048,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 }
 
                 DisplayAttendanceFromTemporaryLocation();
-                //this.LViewAttendanceHistory.Items[this.LViewAttendanceHistory.Items.Count - 1].EnsureVisible();
             }
         }
 
@@ -1090,11 +1188,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
     public enum AttendanceRecordType
     {
-        timeInOut = 5,
-        off = 4,
-        holiday = 3,
-        leave = 2,
-        awol = 1
+        timeInOut = 6,
+        off = 5,
+        holiday = 4,
+        leave = 3,
+        awol = 2,
+        error = 1
     }
 
     public class AttendanceRecord

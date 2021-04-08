@@ -67,12 +67,8 @@ namespace Main.Controllers.EmployeeManagementControllers
             workforceScheduling.WorkForceByDate = new Dictionary<DateTime, List<EmployeeModel>>();
             workforceScheduling.WorkforceSchedules = new List<WorkforceScheduleModel>();
 
-            var workforceScheduleInOurDB = _workforceScheduleData.GetAllNotYetDone();
-
-            //var workForceGroupByWorkDate = (from sched in workforceScheduleInOurDB
-            //                                group sched by sched.WorkDate
-            //                                into groupSched
-            //                                select groupSched).ToDictionary(x => x.Key, y => y.ToList());
+            // We just need to retrieve schedule workforce that workdate is greater than or equal to date today
+            var workforceScheduleInOurDB = _workforceScheduleData.GetAllNotYetDone(DateTime.Now);
 
             if (workforceScheduleInOurDB != null && workforceScheduleInOurDB.Count > 0)
             {

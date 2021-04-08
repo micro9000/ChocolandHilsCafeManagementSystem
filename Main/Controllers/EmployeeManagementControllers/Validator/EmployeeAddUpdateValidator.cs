@@ -23,8 +23,10 @@ namespace Main.Controllers.EmployeeManagementControllers.Validator
                    .WithMessage("Mobile number must be 11 or 13 numbers");
             RuleFor(e => e.EmailAddress).NotEmpty().EmailAddress();
             RuleFor(e => e.BirthDate).NotEmpty();
-            RuleFor(e => e.BranchAssign).NotEmpty();
+            //RuleFor(e => e.BranchAssign).NotEmpty();
             RuleFor(e => e.DateHire).NotEmpty();
+            RuleFor(e => e.BranchId).NotEmpty();
+            RuleFor(e => e.PositionId).NotEmpty();
         }
     }
 }

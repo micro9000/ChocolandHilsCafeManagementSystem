@@ -138,7 +138,6 @@ namespace Main
             services.AddTransient<IEmployeePayslipBenefitData, EmployeePayslipBenefitData>();
             services.AddTransient<IEmployeePayslipData, EmployeePayslipData>();
             services.AddTransient<IEmployeePayslipDeductionData, EmployeePayslipDeductionData>();
-            services.AddTransient<IEmployeeSalaryRateData, EmployeeSalaryRateData>();
             services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
             services.AddTransient<IEmployeeShiftDayData, EmployeeShiftDayData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
@@ -162,7 +161,6 @@ namespace Main
             // Employee Management
             // validator
             services.AddTransient<EmployeeAddUpdateValidator>();
-            services.AddTransient<EmployeeSalaryRateAddUpdateValidator>();
             services.AddTransient<EmployeeShiftAddUpdateValidator>();
             services.AddTransient<EmployeeLeaveAddUpdateValidator>();
             services.AddTransient<HolidayAddUpdateValidator>();
