@@ -242,13 +242,31 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void BtnSaveEmployeeLeave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.TboxEmployeeToSearch.Text))
+            {
                 MessageBox.Show("Enter employee number", "Save employee leave", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
 
             if (SelectedLeaveType == null)
+            {
                 MessageBox.Show("Select leave type", "Save employee leave", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
 
             TimeSpan duration = this.DPickerDurationEndDate.Value - this.DPickerDurationStartDate.Value;
-            decimal remainingLeaveCount = EmployeeRemainingLeaveCountBaseOnSelectedLeave - (decimal)duration.TotalDays;
+            decimal durationTotalDays = 0;
+
+            if (this.DPickerDurationEndDate.Value == this.DPickerDurationStartDate.Value)
+            {
+                durationTotalDays = 1;
+            }
+            else
+            {
+                durationTotalDays = (decimal)duration.TotalDays;
+            }
+
+            decimal remainingLeaveCount = EmployeeRemainingLeaveCountBaseOnSelectedLeave - durationTotalDays;
+
 
             this.NewEmployeeLeave = new EmployeeLeaveModel {
                 LeaveId = SelectedLeaveType.Id,
@@ -256,7 +274,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 Reason = this.TboxLeaveReason.Text,
                 StartDate = this.DPickerDurationStartDate.Value,
                 EndDate = this.DPickerDurationEndDate.Value,
-                NumberOfDays = (decimal)duration.TotalDays,
+                NumberOfDays = durationTotalDays,
                 RemainingDays = remainingLeaveCount,
                 CurrentYear = DateTime.Now.Year
             };

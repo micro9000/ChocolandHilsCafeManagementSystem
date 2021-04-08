@@ -110,9 +110,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // DGVEmployeeBenefits
             // 
+            this.DGVEmployeeBenefits.AllowUserToAddRows = false;
+            this.DGVEmployeeBenefits.AllowUserToDeleteRows = false;
             this.DGVEmployeeBenefits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVEmployeeBenefits.Location = new System.Drawing.Point(312, 40);
             this.DGVEmployeeBenefits.Name = "DGVEmployeeBenefits";
+            this.DGVEmployeeBenefits.ReadOnly = true;
             this.DGVEmployeeBenefits.RowTemplate.Height = 25;
             this.DGVEmployeeBenefits.Size = new System.Drawing.Size(548, 218);
             this.DGVEmployeeBenefits.TabIndex = 1;
@@ -215,9 +218,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // DGVEmployeeDeductions
             // 
+            this.DGVEmployeeDeductions.AllowUserToAddRows = false;
+            this.DGVEmployeeDeductions.AllowUserToDeleteRows = false;
             this.DGVEmployeeDeductions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVEmployeeDeductions.Location = new System.Drawing.Point(310, 42);
             this.DGVEmployeeDeductions.Name = "DGVEmployeeDeductions";
+            this.DGVEmployeeDeductions.ReadOnly = true;
             this.DGVEmployeeDeductions.RowTemplate.Height = 25;
             this.DGVEmployeeDeductions.Size = new System.Drawing.Size(548, 218);
             this.DGVEmployeeDeductions.TabIndex = 3;

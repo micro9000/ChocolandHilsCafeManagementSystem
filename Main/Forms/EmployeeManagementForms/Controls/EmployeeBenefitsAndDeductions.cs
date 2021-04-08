@@ -121,13 +121,49 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void BtnSaveBenefits_Click(object sender, EventArgs e)
         {
-            if (this.BenefitIsSaveNew == false)
+            if (string.IsNullOrEmpty(this.TbxBenefitTitle.Text))
             {
+                MessageBox.Show("Enter benefit title", "Save benefit", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (this.NumUpDwnBenefitAmount.Value <= 0)
+            {
+                MessageBox.Show("Enter benefit amount", "Save benefit", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (this.BenefitIsSaveNew == false && BenefitToSave != null)
+            {
+                if (this.Benefits != null)
+                {
+                    var existingBenefit = this.Benefits
+                                                .Where(x => x.BenefitTitle.ToLower() == this.TbxBenefitTitle.Text.ToLower() && x.Id != BenefitToSave.Id)
+                                                .FirstOrDefault();
+                    if (existingBenefit != null)
+                    {
+                        MessageBox.Show("Duplicate benefit!", "Save benefit", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 BenefitToSave.BenefitTitle = this.TbxBenefitTitle.Text;
                 BenefitToSave.Amount = this.NumUpDwnBenefitAmount.Value;
             }
             else
             {
+                if (this.Benefits != null)
+                {
+                    var existingBenefit = this.Benefits
+                                                .Where(x => x.BenefitTitle.ToLower() == this.TbxBenefitTitle.Text.ToLower())
+                                                .FirstOrDefault();
+                    if (existingBenefit != null)
+                    {
+                        MessageBox.Show("Duplicate benefit!", "Save benefit", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 BenefitToSave = new EmployeeBenefitModel
                 {
                     BenefitTitle = this.TbxBenefitTitle.Text,
@@ -300,13 +336,50 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void BtnSaveEmpDeduction_Click(object sender, EventArgs e)
         {
-            if (this.DeductionIsSaveNew == false)
+
+            if (string.IsNullOrEmpty(this.TBoxDeductionTitle.Text))
             {
+                MessageBox.Show("Enter deduction title", "Save deduction", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (this.NumUpDwnDeductionAmount.Value <= 0)
+            {
+                MessageBox.Show("Enter deduction amount", "Save deduction", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (this.DeductionIsSaveNew == false && DeductionToSave != null)
+            {
+                if (this.Deductions != null)
+                {
+                    var existingDeduction = this.Deductions
+                                                .Where(x => x.DeductionTitle.ToLower() == this.TBoxDeductionTitle.Text.ToLower() && x.Id != DeductionToSave.Id)
+                                                .FirstOrDefault();
+                    if (existingDeduction != null)
+                    {
+                        MessageBox.Show("Duplicate deduction!", "Save deduction", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 DeductionToSave.DeductionTitle = this.TBoxDeductionTitle.Text;
                 DeductionToSave.Amount = this.NumUpDwnDeductionAmount.Value;
             }
             else
             {
+                if (this.Deductions != null)
+                {
+                    var existingDeduction = this.Deductions
+                                                .Where(x => x.DeductionTitle.ToLower() == this.TBoxDeductionTitle.Text.ToLower())
+                                                .FirstOrDefault();
+                    if (existingDeduction != null)
+                    {
+                        MessageBox.Show("Duplicate deduction!", "Save deduction", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 DeductionToSave = new EmployeeDeductionModel
                 {
                     DeductionTitle = this.TBoxDeductionTitle.Text,

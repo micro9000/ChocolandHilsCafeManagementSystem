@@ -25,5 +25,6 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             string query = @"SELECT * FROM EmployeeBenefits WHERE isDeleted=false";
             return this.GetAll(query);
         }
+
     }
 }

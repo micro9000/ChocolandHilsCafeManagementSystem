@@ -980,7 +980,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 }
                 else
                 {
-                    if (day.Date < DateTime.Now.Date)
+                    if (day.Date <= DateTime.Now.Date)
                     {
                         var row = new string[]
                         {
