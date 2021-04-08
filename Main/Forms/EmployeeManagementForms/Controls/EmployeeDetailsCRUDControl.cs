@@ -16,15 +16,17 @@ using Shared.Helpers;
 using System.Globalization;
 using EntitiesShared.PayrollManagement;
 using Main.Forms.PayrollForms.Controls;
+using Shared;
 
 namespace Main.Forms.EmployeeManagementForms.Controls
 {
     public partial class EmployeeDetailsCRUDControl : UserControl
     {
-        public EmployeeDetailsCRUDControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter)
+        public EmployeeDetailsCRUDControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter, OtherSettings otherSettings)
         {
             InitializeComponent();
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
+            _otherSettings = otherSettings;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -282,6 +284,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.AttendanceHistory = null;
 
             this.LblActionForEmployeeDetails.Text = "Add new employee";
+            this.TbxEmployeeNumberDisplayOnly.Text = "";
             this.TbxFirstName.Text = "";
             this.TbxLastName.Text = "";
             this.TbxMiddleInitial.Text = "";
@@ -323,11 +326,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         }
 
-
         public void DisplayEmployeeDetails(EmployeeModel employeeDetails)
         {
             if (employeeDetails != null)
             {
+                this.TbxEmployeeNumberDisplayOnly.Text = employeeDetails.EmployeeNumber;
                 this.TbxFirstName.Text = employeeDetails.FirstName;
                 this.TbxLastName.Text = employeeDetails.LastName;
                 this.TbxMiddleInitial.Text = employeeDetails.MiddleName;
@@ -524,6 +527,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
             long selectedPositionId = long.Parse(selectedPosition.Value.ToString());
 
+
+            DateTime minDateForEmpBirthDate = DateTime.Now.AddYears(-(_otherSettings.MinAgeForEmployee));
+
+            if (this.DTPicBirthDate.Value > minDateForEmpBirthDate)
+            {
+                MessageBox.Show($"Invalid employee birth date, the employee should be {_otherSettings.MinAgeForEmployee} years old.", "Save employee", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+
             Employee = new EmployeeModel
             {
                 FirstName = this.TbxFirstName.Text,
@@ -541,7 +554,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             if (this.IsNew == false)
             {
-                Employee.EmployeeNumber = this.TbxEmployeeNumber.Text;
+                Employee.EmployeeNumber = this.EmployeeNumber;//this.TbxEmployeeNumber.Text;
             }
 
             OnEmployeeSaved(EventArgs.Empty);
@@ -641,6 +654,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                             // the employee govt. id number
                             addedNewGovtId.IsNeedToUpdate = true;
                             addedNewGovtId.EmployeeGovtIdCard.EmployeeIdNumber = empGovtIdNumber;
+                            addedNewGovtId.EmployeeGovtIdCard.EmployeeContribution = NumUpDwnEmployeeContribution.Value;
+                            addedNewGovtId.EmployeeGovtIdCard.EmployerContribution = NumUpDwnEmployerContribution.Value;
                         }
                         else
                         {
@@ -693,6 +708,29 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 {
                     var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
                                             x.EmployeeGovtIdCard.GovtAgencyId == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId).FirstOrDefault();
+
+                    if (addedNewGovtId != null)
+                    {
+                        for(int i=0; i< this.CboxGovtAgencies.Items.Count; i++)
+                        {
+                            var govtAgencyItem = this.CboxGovtAgencies.Items[i] as ComboboxItem;
+
+                            if (govtAgencyItem != null)
+                            {
+                                long selectedGovtAgencyId = long.Parse(govtAgencyItem.Value.ToString());
+
+                                if (addedNewGovtId.EmployeeGovtIdCard.GovtAgencyId == selectedGovtAgencyId)
+                                {
+                                    this.CboxGovtAgencies.SelectedIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+
+                        TboxEmpIdNumber.Text = addedNewGovtId.EmployeeGovtIdCard.EmployeeIdNumber;
+                        NumUpDwnEmployeeContribution.Value = addedNewGovtId.EmployeeGovtIdCard.EmployeeContribution;
+                        NumUpDwnEmployerContribution.Value = addedNewGovtId.EmployeeGovtIdCard.EmployerContribution;
+                    }
 
 
                     if (addedNewGovtId.EmployeeGovtIdCard.IsDeleted == true)
@@ -1088,6 +1126,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private DateTime filterAttendanceEndDate;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
+        private readonly OtherSettings _otherSettings;
 
         public DateTime FilterAttendanceEndDate
         {

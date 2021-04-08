@@ -94,6 +94,40 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return emp;
         }
 
+        public EmployeeModel GetByEmployeeMobileNumber(string mobileNum)
+        {
+            string query = @"SELECT * FROM Employees 
+                            WHERE isDeleted=false AND mobileNumber=@MobileNumber";
+
+            var emp = this.GetFirstOrDefault(query, new { MobileNumber = mobileNum });
+
+            if (emp != null)
+            {
+                emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
+                emp.Position = _employeePositionData.Get(emp.PositionId);
+                emp.Branch = _branchData.Get(emp.BranchId);
+            }
+
+            return emp;
+        }
+
+        public EmployeeModel GetByEmployeeEmail(string email)
+        {
+            string query = @"SELECT * FROM Employees 
+                            WHERE isDeleted=false AND emailAddress=@EmailAddress";
+
+            var emp = this.GetFirstOrDefault(query, new { EmailAddress = email });
+
+            if (emp != null)
+            {
+                emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
+                emp.Position = _employeePositionData.Get(emp.PositionId);
+                emp.Branch = _branchData.Get(emp.BranchId);
+            }
+
+            return emp;
+        }
+
         public List<EmployeeModel> Search(string search)
         {
             string query = @"SELECT * 

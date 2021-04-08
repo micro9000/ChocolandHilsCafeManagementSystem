@@ -9,5 +9,7 @@ namespace Shared
     public class OtherSettings
     {
         public int NumDaysNotifyUserForInventoryExpDate { get; set; }
+
+        public int MinAgeForEmployee { get; set; }
     }
 }

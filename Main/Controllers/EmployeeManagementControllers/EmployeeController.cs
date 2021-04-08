@@ -189,8 +189,27 @@ namespace Main.Controllers.EmployeeManagementControllers
                 return results;
             }
 
+
             if (isNewEmployee)
             {
+                var existingEmpWithTheSameMobileNum = _employeeData.GetByEmployeeMobileNumber(input.MobileNumber);
+
+                if (existingEmpWithTheSameMobileNum != null)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add($"{ input.MobileNumber } - mobile number is already used by {existingEmpWithTheSameMobileNum.FullName}");
+                    return results;
+                }
+
+                var existingEmpWithTheSameEmail = _employeeData.GetByEmployeeEmail(input.EmailAddress);
+
+                if (existingEmpWithTheSameEmail != null)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add($"{ input.EmailAddress } - is already used by {existingEmpWithTheSameEmail.FullName}");
+                    return results;
+                }
+
                 // Save new employee
                 if (_employeeData.Add(input) > 0)
                 {
@@ -212,6 +231,25 @@ namespace Main.Controllers.EmployeeManagementControllers
                 {
                     throw new Exception($"Employee with the employee number of { input.EmployeeNumber } not found!");
                 }
+
+                var existingEmpWithTheSameMobileNum = _employeeData.GetByEmployeeMobileNumber(input.MobileNumber);
+
+                if (existingEmpWithTheSameMobileNum != null && existingEmpWithTheSameMobileNum.EmployeeNumber != input.EmployeeNumber)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add($"{ input.MobileNumber } - mobile number is already used by {existingEmpWithTheSameMobileNum.FullName}");
+                    return results;
+                }
+
+                var existingEmpWithTheSameEmail = _employeeData.GetByEmployeeEmail(input.EmailAddress);
+
+                if (existingEmpWithTheSameEmail != null && existingEmpWithTheSameEmail.EmployeeNumber != input.EmployeeNumber)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add($"{ input.EmailAddress } - is already used by {existingEmpWithTheSameEmail.FullName}");
+                    return results;
+                }
+
 
                 results.Data = employeeDetails;
 

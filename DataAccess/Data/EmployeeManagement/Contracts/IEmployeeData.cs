@@ -13,6 +13,8 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
         List<EmployeeModel> GetAllNotDeleted();
         long GetCountByEmpNumYear(DateTime dateHire);
         EmployeeModel GetByEmployeeNumber(string employeeNumber);
+        EmployeeModel GetByEmployeeMobileNumber(string mobileNum);
+        EmployeeModel GetByEmployeeEmail(string email);
         List<EmployeeModel> GetAllByDateHire(DateTime dateHire);
         List<EmployeeModel> Search(string search);
 

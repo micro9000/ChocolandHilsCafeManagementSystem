@@ -79,7 +79,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             if (Employees != null)
             {
                 this.DGVEmployeeList.Rows.Clear();
-                this.DGVEmployeeList.ColumnCount = 11;
+                this.DGVEmployeeList.ColumnCount = 10;
 
                 this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber";
                 this.DGVEmployeeList.Columns[0].HeaderText = "Employee #";
@@ -109,11 +109,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVEmployeeList.Columns[8].Name = "Shift";
                 this.DGVEmployeeList.Columns[8].HeaderText = "Shift";
 
-                this.DGVEmployeeList.Columns[9].Name = "CreatedAt";
-                this.DGVEmployeeList.Columns[9].HeaderText = "Created At";
+                this.DGVEmployeeList.Columns[9].Name = "PositionName";
+                this.DGVEmployeeList.Columns[9].HeaderText = "Position";
 
-                this.DGVEmployeeList.Columns[10].Name = "UpdatedAt";
-                this.DGVEmployeeList.Columns[10].HeaderText = "Updated At";
+                //this.DGVEmployeeList.Columns[10].Name = "CreatedAt";
+                //this.DGVEmployeeList.Columns[10].HeaderText = "Created At";
 
 
                 DataGridViewImageColumn btnViewDetailsImg = new DataGridViewImageColumn();
@@ -136,8 +136,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[6].Value = (employee.Branch != null) ? employee.Branch.BranchName : "";
                     row.Cells[7].Value = employee.DateHire.ToShortDateString();
                     row.Cells[8].Value = employee.Shift.Shift;
-                    row.Cells[9].Value = employee.CreatedAt.ToShortDateString();
-                    row.Cells[10].Value = employee.UpdatedAt.ToShortDateString();
+                    row.Cells[9].Value = (employee.Position != null) ? employee.Position.Title : "";
+                    //row.Cells[10].Value = employee.CreatedAt.ToShortDateString();
                     DGVEmployeeList.Rows.Add(row);
                 }
             }
@@ -146,7 +146,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void DGVEmployees_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 11 && e.RowIndex > -1)
+            if (e.ColumnIndex == 10 && e.RowIndex > -1)
             {
                 if (DGVEmployeeList.CurrentRow != null)
                 {
@@ -171,7 +171,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void SetDGVEmployeesFontAndColors()
         {
             this.DGVEmployeeList.BackgroundColor = Color.White;
-            this.DGVEmployeeList.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVEmployeeList.DefaultCellStyle.Font = new Font("Century Gothic", 10);
             //this.DGVEmployees.DefaultCellStyle.ForeColor = Color.White;
             //this.DGVEmployees.DefaultCellStyle.BackColor = Color.FromArgb(99, 99, 138);
             //this.DGVEmployees.DefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 64);
@@ -182,7 +182,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVEmployeeList.AllowUserToResizeRows = false;
             this.DGVEmployeeList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            this.DGVEmployeeList.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVEmployeeList.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 10);
             //this.DGVEmployees.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             //this.DGVEmployees.ColumnHeadersDefaultCellStyle.BackColor = Color.WhiteSmoke;
             //this.DGVEmployees.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 64);

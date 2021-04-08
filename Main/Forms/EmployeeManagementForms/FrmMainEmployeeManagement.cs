@@ -15,6 +15,8 @@ using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Controllers.OtherDataController.ControllerInterface;
 using Main.Forms.EmployeeManagementForms.Controls;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Shared;
 using Shared.Helpers;
 
 namespace Main.Forms.EmployeeManagementForms
@@ -23,6 +25,7 @@ namespace Main.Forms.EmployeeManagementForms
     {
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
+        private readonly OtherSettings _otherSettings;
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
         private readonly IBranchData _branchData;
@@ -45,6 +48,7 @@ namespace Main.Forms.EmployeeManagementForms
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
+                                    IOptions<OtherSettings> otherSettingsOptions,
                                 IGovernmentAgencyData governmentAgencyData,
                                 IEmployeeLeaveData employeeLeaveData,
                                 IBranchData branchData,
@@ -68,6 +72,7 @@ namespace Main.Forms.EmployeeManagementForms
             InitializeComponent();
             _logger = logger;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
+            _otherSettings = otherSettingsOptions.Value;
             _governmentAgencyData = governmentAgencyData;
             _employeeLeaveData = employeeLeaveData;
             _branchData = branchData;
@@ -143,7 +148,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             this.panelContainer.Controls.Clear();
 
-            var controlToDisplay = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter);
+            var controlToDisplay = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter, _otherSettings);
             //controlToDisplay.Dock = DockStyle.Fill;
             controlToDisplay.Location = new Point(this.ClientSize.Width / 2 - controlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - controlToDisplay.Size.Height / 2);
             //controlToDisplay.Anchor = (AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left);
@@ -185,11 +190,21 @@ namespace Main.Forms.EmployeeManagementForms
             if (saveResults.IsSuccess)
             {
                 MessageBox.Show(resultMessages, "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                if (employeeCRUDControlObj.IsNew)
+                {
+                    MessageBox.Show($"{saveResults.Data.Employee.FullName} employee number is {saveResults.Data.Employee.EmployeeNumber}", "Save employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
                 string imageFileName = employeeCRUDControlObj.UploadEmployeeImage(saveResults.Data.Employee.EmployeeNumber);
 
                 _employeeController.SaveEmployeeImageFileName(saveResults.Data.Employee.EmployeeNumber, imageFileName);
 
                 employeeCRUDControlObj.ClearForm();
+
+                // Trigger display employee info after saving
+                employeeCRUDControlObj.EmployeeNumber = saveResults.Data.Employee.EmployeeNumber;
+                employeeCRUDControlObj.IsNew = false;
 
                 //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
 
@@ -364,7 +379,7 @@ namespace Main.Forms.EmployeeManagementForms
             
             this.panelContainer.Controls.Clear();
 
-            var employeeDetailsCRUDControl = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter);
+            var employeeDetailsCRUDControl = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter, _otherSettings);
 
             employeeDetailsCRUDControl.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
             employeeDetailsCRUDControl.WorkShifts = _workShiftController.GetAll().Data;
