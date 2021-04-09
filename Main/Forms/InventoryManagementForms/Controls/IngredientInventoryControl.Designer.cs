@@ -397,6 +397,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnCancelSaveIngredientDetails.TabIndex = 9;
             this.BtnCancelSaveIngredientDetails.Text = "Cancel";
             this.BtnCancelSaveIngredientDetails.UseVisualStyleBackColor = false;
+            this.BtnCancelSaveIngredientDetails.Click += new System.EventHandler(this.BtnCancelSaveIngredientDetails_Click);
             // 
             // BtnSaveIngredientDetails
             // 

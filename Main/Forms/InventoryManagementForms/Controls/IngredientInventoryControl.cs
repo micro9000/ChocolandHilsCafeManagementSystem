@@ -458,6 +458,10 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
+        private void BtnCancelSaveIngredientDetails_Click(object sender, EventArgs e)
+        {
+            ResetIngredientForm();
+        }
 
         public void ResetIngredientForm()
         {
@@ -1370,5 +1374,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
         {
             DisplayProductIngredientsToCalculateInDGV();
         }
+
+
     }
 }
