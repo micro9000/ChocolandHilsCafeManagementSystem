@@ -1048,7 +1048,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Button BtnCancelUpdateCategory;
         private System.Windows.Forms.TextBox TbxCategory;
         private System.Windows.Forms.Button BtnSaveCategory;
-        private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button BtnCancelSaveProductDetails;

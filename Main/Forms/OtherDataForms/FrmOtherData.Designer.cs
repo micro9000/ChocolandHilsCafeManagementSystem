@@ -115,6 +115,7 @@ namespace Main.Forms.OtherDataForms
             this.ContextMenuBranchesSettings.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuBranchesList});
             this.ContextMenuBranchesSettings.Name = "ContextMenuBranchesSettings";
+            this.ContextMenuBranchesSettings.OwnerItem = this.ToolStripMenuBranches;
             this.ContextMenuBranchesSettings.Size = new System.Drawing.Size(93, 26);
             this.ContextMenuBranchesSettings.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuBranchesSettings_ItemClicked);
             // 

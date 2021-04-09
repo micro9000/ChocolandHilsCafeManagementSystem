@@ -1453,8 +1453,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Label LblIngredientNameInCalculator;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.NumericUpDown NumUpDownUnitCostForCalculator;
         private System.Windows.Forms.NumericUpDown NumUpDownQtyValueForCalculator;

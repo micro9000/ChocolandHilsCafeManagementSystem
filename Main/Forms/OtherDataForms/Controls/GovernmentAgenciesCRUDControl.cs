@@ -139,15 +139,36 @@ namespace Main.Forms.OtherDataForms.Controls
             if (string.IsNullOrWhiteSpace(this.TbxAgency.Text))
                 return;
 
+            // add new
             if (this.IsSaveNew == true)
             {
+
+                var existingGovtAgency = this.GovernmentAgencies.Where(x => x.GovtAgency.ToLower() == this.TbxAgency.Text.ToLower()).FirstOrDefault();
+
+                if (existingGovtAgency != null)
+                {
+                    MessageBox.Show("Duplicate government agency", "Duplicate entry", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
                 this.GovernmentAgencyToAddUpdate = new GovernmentAgencyModel
                 {
                     GovtAgency = this.TbxAgency.Text
                 };
             }
-            else
+
+            // update
+            if (this.IsSaveNew == false && this.GovernmentAgencyToAddUpdate != null)
             {
+                var existingGovtAgency = this.GovernmentAgencies.Where(x => x.GovtAgency.ToLower() == this.TbxAgency.Text.ToLower() &&
+                                                    x.Id != this.GovernmentAgencyToAddUpdate.Id).FirstOrDefault();
+
+                if (existingGovtAgency != null)
+                {
+                    MessageBox.Show("Duplicate government agency", "Duplicate entry", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
                 this.GovernmentAgencyToAddUpdate.GovtAgency = this.TbxAgency.Text;
             }
 
@@ -197,7 +218,7 @@ namespace Main.Forms.OtherDataForms.Controls
 
                     row.Cells[0].Value = agency.Id;
                     row.Cells[1].Value = agency.GovtAgency;
-                    row.Cells[1].Value = agency.CreatedAt.ToShortDateString();
+                    row.Cells[2].Value = agency.CreatedAt.ToShortDateString();
                     this.DGVGovernmentAgencies.Rows.Add(row);
                 }
             }

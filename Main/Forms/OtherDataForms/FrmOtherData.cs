@@ -104,7 +104,7 @@ namespace Main.Forms.OtherDataForms
         private void OnGovernmentAgencySelectToDelete(object sender, PropertyChangedEventArgs e)
         {
             GovernmentAgenciesCRUDControl agencyControlObj = (GovernmentAgenciesCRUDControl)sender;
-            var selectedAgencyId = agencyControlObj.SelectedGovernmentAgencyIdToUpdate;
+            var selectedAgencyId = agencyControlObj.SelectedGovernmentAgencyIdToDelete;
             if (long.TryParse(selectedAgencyId, out long agencyId))
             {
                 DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
