@@ -119,18 +119,46 @@ namespace Main.Forms.OtherDataForms.Controls
 
             if (this.IsSaveNew == true)
             {
+                if (this.LeaveTypes != null)
+                {
+                    var existingLeave = this.LeaveTypes.Where(x => x.LeaveType.ToLower() == this.TbxLeaveType.Text.ToLower()).FirstOrDefault();
+
+                    if (existingLeave != null)
+                    {
+                        MessageBox.Show("Duplicate leave type", "Save leave type", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 this.LeaveTypeToAddUpdate = new LeaveTypeModel
                 {
+                    IsActive = true,
                     LeaveType = this.TbxLeaveType.Text,
                     NumberOfDays = numberOfDays
                 };
             }
             else
             {
-                this.LeaveTypeToAddUpdate.LeaveType = this.TbxLeaveType.Text;
-                this.LeaveTypeToAddUpdate.NumberOfDays = numberOfDays;
-                this.LeaveTypeToAddUpdate.IsActive = this.CboxDisable.Checked ? false : true;
-                //Id = long.Parse(this.SelectedLeaveTypeId),
+                if (this.LeaveTypeToAddUpdate != null)
+                {
+                    if (this.LeaveTypes != null)
+                    {
+                        var existingLeave = this.LeaveTypes.Where(x =>
+                                                x.LeaveType.ToLower() == this.TbxLeaveType.Text.ToLower() &&
+                                                x.Id != this.LeaveTypeToAddUpdate.Id).FirstOrDefault();
+
+                        if (existingLeave != null)
+                        {
+                            MessageBox.Show("Duplicate leave type", "Save leave type", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                    }
+
+                    this.LeaveTypeToAddUpdate.LeaveType = this.TbxLeaveType.Text;
+                    this.LeaveTypeToAddUpdate.NumberOfDays = numberOfDays;
+                    this.LeaveTypeToAddUpdate.IsActive = this.CboxDisable.Checked ? false : true;
+                    //Id = long.Parse(this.SelectedLeaveTypeId),
+                }
             }
 
             OnLeaveTypeSaved(EventArgs.Empty);

@@ -206,432 +206,433 @@ namespace Main.Forms.AttendanceTerminal
                 var empNumber = TBoxCurrentEmployeeNumber.Text;
                 var empDetails = this._employeeData.GetByEmployeeNumber(empNumber);
 
-                if (empDetails != null)
+                if (empDetails == null)
                 {
-                    if (empDetails.Position == null)
+                    MessageBox.Show("Employee details not found!", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (empDetails.Position == null)
+                {
+                    MessageBox.Show($"{empDetails.FullName} don't have position and salary rate. Kindly update employee details", "Salary Rate", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (empDetails.Shift == null)
+                {
+                    MessageBox.Show("Employee's shift not found. \nKindly set employee shift.", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                var shiftDetails = empDetails.Shift;
+                var shiftDays = shiftDetails.ShiftDays;
+
+                string workingDays = string.Join(", ", shiftDays.Select(x => x.DayName).ToList().ToArray());
+                this.LblCurrentEmployeeSchedule.Text = $"{shiftDetails.Shift} (from {shiftDetails.StartTime.ToShortTimeString()} to {shiftDetails.EndTime.ToShortTimeString()}) \nDays: {workingDays}";
+
+                // we need to get the schedule time and align them on today's date and time
+                // if today is 2021/03/13 and schedule time is 8:30AM
+                // the startTime should be 2021/03/13 8:30AM, because in our database, the date is different, 
+                // so we need to align the date to today's date
+                DateTime startDateTime = DateTime.Today.Add(shiftDetails.StartTime.TimeOfDay);
+                DateTime endDateTime = DateTime.Today.Add(shiftDetails.EndTime.TimeOfDay);
+                DateTime earlyTimeOutDateTime = DateTime.Today.Add(shiftDetails.EarlyTimeOut.TimeOfDay);
+                DateTime lateTimeInDateTime = DateTime.Today.Add(shiftDetails.LateTimeIn.TimeOfDay);
+
+                // kung anong araw ngaun
+                DateTime todaysDateAndTime = this.DPickerTesting.Value; //DateTime.Now;
+                                                                        //var culture = CultureInfo.CurrentCulture;
+                                                                        //var workDateDayAbbr = culture.DateTimeFormat.GetAbbreviatedDayName(workDate.DayOfWeek);
+
+                var workforceSchedule = _workforceScheduleData.GetScheduleByEmpAndDate(empDetails.EmployeeNumber, todaysDateAndTime);
+
+                if (workforceSchedule == null)
+                {
+                    MessageBox.Show("No workforce schedule specify in your account.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var todayAttendance = _employeeAttendanceData.GetEmployeeAttendanceByWorkDate(empDetails.EmployeeNumber, todaysDateAndTime);
+                if (todayAttendance != null && this.RBtnTimeIN.Checked)
+                {
+                    MessageBox.Show("Invalid transaction, you already have TIME-IN transaction", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Invalid transaction for TIME-OUT
+                // employee should have TIME-IN transaction first
+                if (this.RBtnTimeOUT.Checked && todayAttendance == null)
+                {
+                    MessageBox.Show("Invalid transaction, no TIME-IN Transaction", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // TIME IN
+                if (this.RBtnTimeIN.Checked)
+                {
+                    TimeSpan hrsDiffFromINandLateTimeINTimespan = lateTimeInDateTime - todaysDateAndTime;
+                    int hrsDiffFromINandLateTimeIN = (int)hrsDiffFromINandLateTimeINTimespan.TotalHours;
+
+                    TimeSpan hrsDiffFromINandEndDateTimeTimespan = endDateTime - todaysDateAndTime;
+                    int hrsDiffFromINandEndDateTime = (int)hrsDiffFromINandEndDateTimeTimespan.TotalHours;
+
+
+                    var attendance = new EmployeeAttendanceModel
                     {
-                        MessageBox.Show($"{empDetails.FullName} don't have position and salary rate. Kindly update employee details", "Salary Rate", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        EmployeeNumber = empDetails.EmployeeNumber,
+                        ShiftId = empDetails.ShiftId,
+                        WorkDate = todaysDateAndTime
+                    };
+
+
+                    if (startDateTime < todaysDateAndTime &&
+                        earlyTimeOutDateTime > todaysDateAndTime &&
+                        hrsDiffFromINandLateTimeIN > 1)
+                    {
+                        //MessageBox.Show("compute late for first-half");
+                        // compute late for first-half
+
+
+                        TimeSpan lateInterval = todaysDateAndTime - startDateTime;
+                        //int lateHrs = (int)lateInterval.TotalHours;
+                        decimal lateMins = (decimal)lateInterval.TotalMinutes;
+
+                        attendance.FirstTimeIn = todaysDateAndTime;
+                        attendance.FirstHalfLateMins = lateMins;
+
+                        using (var transaction = new TransactionScope())
+                        {
+                            // insert the attendance record
+                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            {
+                                DisplayConfirmationForm(true);
+                                //workforceSchedule.isDone = true;
+                            }
+                            else
+                            {
+                                DisplayConfirmationForm(false);
+                            }
+                            transaction.Complete();
+                        }
+
                     }
-
-                    if (empDetails.Shift == null)
+                    else if (startDateTime >= todaysDateAndTime && earlyTimeOutDateTime > todaysDateAndTime)
                     {
-                        MessageBox.Show("Employee's shift not found. \nKindly set employee shift.", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        //MessageBox.Show("good time-in for first half");
+                        // good time-in for first half
+
+                        attendance.FirstTimeIn = todaysDateAndTime;
+
+                        using (var transaction = new TransactionScope())
+                        {
+                            // insert the attendance record
+                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            {
+                                DisplayConfirmationForm(true);
+                                //workforceSchedule.isDone = true;
+                            }
+                            else
+                            {
+                                DisplayConfirmationForm(false);
+                            }
+                            transaction.Complete();
+                        }
+
                     }
-                    var shiftDetails = empDetails.Shift;
-                    var shiftDays = shiftDetails.ShiftDays;
-
-                    string workingDays = string.Join(", ", shiftDays.Select(x => x.DayName).ToList().ToArray());
-                    this.LblCurrentEmployeeSchedule.Text = $"{shiftDetails.Shift} (from {shiftDetails.StartTime.ToShortTimeString()} to {shiftDetails.EndTime.ToShortTimeString()}) \nDays: {workingDays}";
-
-                    // we need to get the schedule time and align them on today's date and time
-                    // if today is 2021/03/13 and schedule time is 8:30AM
-                    // the startTime should be 2021/03/13 8:30AM, because in our database, the date is different, 
-                    // so we need to align the date to today's date
-                    DateTime startDateTime = DateTime.Today.Add(shiftDetails.StartTime.TimeOfDay);
-                    DateTime endDateTime = DateTime.Today.Add(shiftDetails.EndTime.TimeOfDay);
-                    DateTime earlyTimeOutDateTime = DateTime.Today.Add(shiftDetails.EarlyTimeOut.TimeOfDay);
-                    DateTime lateTimeInDateTime = DateTime.Today.Add(shiftDetails.LateTimeIn.TimeOfDay);
-
-                    // kung anong araw ngaun
-                    DateTime todaysDateAndTime = this.DPickerTesting.Value; //DateTime.Now;
-                    //var culture = CultureInfo.CurrentCulture;
-                    //var workDateDayAbbr = culture.DateTimeFormat.GetAbbreviatedDayName(workDate.DayOfWeek);
-
-                    var workforceSchedule = _workforceScheduleData.GetScheduleByEmpAndDate(empDetails.EmployeeNumber, todaysDateAndTime);
-
-                    if (workforceSchedule == null)
+                    else if (startDateTime < todaysDateAndTime &&
+                            earlyTimeOutDateTime < todaysDateAndTime &&
+                            lateTimeInDateTime >= todaysDateAndTime)
                     {
-                        MessageBox.Show("No workforce schedule specify in your account.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        // good time-in for second half
+                        //MessageBox.Show("good time-in for second half");
+
+
+                        attendance.SecondTimeIn = todaysDateAndTime;
+
+                        using (var transaction = new TransactionScope())
+                        {
+                            // insert the attendance record
+                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            {
+                                DisplayConfirmationForm(true);
+                                //workforceSchedule.isDone = true;
+                            }
+                            else
+                            {
+                                DisplayConfirmationForm(false);
+                            }
+                            transaction.Complete();
+                        }
+
+
                     }
-
-                    var todayAttendance = _employeeAttendanceData.GetEmployeeAttendanceByWorkDate(empDetails.EmployeeNumber, todaysDateAndTime);
-                    if (todayAttendance != null && this.RBtnTimeIN.Checked)
+                    else if (startDateTime < todaysDateAndTime &&
+                           earlyTimeOutDateTime < todaysDateAndTime &&
+                           lateTimeInDateTime < todaysDateAndTime &&
+                           endDateTime > todaysDateAndTime &&
+                           hrsDiffFromINandEndDateTime >= 1)
                     {
-                        MessageBox.Show("Invalid transaction, you already have TIME-IN transaction", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        // put null for first-half time and out and 0 for hrs
+                        // compute late for second half
+                        //MessageBox.Show("put null for first-half time and out and 0 for hrs \n compute late for second half");
+
+
+                        TimeSpan lateInterval = todaysDateAndTime - lateTimeInDateTime;
+                        //int lateHrs = (int)lateInterval.TotalHours;
+                        decimal lateMins = (decimal)lateInterval.TotalMinutes;
+
+                        attendance.SecondTimeIn = todaysDateAndTime;
+                        attendance.SecondHalfLateMins = lateMins;
+
+
+                        using (var transaction = new TransactionScope())
+                        {
+                            // insert the attendance record
+                            if (_employeeAttendanceData.Add(attendance) > 0)
+                            {
+                                DisplayConfirmationForm(true);
+                                //workforceSchedule.isDone = true;
+                            }
+                            else
+                            {
+                                DisplayConfirmationForm(false);
+                            }
+                            transaction.Complete();
+                        }
+
+
+
                     }
-                    // Invalid transaction for TIME-OUT
-                    // employee should have TIME-IN transaction first
-                    if (this.RBtnTimeOUT.Checked && todayAttendance == null)
+                    else if (startDateTime < todaysDateAndTime &&
+                             lateTimeInDateTime > todaysDateAndTime &&
+                             hrsDiffFromINandLateTimeIN <= 1)
                     {
-                        MessageBox.Show("Invalid transaction, no TIME-IN Transaction", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                        // early time-in for second-half
+                        //MessageBox.Show("early time-in for second-half");
 
-                    if (this.RBtnTimeIN.Checked)
-                    {
-                        TimeSpan hrsDiffFromINandLateTimeINTimespan = lateTimeInDateTime - todaysDateAndTime;
-                        int hrsDiffFromINandLateTimeIN = (int)hrsDiffFromINandLateTimeINTimespan.TotalHours;
+                        attendance.SecondTimeIn = todaysDateAndTime;
 
-                        TimeSpan hrsDiffFromINandEndDateTimeTimespan = endDateTime - todaysDateAndTime;
-                        int hrsDiffFromINandEndDateTime = (int)hrsDiffFromINandEndDateTimeTimespan.TotalHours;
-
-
-                        var attendance = new EmployeeAttendanceModel
+                        using (var transaction = new TransactionScope())
                         {
-                            EmployeeNumber = empDetails.EmployeeNumber,
-                            ShiftId = empDetails.ShiftId,
-                            WorkDate = todaysDateAndTime
-                        };
-
-
-                        if (startDateTime < todaysDateAndTime &&
-                            earlyTimeOutDateTime > todaysDateAndTime &&
-                            hrsDiffFromINandLateTimeIN > 1)
-                        {
-                            //MessageBox.Show("compute late for first-half");
-                            // compute late for first-half
-
-
-                            TimeSpan lateInterval = todaysDateAndTime - startDateTime;
-                            //int lateHrs = (int)lateInterval.TotalHours;
-                            decimal lateMins = (decimal)lateInterval.TotalMinutes;
-
-                            attendance.FirstTimeIn = todaysDateAndTime;
-                            attendance.FirstHalfLateMins = lateMins;
-
-                            using (var transaction = new TransactionScope())
+                            // insert the attendance record
+                            if (_employeeAttendanceData.Add(attendance) > 0)
                             {
-                                // insert the attendance record
-                                if (_employeeAttendanceData.Add(attendance) > 0)
-                                {
-                                    DisplayConfirmationForm(true);
-                                    //workforceSchedule.isDone = true;
-                                }
-                                else
-                                {
-                                    DisplayConfirmationForm(false);
-                                }
-                                transaction.Complete();
+                                DisplayConfirmationForm(true);
+                                //workforceSchedule.isDone = true;
                             }
-                            
+                            else
+                            {
+                                DisplayConfirmationForm(false);
+                            }
+                            transaction.Complete();
                         }
-                        else if (startDateTime >= todaysDateAndTime && earlyTimeOutDateTime > todaysDateAndTime)
-                        {
-                            //MessageBox.Show("good time-in for first half");
-                            // good time-in for first half
 
-                            attendance.FirstTimeIn = todaysDateAndTime;
-
-                            using (var transaction = new TransactionScope())
-                            {
-                                // insert the attendance record
-                                if (_employeeAttendanceData.Add(attendance) > 0)
-                                {
-                                    DisplayConfirmationForm(true);
-                                    //workforceSchedule.isDone = true;
-                                }
-                                else
-                                {
-                                    DisplayConfirmationForm(false);
-                                }
-                                transaction.Complete();
-                            }
-                            
-                        }
-                        else if (startDateTime < todaysDateAndTime &&
-                                earlyTimeOutDateTime < todaysDateAndTime &&
-                                lateTimeInDateTime >= todaysDateAndTime)
-                        {
-                            // good time-in for second half
-                            //MessageBox.Show("good time-in for second half");
-
-
-                            attendance.SecondTimeIn = todaysDateAndTime;
-
-                            using (var transaction = new TransactionScope())
-                            {
-                                // insert the attendance record
-                                if (_employeeAttendanceData.Add(attendance) > 0)
-                                {
-                                    DisplayConfirmationForm(true);
-                                    //workforceSchedule.isDone = true;
-                                }
-                                else
-                                {
-                                    DisplayConfirmationForm(false);
-                                }
-                                transaction.Complete();
-                            }
-                            
-
-                        }
-                        else if (startDateTime < todaysDateAndTime &&
-                               earlyTimeOutDateTime < todaysDateAndTime &&
-                               lateTimeInDateTime < todaysDateAndTime &&
-                               endDateTime > todaysDateAndTime &&
-                               hrsDiffFromINandEndDateTime >= 1)
-                        {
-                            // put null for first-half time and out and 0 for hrs
-                            // compute late for second half
-                            //MessageBox.Show("put null for first-half time and out and 0 for hrs \n compute late for second half");
-
-
-                            TimeSpan lateInterval = todaysDateAndTime - lateTimeInDateTime;
-                            //int lateHrs = (int)lateInterval.TotalHours;
-                            decimal lateMins = (decimal)lateInterval.TotalMinutes;
-
-                            attendance.SecondTimeIn = todaysDateAndTime;
-                            attendance.SecondHalfLateMins = lateMins;
-
-
-                            using (var transaction = new TransactionScope())
-                            {
-                                // insert the attendance record
-                                if (_employeeAttendanceData.Add(attendance) > 0)
-                                {
-                                    DisplayConfirmationForm(true);
-                                    //workforceSchedule.isDone = true;
-                                }
-                                else
-                                {
-                                    DisplayConfirmationForm(false);
-                                }
-                                transaction.Complete();
-                            }
-
-                            
-
-                        }
-                        else if (startDateTime < todaysDateAndTime &&
-                                 lateTimeInDateTime > todaysDateAndTime &&
-                                 hrsDiffFromINandLateTimeIN <= 1)
-                        {
-                            // early time-in for second-half
-                            //MessageBox.Show("early time-in for second-half");
-
-                            attendance.SecondTimeIn = todaysDateAndTime;
-
-                            using (var transaction = new TransactionScope())
-                            {
-                                // insert the attendance record
-                                if (_employeeAttendanceData.Add(attendance) > 0)
-                                {
-                                    DisplayConfirmationForm(true);
-                                    //workforceSchedule.isDone = true;
-                                }
-                                else
-                                {
-                                    DisplayConfirmationForm(false);
-                                }
-                                transaction.Complete();
-                            }
-                            
-                        }
-                        else
-                        {
-                            MessageBox.Show("Invalid transaction.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-                    }
-                    else if (this.RBtnTimeOUT.Checked)
-                    {
-                        if (todayAttendance != null)
-                        {
-                            if (todayAttendance.IsTimeOutProvided == true)
-                            {
-                                MessageBox.Show("Time-out transaction already provided.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                            
-                            // time-out time should not earlier than shift start-time
-                            if (todaysDateAndTime <= startDateTime)
-                            {
-                                MessageBox.Show("Invalid transaction", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-
-                            if (todaysDateAndTime > earlyTimeOutDateTime && lateTimeInDateTime >= todaysDateAndTime)
-                            {
-                                //MessageBox.Show("Good time-out for first-half");
-
-                                TimeSpan firstTimeOutHrsTimespan = todaysDateAndTime - startDateTime;
-                                decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes; // no need to store the sec
-
-                                todayAttendance.IsTimeOutProvided = true;
-                                todayAttendance.FirstTimeOut = todaysDateAndTime;
-                                todayAttendance.FirstHalfHrs = firstTimeOutHrs;
-
-                                var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
-
-                                todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
-                                todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
-                                todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                                todayAttendance.OverTimeTotalDeduction = 0;
-
-                                using (var transaction = new TransactionScope())
-                                {
-                                    if (_employeeAttendanceData.Update(todayAttendance))
-                                    {
-                                        DisplayConfirmationForm(true);
-                                        workforceSchedule.isDone = true;
-
-                                        _workforceScheduleData.Update(workforceSchedule);
-                                    }
-                                    else
-                                    {
-                                        DisplayConfirmationForm(false);
-                                    }
-
-                                    transaction.Complete();
-                                }
-
-                                
-                            }
-                            else if (todaysDateAndTime < earlyTimeOutDateTime && lateTimeInDateTime >= todaysDateAndTime)
-                            {
-                                TimeSpan firstTimeOutHrsTimespan = todaysDateAndTime - startDateTime;
-                                decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes; // no need to store the sec
-
-                                TimeSpan underTimeTimespan = earlyTimeOutDateTime - todaysDateAndTime;
-                                decimal underTime = (int)underTimeTimespan.TotalMinutes;// no need to store the sec
-
-                                todayAttendance.IsTimeOutProvided = true;
-                                todayAttendance.FirstTimeOut = todaysDateAndTime;
-                                todayAttendance.FirstHalfHrs = firstTimeOutHrs;
-                                todayAttendance.FirstHalfUnderTimeMins = underTime;
-
-                                var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
-
-                                todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
-                                todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
-                                todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                                todayAttendance.OverTimeTotalDeduction = 0;
-
-                                using (var transaction = new TransactionScope())
-                                {
-                                    if (_employeeAttendanceData.Update(todayAttendance))
-                                    {
-                                        DisplayConfirmationForm(true);
-                                        workforceSchedule.isDone = true;
-
-                                        _workforceScheduleData.Update(workforceSchedule);
-                                    }
-                                    else
-                                    {
-                                        DisplayConfirmationForm(false);
-                                    }
-                                    transaction.Complete();
-                                }
-
-
-                            }
-                            else if (todaysDateAndTime > earlyTimeOutDateTime && todaysDateAndTime > lateTimeInDateTime)
-                            {
-                                TimeSpan firstTimeOutHrsTimespan = earlyTimeOutDateTime - startDateTime;
-                                decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes;
-
-                                todayAttendance.IsTimeOutProvided = true;
-
-                                if (todayAttendance.FirstTimeIn != DateTime.MinValue)
-                                {
-                                    todayAttendance.FirstTimeOut = earlyTimeOutDateTime;
-                                    todayAttendance.FirstHalfHrs = firstTimeOutHrs;
-                                }
-
-                                if (todaysDateAndTime < endDateTime)
-                                {
-
-                                    TimeSpan secondTimeOutHrsTimespan = todaysDateAndTime - lateTimeInDateTime;
-                                    decimal secondTimeOutHrs = (int)secondTimeOutHrsTimespan.TotalMinutes;// no need to store the sec
-
-                                    TimeSpan underTimeTimespan = endDateTime - todaysDateAndTime;
-                                    decimal underTime = (int)underTimeTimespan.TotalMinutes;// no need to store the sec
-
-                                    todayAttendance.SecondTimeIn = lateTimeInDateTime;
-                                    todayAttendance.SecondTimeOut = todaysDateAndTime;
-                                    todayAttendance.SecondHalfHrs = secondTimeOutHrs;
-
-                                    todayAttendance.SecondHalfUnderTimeMins = underTime;
-
-                                    var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
-
-                                    todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
-                                    todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
-                                    todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                                    todayAttendance.OverTimeTotalDeduction = 0;
-
-                                    using (var transaction = new TransactionScope())
-                                    {
-                                        if (_employeeAttendanceData.Update(todayAttendance))
-                                        {
-                                            DisplayConfirmationForm(true);
-                                            workforceSchedule.isDone = true;
-
-                                            _workforceScheduleData.Update(workforceSchedule);
-                                        }
-                                        else
-                                        {
-                                            DisplayConfirmationForm(false);
-                                        }
-
-                                        transaction.Complete();
-                                    }
-
-                                    
-                                }
-                                else
-                                {
-
-                                    TimeSpan secondTimeOutHrsTimespan = endDateTime - lateTimeInDateTime;
-                                    decimal secondTimeOutHrs = (int)secondTimeOutHrsTimespan.TotalMinutes;// no need to store the sec
-
-                                    TimeSpan overTimeHrsTimespan = todaysDateAndTime - lateTimeInDateTime;
-                                    decimal overTimeHrs = (int)overTimeHrsTimespan.TotalMinutes - secondTimeOutHrs;// no need to store the sec
-
-                                    todayAttendance.SecondTimeIn = lateTimeInDateTime;
-                                    todayAttendance.SecondTimeOut = todaysDateAndTime;
-                                    todayAttendance.SecondHalfHrs = secondTimeOutHrs;
-
-                                    todayAttendance.OverTimeMins = overTimeHrs;
-
-                                    var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
-
-                                    todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
-                                    todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
-                                    todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                                    todayAttendance.OverTimeTotalDeduction = 0;
-
-                                    using (var transaction = new TransactionScope())
-                                    {
-                                        if (_employeeAttendanceData.Update(todayAttendance))
-                                        {
-                                            DisplayConfirmationForm(true);
-                                            workforceSchedule.isDone = true;
-
-                                            _workforceScheduleData.Update(workforceSchedule);
-                                        }
-                                        else
-                                        {
-                                            DisplayConfirmationForm(false);
-                                        }
-
-                                        transaction.Complete();
-                                    }
-                                    
-                                }
-
-                                //MessageBox.Show("Compute first-half hrs and second-half hrs");
-                            }
-                        }
                     }
                     else
                     {
-                        MessageBox.Show("Kindly select Time IN or OUT", "Time IN or OUT", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Invalid transaction.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
+                }
+                // TIME OUT
+                else if (this.RBtnTimeOUT.Checked)
+                {
+                    if (todayAttendance != null)
+                    {
+                        if (todayAttendance.IsTimeOutProvided == true)
+                        {
+                            MessageBox.Show("Time-out transaction already provided.", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        // time-out time should not earlier than shift start-time
+                        if (todaysDateAndTime <= startDateTime)
+                        {
+                            MessageBox.Show("Invalid transaction", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        if (todaysDateAndTime > earlyTimeOutDateTime && lateTimeInDateTime >= todaysDateAndTime)
+                        {
+                            //MessageBox.Show("Good time-out for first-half");
+
+                            TimeSpan firstTimeOutHrsTimespan = todaysDateAndTime - startDateTime;
+                            decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes; // no need to store the sec
+
+                            todayAttendance.IsTimeOutProvided = true;
+                            todayAttendance.FirstTimeOut = todaysDateAndTime;
+                            todayAttendance.FirstHalfHrs = firstTimeOutHrs;
+
+                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+
+                            todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
+                            todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+                            todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
+                            todayAttendance.OverTimeTotalDeduction = 0;
+
+                            using (var transaction = new TransactionScope())
+                            {
+                                if (_employeeAttendanceData.Update(todayAttendance))
+                                {
+                                    DisplayConfirmationForm(true);
+                                    workforceSchedule.isDone = true;
+
+                                    _workforceScheduleData.Update(workforceSchedule);
+                                }
+                                else
+                                {
+                                    DisplayConfirmationForm(false);
+                                }
+
+                                transaction.Complete();
+                            }
 
 
-                    DisplayAttendanceRecordForToday();
+                        }
+                        else if (todaysDateAndTime < earlyTimeOutDateTime && lateTimeInDateTime >= todaysDateAndTime)
+                        {
+                            TimeSpan firstTimeOutHrsTimespan = todaysDateAndTime - startDateTime;
+                            decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes; // no need to store the sec
 
+                            TimeSpan underTimeTimespan = earlyTimeOutDateTime - todaysDateAndTime;
+                            decimal underTime = (int)underTimeTimespan.TotalMinutes;// no need to store the sec
+
+                            todayAttendance.IsTimeOutProvided = true;
+                            todayAttendance.FirstTimeOut = todaysDateAndTime;
+                            todayAttendance.FirstHalfHrs = firstTimeOutHrs;
+                            todayAttendance.FirstHalfUnderTimeMins = underTime;
+
+                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+
+                            todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
+                            todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+                            todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
+                            todayAttendance.OverTimeTotalDeduction = 0;
+
+                            using (var transaction = new TransactionScope())
+                            {
+                                if (_employeeAttendanceData.Update(todayAttendance))
+                                {
+                                    DisplayConfirmationForm(true);
+                                    workforceSchedule.isDone = true;
+
+                                    _workforceScheduleData.Update(workforceSchedule);
+                                }
+                                else
+                                {
+                                    DisplayConfirmationForm(false);
+                                }
+                                transaction.Complete();
+                            }
+
+
+                        }
+                        else if (todaysDateAndTime > earlyTimeOutDateTime && todaysDateAndTime > lateTimeInDateTime)
+                        {
+                            TimeSpan firstTimeOutHrsTimespan = earlyTimeOutDateTime - startDateTime;
+                            decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes;
+
+                            todayAttendance.IsTimeOutProvided = true;
+
+                            if (todayAttendance.FirstTimeIn != DateTime.MinValue)
+                            {
+                                todayAttendance.FirstTimeOut = earlyTimeOutDateTime;
+                                todayAttendance.FirstHalfHrs = firstTimeOutHrs;
+                            }
+
+                            if (todaysDateAndTime < endDateTime)
+                            {
+
+                                TimeSpan secondTimeOutHrsTimespan = todaysDateAndTime - lateTimeInDateTime;
+                                decimal secondTimeOutHrs = (int)secondTimeOutHrsTimespan.TotalMinutes;// no need to store the sec
+
+                                TimeSpan underTimeTimespan = endDateTime - todaysDateAndTime;
+                                decimal underTime = (int)underTimeTimespan.TotalMinutes;// no need to store the sec
+
+                                todayAttendance.SecondTimeIn = lateTimeInDateTime;
+                                todayAttendance.SecondTimeOut = todaysDateAndTime;
+                                todayAttendance.SecondHalfHrs = secondTimeOutHrs;
+
+                                todayAttendance.SecondHalfUnderTimeMins = underTime;
+
+                                var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+
+                                todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
+                                todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+                                todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
+                                todayAttendance.OverTimeTotalDeduction = 0;
+
+                                using (var transaction = new TransactionScope())
+                                {
+                                    if (_employeeAttendanceData.Update(todayAttendance))
+                                    {
+                                        DisplayConfirmationForm(true);
+                                        workforceSchedule.isDone = true;
+
+                                        _workforceScheduleData.Update(workforceSchedule);
+                                    }
+                                    else
+                                    {
+                                        DisplayConfirmationForm(false);
+                                    }
+
+                                    transaction.Complete();
+                                }
+
+
+                            }
+                            else
+                            {
+
+                                TimeSpan secondTimeOutHrsTimespan = endDateTime - lateTimeInDateTime;
+                                decimal secondTimeOutHrs = (int)secondTimeOutHrsTimespan.TotalMinutes;// no need to store the sec
+
+                                TimeSpan overTimeHrsTimespan = todaysDateAndTime - lateTimeInDateTime;
+                                decimal overTimeHrs = (int)overTimeHrsTimespan.TotalMinutes - secondTimeOutHrs;// no need to store the sec
+
+                                todayAttendance.SecondTimeIn = lateTimeInDateTime;
+                                todayAttendance.SecondTimeOut = todaysDateAndTime;
+                                todayAttendance.SecondHalfHrs = secondTimeOutHrs;
+
+                                todayAttendance.OverTimeMins = overTimeHrs;
+
+                                var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+
+                                todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
+                                todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+                                todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
+                                todayAttendance.OverTimeTotalDeduction = 0;
+
+                                using (var transaction = new TransactionScope())
+                                {
+                                    if (_employeeAttendanceData.Update(todayAttendance))
+                                    {
+                                        DisplayConfirmationForm(true);
+                                        workforceSchedule.isDone = true;
+
+                                        _workforceScheduleData.Update(workforceSchedule);
+                                    }
+                                    else
+                                    {
+                                        DisplayConfirmationForm(false);
+                                    }
+
+                                    transaction.Complete();
+                                }
+
+                            }
+
+                            //MessageBox.Show("Compute first-half hrs and second-half hrs");
+                        }
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Employee details not found!", "Searching employee details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Kindly select Time IN or OUT", "Time IN or OUT", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+
+                DisplayAttendanceRecordForToday();
             }
         }
 
