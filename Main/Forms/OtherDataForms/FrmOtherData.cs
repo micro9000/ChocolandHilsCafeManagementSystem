@@ -1,6 +1,8 @@
-﻿using DataAccess.Data.OtherDataManagement.Contracts;
+﻿using DataAccess.Data.EmployeeManagement.Contracts;
+using DataAccess.Data.OtherDataManagement.Contracts;
 using Main.Controllers.OtherDataController.ControllerInterface;
 using Main.Forms.OtherDataForms.Controls;
+using Main.Forms.OtherDataForms.OtherForms;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,12 +23,14 @@ namespace Main.Forms.OtherDataForms
         private readonly IGovernmentController _governmentController;
         private readonly IBranchInfoController _branchInfoController;
         private readonly IBranchData _branchData;
+        private readonly IEmployeeData _employeeData;
 
         public FrmOtherData(ILogger<FrmOtherData> logger,
                                 ILeaveTypeController leaveTypeController,
                                 IGovernmentController governmentController,
                                 IBranchInfoController branchInfoController,
-                                IBranchData branchData)
+                                IBranchData branchData,
+                                IEmployeeData employeeData)
         {
             InitializeComponent();
             _logger = logger;
@@ -34,6 +38,7 @@ namespace Main.Forms.OtherDataForms
             _governmentController = governmentController;
             _branchInfoController = branchInfoController;
             _branchData = branchData;
+            _employeeData = employeeData;
         }
 
         private void ContextMenuGovernmentItems_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -308,25 +313,33 @@ namespace Main.Forms.OtherDataForms
 
                 long selectedBranchId = controlObj.SelectedBranchIdToDelete;
 
-                var saveResults = _branchInfoController.Delete(selectedBranchId);
-                string resultMessages = "";
-                foreach (var msg in saveResults.Messages)
-                {
-                    resultMessages += msg + "\n";
-                }
 
-                if (saveResults.IsSuccess)
-                {
-                    // TODO: Reassign employees under this branch we are going to delete
+                FrmReassignEmployeesToNewBranch frmReassignEmployeesToNewBranch = new FrmReassignEmployeesToNewBranch(_employeeData, _branchData, selectedBranchId);
+                frmReassignEmployeesToNewBranch.ShowDialog();
+                bool continueToDeleteShift = (frmReassignEmployeesToNewBranch.IsDone == true && frmReassignEmployeesToNewBranch.IsCancelled == false);
 
-                    MessageBox.Show(resultMessages, "Delete branch details.", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    controlObj.ResetForm();
-                    controlObj.Branches = _branchData.GetAllNotDeleted();
-                    controlObj.DisplayBranchList();
-                }
-                else
+                if (continueToDeleteShift)
                 {
-                    MessageBox.Show(resultMessages, "Delete branch details.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    var saveResults = _branchInfoController.Delete(selectedBranchId);
+                    string resultMessages = "";
+                    foreach (var msg in saveResults.Messages)
+                    {
+                        resultMessages += msg + "\n";
+                    }
+
+                    if (saveResults.IsSuccess)
+                    {
+                        // TODO: Reassign employees under this branch we are going to delete
+
+                        MessageBox.Show(resultMessages, "Delete branch details.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        controlObj.ResetForm();
+                        controlObj.Branches = _branchData.GetAllNotDeleted();
+                        controlObj.DisplayBranchList();
+                    }
+                    else
+                    {
+                        MessageBox.Show(resultMessages, "Delete branch details.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
         }
