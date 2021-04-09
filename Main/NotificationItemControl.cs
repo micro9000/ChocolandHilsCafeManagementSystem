@@ -17,28 +17,21 @@ namespace Main
             InitializeComponent();
         }
 
-        private string title;
+        private AlertMessage alertMessage;
 
-        public string Title
+        public AlertMessage AlertMessage
         {
-            get { return title; }
-            set { 
-                title = value;
-                LblTitle.Text = value;
-            }
+            get { return alertMessage; }
+            set { alertMessage = value; }
         }
 
-        private string message;
-
-        public string Message
+        private void NotificationItemControl_Load(object sender, EventArgs e)
         {
-            get { return message; }
-            set { 
-                message = value;
-                LblMessage.Text = value;
+            if (this.AlertMessage != null)
+            {
+                this.LblTitle.Text = this.AlertMessage.Title;
+                LblMessage.Text = this.AlertMessage.Message;
             }
         }
-
-
     }
 }

@@ -90,6 +90,8 @@ namespace Main
             }
 
 
+            List<AlertMessage> alertMessages = new();
+
             DateTime startDate = DateTime.Now;
             DateTime endDate = startDate.AddDays(_otherSettings.NumDaysNotifyUserForInventoryExpDate);
             int notificationCountForInventory = _ingredientInventoryData.GetCountOfIngredientInventoryByExpirationDate(startDate, endDate);
@@ -97,7 +99,20 @@ namespace Main
             {
                 this.BtnInventorySystem.Text = $"Inventory ({notificationCountForInventory})";
                 this.BtnInventorySystem.ForeColor = Color.Red;
-                ToolTipForNavButtons.SetToolTip(this.BtnInventorySystem, $"{notificationCountForInventory} ingredient(s) inventory near on expiration date");
+
+                string msg = $"{notificationCountForInventory} ingredient(s) inventory near on expiration date";
+                ToolTipForNavButtons.SetToolTip(this.BtnInventorySystem, msg);
+
+                alertMessages.Add(new AlertMessage { Title = "Inventory ingredients expiration", Message = msg });
+            }
+
+
+            if (alertMessages != null && alertMessages.Count > 0)
+            {
+                FrmAlertMessage frmAlertMessage = new();
+                frmAlertMessage.AlertMessages = alertMessages;
+
+                frmAlertMessage.ShowDialog();
             }
         }
 

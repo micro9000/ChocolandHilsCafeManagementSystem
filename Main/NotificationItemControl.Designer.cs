@@ -38,7 +38,7 @@ namespace Main
             this.LblMessage.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.LblMessage.Location = new System.Drawing.Point(11, 34);
             this.LblMessage.Name = "LblMessage";
-            this.LblMessage.Size = new System.Drawing.Size(271, 33);
+            this.LblMessage.Size = new System.Drawing.Size(327, 33);
             this.LblMessage.TabIndex = 0;
             this.LblMessage.Text = "Message";
             // 
@@ -57,10 +57,12 @@ namespace Main
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.LblTitle);
             this.Controls.Add(this.LblMessage);
             this.Name = "NotificationItemControl";
-            this.Size = new System.Drawing.Size(296, 75);
+            this.Size = new System.Drawing.Size(350, 73);
+            this.Load += new System.EventHandler(this.NotificationItemControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
