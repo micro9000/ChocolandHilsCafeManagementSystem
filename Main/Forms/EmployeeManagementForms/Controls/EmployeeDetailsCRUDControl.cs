@@ -215,6 +215,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         public void LoadOtherComboBoxData()
         {
             // Govt. agencies load in combo box
+            this.CboxGovtAgencies.Items.Clear();
             if (this.GovtAgencies != null)
             {
                 ComboboxItem item;
@@ -228,6 +229,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
 
             // Work shifts load in combo box
+            this.CBoxShiftList.Items.Clear();
             if (this.WorkShifts != null)
             {
                 ComboboxItem item;
@@ -241,6 +243,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
 
             // Branches load in combo box
+            this.CBoxBranches.Items.Clear();
             if (this.Branches != null)
             {
                 ComboboxItem item;
@@ -254,6 +257,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
 
             // Positions load in combo box
+            this.CBoxPositions.Items.Clear();
             if (this.Positions != null)
             {
                 ComboboxItem item;
