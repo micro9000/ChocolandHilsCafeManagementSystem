@@ -32,13 +32,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.GBoxLeaveTypeForm = new System.Windows.Forms.GroupBox();
+            this.CBoxHolidayDayNum = new System.Windows.Forms.ComboBox();
+            this.CboxHolidayMonthAbbv = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.TbxHoliday = new System.Windows.Forms.TextBox();
             this.BtnSaveHoliday = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.DGVHolidays = new System.Windows.Forms.DataGridView();
-            this.CboxHolidayMonthAbbv = new System.Windows.Forms.ComboBox();
-            this.CBoxHolidayDayNum = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.GBoxLeaveTypeForm.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVHolidays)).BeginInit();
@@ -81,6 +82,69 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GBoxLeaveTypeForm.TabIndex = 48;
             this.GBoxLeaveTypeForm.TabStop = false;
             this.GBoxLeaveTypeForm.Text = "Add new holiday";
+            // 
+            // CBoxHolidayDayNum
+            // 
+            this.CBoxHolidayDayNum.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.CBoxHolidayDayNum.FormattingEnabled = true;
+            this.CBoxHolidayDayNum.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31"});
+            this.CBoxHolidayDayNum.Location = new System.Drawing.Point(19, 161);
+            this.CBoxHolidayDayNum.Name = "CBoxHolidayDayNum";
+            this.CBoxHolidayDayNum.Size = new System.Drawing.Size(265, 29);
+            this.CBoxHolidayDayNum.TabIndex = 47;
+            // 
+            // CboxHolidayMonthAbbv
+            // 
+            this.CboxHolidayMonthAbbv.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.CboxHolidayMonthAbbv.FormattingEnabled = true;
+            this.CboxHolidayMonthAbbv.Items.AddRange(new object[] {
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"});
+            this.CboxHolidayMonthAbbv.Location = new System.Drawing.Point(19, 126);
+            this.CboxHolidayMonthAbbv.Name = "CboxHolidayMonthAbbv";
+            this.CboxHolidayMonthAbbv.Size = new System.Drawing.Size(265, 29);
+            this.CboxHolidayMonthAbbv.TabIndex = 46;
             // 
             // label9
             // 
@@ -142,74 +206,22 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVHolidays.TabIndex = 49;
             this.DGVHolidays.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVHolidays_CellClick);
             // 
-            // CboxHolidayMonthAbbv
+            // label3
             // 
-            this.CboxHolidayMonthAbbv.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.CboxHolidayMonthAbbv.FormattingEnabled = true;
-            this.CboxHolidayMonthAbbv.Items.AddRange(new object[] {
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"});
-            this.CboxHolidayMonthAbbv.Location = new System.Drawing.Point(19, 126);
-            this.CboxHolidayMonthAbbv.Name = "CboxHolidayMonthAbbv";
-            this.CboxHolidayMonthAbbv.Size = new System.Drawing.Size(265, 29);
-            this.CboxHolidayMonthAbbv.TabIndex = 46;
-            // 
-            // CBoxHolidayDayNum
-            // 
-            this.CBoxHolidayDayNum.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.CBoxHolidayDayNum.FormattingEnabled = true;
-            this.CBoxHolidayDayNum.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-            "21",
-            "22",
-            "23",
-            "24",
-            "25",
-            "26",
-            "27",
-            "28",
-            "29",
-            "30",
-            "31"});
-            this.CBoxHolidayDayNum.Location = new System.Drawing.Point(19, 161);
-            this.CBoxHolidayDayNum.Name = "CBoxHolidayDayNum";
-            this.CBoxHolidayDayNum.Size = new System.Drawing.Size(265, 29);
-            this.CBoxHolidayDayNum.TabIndex = 47;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(371, 430);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(346, 15);
+            this.label3.TabIndex = 50;
+            this.label3.Text = "Note: If you need to update, just delete the existing and add new";
             // 
             // HolidayCRUDControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.DGVHolidays);
             this.Controls.Add(this.GBoxLeaveTypeForm);
             this.Controls.Add(this.panel1);
@@ -222,6 +234,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GBoxLeaveTypeForm.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVHolidays)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -237,5 +250,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.DataGridView DGVHolidays;
         private System.Windows.Forms.ComboBox CBoxHolidayDayNum;
         private System.Windows.Forms.ComboBox CboxHolidayMonthAbbv;
+        private System.Windows.Forms.Label label3;
     }
 }
