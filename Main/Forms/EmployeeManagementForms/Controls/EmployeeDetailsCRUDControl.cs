@@ -17,16 +17,23 @@ using System.Globalization;
 using EntitiesShared.PayrollManagement;
 using Main.Forms.PayrollForms.Controls;
 using Shared;
+using static EntitiesShared.StaticData;
+using PDFReportGenerators;
 
 namespace Main.Forms.EmployeeManagementForms.Controls
 {
     public partial class EmployeeDetailsCRUDControl : UserControl
     {
-        public EmployeeDetailsCRUDControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter, OtherSettings otherSettings)
+        public EmployeeDetailsCRUDControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter, 
+                                        OtherSettings otherSettings,
+                                        PayrollSettings payrollSettings,
+                                        IAttendancePDFReport attendancePDFReport)
         {
             InitializeComponent();
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _otherSettings = otherSettings;
+            _payrollSettings = payrollSettings;
+            _attendancePDFReport = attendancePDFReport;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -330,10 +337,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         }
 
+        public EmployeeModel CurrentEmployeeDetails { get; set; }
         public void DisplayEmployeeDetails(EmployeeModel employeeDetails)
         {
             if (employeeDetails != null)
             {
+                CurrentEmployeeDetails = employeeDetails;
+
                 this.TbxEmployeeNumberDisplayOnly.Text = employeeDetails.EmployeeNumber;
                 this.TbxFirstName.Text = employeeDetails.FirstName;
                 this.TbxLastName.Text = employeeDetails.LastName;
@@ -869,16 +879,32 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
 
 
-        public bool CheckIfNotDayOff(DateTime workDay)
+        //public bool CheckIfNotDayOff(DateTime workDay)
+        //{
+        //    if (WorkShiftDays == null)
+        //        return true;
+
+        //    string[] workdays = WorkShiftDays.Select(x => x.DayName).ToList().ToArray();
+
+        //    var workDayName = workDay.ToString("ddd", CultureInfo.InvariantCulture);
+
+        //    return workdays.Contains(workDayName) ;
+        //}
+
+
+        public bool CheckIfNotDayOffBasedOnAttendanceShiftDays(DateTime workDay, EmployeeAttendanceModel attendance)
         {
-            if (WorkShiftDays == null)
+            if (attendance == null)
                 return true;
 
-            string[] workdays = WorkShiftDays.Select(x => x.DayName).ToList().ToArray();
+            if (attendance.Shift == null && attendance.Shift.ShiftDays == null)
+                return true;
+
+            string[] workdays = attendance.Shift.ShiftDays.Select(x => x.DayName).ToList().ToArray();
 
             var workDayName = workDay.ToString("ddd", CultureInfo.InvariantCulture);
 
-            return workdays.Contains(workDayName) ;
+            return workdays.Contains(workDayName);
         }
 
 
@@ -888,7 +914,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             return workforceSched != null;
         }
 
-        public bool CheckIfAbsentOnEmpShift(DateTime workDay)
+        public bool CheckIfAbsentOnEmpShift(DateTime workDay, EmployeeAttendanceModel attendance)
         {
             var workforceSched = WorkforceSchedules != null ? WorkforceSchedules.Where(x => x.WorkDate == workDay).FirstOrDefault() : null;
 
@@ -896,14 +922,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                                         true : 
                                         (workDay.Date < DateTime.Now.Date && workforceSched.isDone == false);
 
-            return CheckIfNotDayOff(workDay) == true && isAbsentOnWorkSched == true;
+            return CheckIfNotDayOffBasedOnAttendanceShiftDays(workDay, attendance) == true && isAbsentOnWorkSched == true;
         }
 
 
 
         private void AddThisAttendanceRecordToListView (EmployeeAttendanceModel attendance, DateTime day)
         {
-            if (attendance == null && CheckIfNotDayOff(day) == false)
+            if (attendance == null && CheckIfNotDayOffBasedOnAttendanceShiftDays(day, attendance) == false)
             {
                 var row = new string[]
                 {
@@ -925,7 +951,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 AddThisToAttendanceListView(AttendanceRecordType.error, day, new AttendanceRecord { record = row });
             }
-            else  if (attendance == null && CheckIfAbsentOnEmpShift(day))
+            else  if (attendance == null && CheckIfAbsentOnEmpShift(day, attendance))
             { // for absent
                 var row = new string[]
                 {
@@ -959,7 +985,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
                     }
 
-                    string whoDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalHrs); //attendance.FirstHalfHrs + attendance.SecondHalfHrs
+                    string wholeDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalHrs); //attendance.FirstHalfHrs + attendance.SecondHalfHrs
                     string late = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalLate); // attendance.FirstHalfLateMins + attendance.SecondHalfLateMins
                     string underTime = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalUnderTime); //attendance.FirstHalfUnderTimeMins + attendance.SecondHalfUnderTimeMins
                     string overTime = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.OverTimeMins);
@@ -972,7 +998,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     $"{attendance.Shift.StartTime.ToString("hh:mm tt")} to {attendance.Shift.EndTime.ToString("hh:mm tt")}",
                     firstTimeINandOUT,
                     secondTimeINandOUT,
-                    whoDayTotalHrs,
+                    wholeDayTotalHrs,
                     late,
                     underTime,
                     overTime,
@@ -1131,6 +1157,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private DateTime filterAttendanceEndDate;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly OtherSettings _otherSettings;
+        private readonly PayrollSettings _payrollSettings;
+        private readonly IAttendancePDFReport _attendancePDFReport;
 
         public DateTime FilterAttendanceEndDate
         {
@@ -1227,24 +1255,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             OnUndoMarkEmployeeAsResigned(EventArgs.Empty);
         }
-    }
 
-    public enum AttendanceRecordType
-    {
-        timeInOut = 6,
-        off = 5,
-        holiday = 4,
-        leave = 3,
-        awol = 2,
-        error = 1
-    }
+        private void BtnGenerateAttendanceReportPDF_Click(object sender, EventArgs e)
+        {
+            if (this.AttendanceToDisplay != null && this.CurrentEmployeeDetails != null)
+            {
+                _attendancePDFReport.GenerateAttendanceReportPDF(this.AttendanceToDisplay, this.CurrentEmployeeDetails);
 
-    public class AttendanceRecord
-    {
-        public DateTime WorkDate { get; set; }
-
-        public string[] record { get; set; }
-
-        public AttendanceRecordType recordType { get; set; }
+                MessageBox.Show($"Attendance PDF report successfully generated, kindly check in {_payrollSettings.GeneratedPDFLoc}", "Search employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+        }
     }
 }

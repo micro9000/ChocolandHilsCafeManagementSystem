@@ -135,6 +135,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.PanelResignedIndicator = new System.Windows.Forms.Panel();
             this.LblResignedDate = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
+            this.BtnGenerateAttendanceReportPDF = new System.Windows.Forms.Button();
             this.EmployeeBasicInfo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -885,6 +886,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // EmployeeAttendance
             // 
+            this.EmployeeAttendance.Controls.Add(this.BtnGenerateAttendanceReportPDF);
             this.EmployeeAttendance.Controls.Add(this.LViewAttendanceHistory);
             this.EmployeeAttendance.Controls.Add(this.label20);
             this.EmployeeAttendance.Controls.Add(this.label21);
@@ -915,7 +917,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LVColumnOvertime,
             this.LVColumnIsPaid});
             this.LViewAttendanceHistory.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.LViewAttendanceHistory.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LViewAttendanceHistory.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.LViewAttendanceHistory.FullRowSelect = true;
             this.LViewAttendanceHistory.GridLines = true;
             this.LViewAttendanceHistory.HideSelection = false;
@@ -1307,6 +1309,21 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label24.TabIndex = 50;
             this.label24.Text = "Resigned:";
             // 
+            // BtnGenerateAttendanceReportPDF
+            // 
+            this.BtnGenerateAttendanceReportPDF.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnGenerateAttendanceReportPDF.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnGenerateAttendanceReportPDF.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnGenerateAttendanceReportPDF.ForeColor = System.Drawing.Color.White;
+            this.BtnGenerateAttendanceReportPDF.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnGenerateAttendanceReportPDF.Location = new System.Drawing.Point(946, 71);
+            this.BtnGenerateAttendanceReportPDF.Name = "BtnGenerateAttendanceReportPDF";
+            this.BtnGenerateAttendanceReportPDF.Size = new System.Drawing.Size(122, 31);
+            this.BtnGenerateAttendanceReportPDF.TabIndex = 48;
+            this.BtnGenerateAttendanceReportPDF.Text = "Generate PDF";
+            this.BtnGenerateAttendanceReportPDF.UseVisualStyleBackColor = false;
+            this.BtnGenerateAttendanceReportPDF.Click += new System.EventHandler(this.BtnGenerateAttendanceReportPDF_Click);
+            // 
             // EmployeeDetailsCRUDControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1459,5 +1476,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ComboBox CBoxPositions;
         private System.Windows.Forms.Label LblEmployeeNumber;
         private System.Windows.Forms.TextBox TbxEmployeeNumberDisplayOnly;
+        private System.Windows.Forms.Button BtnGenerateAttendanceReportPDF;
     }
 }

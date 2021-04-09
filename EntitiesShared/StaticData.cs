@@ -46,5 +46,15 @@ namespace EntitiesShared
                 return uoms;
             }
         }
+
+        public enum AttendanceRecordType
+        {
+            timeInOut = 6,
+            off = 5,
+            holiday = 4,
+            leave = 3,
+            awol = 2,
+            error = 1
+        }
     }
 }

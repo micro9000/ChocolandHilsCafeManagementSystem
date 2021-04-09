@@ -105,6 +105,7 @@ namespace PayrollGenerator
                     services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
                     services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
                     services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();
+                    //services.AddTransient<IAttendancePDFReport, AttendancePDFReport>();
                 })
                 .UseSerilog()
                 .Build();

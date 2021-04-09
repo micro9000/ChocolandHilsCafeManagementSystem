@@ -13,11 +13,26 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
     public class EmployeeAttendanceData : DataManagerCRUD<EmployeeAttendanceModel>, IEmployeeAttendanceData
     {
         private readonly IDbConnectionFactory _dbConnFactory;
+        private readonly IEmployeeShiftDayData _employeeShiftDayData;
 
-        public EmployeeAttendanceData(IDbConnectionFactory dbConnFactory) :
+        public EmployeeAttendanceData(IDbConnectionFactory dbConnFactory, IEmployeeShiftDayData employeeShiftDayData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
+            _employeeShiftDayData = employeeShiftDayData;
+        }
+
+
+        private void ProvideShiftDays(List<EmployeeAttendanceModel> attendance)
+        {
+            if (attendance != null)
+            {
+                foreach(var record in attendance)
+                {
+                    if (record.Shift != null)
+                        record.Shift.ShiftDays = _employeeShiftDayData.GetByShiftId(record.Shift.Id);
+                }
+            }
         }
 
         public List<EmployeeAttendanceModel> GetAllAttendanceRecordByWorkDate (DateTime workDate)
@@ -42,6 +57,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                         }, new { WorkDate = workDate.ToString("yyyy-MM-dd") }).ToList();
                 conn.Close();
             }
+
+            this.ProvideShiftDays(results);
 
             return results;
         }
@@ -76,6 +93,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                 conn.Close();
             }
 
+            this.ProvideShiftDays(results);
+
             return results;
         }
 
@@ -107,6 +126,9 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                         }).ToList();
                 conn.Close();
             }
+
+
+            this.ProvideShiftDays(results);
 
             return results;
         }
@@ -140,6 +162,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                         }).ToList();
                 conn.Close();
             }
+
+            this.ProvideShiftDays(results);
 
             return results;
         }

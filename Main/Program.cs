@@ -211,6 +211,7 @@ namespace Main
 
             services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
             services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();
+            services.AddTransient<IAttendancePDFReport, AttendancePDFReport>();
 
             //Add Serilog
             var log = new LoggerConfiguration()

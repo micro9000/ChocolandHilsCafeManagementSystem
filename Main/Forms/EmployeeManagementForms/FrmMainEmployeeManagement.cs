@@ -17,6 +17,7 @@ using Main.Forms.EmployeeManagementForms.Controls;
 using Main.Forms.EmployeeManagementForms.OtherForms;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PDFReportGenerators;
 using Shared;
 using Shared.Helpers;
 
@@ -26,6 +27,7 @@ namespace Main.Forms.EmployeeManagementForms
     {
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
+        private readonly PayrollSettings _payrollSettings;
         private readonly OtherSettings _otherSettings;
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
@@ -48,10 +50,12 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IWorkforceScheduleData _workforceScheduleData;
         private readonly IEmployeePositionController _employeePositionController;
         private readonly IEmployeePositionData _employeePositionData;
+        private readonly IAttendancePDFReport _attendancePDFReport;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                                     IOptions<OtherSettings> otherSettingsOptions,
+                                    IOptions<PayrollSettings> payrollSettingsOptions,
                                 IGovernmentAgencyData governmentAgencyData,
                                 IEmployeeLeaveData employeeLeaveData,
                                 IBranchData branchData,
@@ -72,11 +76,13 @@ namespace Main.Forms.EmployeeManagementForms
                                 IWorkforceScheduleController workforceScheduleController,
                                 IWorkforceScheduleData workforceScheduleData,
                                 IEmployeePositionController employeePositionController,
-                                IEmployeePositionData employeePositionData)
+                                IEmployeePositionData employeePositionData,
+                                 IAttendancePDFReport attendancePDFReport)
         {
             InitializeComponent();
             _logger = logger;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
+            _payrollSettings = payrollSettingsOptions.Value;
             _otherSettings = otherSettingsOptions.Value;
             _governmentAgencyData = governmentAgencyData;
             _employeeLeaveData = employeeLeaveData;
@@ -99,6 +105,7 @@ namespace Main.Forms.EmployeeManagementForms
             _workforceScheduleData = workforceScheduleData;
             _employeePositionController = employeePositionController;
             _employeePositionData = employeePositionData;
+            _attendancePDFReport = attendancePDFReport;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -155,7 +162,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             this.panelContainer.Controls.Clear();
 
-            var controlToDisplay = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter, _otherSettings);
+            var controlToDisplay = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter, _otherSettings, _payrollSettings, _attendancePDFReport);
             //controlToDisplay.Dock = DockStyle.Fill;
             controlToDisplay.Location = new Point(this.ClientSize.Width / 2 - controlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - controlToDisplay.Size.Height / 2);
             //controlToDisplay.Anchor = (AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left);
@@ -395,7 +402,7 @@ namespace Main.Forms.EmployeeManagementForms
             
             this.panelContainer.Controls.Clear();
 
-            var employeeDetailsCRUDControl = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter, _otherSettings);
+            var employeeDetailsCRUDControl = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter, _otherSettings, _payrollSettings, _attendancePDFReport);
 
             employeeDetailsCRUDControl.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
             employeeDetailsCRUDControl.WorkShifts = _workShiftController.GetAll().Data;
