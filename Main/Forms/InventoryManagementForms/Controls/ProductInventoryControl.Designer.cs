@@ -51,6 +51,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TboxSearchIngredients = new System.Windows.Forms.TextBox();
             this.DGVIngredientListToSelect = new System.Windows.Forms.DataGridView();
             this.TabItemEnterIngredientAmount = new System.Windows.Forms.TabPage();
+            this.label16 = new System.Windows.Forms.Label();
             this.BtnCompute = new System.Windows.Forms.Button();
             this.DGVSelectedIngredients = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -96,7 +97,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TabComboMealList = new System.Windows.Forms.TabPage();
             this.DGVComboMealList = new System.Windows.Forms.DataGridView();
             this.DGVComboMealExistingProducts = new System.Windows.Forms.DataGridView();
-            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabProdCategory.SuspendLayout();
@@ -402,6 +403,16 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TabItemEnterIngredientAmount.TabIndex = 1;
             this.TabItemEnterIngredientAmount.Text = "Ingredients Amount";
             this.TabItemEnterIngredientAmount.UseVisualStyleBackColor = true;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.label16.Location = new System.Drawing.Point(16, 19);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(397, 15);
+            this.label16.TabIndex = 58;
+            this.label16.Text = "Guide: Select amount column to enter ingredient\'s amount and select UOM";
             // 
             // BtnCompute
             // 
@@ -784,6 +795,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // TabComboMealAddUpdate
             // 
+            this.TabComboMealAddUpdate.Controls.Add(this.label17);
             this.TabComboMealAddUpdate.Controls.Add(this.panel2);
             this.TabComboMealAddUpdate.Controls.Add(this.DGVProductListForComboMeal);
             this.TabComboMealAddUpdate.Controls.Add(this.groupBox5);
@@ -959,15 +971,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVComboMealExistingProducts.Size = new System.Drawing.Size(580, 500);
             this.DGVComboMealExistingProducts.TabIndex = 56;
             // 
-            // label16
+            // label17
             // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            this.label16.Location = new System.Drawing.Point(16, 19);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(397, 15);
-            this.label16.TabIndex = 58;
-            this.label16.Text = "Guide: Select amount column to enter ingredient\'s amount and select UOM";
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.label17.Location = new System.Drawing.Point(26, 386);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(429, 62);
+            this.label17.TabIndex = 58;
+            this.label17.Text = "Guide: Select quantity column to provide the require product quantity for this co" +
+    "mbo meal";
             // 
             // ProductInventoryControl
             // 
@@ -1093,5 +1105,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Label LblAddOrUpdateComboMealIndicator;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
     }
 }
