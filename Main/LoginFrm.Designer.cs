@@ -34,12 +34,8 @@ namespace Main
             this.TbxPassword = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.GPanelChooseTerminal = new System.Windows.Forms.GroupBox();
-            this.RBtnPOSTerminal = new System.Windows.Forms.RadioButton();
-            this.RBtnAdminDashboard = new System.Windows.Forms.RadioButton();
             this.panelSecondaryBanner = new System.Windows.Forms.Panel();
             this.LblRenderedFormTitle = new System.Windows.Forms.Label();
-            this.GPanelChooseTerminal.SuspendLayout();
             this.panelSecondaryBanner.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,9 +45,9 @@ namespace Main
             this.BtnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnLogin.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnLogin.ForeColor = System.Drawing.Color.White;
-            this.BtnLogin.Location = new System.Drawing.Point(108, 319);
+            this.BtnLogin.Location = new System.Drawing.Point(111, 172);
             this.BtnLogin.Name = "BtnLogin";
-            this.BtnLogin.Size = new System.Drawing.Size(260, 47);
+            this.BtnLogin.Size = new System.Drawing.Size(257, 47);
             this.BtnLogin.TabIndex = 0;
             this.BtnLogin.Text = "Login";
             this.BtnLogin.UseVisualStyleBackColor = false;
@@ -98,41 +94,6 @@ namespace Main
             this.label2.TabIndex = 4;
             this.label2.Text = "Password";
             // 
-            // GPanelChooseTerminal
-            // 
-            this.GPanelChooseTerminal.Controls.Add(this.RBtnPOSTerminal);
-            this.GPanelChooseTerminal.Controls.Add(this.RBtnAdminDashboard);
-            this.GPanelChooseTerminal.Location = new System.Drawing.Point(108, 187);
-            this.GPanelChooseTerminal.Name = "GPanelChooseTerminal";
-            this.GPanelChooseTerminal.Size = new System.Drawing.Size(260, 118);
-            this.GPanelChooseTerminal.TabIndex = 5;
-            this.GPanelChooseTerminal.TabStop = false;
-            this.GPanelChooseTerminal.Text = "Choose application";
-            // 
-            // RBtnPOSTerminal
-            // 
-            this.RBtnPOSTerminal.AutoSize = true;
-            this.RBtnPOSTerminal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RBtnPOSTerminal.Location = new System.Drawing.Point(20, 71);
-            this.RBtnPOSTerminal.Name = "RBtnPOSTerminal";
-            this.RBtnPOSTerminal.Size = new System.Drawing.Size(174, 25);
-            this.RBtnPOSTerminal.TabIndex = 1;
-            this.RBtnPOSTerminal.TabStop = true;
-            this.RBtnPOSTerminal.Text = "Point of sale terminal";
-            this.RBtnPOSTerminal.UseVisualStyleBackColor = true;
-            // 
-            // RBtnAdminDashboard
-            // 
-            this.RBtnAdminDashboard.AutoSize = true;
-            this.RBtnAdminDashboard.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.RBtnAdminDashboard.Location = new System.Drawing.Point(20, 33);
-            this.RBtnAdminDashboard.Name = "RBtnAdminDashboard";
-            this.RBtnAdminDashboard.Size = new System.Drawing.Size(154, 25);
-            this.RBtnAdminDashboard.TabIndex = 0;
-            this.RBtnAdminDashboard.TabStop = true;
-            this.RBtnAdminDashboard.Text = "Admin Dashboard";
-            this.RBtnAdminDashboard.UseVisualStyleBackColor = true;
-            // 
             // panelSecondaryBanner
             // 
             this.panelSecondaryBanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -159,10 +120,9 @@ namespace Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 382);
+            this.ClientSize = new System.Drawing.Size(425, 240);
             this.Controls.Add(this.panelSecondaryBanner);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.GPanelChooseTerminal);
             this.Controls.Add(this.BtnLogin);
             this.Controls.Add(this.TbxPassword);
             this.Controls.Add(this.label2);
@@ -170,8 +130,6 @@ namespace Main
             this.Name = "LoginFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LoginFrm";
-            this.GPanelChooseTerminal.ResumeLayout(false);
-            this.GPanelChooseTerminal.PerformLayout();
             this.panelSecondaryBanner.ResumeLayout(false);
             this.panelSecondaryBanner.PerformLayout();
             this.ResumeLayout(false);
@@ -186,9 +144,6 @@ namespace Main
         private System.Windows.Forms.TextBox TbxPassword;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox GPanelChooseTerminal;
-        private System.Windows.Forms.RadioButton RBtnPOSTerminal;
-        private System.Windows.Forms.RadioButton RBtnAdminDashboard;
         private System.Windows.Forms.Panel panelSecondaryBanner;
         private System.Windows.Forms.Label LblRenderedFormTitle;
     }

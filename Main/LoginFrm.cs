@@ -39,30 +39,8 @@ namespace Main
             {
                 _sessions.CurrentLoggedInUser = signResults.Data;
 
-                var checkedButton = GPanelChooseTerminal.Controls.OfType<RadioButton>()
-                                      .FirstOrDefault(r => r.Checked);
-
-
-                if (checkedButton == null)
-                {
-                    MessageBox.Show("Kindly choose application you are going to use", "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                }
-                
-                if (checkedButton.Name == "RBtnAdminDashboard")
-                {
-                    _mainFrm.Show();
-                    this.Hide();
-                    //if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.admin)
-                    //{
-
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Unauthorized to use admin dashboard", "Login", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    //}
-                }
-
+                _mainFrm.Show();
+                this.Hide();
             }
             else
             {
