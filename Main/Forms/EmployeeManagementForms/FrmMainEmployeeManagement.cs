@@ -633,10 +633,12 @@ namespace Main.Forms.EmployeeManagementForms
 
                 manageEmpWorkScheduleControlObj.Employees = _employeeController.GetAll().Data;
                 manageEmpWorkScheduleControlObj.WorkShifts = _workShiftController.GetAll().Data;
+                manageEmpWorkScheduleControlObj.WorkforceSchedule = _workforceScheduleController.GetWorkforceSchedule();
 
                 manageEmpWorkScheduleControlObj.DisplayEmployees();
                 manageEmpWorkScheduleControlObj.DisplayWorkShifts();
                 manageEmpWorkScheduleControlObj.ResetUpdateEmployeeShiftVal();
+                manageEmpWorkScheduleControlObj.DisplayWorkScheduleInListView();
             }
         }
 

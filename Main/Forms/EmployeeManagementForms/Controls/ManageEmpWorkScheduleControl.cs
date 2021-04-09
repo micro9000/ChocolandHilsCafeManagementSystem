@@ -160,10 +160,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         }
 
 
-        public void DisplayEmployees()
+        public void DisplayEmployeesInTab1(List<EmployeeModel> employees)
         {
             this.DGVEmployeeList.Rows.Clear();
-            if (this.Employees != null)
+            if (employees != null)
             {
                 // ----------------------------- 1st tab datagridview
                 this.DGVEmployeeList.ColumnCount = 4;
@@ -180,14 +180,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVEmployeeList.Columns[3].Name = "Shift";
                 this.DGVEmployeeList.Columns[3].Visible = true;
 
-
                 DataGridViewCheckBoxColumn selectChbx = new DataGridViewCheckBoxColumn();
                 selectChbx.HeaderText = "Select";
                 selectChbx.Name = "selectEmpCkbox";
                 selectChbx.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 this.DGVEmployeeList.Columns.Add(selectChbx);
 
-                foreach (var employee in this.Employees)
+                foreach (var employee in employees)
                 {
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(this.DGVEmployeeList);
@@ -205,10 +204,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     this.DGVEmployeeList.Rows.Add(row);
                 }
+            }
+        }
 
-
-
-                // ----------------------------- 2nd tab datagridview
+        public void DisplayEmployeesInTab2(List<EmployeeModel> employees)
+        {
+            this.DGVEmployeeListToSchedule.Rows.Clear();
+            if (employees != null)
+            {
                 this.DGVEmployeeListToSchedule.ColumnCount = 4;
 
                 this.DGVEmployeeListToSchedule.Columns[0].Name = "EmployeeNumber2";
@@ -233,8 +236,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 this.DGVEmployeeListToSchedule.Columns.Add(selectChbxToSchedule);
 
-
-                foreach (var employee in this.Employees)
+                foreach (var employee in employees)
                 {
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(this.DGVEmployeeListToSchedule);
@@ -254,6 +256,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 }
 
             }
+        }
+
+        public void DisplayEmployees()
+        {
+            DisplayEmployeesInTab1(this.Employees);
+            DisplayEmployeesInTab2(this.Employees);
         }
 
         public void DisplayWorkShifts()
@@ -423,7 +431,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 if (workSchedStartFrom.Date <= lastWorkForceDate.Date)
                 {
-                    MessageBox.Show("Invalid start date. Kindly update the specific workforce schedule.", "Generate workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show($"Invalid start date: already have workforce schedule from {workSchedStartFrom.ToShortDateString()} and {lastWorkForceDate.ToShortDateString()}", "Generate workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
             }
@@ -824,6 +832,79 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void BtnUndoChanges_Click(object sender, EventArgs e)
         {
             OnUndoWorkForceChangesInFormOnly(EventArgs.Empty);
+        }
+
+        private void BtnSelectAllEmloyeesInShiftSchedTab_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.DGVEmployeeList.Rows)
+            {
+                row.Cells["selectEmpCkbox"].Value = (bool)true;
+            }
+        }
+
+        private void TbxSearchEmployeesInTab1_KeyUp(object sender, KeyEventArgs e)
+        {
+            var searchStr = TbxSearchEmployeesInTab1.Text;
+
+            if (e.KeyCode == Keys.Enter && this.Employees != null && string.IsNullOrWhiteSpace(searchStr) == false)
+            {
+
+                var searchResultEmployes = this.Employees.Where(
+                                                x => 
+                                                    x.EmployeeNumber.Contains(searchStr) ||
+                                                    x.FullName.Contains(searchStr)
+                                                ).ToList();
+
+                DisplayEmployeesInTab1(searchResultEmployes);
+
+                e.Handled = true;
+            }
+        }
+
+        private void BtnRefresh_Click(object sender, EventArgs e)
+        {
+            DisplayEmployeesInTab1(this.Employees);
+            DisplayEmployeesInTab2(this.Employees);
+        }
+
+        private void BtnRefreshEmployees2_Click(object sender, EventArgs e)
+        {
+            DisplayEmployeesInTab1(this.Employees);
+            DisplayEmployeesInTab2(this.Employees);
+        }
+
+        private void TbxSearchEmployeesInTab2_KeyUp(object sender, KeyEventArgs e)
+        {
+            var searchStr = TbxSearchEmployeesInTab2.Text;
+
+            if (e.KeyCode == Keys.Enter && this.Employees != null && string.IsNullOrWhiteSpace(searchStr) == false)
+            {
+
+                var searchResultEmployes = this.Employees.Where(
+                                                x =>
+                                                    x.EmployeeNumber.Contains(searchStr) ||
+                                                    x.FullName.Contains(searchStr)
+                                                ).ToList();
+
+                DisplayEmployeesInTab2(searchResultEmployes);
+
+                e.Handled = true;
+            }
+        }
+
+        private void BtnUpdateSelectedDateWorkForce_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(BtnUpdateSelectedDateWorkForce, "Updated existing workforce");
+        }
+
+        private void BtnDeleteSchedule_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(BtnDeleteSchedule, "Delete workforce");
+        }
+
+        private void BtnUndoChanges_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(BtnUndoChanges, "Undo any changes");
         }
     }
 }

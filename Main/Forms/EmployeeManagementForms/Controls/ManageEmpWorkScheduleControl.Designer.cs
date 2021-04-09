@@ -29,6 +29,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.DGVEmployeeList = new System.Windows.Forms.DataGridView();
@@ -43,9 +44,18 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxWednesday = new System.Windows.Forms.CheckBox();
             this.CBoxMonday = new System.Windows.Forms.CheckBox();
             this.CBoxTuesday = new System.Windows.Forms.CheckBox();
+            this.BtnSelectAllEmloyeesInShiftSchedTab = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.BtnRefreshEmployees = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.TbxSearchEmployeesInTab1 = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.BtnRefreshEmployees2 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.TbxSearchEmployeesInTab2 = new System.Windows.Forms.TextBox();
+            this.BtnUndoChanges = new System.Windows.Forms.Button();
             this.BtnSelectAllEmployees = new System.Windows.Forms.Button();
             this.BtnSaveWorkforceSchedule = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -65,7 +75,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.DPicWorkScheduleStartFrom = new System.Windows.Forms.DateTimePicker();
-            this.BtnUndoChanges = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeList)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -73,6 +83,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GroupPanelShiftDays.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -109,12 +120,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVEmployeeList.AllowUserToAddRows = false;
             this.DGVEmployeeList.AllowUserToDeleteRows = false;
             this.DGVEmployeeList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVEmployeeList.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DGVEmployeeList.Location = new System.Drawing.Point(508, 3);
+            this.DGVEmployeeList.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.DGVEmployeeList.Location = new System.Drawing.Point(0, 61);
             this.DGVEmployeeList.Name = "DGVEmployeeList";
             this.DGVEmployeeList.ReadOnly = true;
             this.DGVEmployeeList.RowTemplate.Height = 25;
-            this.DGVEmployeeList.Size = new System.Drawing.Size(716, 618);
+            this.DGVEmployeeList.Size = new System.Drawing.Size(724, 557);
             this.DGVEmployeeList.TabIndex = 7;
             // 
             // groupBox2
@@ -122,9 +133,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox2.Controls.Add(this.DGVShiftList);
             this.groupBox2.Controls.Add(this.BtnSaveEmployeeShiftSchedule);
             this.groupBox2.Controls.Add(this.GroupPanelShiftDays);
-            this.groupBox2.Location = new System.Drawing.Point(15, 18);
+            this.groupBox2.Location = new System.Drawing.Point(43, 41);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(423, 510);
+            this.groupBox2.Size = new System.Drawing.Size(423, 468);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Shifts";
@@ -150,7 +161,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveEmployeeShiftSchedule.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveEmployeeShiftSchedule.ForeColor = System.Drawing.Color.White;
             this.BtnSaveEmployeeShiftSchedule.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveEmployeeShiftSchedule.Location = new System.Drawing.Point(281, 402);
+            this.BtnSaveEmployeeShiftSchedule.Location = new System.Drawing.Point(291, 415);
             this.BtnSaveEmployeeShiftSchedule.Name = "BtnSaveEmployeeShiftSchedule";
             this.BtnSaveEmployeeShiftSchedule.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveEmployeeShiftSchedule.TabIndex = 49;
@@ -167,9 +178,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GroupPanelShiftDays.Controls.Add(this.CBoxWednesday);
             this.GroupPanelShiftDays.Controls.Add(this.CBoxMonday);
             this.GroupPanelShiftDays.Controls.Add(this.CBoxTuesday);
-            this.GroupPanelShiftDays.Location = new System.Drawing.Point(18, 297);
+            this.GroupPanelShiftDays.Location = new System.Drawing.Point(16, 282);
             this.GroupPanelShiftDays.Name = "GroupPanelShiftDays";
-            this.GroupPanelShiftDays.Size = new System.Drawing.Size(378, 74);
+            this.GroupPanelShiftDays.Size = new System.Drawing.Size(390, 74);
             this.GroupPanelShiftDays.TabIndex = 52;
             this.GroupPanelShiftDays.TabStop = false;
             this.GroupPanelShiftDays.Text = "Shift Days";
@@ -177,7 +188,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxSunday
             // 
             this.CBoxSunday.AutoSize = true;
-            this.CBoxSunday.Location = new System.Drawing.Point(318, 32);
+            this.CBoxSunday.Enabled = false;
+            this.CBoxSunday.Location = new System.Drawing.Point(325, 32);
             this.CBoxSunday.Name = "CBoxSunday";
             this.CBoxSunday.Size = new System.Drawing.Size(52, 24);
             this.CBoxSunday.TabIndex = 56;
@@ -188,7 +200,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxSaturday
             // 
             this.CBoxSaturday.AutoSize = true;
-            this.CBoxSaturday.Location = new System.Drawing.Point(270, 32);
+            this.CBoxSaturday.Enabled = false;
+            this.CBoxSaturday.Location = new System.Drawing.Point(279, 32);
             this.CBoxSaturday.Name = "CBoxSaturday";
             this.CBoxSaturday.Size = new System.Drawing.Size(49, 24);
             this.CBoxSaturday.TabIndex = 55;
@@ -199,7 +212,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxFriday
             // 
             this.CBoxFriday.AutoSize = true;
-            this.CBoxFriday.Location = new System.Drawing.Point(225, 32);
+            this.CBoxFriday.Enabled = false;
+            this.CBoxFriday.Location = new System.Drawing.Point(233, 32);
             this.CBoxFriday.Name = "CBoxFriday";
             this.CBoxFriday.Size = new System.Drawing.Size(44, 24);
             this.CBoxFriday.TabIndex = 54;
@@ -210,7 +224,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxThursday
             // 
             this.CBoxThursday.AutoSize = true;
-            this.CBoxThursday.Location = new System.Drawing.Point(173, 32);
+            this.CBoxThursday.Enabled = false;
+            this.CBoxThursday.Location = new System.Drawing.Point(175, 32);
             this.CBoxThursday.Name = "CBoxThursday";
             this.CBoxThursday.Size = new System.Drawing.Size(52, 24);
             this.CBoxThursday.TabIndex = 53;
@@ -221,7 +236,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxWednesday
             // 
             this.CBoxWednesday.AutoSize = true;
-            this.CBoxWednesday.Location = new System.Drawing.Point(117, 32);
+            this.CBoxWednesday.Enabled = false;
+            this.CBoxWednesday.Location = new System.Drawing.Point(119, 32);
             this.CBoxWednesday.Name = "CBoxWednesday";
             this.CBoxWednesday.Size = new System.Drawing.Size(58, 24);
             this.CBoxWednesday.TabIndex = 52;
@@ -232,6 +248,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxMonday
             // 
             this.CBoxMonday.AutoSize = true;
+            this.CBoxMonday.Enabled = false;
             this.CBoxMonday.Location = new System.Drawing.Point(9, 32);
             this.CBoxMonday.Name = "CBoxMonday";
             this.CBoxMonday.Size = new System.Drawing.Size(58, 24);
@@ -243,13 +260,29 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // CBoxTuesday
             // 
             this.CBoxTuesday.AutoSize = true;
-            this.CBoxTuesday.Location = new System.Drawing.Point(66, 32);
+            this.CBoxTuesday.Enabled = false;
+            this.CBoxTuesday.Location = new System.Drawing.Point(68, 32);
             this.CBoxTuesday.Name = "CBoxTuesday";
             this.CBoxTuesday.Size = new System.Drawing.Size(52, 24);
             this.CBoxTuesday.TabIndex = 51;
             this.CBoxTuesday.Tag = "Tue-2";
             this.CBoxTuesday.Text = "Tue";
             this.CBoxTuesday.UseVisualStyleBackColor = true;
+            // 
+            // BtnSelectAllEmloyeesInShiftSchedTab
+            // 
+            this.BtnSelectAllEmloyeesInShiftSchedTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnSelectAllEmloyeesInShiftSchedTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSelectAllEmloyeesInShiftSchedTab.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnSelectAllEmloyeesInShiftSchedTab.ForeColor = System.Drawing.Color.White;
+            this.BtnSelectAllEmloyeesInShiftSchedTab.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSelectAllEmloyeesInShiftSchedTab.Location = new System.Drawing.Point(16, 20);
+            this.BtnSelectAllEmloyeesInShiftSchedTab.Name = "BtnSelectAllEmloyeesInShiftSchedTab";
+            this.BtnSelectAllEmloyeesInShiftSchedTab.Size = new System.Drawing.Size(143, 24);
+            this.BtnSelectAllEmloyeesInShiftSchedTab.TabIndex = 54;
+            this.BtnSelectAllEmloyeesInShiftSchedTab.Text = "Select all employees";
+            this.BtnSelectAllEmloyeesInShiftSchedTab.UseVisualStyleBackColor = false;
+            this.BtnSelectAllEmloyeesInShiftSchedTab.Click += new System.EventHandler(this.BtnSelectAllEmloyeesInShiftSchedTab_Click);
             // 
             // tabControl1
             // 
@@ -266,8 +299,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.panel3);
             this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Controls.Add(this.DGVEmployeeList);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -276,8 +309,56 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.tabPage1.Text = "Employee Shift";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.BtnRefreshEmployees);
+            this.panel3.Controls.Add(this.label5);
+            this.panel3.Controls.Add(this.TbxSearchEmployeesInTab1);
+            this.panel3.Controls.Add(this.BtnSelectAllEmloyeesInShiftSchedTab);
+            this.panel3.Controls.Add(this.DGVEmployeeList);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel3.Location = new System.Drawing.Point(500, 3);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(724, 618);
+            this.panel3.TabIndex = 9;
+            // 
+            // BtnRefreshEmployees
+            // 
+            this.BtnRefreshEmployees.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnRefreshEmployees.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRefreshEmployees.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnRefreshEmployees.ForeColor = System.Drawing.Color.White;
+            this.BtnRefreshEmployees.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRefreshEmployees.Location = new System.Drawing.Point(165, 19);
+            this.BtnRefreshEmployees.Name = "BtnRefreshEmployees";
+            this.BtnRefreshEmployees.Size = new System.Drawing.Size(62, 24);
+            this.BtnRefreshEmployees.TabIndex = 57;
+            this.BtnRefreshEmployees.Text = "Refresh";
+            this.BtnRefreshEmployees.UseVisualStyleBackColor = false;
+            this.BtnRefreshEmployees.Click += new System.EventHandler(this.BtnRefresh_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(352, 20);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 20);
+            this.label5.TabIndex = 56;
+            this.label5.Text = "Search";
+            // 
+            // TbxSearchEmployeesInTab1
+            // 
+            this.TbxSearchEmployeesInTab1.Location = new System.Drawing.Point(411, 16);
+            this.TbxSearchEmployeesInTab1.Name = "TbxSearchEmployeesInTab1";
+            this.TbxSearchEmployeesInTab1.Size = new System.Drawing.Size(290, 27);
+            this.TbxSearchEmployeesInTab1.TabIndex = 55;
+            this.TbxSearchEmployeesInTab1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TbxSearchEmployeesInTab1_KeyUp);
+            // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.BtnRefreshEmployees2);
+            this.tabPage2.Controls.Add(this.label6);
+            this.tabPage2.Controls.Add(this.TbxSearchEmployeesInTab2);
             this.tabPage2.Controls.Add(this.BtnUndoChanges);
             this.tabPage2.Controls.Add(this.BtnSelectAllEmployees);
             this.tabPage2.Controls.Add(this.BtnSaveWorkforceSchedule);
@@ -292,6 +373,54 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
             // 
+            // BtnRefreshEmployees2
+            // 
+            this.BtnRefreshEmployees2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnRefreshEmployees2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRefreshEmployees2.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnRefreshEmployees2.ForeColor = System.Drawing.Color.White;
+            this.BtnRefreshEmployees2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRefreshEmployees2.Location = new System.Drawing.Point(586, 9);
+            this.BtnRefreshEmployees2.Name = "BtnRefreshEmployees2";
+            this.BtnRefreshEmployees2.Size = new System.Drawing.Size(62, 24);
+            this.BtnRefreshEmployees2.TabIndex = 60;
+            this.BtnRefreshEmployees2.Text = "Refresh";
+            this.BtnRefreshEmployees2.UseVisualStyleBackColor = false;
+            this.BtnRefreshEmployees2.Click += new System.EventHandler(this.BtnRefreshEmployees2_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(856, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 20);
+            this.label6.TabIndex = 59;
+            this.label6.Text = "Search";
+            // 
+            // TbxSearchEmployeesInTab2
+            // 
+            this.TbxSearchEmployeesInTab2.Location = new System.Drawing.Point(915, 12);
+            this.TbxSearchEmployeesInTab2.Name = "TbxSearchEmployeesInTab2";
+            this.TbxSearchEmployeesInTab2.Size = new System.Drawing.Size(290, 27);
+            this.TbxSearchEmployeesInTab2.TabIndex = 58;
+            this.TbxSearchEmployeesInTab2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TbxSearchEmployeesInTab2_KeyUp);
+            // 
+            // BtnUndoChanges
+            // 
+            this.BtnUndoChanges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnUndoChanges.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnUndoChanges.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnUndoChanges.ForeColor = System.Drawing.Color.White;
+            this.BtnUndoChanges.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnUndoChanges.Location = new System.Drawing.Point(964, 561);
+            this.BtnUndoChanges.Name = "BtnUndoChanges";
+            this.BtnUndoChanges.Size = new System.Drawing.Size(116, 49);
+            this.BtnUndoChanges.TabIndex = 54;
+            this.BtnUndoChanges.Text = "Undo Changes";
+            this.BtnUndoChanges.UseVisualStyleBackColor = false;
+            this.BtnUndoChanges.Click += new System.EventHandler(this.BtnUndoChanges_Click);
+            this.BtnUndoChanges.MouseHover += new System.EventHandler(this.BtnUndoChanges_MouseHover);
+            // 
             // BtnSelectAllEmployees
             // 
             this.BtnSelectAllEmployees.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -299,11 +428,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSelectAllEmployees.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSelectAllEmployees.ForeColor = System.Drawing.Color.White;
             this.BtnSelectAllEmployees.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSelectAllEmployees.Location = new System.Drawing.Point(1118, 17);
+            this.BtnSelectAllEmployees.Location = new System.Drawing.Point(453, 9);
             this.BtnSelectAllEmployees.Name = "BtnSelectAllEmployees";
-            this.BtnSelectAllEmployees.Size = new System.Drawing.Size(87, 24);
+            this.BtnSelectAllEmployees.Size = new System.Drawing.Size(127, 24);
             this.BtnSelectAllEmployees.TabIndex = 53;
-            this.BtnSelectAllEmployees.Text = "Select all";
+            this.BtnSelectAllEmployees.Text = "Select all employees";
             this.BtnSelectAllEmployees.UseVisualStyleBackColor = false;
             this.BtnSelectAllEmployees.Click += new System.EventHandler(this.BtnSelectAllEmployees_Click);
             // 
@@ -393,7 +522,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox1.Controls.Add(this.DPicWorkScheduleStartFrom);
             this.groupBox1.Location = new System.Drawing.Point(18, 17);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(389, 582);
+            this.groupBox1.Size = new System.Drawing.Size(413, 567);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scheduling";
@@ -405,7 +534,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnDeleteSchedule.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnDeleteSchedule.ForeColor = System.Drawing.Color.White;
             this.BtnDeleteSchedule.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnDeleteSchedule.Location = new System.Drawing.Point(285, 508);
+            this.BtnDeleteSchedule.Location = new System.Drawing.Point(146, 518);
             this.BtnDeleteSchedule.Name = "BtnDeleteSchedule";
             this.BtnDeleteSchedule.Size = new System.Drawing.Size(89, 30);
             this.BtnDeleteSchedule.TabIndex = 52;
@@ -413,6 +542,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnDeleteSchedule.UseVisualStyleBackColor = false;
             this.BtnDeleteSchedule.Visible = false;
             this.BtnDeleteSchedule.Click += new System.EventHandler(this.BtnDeleteSchedule_Click);
+            this.BtnDeleteSchedule.MouseHover += new System.EventHandler(this.BtnDeleteSchedule_MouseHover);
             // 
             // BtnUpdateSelectedDateWorkForce
             // 
@@ -421,13 +551,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnUpdateSelectedDateWorkForce.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnUpdateSelectedDateWorkForce.ForeColor = System.Drawing.Color.White;
             this.BtnUpdateSelectedDateWorkForce.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUpdateSelectedDateWorkForce.Location = new System.Drawing.Point(205, 116);
+            this.BtnUpdateSelectedDateWorkForce.Location = new System.Drawing.Point(241, 518);
             this.BtnUpdateSelectedDateWorkForce.Name = "BtnUpdateSelectedDateWorkForce";
-            this.BtnUpdateSelectedDateWorkForce.Size = new System.Drawing.Size(169, 30);
+            this.BtnUpdateSelectedDateWorkForce.Size = new System.Drawing.Size(153, 30);
             this.BtnUpdateSelectedDateWorkForce.TabIndex = 51;
             this.BtnUpdateSelectedDateWorkForce.Text = "Update Workforce";
             this.BtnUpdateSelectedDateWorkForce.UseVisualStyleBackColor = false;
             this.BtnUpdateSelectedDateWorkForce.Click += new System.EventHandler(this.BtnUpdateSelectedDateWorkForce_Click);
+            this.BtnUpdateSelectedDateWorkForce.MouseHover += new System.EventHandler(this.BtnUpdateSelectedDateWorkForce_MouseHover);
             // 
             // BtnGenerateWorkforceSchedule
             // 
@@ -436,7 +567,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnGenerateWorkforceSchedule.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnGenerateWorkforceSchedule.ForeColor = System.Drawing.Color.White;
             this.BtnGenerateWorkforceSchedule.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnGenerateWorkforceSchedule.Location = new System.Drawing.Point(91, 116);
+            this.BtnGenerateWorkforceSchedule.Location = new System.Drawing.Point(286, 106);
             this.BtnGenerateWorkforceSchedule.Name = "BtnGenerateWorkforceSchedule";
             this.BtnGenerateWorkforceSchedule.Size = new System.Drawing.Size(89, 30);
             this.BtnGenerateWorkforceSchedule.TabIndex = 50;
@@ -453,9 +584,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.LViewScheduleDates.FullRowSelect = true;
             this.LViewScheduleDates.GridLines = true;
             this.LViewScheduleDates.HideSelection = false;
-            this.LViewScheduleDates.Location = new System.Drawing.Point(32, 157);
+            this.LViewScheduleDates.Location = new System.Drawing.Point(18, 142);
             this.LViewScheduleDates.Name = "LViewScheduleDates";
-            this.LViewScheduleDates.Size = new System.Drawing.Size(342, 344);
+            this.LViewScheduleDates.Size = new System.Drawing.Size(376, 370);
             this.LViewScheduleDates.TabIndex = 5;
             this.LViewScheduleDates.UseCompatibleStateImageBehavior = false;
             this.LViewScheduleDates.View = System.Windows.Forms.View.Details;
@@ -475,7 +606,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(32, 87);
+            this.label4.Location = new System.Drawing.Point(218, 77);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(25, 21);
             this.label4.TabIndex = 4;
@@ -485,16 +616,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.DPicWorkScheduleEndTo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.DPicWorkScheduleEndTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DPicWorkScheduleEndTo.Location = new System.Drawing.Point(91, 81);
+            this.DPicWorkScheduleEndTo.Location = new System.Drawing.Point(249, 71);
             this.DPicWorkScheduleEndTo.Name = "DPicWorkScheduleEndTo";
-            this.DPicWorkScheduleEndTo.Size = new System.Drawing.Size(168, 29);
+            this.DPicWorkScheduleEndTo.Size = new System.Drawing.Size(126, 29);
             this.DPicWorkScheduleEndTo.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(32, 52);
+            this.label3.Location = new System.Drawing.Point(28, 75);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 21);
             this.label3.TabIndex = 2;
@@ -504,7 +635,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(91, 22);
+            this.label1.Location = new System.Drawing.Point(81, 47);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(140, 21);
             this.label1.TabIndex = 1;
@@ -514,25 +645,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.DPicWorkScheduleStartFrom.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.DPicWorkScheduleStartFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DPicWorkScheduleStartFrom.Location = new System.Drawing.Point(91, 46);
+            this.DPicWorkScheduleStartFrom.Location = new System.Drawing.Point(81, 71);
             this.DPicWorkScheduleStartFrom.Name = "DPicWorkScheduleStartFrom";
-            this.DPicWorkScheduleStartFrom.Size = new System.Drawing.Size(168, 29);
+            this.DPicWorkScheduleStartFrom.Size = new System.Drawing.Size(126, 29);
             this.DPicWorkScheduleStartFrom.TabIndex = 0;
-            // 
-            // BtnUndoChanges
-            // 
-            this.BtnUndoChanges.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnUndoChanges.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnUndoChanges.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnUndoChanges.ForeColor = System.Drawing.Color.White;
-            this.BtnUndoChanges.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUndoChanges.Location = new System.Drawing.Point(964, 561);
-            this.BtnUndoChanges.Name = "BtnUndoChanges";
-            this.BtnUndoChanges.Size = new System.Drawing.Size(116, 49);
-            this.BtnUndoChanges.TabIndex = 54;
-            this.BtnUndoChanges.Text = "Undo Changes";
-            this.BtnUndoChanges.UseVisualStyleBackColor = false;
-            this.BtnUndoChanges.Click += new System.EventHandler(this.BtnUndoChanges_Click);
             // 
             // ManageEmpWorkScheduleControl
             // 
@@ -554,7 +670,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GroupPanelShiftDays.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVScheduledWorkforceByDate)).EndInit();
@@ -605,5 +724,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Button BtnSelectAllEmployees;
         private System.Windows.Forms.Button BtnDeleteSchedule;
         private System.Windows.Forms.Button BtnUndoChanges;
+        private System.Windows.Forms.Button BtnSelectAllEmloyeesInShiftSchedTab;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox TbxSearchEmployeesInTab1;
+        private System.Windows.Forms.Button BtnRefreshEmployees;
+        private System.Windows.Forms.Button BtnRefreshEmployees2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox TbxSearchEmployeesInTab2;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
