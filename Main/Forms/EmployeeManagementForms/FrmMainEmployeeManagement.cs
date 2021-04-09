@@ -1183,28 +1183,34 @@ namespace Main.Forms.EmployeeManagementForms
 
                 if (res == DialogResult.OK)
                 {
-                    var deleteResults = _employeePositionController.Delete(positionId);
+                    FrmReassignEmployeesToNewPosition frmReassignEmployeesToNewPosition = new FrmReassignEmployeesToNewPosition(_employeeData, _employeePositionData, positionId);
+                    frmReassignEmployeesToNewPosition.ShowDialog();
+                    bool continueToDeleteShift = (frmReassignEmployeesToNewPosition.IsDone == true && frmReassignEmployeesToNewPosition.IsCancelled == false);
 
-                    string resultMessages = "";
-                    foreach (var msg in deleteResults.Messages)
+                    if (continueToDeleteShift)
                     {
-                        resultMessages += msg + "\n";
-                    }
+                        var deleteResults = _employeePositionController.Delete(positionId);
 
-                    if (deleteResults.IsSuccess)
-                    {
-                        MessageBox.Show(resultMessages, "Delete position details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        string resultMessages = "";
+                        foreach (var msg in deleteResults.Messages)
+                        {
+                            resultMessages += msg + "\n";
+                        }
 
-                        controlObj.ResetForm();
-                        controlObj.Positions = _employeePositionData.GetAllNotDeleted();
-                        controlObj.DisplayPositionList();
-                    }
-                    else
-                    {
-                        MessageBox.Show(resultMessages, "Delete position details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        if (deleteResults.IsSuccess)
+                        {
+                            MessageBox.Show(resultMessages, "Delete position details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            controlObj.ResetForm();
+                            controlObj.Positions = _employeePositionData.GetAllNotDeleted();
+                            controlObj.DisplayPositionList();
+                        }
+                        else
+                        {
+                            MessageBox.Show(resultMessages, "Delete position details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
                 }
-                
             }
 
         }
