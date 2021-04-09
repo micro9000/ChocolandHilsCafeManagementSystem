@@ -18,6 +18,8 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
         List<EmployeeModel> GetAllByDateHire(DateTime dateHire);
         List<EmployeeModel> Search(string search);
 
+        bool MoveEmployeesIntoNewShift(long previousShiftId, long newShiftId);
         bool MoveEmployeesIntoOtherBranch(long previousBranchId, long newBranchId);
+        bool MoveEmployeesIntoOtherPosition(long previousPositionId, long newPositionId);
     }
 }

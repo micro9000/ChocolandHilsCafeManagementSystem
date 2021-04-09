@@ -14,6 +14,7 @@ using EntitiesShared.EmployeeManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Controllers.OtherDataController.ControllerInterface;
 using Main.Forms.EmployeeManagementForms.Controls;
+using Main.Forms.EmployeeManagementForms.OtherForms;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Shared;
@@ -29,6 +30,8 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
         private readonly IBranchData _branchData;
+        private readonly IEmployeeData _employeeData;
+        private readonly IEmployeeShiftData _employeeShiftData;
         private readonly IEmployeeShiftDayData _employeeShiftDayData;
         private readonly IEmployeeController _employeeController;
         private readonly IEmployeePayslipData _employeePayslipData;
@@ -52,6 +55,8 @@ namespace Main.Forms.EmployeeManagementForms
                                 IGovernmentAgencyData governmentAgencyData,
                                 IEmployeeLeaveData employeeLeaveData,
                                 IBranchData branchData,
+                                IEmployeeData employeeData,
+                                IEmployeeShiftData employeeShiftData,
                                 IEmployeeShiftDayData employeeShiftDayData,
                                 IEmployeeController employeeController,
                                 IEmployeePayslipData employeePayslipData,
@@ -76,6 +81,8 @@ namespace Main.Forms.EmployeeManagementForms
             _governmentAgencyData = governmentAgencyData;
             _employeeLeaveData = employeeLeaveData;
             _branchData = branchData;
+            _employeeData = employeeData;
+            _employeeShiftData = employeeShiftData;
             _employeeShiftDayData = employeeShiftDayData;
             _employeeController = employeeController;
             _employeePayslipData = employeePayslipData;
@@ -524,29 +531,37 @@ namespace Main.Forms.EmployeeManagementForms
 
             if (long.TryParse(selectedShiftId, out long shiftId))
             {
-                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                if (res == DialogResult.OK)
+                if (res == DialogResult.Yes)
                 {
-                    var deleteResults = _workShiftController.Delete(shiftId);
+                    FrmReassignEmployeesToNewShift frmReassignEmpToNewShift = new FrmReassignEmployeesToNewShift(_employeeData, _employeeShiftData, shiftId);
+                    frmReassignEmpToNewShift.ShowDialog();
+                    bool continueToDeleteShift = (frmReassignEmpToNewShift.IsDone == true && frmReassignEmpToNewShift.IsCancelled == false);
 
-                    string resultMessages = "";
-                    foreach (var msg in deleteResults.Messages)
+                    if (continueToDeleteShift)
                     {
-                        resultMessages += msg + "\n";
-                    }
+                        var deleteResults = _workShiftController.Delete(shiftId);
 
-                    if (deleteResults.IsSuccess)
-                    {
-                        MessageBox.Show(resultMessages, "Delete shift.", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        workShiftsCRUDControlObj.ResetForm();
-                        workShiftsCRUDControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
-                        workShiftsCRUDControlObj.DisplayWorkShiftList();
+                        string resultMessages = "";
+                        foreach (var msg in deleteResults.Messages)
+                        {
+                            resultMessages += msg + "\n";
+                        }
+
+                        if (deleteResults.IsSuccess)
+                        {
+                            MessageBox.Show(resultMessages, "Delete shift.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            workShiftsCRUDControlObj.ResetForm();
+                            workShiftsCRUDControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
+                            workShiftsCRUDControlObj.DisplayWorkShiftList();
+                        }
+                        else
+                        {
+                            MessageBox.Show(resultMessages, "Delete shift", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
-                    else
-                    {
-                        MessageBox.Show(resultMessages, "Delete shift", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    
                 }
             }
         }

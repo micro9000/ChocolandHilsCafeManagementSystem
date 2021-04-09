@@ -191,11 +191,11 @@ namespace Main.Forms.InventoryManagementForms
             IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
             long selectedCategoryId = inventoryControlObj.SelectedCategoryId;
 
-            DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (res == DialogResult.OK)
+            if (res == DialogResult.Yes)
             {
-                DialogResult deleteIngredietns = MessageBox.Show("Do you want to delete ingredients under in this category?", "Delete confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                DialogResult deleteIngredietns = MessageBox.Show("Do you want to delete ingredients under in this category?", "Delete confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 bool continueToDeleteCategory = false;
                 bool continueToDeleteIngredientsUnderThisCategory = false;

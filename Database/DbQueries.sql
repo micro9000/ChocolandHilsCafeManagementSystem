@@ -173,6 +173,9 @@ DROP COLUMN position;
 
 SELECT * FROM Employees;
 
+UPDATE Employees SET shiftId=@NewShiftId
+WHERE isDeleted=false AND shiftId=@PreviousShiftId;
+
 -- ALTER TABLE Employees
 -- DROP FOREIGN KEY employees_ibfk_1;
 
@@ -301,7 +304,8 @@ CREATE TABLE IF NOT EXISTS WorkforceSchedules(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
-SELECT * FROM WorkforceSchedules;
+SELECT * FROM WorkforceSchedules 
+WHERE employeeNumber='20190001' AND workDate='2021-03-18';
 
 CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -340,6 +344,21 @@ ALTER TABLE EmployeeAttendance
 ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 
 SELECT * FROM EmployeeAttendance where workDate='2021-03-13';
+
+SELECT * FROM WorkforceSchedules 
+WHERE employeeNumber='20190001' AND isDeleted=false AND workDate BETWEEN '2021-03-17' AND '2021-04-08';
+
+SELECT * FROM EmployeeAttendance where employeeNumber='20190001';
+SELECT * FROM EmployeeLeaves;
+
+SELECT * 
+FROM EmployeeAttendance AS EA
+JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
+JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
+WHERE EA.employeeNumber='20190001' AND EA.workDate BETWEEN '2021-01-01' AND '2021-04-09'
+ORDER BY EA.id DESC;
+
+SELECT * FROM EmployeeShifts;
 
 SELECT * FROM EmployeeLeaves;
 

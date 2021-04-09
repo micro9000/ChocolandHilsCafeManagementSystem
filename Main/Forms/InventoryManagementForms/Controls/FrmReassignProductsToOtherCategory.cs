@@ -78,7 +78,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     {
                         this.IsCancelled = true;
                         this.IsDone = false;
-                        MessageBox.Show("Unable to update products category, see system log for possible errors and report this to developer.", "Update category", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Unable to update product's category, see system logs for possible errors and report this to developer.", "Update category", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {

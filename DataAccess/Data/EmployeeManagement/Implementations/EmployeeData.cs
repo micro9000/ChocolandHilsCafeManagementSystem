@@ -157,9 +157,66 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
         }
 
 
+        public bool MoveEmployeesIntoNewShift(long previousShiftId, long newShiftId)
+        {
+            string query = @"UPDATE Employees SET shiftId=@NewShiftId
+                            WHERE isDeleted=false AND shiftId=@PreviousShiftId";
+
+            int rowsAffected = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                rowsAffected = conn.Execute(query,
+                        new
+                        {
+                            NewShiftId = newShiftId,
+                            PreviousShiftId = previousShiftId
+                        });
+                conn.Close();
+            }
+
+            return rowsAffected > 0;
+        }
+
+
         public bool MoveEmployeesIntoOtherBranch(long previousBranchId, long newBranchId)
         {
-            throw new NotImplementedException();
+            string query = @"UPDATE Employees SET branchId=@NewBranchId
+                            WHERE isDeleted=false AND branchId=@PreviousBranchId";
+
+            int rowsAffected = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                rowsAffected = conn.Execute(query,
+                        new
+                        {
+                            NewBranchId = newBranchId,
+                            PreviousBranchId = previousBranchId
+                        });
+                conn.Close();
+            }
+
+            return rowsAffected > 0;
+        }
+
+
+        public bool MoveEmployeesIntoOtherPosition(long previousPositionId, long newPositionId)
+        {
+            string query = @"UPDATE Employees SET positionId=@NewPositionId
+                            WHERE isDeleted=false AND positionId=@PreviousPositionId";
+
+            int rowsAffected = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                rowsAffected = conn.Execute(query,
+                        new
+                        {
+                            NewPositionId = newPositionId,
+                            PreviousPositionId = previousPositionId
+                        });
+                conn.Close();
+            }
+
+            return rowsAffected > 0;
         }
     }
 }
