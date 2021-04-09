@@ -578,33 +578,9 @@ namespace Main.Forms.InventoryManagementForms
 
             if (res == DialogResult.OK)
             {
-                DialogResult deleteIngredietns = MessageBox.Show("Do you want to delete products under in this category?", "Delete confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-
-                bool continueToDeleteCategory = false;
-                bool continueToDeleteIngredientsUnderThisCategory = false;
-
-                if (deleteIngredietns == DialogResult.Yes)
-                {
-                    // Delete all ingredients
-                    DialogResult continueToDeleteIngredients = MessageBox.Show("You are going to delete products under in this category, do you want to continue?", "Delete confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    continueToDeleteCategory = (continueToDeleteIngredients == DialogResult.Yes);
-                    continueToDeleteIngredientsUnderThisCategory = (continueToDeleteIngredients == DialogResult.Yes);
-
-                }
-                else if (deleteIngredietns == DialogResult.No)
-                {
-                    // Reassign to other category
-
-                    FrmReassignProductsToOtherCategory frmReassignCategory = new FrmReassignProductsToOtherCategory(_productCategoryData, _productData, selectedCategoryId);
-
-                    frmReassignCategory.ShowDialog();
-
-                    continueToDeleteCategory = (frmReassignCategory.IsDone == true && frmReassignCategory.IsCancelled == false);
-                }
-                else
-                {
-                    continueToDeleteCategory = false;
-                }
+                FrmReassignProductsToOtherCategory frmReassignCategory = new FrmReassignProductsToOtherCategory(_productCategoryData, _productData, selectedCategoryId);
+                frmReassignCategory.ShowDialog();
+                bool continueToDeleteCategory = (frmReassignCategory.IsDone == true && frmReassignCategory.IsCancelled == false);
 
                 if (continueToDeleteCategory)
                 {
@@ -618,10 +594,6 @@ namespace Main.Forms.InventoryManagementForms
 
                     if (deleteResults.IsSuccess)
                     {
-                        
-                        if (continueToDeleteIngredientsUnderThisCategory)
-                            _productData.MassDeleteProductsByCategory(selectedCategoryId);// Delete all producta
-
                         MessageBox.Show(resultMessages, "Delete category", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         inventoryControlObj.ResetProductCategoryForm();
                         inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();

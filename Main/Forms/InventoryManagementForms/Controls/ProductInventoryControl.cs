@@ -709,7 +709,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             DataGridViewTextBoxColumn textboxColumn = new DataGridViewTextBoxColumn();
             textboxColumn.HeaderText = "Cost";
             textboxColumn.Name = "TotalCost";
-            textboxColumn.DefaultCellStyle.BackColor = Color.Bisque;
+            //textboxColumn.DefaultCellStyle.BackColor = Color.Bisque;
             textboxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             textboxColumn.ReadOnly = true;
             DGVSelectedIngredients.Columns.Add(textboxColumn);

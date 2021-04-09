@@ -45,6 +45,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.LblNewOrUpdateProductIndicator = new System.Windows.Forms.Label();
             this.SelectIngredientsTabControl = new System.Windows.Forms.TabControl();
             this.TabItemSelectIngredients = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
             this.BtnRefreshIngredientList = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.TboxSearchIngredients = new System.Windows.Forms.TextBox();
@@ -95,6 +96,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TabComboMealList = new System.Windows.Forms.TabPage();
             this.DGVComboMealList = new System.Windows.Forms.DataGridView();
             this.DGVComboMealExistingProducts = new System.Windows.Forms.DataGridView();
+            this.label16 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabProdCategory.SuspendLayout();
@@ -312,6 +314,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // TabItemSelectIngredients
             // 
+            this.TabItemSelectIngredients.Controls.Add(this.label15);
             this.TabItemSelectIngredients.Controls.Add(this.BtnRefreshIngredientList);
             this.TabItemSelectIngredients.Controls.Add(this.label8);
             this.TabItemSelectIngredients.Controls.Add(this.TboxSearchIngredients);
@@ -324,6 +327,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TabItemSelectIngredients.Text = "Select Ingredients";
             this.TabItemSelectIngredients.UseVisualStyleBackColor = true;
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.label15.Location = new System.Drawing.Point(160, 55);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(445, 15);
+            this.label15.TabIndex = 31;
+            this.label15.Text = "Guide: Select ingredients on this tab, then go to next tab to input ingredient am" +
+    "ount";
+            // 
             // BtnRefreshIngredientList
             // 
             this.BtnRefreshIngredientList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -331,7 +345,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnRefreshIngredientList.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnRefreshIngredientList.ForeColor = System.Drawing.Color.White;
             this.BtnRefreshIngredientList.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnRefreshIngredientList.Location = new System.Drawing.Point(135, 15);
+            this.BtnRefreshIngredientList.Location = new System.Drawing.Point(145, 16);
             this.BtnRefreshIngredientList.Name = "BtnRefreshIngredientList";
             this.BtnRefreshIngredientList.Size = new System.Drawing.Size(74, 30);
             this.BtnRefreshIngredientList.TabIndex = 30;
@@ -344,7 +358,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label8.ForeColor = System.Drawing.Color.Black;
-            this.label8.Location = new System.Drawing.Point(215, 19);
+            this.label8.Location = new System.Drawing.Point(225, 20);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(57, 21);
             this.label8.TabIndex = 29;
@@ -354,7 +368,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             this.TboxSearchIngredients.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TboxSearchIngredients.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TboxSearchIngredients.Location = new System.Drawing.Point(278, 14);
+            this.TboxSearchIngredients.Location = new System.Drawing.Point(288, 15);
             this.TboxSearchIngredients.Name = "TboxSearchIngredients";
             this.TboxSearchIngredients.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.TboxSearchIngredients.Size = new System.Drawing.Size(325, 29);
@@ -368,16 +382,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVIngredientListToSelect.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGVIngredientListToSelect.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.DGVIngredientListToSelect.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.DGVIngredientListToSelect.Location = new System.Drawing.Point(3, 51);
+            this.DGVIngredientListToSelect.Location = new System.Drawing.Point(3, 83);
             this.DGVIngredientListToSelect.Name = "DGVIngredientListToSelect";
             this.DGVIngredientListToSelect.RowTemplate.Height = 25;
-            this.DGVIngredientListToSelect.Size = new System.Drawing.Size(615, 452);
+            this.DGVIngredientListToSelect.Size = new System.Drawing.Size(615, 420);
             this.DGVIngredientListToSelect.TabIndex = 0;
             this.DGVIngredientListToSelect.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVIngredientListToSelect_CellClick);
             this.DGVIngredientListToSelect.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVIngredientListToSelect_CellContentClick);
             // 
             // TabItemEnterIngredientAmount
             // 
+            this.TabItemEnterIngredientAmount.Controls.Add(this.label16);
             this.TabItemEnterIngredientAmount.Controls.Add(this.BtnCompute);
             this.TabItemEnterIngredientAmount.Controls.Add(this.DGVSelectedIngredients);
             this.TabItemEnterIngredientAmount.Location = new System.Drawing.Point(4, 29);
@@ -944,6 +959,16 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVComboMealExistingProducts.Size = new System.Drawing.Size(580, 500);
             this.DGVComboMealExistingProducts.TabIndex = 56;
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.label16.Location = new System.Drawing.Point(16, 19);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(397, 15);
+            this.label16.TabIndex = 58;
+            this.label16.Text = "Guide: Select amount column to enter ingredient\'s amount and select UOM";
+            // 
             // ProductInventoryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -968,6 +993,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.TabItemSelectIngredients.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVIngredientListToSelect)).EndInit();
             this.TabItemEnterIngredientAmount.ResumeLayout(false);
+            this.TabItemEnterIngredientAmount.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVSelectedIngredients)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1065,5 +1091,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.DataGridView DGVComboMealList;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label LblAddOrUpdateComboMealIndicator;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
     }
 }
