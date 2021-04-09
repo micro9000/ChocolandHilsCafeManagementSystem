@@ -2,6 +2,7 @@
 using EntitiesShared.InventoryManagement;
 using Main.Controllers.InventoryControllers;
 using Main.FormModels;
+using Shared;
 using Shared.CustomModels;
 using Shared.Helpers;
 using System;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -20,15 +22,18 @@ namespace Main.Forms.InventoryManagementForms.Controls
     public partial class ProductInventoryControl : UserControl
     {
         public ProductInventoryControl(UOMConverter uOMConverter,
-                            IIngredientInventoryManager ingredientInventoryManager)
+                            IIngredientInventoryManager ingredientInventoryManager,
+                            OtherSettings otherSettings)
         {
             InitializeComponent();
             _uOMConverter = uOMConverter;
             _ingredientInventoryManager = ingredientInventoryManager;
+            _otherSettings = otherSettings;
         }
 
         private readonly UOMConverter _uOMConverter;
         private readonly IIngredientInventoryManager _ingredientInventoryManager;
+        private readonly OtherSettings _otherSettings;
 
         private void ProductInventoryControl_Load(object sender, EventArgs e)
         {
@@ -338,19 +343,25 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             if (products != null)
             {
-                this.DGVProductList.ColumnCount = 4;
+                this.DGVProductList.ColumnCount = 6;
 
                 this.DGVProductList.Columns[0].Name = "ProductId";
                 this.DGVProductList.Columns[0].Visible = false;
 
-                this.DGVProductList.Columns[1].Name = "Category";
-                this.DGVProductList.Columns[1].HeaderText = "Category";
+                this.DGVProductList.Columns[1].Name = "BarcodeLbl";
+                this.DGVProductList.Columns[1].HeaderText = "Barcode";
 
-                this.DGVProductList.Columns[2].Name = "ProductName";
-                this.DGVProductList.Columns[2].HeaderText = "Name";
+                this.DGVProductList.Columns[2].Name = "Category";
+                this.DGVProductList.Columns[2].HeaderText = "Category";
 
-                this.DGVProductList.Columns[3].Name = "PricePerOrder";
-                this.DGVProductList.Columns[3].HeaderText = "Price per order";
+                this.DGVProductList.Columns[3].Name = "ProductName";
+                this.DGVProductList.Columns[3].HeaderText = "Name";
+
+                this.DGVProductList.Columns[4].Name = "PricePerOrder";
+                this.DGVProductList.Columns[4].HeaderText = "Price per order";
+
+                this.DGVProductList.Columns[5].Name = "HaveImage";
+                this.DGVProductList.Columns[5].HeaderText = "Image";
 
                 // Update button
                 DataGridViewImageColumn btnUpdateImg = new DataGridViewImageColumn();
@@ -367,14 +378,20 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     row.Cells[0].Value = product.Id;
                     row.Cells[0].ReadOnly = true;
 
-                    row.Cells[1].Value = product.Category.ProdCategory;
+                    row.Cells[1].Value = product.BarcodeLbl;
                     row.Cells[1].ReadOnly = true;
 
-                    row.Cells[2].Value = product.ProdName;
+                    row.Cells[2].Value = product.Category.ProdCategory;
                     row.Cells[2].ReadOnly = true;
 
-                    row.Cells[3].Value = product.PricePerOrder;
+                    row.Cells[3].Value = product.ProdName;
                     row.Cells[3].ReadOnly = true;
+
+                    row.Cells[4].Value = product.PricePerOrder;
+                    row.Cells[4].ReadOnly = true;
+
+                    row.Cells[5].Value = string.IsNullOrEmpty(product.ImageFilename) ? "N" : "Y";
+                    row.Cells[5].ReadOnly = true;
 
                     this.DGVProductList.Rows.Add(row);
                 }
@@ -463,7 +480,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
 
             //Update button
-            if ((e.ColumnIndex == 4) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 6) && e.RowIndex > -1)
             {
                 if (DGVProductList.CurrentRow != null && this.ProductCategories != null)
                 {
@@ -966,6 +983,12 @@ namespace Main.Forms.InventoryManagementForms.Controls
             ProductSave?.Invoke(this, e);
         }
 
+
+        private void CkBoxAutoGenerateBarcodeLbl_CheckedChanged(object sender, EventArgs e)
+        {
+            TboxBarcodeLbl.Enabled = !CkBoxAutoGenerateBarcodeLbl.Checked;
+        }
+
         private void BtnSaveProductDetails_Click(object sender, EventArgs e)
         {
             if (ProductSelectedIngredients == null)
@@ -987,6 +1010,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 MessageBox.Show($"Provide product name.", "Product name", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
+            }
+
+            if (CkBoxAutoGenerateBarcodeLbl.Checked == false)
+            {
+                if (string.IsNullOrEmpty(TboxBarcodeLbl.Text))
+                {
+                    MessageBox.Show($"Provide product barcode label.", "Product barcode label", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
             }
 
             if (NumUpDownPricePerOrder.Value <= 0)
@@ -1058,6 +1090,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 {
                     this.ProductToAddUpdate = new ProductModel
                     {
+                        isBarcodeLblAutoGenerate = CkBoxAutoGenerateBarcodeLbl.Checked,
+                        BarcodeLbl = TboxBarcodeLbl.Text,
                         CategoryId = categoryId,
                         ProdName = TboxProductName.Text,
                         PricePerOrder = NumUpDownPricePerOrder.Value
@@ -1068,6 +1102,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 {
                     if (this.ProductToAddUpdate != null)
                     {
+                        this.ProductToAddUpdate.BarcodeLbl = TboxBarcodeLbl.Text;
                         this.ProductToAddUpdate.CategoryId = categoryId;
                         this.ProductToAddUpdate.ProdName = TboxProductName.Text;
                         this.ProductToAddUpdate.PricePerOrder = NumUpDownPricePerOrder.Value;
@@ -1080,6 +1115,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
         public void ClearProductDetailsForm()
         {
+            this.CkBoxAutoGenerateBarcodeLbl.Checked = false;
+            this.TboxBarcodeLbl.Text = "";
             this.IsNewProduct = true;
             this.ProductToAddUpdate = null;
             this.SelectedIngredients = new Dictionary<long, IngredientModel>();
@@ -1091,6 +1128,14 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.NumUpDownPricePerOrder.Value = 0;
             this.LblNumberOfSelectedIngredients.Text = "0";
             this.BtnCancelSaveProductDetails.Visible = false;
+
+            if (PicBoxProductImage.Image != null)
+            {
+                PicBoxProductImage.Image.Dispose();
+                PicBoxProductImage.ImageLocation = null;
+                PicBoxProductImage.Image = null;
+            }
+
         }
 
         private void BtnCancelSaveProductDetails_Click(object sender, EventArgs e)
@@ -1118,8 +1163,32 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     }
                 }
 
+                this.TboxBarcodeLbl.Text = this.ProductToAddUpdate.BarcodeLbl;
                 this.TboxProductName.Text = this.ProductToAddUpdate.ProdName;
                 this.NumUpDownPricePerOrder.Value = this.ProductToAddUpdate.PricePerOrder;
+
+
+                string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                var ProductImgsDirInfo = Directory.CreateDirectory($"{appPath}{_otherSettings.ProductImgsFileDirName}");
+
+                if (PicBoxProductImage.Image != null)
+                {
+                    PicBoxProductImage.Image.Dispose();
+                    PicBoxProductImage.ImageLocation = null;
+                    PicBoxProductImage.Image = null;
+                }
+
+                if (ProductImgsDirInfo.Exists)
+                {
+                    string empImgPath = $"{appPath}\\{_otherSettings.ProductImgsFileDirName}\\{ProductToAddUpdate.ImageFilename}";
+
+                    if (File.Exists(empImgPath))
+                    {
+                        PicBoxProductImage.Image = new Bitmap(empImgPath);
+                        PicBoxProductImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                    }
+                }
+
 
                 if (this.ProductSelectedIngredients != null)
                 {
@@ -1400,6 +1469,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
         public void ClearComboMealForm()
         {
+            this.CkBoxComboMealAutoGen.Checked = false;
+            this.TboxComboMealBarcodeLbl.Text = "";
             this.TboxComboMealTitle.Text = "";
             this.NumUpDownComboMealPrice.Value = 0;
             this.IsNewComboMeal = true;
@@ -1407,9 +1478,21 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.ComboMealProductsToAddUpdate = new List<ComboMealProductModel>();
             this.SelectedComboMealId = 0;
 
+            if (PicBoxComboMealImage.Image != null)
+            {
+                PicBoxComboMealImage.Image.Dispose();
+                PicBoxComboMealImage.ImageLocation = null;
+                PicBoxComboMealImage.Image = null;
+            }
+
             ClearProductListInComboMealTab();
         }
 
+
+        private void CkBoxComboMealAutoGen_CheckedChanged(object sender, EventArgs e)
+        {
+            TboxComboMealBarcodeLbl.Enabled = !CkBoxComboMealAutoGen.Checked;
+        }
 
         private void BtnSaveComboMeal_Click(object sender, EventArgs e)
         {
@@ -1493,10 +1576,21 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 return;
             }
 
+            if (CkBoxComboMealAutoGen.Checked == false)
+            {
+                if (string.IsNullOrEmpty(TboxComboMealBarcodeLbl.Text))
+                {
+                    MessageBox.Show($"Provide combo meal barcode label.", "Product combo meal label", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+            }
+
             if (this.IsNewComboMeal)
             {
                 this.ComboMealToAddUpdate = new ComboMealModel
                 {
+                    isBarcodeLblAutoGenerate = CkBoxComboMealAutoGen.Checked,
+                    BarcodeLbl = TboxComboMealBarcodeLbl.Text,
                     Title = TboxComboMealTitle.Text,
                     Price = NumUpDownComboMealPrice.Value
                 };
@@ -1507,6 +1601,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (this.ComboMealToAddUpdate != null)
                 {
+                    this.ComboMealToAddUpdate.BarcodeLbl = TboxComboMealBarcodeLbl.Text;
                     this.ComboMealToAddUpdate.Title = TboxComboMealTitle.Text;
                     this.ComboMealToAddUpdate.Price = NumUpDownComboMealPrice.Value;
                     OnSaveComboMeal(EventArgs.Empty);
@@ -1528,16 +1623,22 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             if (comboMealsToDisplay != null)
             {
-                this.DGVComboMealList.ColumnCount = 3;
+                this.DGVComboMealList.ColumnCount = 5;
 
                 this.DGVComboMealList.Columns[0].Name = "ComboMealId";
                 this.DGVComboMealList.Columns[0].Visible = false;
 
-                this.DGVComboMealList.Columns[1].Name = "ComboMealTitle";
-                this.DGVComboMealList.Columns[1].HeaderText = "Title";
+                this.DGVComboMealList.Columns[1].Name = "ComboMealBarcodeLbl";
+                this.DGVComboMealList.Columns[1].HeaderText = "Barcode";
 
-                this.DGVComboMealList.Columns[2].Name = "ComboMealPrice";
-                this.DGVComboMealList.Columns[2].HeaderText = "Price";
+                this.DGVComboMealList.Columns[2].Name = "ComboMealTitle";
+                this.DGVComboMealList.Columns[2].HeaderText = "Title";
+
+                this.DGVComboMealList.Columns[3].Name = "ComboMealPrice";
+                this.DGVComboMealList.Columns[3].HeaderText = "Price";
+
+                this.DGVComboMealList.Columns[4].Name = "ComboMealHaveImage";
+                this.DGVComboMealList.Columns[4].HeaderText = "Image";
 
                 // Update button
                 DataGridViewImageColumn btnUpdateImg = new DataGridViewImageColumn();
@@ -1561,11 +1662,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     row.Cells[0].Value = item.Id;
                     row.Cells[0].ReadOnly = true;
 
-                    row.Cells[1].Value = item.Title;
+                    row.Cells[1].Value = item.BarcodeLbl;
                     row.Cells[1].ReadOnly = true;
 
-                    row.Cells[2].Value = item.Price;
+                    row.Cells[2].Value = item.Title;
                     row.Cells[2].ReadOnly = true;
+
+                    row.Cells[3].Value = item.Price;
+                    row.Cells[3].ReadOnly = true;
+
+                    row.Cells[4].Value = string.IsNullOrEmpty(item.BarcodeLbl) ? "N" : "Y";
+                    row.Cells[4].ReadOnly = true;
 
                     this.DGVComboMealList.Rows.Add(row);
                 }
@@ -1640,7 +1747,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
 
             // update button
-            if ((e.ColumnIndex == 3) && e.RowIndex > -1 && this.ExistingComboMeals != null)
+            if ((e.ColumnIndex == 5) && e.RowIndex > -1 && this.ExistingComboMeals != null)
             {
                 if (DGVComboMealList.CurrentRow != null)
                 {
@@ -1657,10 +1764,32 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                     if (this.ComboMealToAddUpdate != null)
                     {
+                        this.TboxComboMealBarcodeLbl.Text = this.ComboMealToAddUpdate.BarcodeLbl;
                         this.TboxComboMealTitle.Text = this.ComboMealToAddUpdate.Title;
                         this.NumUpDownComboMealPrice.Value = this.ComboMealToAddUpdate.Price;
 
-                        foreach(DataGridViewRow row in this.DGVProductListForComboMeal.Rows)
+                        string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                        var comboMealImgsDirInfo = Directory.CreateDirectory($"{appPath}{_otherSettings.ComboMealImgsFileDirName}");
+
+                        if (PicBoxComboMealImage.Image != null)
+                        {
+                            PicBoxComboMealImage.Image.Dispose();
+                            PicBoxComboMealImage.ImageLocation = null;
+                            PicBoxComboMealImage.Image = null;
+                        }
+
+                        if (comboMealImgsDirInfo.Exists)
+                        {
+                            string empImgPath = $"{appPath}\\{_otherSettings.ComboMealImgsFileDirName}\\{this.ComboMealToAddUpdate.ImageFilename}";
+
+                            if (File.Exists(empImgPath))
+                            {
+                                PicBoxComboMealImage.Image = new Bitmap(empImgPath);
+                                PicBoxComboMealImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                            }
+                        }
+
+                        foreach (DataGridViewRow row in this.DGVProductListForComboMeal.Rows)
                         {
                             long selectedProductId = long.Parse(row.Cells["ProductId"].Value.ToString());
 
@@ -1681,7 +1810,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
 
             // Delete button
-            if ((e.ColumnIndex == 4) && e.RowIndex > -1 && this.ExistingComboMeals != null)
+            if ((e.ColumnIndex == 6) && e.RowIndex > -1 && this.ExistingComboMeals != null)
             {
                 this.SelectedComboMealId = long.Parse(DGVComboMealList.CurrentRow.Cells[0].Value.ToString());
                 OnDeleteComboMeal(EventArgs.Empty);
@@ -1692,5 +1821,144 @@ namespace Main.Forms.InventoryManagementForms.Controls
         {
             ClearComboMealForm();
         }
+
+        private void BtnBrowseProductImage_Click(object sender, EventArgs e)
+        {
+            ProductImageBrowser.InitialDirectory = "C://Desktop";
+            ProductImageBrowser.Title = "Select image to be update.";
+            ProductImageBrowser.Filter = "Image Only(*.jpg; *.jpeg; *.gif; *.bmp; *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png";
+            ProductImageBrowser.FilterIndex = 1;
+
+            try
+            {
+                if (ProductImageBrowser.ShowDialog() == DialogResult.OK)
+                {
+                    if (ProductImageBrowser.CheckFileExists)
+                    {
+                        string path = System.IO.Path.GetFullPath(ProductImageBrowser.FileName);
+                        //label1.Text = path;
+                        PicBoxProductImage.Image = new Bitmap(ProductImageBrowser.FileName);
+                        PicBoxProductImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //it will give if file is already exits..
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public string UploadProductImage(string barcodeLbl)
+        {
+            try
+            {
+                if (ProductImageBrowser.CheckFileExists)
+                {
+                    string filename = Path.GetFileName(ProductImageBrowser.FileName);
+                    string fileExt = Path.GetExtension(ProductImageBrowser.FileName);
+                    if (filename != null && fileExt != null && File.Exists(ProductImageBrowser.FileName))
+                    {
+                        string productImgsDirName = $"\\{_otherSettings.ProductImgsFileDirName}\\";
+
+                        string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+                        var directoryInfo = Directory.CreateDirectory($"{appPath}{productImgsDirName}");
+
+                        string newFileName = $"{barcodeLbl}{fileExt}";
+
+                        string fullUploadPath = $"{appPath}{productImgsDirName}{newFileName}";
+
+                        if (directoryInfo.Exists && File.Exists(fullUploadPath) == true)
+                        {
+                            return newFileName;
+                            //File.Delete(fullUploadPath);
+                        }
+
+                        if (directoryInfo.Exists && File.Exists(fullUploadPath) == false)
+                        {
+                            System.IO.File.Copy(ProductImageBrowser.FileName, fullUploadPath, true);
+                            MessageBox.Show("Image uploaded successfully.", "Upload image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return newFileName;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ ex.Message } { ex.StackTrace }", "File Already exits");
+            }
+            return "";
+        }
+
+        private void BtnBrowserComboMealImage_Click(object sender, EventArgs e)
+        {
+            ComboMealImageBrowser.InitialDirectory = "C://Desktop";
+            ComboMealImageBrowser.Title = "Select image to be update.";
+            ComboMealImageBrowser.Filter = "Image Only(*.jpg; *.jpeg; *.gif; *.bmp; *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png";
+            ComboMealImageBrowser.FilterIndex = 1;
+
+            try
+            {
+                if (ComboMealImageBrowser.ShowDialog() == DialogResult.OK)
+                {
+                    if (ComboMealImageBrowser.CheckFileExists)
+                    {
+                        string path = System.IO.Path.GetFullPath(ComboMealImageBrowser.FileName);
+                        //label1.Text = path;
+                        PicBoxComboMealImage.Image = new Bitmap(ComboMealImageBrowser.FileName);
+                        PicBoxComboMealImage.SizeMode = PictureBoxSizeMode.StretchImage;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //it will give if file is already exits..
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        public string UploadComboMealImage(string barcodeLbl)
+        {
+            try
+            {
+                if (ComboMealImageBrowser.CheckFileExists)
+                {
+                    string filename = Path.GetFileName(ComboMealImageBrowser.FileName);
+                    string fileExt = Path.GetExtension(ComboMealImageBrowser.FileName);
+                    if (filename != null && fileExt != null && File.Exists(ComboMealImageBrowser.FileName))
+                    {
+                        string ImgsDirName = $"\\{_otherSettings.ComboMealImgsFileDirName}\\";
+
+                        string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+                        var directoryInfo = Directory.CreateDirectory($"{appPath}{ImgsDirName}");
+
+                        string newFileName = $"{barcodeLbl}{fileExt}";
+
+                        string fullUploadPath = $"{appPath}{ImgsDirName}{newFileName}";
+
+                        if (directoryInfo.Exists && File.Exists(fullUploadPath) == true)
+                        {
+                            return newFileName;
+                        }
+
+                        if (directoryInfo.Exists && File.Exists(fullUploadPath) == false)
+                        {
+                            System.IO.File.Copy(ComboMealImageBrowser.FileName, fullUploadPath, true);
+                            MessageBox.Show("Image uploaded successfully.", "Upload image", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return newFileName;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ ex.Message } { ex.StackTrace }", "File Already exits");
+            }
+            return "";
+        }
+
     }
 }

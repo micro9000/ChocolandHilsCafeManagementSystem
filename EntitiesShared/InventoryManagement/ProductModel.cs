@@ -10,6 +10,13 @@ namespace EntitiesShared.InventoryManagement
     [Table("Products")]
     public class ProductModel : BaseLongModel
     {
+        [Write(false)]
+        [Computed]
+        public bool isBarcodeLblAutoGenerate { get; set; }
+
+        public string BarcodeLbl { get; set; }
+
+
         public long CategoryId { get; set; }
 
         private ProductCategoryModel category;
@@ -25,5 +32,7 @@ namespace EntitiesShared.InventoryManagement
         public string ProdName { get; set; }
 
         public decimal PricePerOrder { get; set; }
+
+        public string ImageFilename { get; set; }
     }
 }

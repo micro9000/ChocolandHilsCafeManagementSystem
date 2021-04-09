@@ -11,5 +11,11 @@ namespace Shared
         public int NumDaysNotifyUserForInventoryExpDate { get; set; }
 
         public int MinAgeForEmployee { get; set; }
+
+        public string EmployeeImgsFileDirName { get; set; }
+
+        public string ProductImgsFileDirName { get; set; }
+
+        public string ComboMealImgsFileDirName { get; set; }
     }
 }

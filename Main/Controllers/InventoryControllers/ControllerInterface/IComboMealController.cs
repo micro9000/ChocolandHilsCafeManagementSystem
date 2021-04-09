@@ -11,6 +11,7 @@ namespace Main.Controllers.InventoryControllers.ControllerInterface
     public interface IComboMealController
     {
         EntityResult<string> Delete(long ingredientId);
+        void SaveComboMealImageFileName(long comboMealId, string fileName);
         EntityResult<ComboMealModel> Save(ComboMealModel comboMeal, List<ComboMealProductModel> products, bool isNew);
     }
 }

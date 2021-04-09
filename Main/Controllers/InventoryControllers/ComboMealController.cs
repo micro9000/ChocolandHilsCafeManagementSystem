@@ -31,6 +31,12 @@ namespace Main.Controllers.InventoryControllers
             _comboMealProductData = comboMealProductData;
         }
 
+
+        public string GetNewComboMealBarcodeLabel()
+        {
+            return $"C-{DateTime.Now.ToString("yyMMddHHmmssffft")}";
+        }
+
         public EntityResult<string> Delete(long ingredientId)
         {
             var results = new EntityResult<string>();
@@ -63,6 +69,17 @@ namespace Main.Controllers.InventoryControllers
             return results;
         }
 
+        public void SaveComboMealImageFileName (long comboMealId, string fileName)
+        {
+            var comboMealDetails = _comboMealData.Get(comboMealId);
+
+            if (comboMealDetails != null && string.IsNullOrEmpty(fileName) == false)
+            {
+                comboMealDetails.ImageFilename = fileName;
+                _comboMealData.Update(comboMealDetails);
+            }
+        }
+
         public EntityResult<ComboMealModel> Save (ComboMealModel comboMeal, List<ComboMealProductModel> products, bool isNew)
         {
             var results = new EntityResult<ComboMealModel>();
@@ -79,6 +96,22 @@ namespace Main.Controllers.InventoryControllers
 
                 if (isNew)
                 {
+
+                    if (comboMeal.isBarcodeLblAutoGenerate)
+                    {
+                        comboMeal.BarcodeLbl = this.GetNewComboMealBarcodeLabel();
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(comboMeal.BarcodeLbl))
+                        {
+                            results.IsSuccess = true;
+                            results.Messages.Add("Provide combo meal barcode label.");
+                            return results;
+                        }
+                    }
+
+
                     using (var transaction = new TransactionScope())
                     {
                         long newComboMealId = _comboMealData.Add(comboMeal);
@@ -123,6 +156,11 @@ namespace Main.Controllers.InventoryControllers
                     var comboMealExistingProds = _comboMealProductData.GetAllByComboMeal(comboMealDetails.Id);
 
                     _mapper.Map(comboMeal, comboMealDetails);
+
+                    if (string.IsNullOrEmpty(comboMealDetails.BarcodeLbl))
+                    {
+                        comboMealDetails.BarcodeLbl = this.GetNewComboMealBarcodeLabel();
+                    }
 
                     using (var transaction = new TransactionScope())
                     {

@@ -513,7 +513,7 @@ namespace Main.Forms.InventoryManagementForms
         public void DisplayProductInventoryControl()
         {
             this.PanelMainContainer.Controls.Clear();
-            var inventoryControlObj = new ProductInventoryControl(_uOMConverter, _ingredientInventoryManager);
+            var inventoryControlObj = new ProductInventoryControl(_uOMConverter, _ingredientInventoryManager, _otherSettings);
             inventoryControlObj.Location = new Point(this.ClientSize.Width / 2 - inventoryControlObj.Size.Width / 2, this.ClientSize.Height / 2 - inventoryControlObj.Size.Height / 2);
             inventoryControlObj.Anchor = AnchorStyles.None;
 
@@ -636,6 +636,9 @@ namespace Main.Forms.InventoryManagementForms
 
                 if (saveResults.IsSuccess)
                 {
+                    string imageFileName = inventoryControlObj.UploadProductImage(saveResults.Data.BarcodeLbl);
+                    _productController.SaveProductImageFileName(saveResults.Data.Id, imageFileName);
+
                     MessageBox.Show(resultMessages, "Save product details", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     inventoryControlObj.ClearProductDetailsForm();
 
@@ -697,6 +700,9 @@ namespace Main.Forms.InventoryManagementForms
 
                 if (saveResults.IsSuccess)
                 {
+                    string imageFileName = inventoryControlObj.UploadComboMealImage(saveResults.Data.BarcodeLbl);
+                    _comboMealController.SaveComboMealImageFileName(saveResults.Data.Id, imageFileName);
+
                     MessageBox.Show(resultMessages, "Save combo meal details", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     inventoryControlObj.ExistingComboMeals = _comboMealData.GetAllNotDeleted();

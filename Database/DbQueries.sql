@@ -155,7 +155,7 @@ ADD COLUMN isQuit BOOLEAN DEFAULT False;
 ALTER TABLE Employees 
 ADD COLUMN quitDate DATE;
 ALTER TABLE Employees
-ADD COLUMN imageFileName VARCHAR(500);
+ADD COLUMN imageFileName VARCHAR(250);
 
 -- Run this query to add this columns
 -- or just drop the whole database to start again, so can set the foreign keys for these ids and ignore below alter queries
@@ -173,8 +173,7 @@ DROP COLUMN position;
 
 SELECT * FROM Employees;
 
-UPDATE Employees SET shiftId=@NewShiftId
-WHERE isDeleted=false AND shiftId=@PreviousShiftId;
+UPDATE Employees SET positionId=6 WHERE id > 0 AND isDeleted=false AND positionId IN (1,2,3,4,5);
 
 -- ALTER TABLE Employees
 -- DROP FOREIGN KEY employees_ibfk_1;
@@ -651,8 +650,16 @@ CREATE TABLE IF NOT EXISTS Products(
 )ENGINE=INNODB;
 ALTER TABLE Products
 DROP COLUMN estimatedNumOrders; -- If you have this column in your table, just run this query to remove
+ALTER TABLE Products
+ADD COLUMN imageFileName VARCHAR(250);
+ALTER TABLE Products
+ADD COLUMN barcodeLbl VARCHAR(250);
+
 
 SELECT * FROM Products;
+
+
+SELECT * FROM Employees;
 
 SELECT *
 FROM Products AS P
@@ -687,7 +694,10 @@ CREATE TABLE IF NOT EXISTS ComboMeals(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
-
+ALTER TABLE ComboMeals
+ADD COLUMN barcodeLbl VARCHAR(250);
+ALTER TABLE ComboMeals
+ADD COLUMN imageFileName VARCHAR(250);
 
 SELECT * FROM ComboMeals;
 

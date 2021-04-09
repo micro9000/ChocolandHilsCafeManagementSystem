@@ -367,11 +367,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 }
 
                 string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                var EmployeeImgsDirInfo = Directory.CreateDirectory(appPath + "\\EmployeeImgs\\");
+                var EmployeeImgsDirInfo = Directory.CreateDirectory($"{appPath}{_otherSettings.EmployeeImgsFileDirName}");
 
                 if (EmployeeImgsDirInfo.Exists)
                 {
-                    string empImgPath = appPath + "\\EmployeeImgs\\" + employeeDetails.ImageFileName;
+                    string empImgPath = $"{appPath}\\{_otherSettings.EmployeeImgsFileDirName}\\{employeeDetails.ImageFileName}";
 
                     if (File.Exists(empImgPath))
                     {
@@ -484,15 +484,25 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     string fileExt = Path.GetExtension(openFileDialogBrowseEmpImg.FileName);
                     if (filename != null && fileExt != null && File.Exists(openFileDialogBrowseEmpImg.FileName))
                     {
+                        string employeeImgsDirName = $"\\{_otherSettings.EmployeeImgsFileDirName}\\";
+
                         string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-                        var directoryInfo = Directory.CreateDirectory(appPath + "\\EmployeeImgs\\");
+                        var directoryInfo = Directory.CreateDirectory($"{appPath}{employeeImgsDirName}");
 
                         string newFileName = $"{employeeNum}{fileExt}";
 
-                        if (directoryInfo.Exists && File.Exists(appPath + "\\EmployeeImgs\\" + newFileName) == false)
+                        string fullUploadPath = $"{appPath}{employeeImgsDirName}{newFileName}";
+
+                        if (directoryInfo.Exists && File.Exists(fullUploadPath) == true)
                         {
-                            System.IO.File.Copy(openFileDialogBrowseEmpImg.FileName, appPath + "\\EmployeeImgs\\" + newFileName, true);
+                            //File.Delete(fullUploadPath);
+                            return newFileName;
+                        }
+
+                        if (directoryInfo.Exists && File.Exists(fullUploadPath) == false)
+                        {
+                            File.Copy(openFileDialogBrowseEmpImg.FileName, fullUploadPath, true);
                             MessageBox.Show("Image uploaded successfully.", "Upload image", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             return newFileName;
                         }
@@ -822,7 +832,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             try
             {
-                if (openFileDialogBrowseEmpImg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (openFileDialogBrowseEmpImg.ShowDialog() == DialogResult.OK)
                 {
                     if (openFileDialogBrowseEmpImg.CheckFileExists)
                     {
@@ -831,10 +841,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         PicBoxEmpImage.Image = new Bitmap(openFileDialogBrowseEmpImg.FileName);
                         PicBoxEmpImage.SizeMode = PictureBoxSizeMode.StretchImage;
                     }
-                }
-                else
-                {
-                    MessageBox.Show("Please Upload image.");
                 }
             }
             catch (Exception ex)

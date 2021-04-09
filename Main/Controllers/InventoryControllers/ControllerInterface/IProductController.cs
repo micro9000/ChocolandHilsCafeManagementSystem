@@ -10,6 +10,7 @@ namespace Main.Controllers.InventoryControllers.ControllerInterface
 {
     public interface IProductController
     {
+        void SaveProductImageFileName(long productId, string fileName);
         EntityResult<ProductModel> Save(List<ProductIngredientModel> ingredients, ProductModel product, bool isNew);
     }
 }

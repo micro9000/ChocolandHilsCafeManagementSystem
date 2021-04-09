@@ -39,6 +39,23 @@ namespace Main.Controllers.InventoryControllers
             _validationRules = validationRules;
         }
 
+
+        public void SaveProductImageFileName (long productId, string fileName)
+        {
+            var productDetails = _productData.Get(productId);
+
+            if (productDetails != null && string.IsNullOrEmpty(fileName) == false)
+            {
+                productDetails.ImageFilename = fileName;
+                _productData.Update(productDetails);
+            }
+        }
+
+        public string GetNewProductBarcodeLabel()
+        {
+            return $"P-{DateTime.Now.ToString("yyMMddHHmmssffft")}";
+        }
+
         public EntityResult<ProductModel> Save (List<ProductIngredientModel> ingredients, ProductModel product, bool isNew)
         {
             var results = new EntityResult<ProductModel>();
@@ -75,6 +92,20 @@ namespace Main.Controllers.InventoryControllers
 
                 if (isNew)
                 {
+                    if (product.isBarcodeLblAutoGenerate)
+                    {
+                        product.BarcodeLbl = this.GetNewProductBarcodeLabel();
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(product.BarcodeLbl))
+                        {
+                            results.IsSuccess = true;
+                            results.Messages.Add("Provide product barcode label.");
+                            return results;
+                        }
+                    }
+
                     using(var transaction = new TransactionScope())
                     {
                         var newProductId = _productData.Add(product);
@@ -112,6 +143,11 @@ namespace Main.Controllers.InventoryControllers
                     var productExistingIngredients = _productIngredientData.GetAllByProduct(productDetails.Id);
 
                     _mapper.Map(product, productDetails);
+
+                    if (string.IsNullOrEmpty(productDetails.BarcodeLbl))
+                    {
+                        productDetails.BarcodeLbl = this.GetNewProductBarcodeLabel();
+                    }
 
                     using (var transaction = new TransactionScope())
                     {
