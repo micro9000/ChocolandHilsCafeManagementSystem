@@ -157,6 +157,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             if (this.IsSaveNew == true)
             {
+                if (this.IngredientCategories != null)
+                {
+                    var existingCategory = this.IngredientCategories.Where(x => x.Category.ToLower() == this.TbxCategory.Text.ToLower()).FirstOrDefault();
+
+                    if (existingCategory != null)
+                    {
+                        MessageBox.Show("Duplicate category", "Save new category", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 this.CategoryToAddUpdate = new IngredientCategoryModel
                 {
                     Category = this.TbxCategory.Text
@@ -164,7 +175,23 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
             else
             {
-                this.CategoryToAddUpdate.Category = this.TbxCategory.Text;
+                if (this.CategoryToAddUpdate != null && this.IngredientCategories != null)
+                {
+                    var existingCategory = this.IngredientCategories.Where(x => 
+                                                            x.Category.ToLower() == this.TbxCategory.Text.ToLower() &&
+                                                            x.Id != this.CategoryToAddUpdate.Id
+                                                        ).FirstOrDefault();
+
+                    if (existingCategory != null)
+                    {
+                        MessageBox.Show("Duplicate category", "Save category", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+
+
+                    this.CategoryToAddUpdate.Category = this.TbxCategory.Text;
+                }
+
             }
 
             OnIngredientCategorySaved(EventArgs.Empty);
@@ -438,6 +465,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                 if (this.IsNewIngredient)
                 {
+                    if (this.Ingredients != null)
+                    {
+                        var existingIngredient = this.Ingredients.Where(x => x.IngName.ToLower() == ingredientName.ToLower()).FirstOrDefault();
+
+                        if (existingIngredient != null)
+                        {
+                            MessageBox.Show("Duplicate ingredient", "Save new ingredient", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                    }
+
                     this.IngredientToAddUpdate = new IngredientModel
                     {
                         CategoryId = long.Parse(selectedCategory.Value.ToString()),
@@ -449,11 +487,25 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 }
                 else
                 {
-                    this.IngredientToAddUpdate.CategoryId = long.Parse(selectedCategory.Value.ToString());
-                    this.IngredientToAddUpdate.UOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), selectedUOM.Value.ToString());
-                    this.IngredientToAddUpdate.IngName = ingredientName;
+                    if (this.IngredientToAddUpdate != null && this.Ingredients != null)
+                    {
+                        var existingIngredient = this.Ingredients.Where(x => 
+                                                        x.IngName.ToLower() == ingredientName.ToLower() &&
+                                                        x.Id != this.IngredientToAddUpdate.Id).FirstOrDefault();
 
-                    OnIngredientSaved(EventArgs.Empty);
+                        if (existingIngredient != null)
+                        {
+                            MessageBox.Show("Duplicate ingredient", "Save ingredient", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+
+                        this.IngredientToAddUpdate.CategoryId = long.Parse(selectedCategory.Value.ToString());
+                        this.IngredientToAddUpdate.UOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), selectedUOM.Value.ToString());
+                        this.IngredientToAddUpdate.IngName = ingredientName;
+
+                        OnIngredientSaved(EventArgs.Empty);
+                    }
+
                 }
             }
         }
