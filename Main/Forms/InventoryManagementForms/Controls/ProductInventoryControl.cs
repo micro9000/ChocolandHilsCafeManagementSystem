@@ -119,6 +119,18 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             if (this.IsNewProductCategory == true)
             {
+
+                if (this.ProductCategories != null)
+                {
+                    var existingCategory = this.ProductCategories.Where(x => x.ProdCategory.ToLower() == this.TbxCategory.Text.ToLower()).FirstOrDefault();
+
+                    if (existingCategory != null)
+                    {
+                        MessageBox.Show($"Duplicate category.", "Save new category", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 this.ProductCategoryToAddUpdate = new ProductCategoryModel
                 {
                     ProdCategory = this.TbxCategory.Text
@@ -126,7 +138,22 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
             else
             {
-                this.ProductCategoryToAddUpdate.ProdCategory = this.TbxCategory.Text;
+                if (this.ProductCategoryToAddUpdate != null && this.ProductCategories != null)
+                {
+                    var existingCategory = this.ProductCategories.Where(x => 
+                                                x.ProdCategory.ToLower() == this.TbxCategory.Text.ToLower() &&
+                                                x.Id != this.ProductCategoryToAddUpdate.Id
+                                                ).FirstOrDefault();
+
+                    if (existingCategory != null)
+                    {
+                        MessageBox.Show($"Duplicate category.", "Save new category", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+
+                    this.ProductCategoryToAddUpdate.ProdCategory = this.TbxCategory.Text;
+                }
+
             }
 
             OnProductCategorySave(EventArgs.Empty);
@@ -1088,6 +1115,18 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (IsNewProduct)
                 {
+
+                    if (this.ExistingProducts != null)
+                    {
+                        var existingProd = this.ExistingProducts.Where(x => x.ProdName.ToLower() == TboxProductName.Text.ToLower()).FirstOrDefault();
+
+                        if (existingProd != null)
+                        {
+                            MessageBox.Show("Duplicate product", "Save new product", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                    }
+
                     this.ProductToAddUpdate = new ProductModel
                     {
                         isBarcodeLblAutoGenerate = CkBoxAutoGenerateBarcodeLbl.Checked,
@@ -1102,6 +1141,19 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 {
                     if (this.ProductToAddUpdate != null)
                     {
+                        if (this.ExistingProducts != null)
+                        {
+                            var existingProd = this.ExistingProducts.Where(x => 
+                                                                x.ProdName.ToLower() == TboxProductName.Text.ToLower() &&
+                                                                x.Id != this.ProductToAddUpdate.Id).FirstOrDefault();
+
+                            if (existingProd != null)
+                            {
+                                MessageBox.Show("Duplicate product", "Save product", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
+                            }
+                        }
+
                         this.ProductToAddUpdate.BarcodeLbl = TboxBarcodeLbl.Text;
                         this.ProductToAddUpdate.CategoryId = categoryId;
                         this.ProductToAddUpdate.ProdName = TboxProductName.Text;
@@ -1587,6 +1639,17 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             if (this.IsNewComboMeal)
             {
+                if (this.ExistingComboMeals != null)
+                {
+                    var existingComboMeal = this.ExistingComboMeals.Where(x => x.Title.ToLower() == TboxComboMealTitle.Text.ToLower()).FirstOrDefault();
+
+                    if (existingComboMeal != null)
+                    {
+                        MessageBox.Show($"Duplicate combo meal.", "Save new combo meal", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 this.ComboMealToAddUpdate = new ComboMealModel
                 {
                     isBarcodeLblAutoGenerate = CkBoxComboMealAutoGen.Checked,
@@ -1601,6 +1664,19 @@ namespace Main.Forms.InventoryManagementForms.Controls
             {
                 if (this.ComboMealToAddUpdate != null)
                 {
+                    if (this.ExistingComboMeals != null)
+                    {
+                        var existingComboMeal = this.ExistingComboMeals.Where(x => 
+                                                        x.Title.ToLower() == TboxComboMealTitle.Text.ToLower() &&
+                                                        x.Id != this.ComboMealToAddUpdate.Id).FirstOrDefault();
+
+                        if (existingComboMeal != null)
+                        {
+                            MessageBox.Show($"Duplicate combo meal.", "Save combo meal", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                    }
+
                     this.ComboMealToAddUpdate.BarcodeLbl = TboxComboMealBarcodeLbl.Text;
                     this.ComboMealToAddUpdate.Title = TboxComboMealTitle.Text;
                     this.ComboMealToAddUpdate.Price = NumUpDownComboMealPrice.Value;
