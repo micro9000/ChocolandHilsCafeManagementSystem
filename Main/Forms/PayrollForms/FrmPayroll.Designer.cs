@@ -65,6 +65,7 @@ namespace Main.Forms.PayrollForms
             this.TStripMenuItemHistory,
             this.TStripMenuItemReports});
             this.CMStripPayroll.Name = "CMStripPayroll";
+            this.CMStripPayroll.OwnerItem = this.toolStripMenuItem1;
             this.CMStripPayroll.Size = new System.Drawing.Size(122, 70);
             this.CMStripPayroll.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.CMStripPayroll_ItemClicked);
             // 

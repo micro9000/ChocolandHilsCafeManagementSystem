@@ -100,7 +100,6 @@ namespace Main.Forms.POSManagementForms.Controls
             this.Name = "ProductItemControl";
             this.Size = new System.Drawing.Size(206, 92);
             this.Load += new System.EventHandler(this.ProductItemControl_Load);
-            this.Click += new System.EventHandler(this.ProductItemControl_Click);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxProductImage)).EndInit();
             this.ResumeLayout(false);

@@ -29,23 +29,25 @@ namespace Main.Forms.POSManagementForms.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.LblCategoryName = new System.Windows.Forms.Label();
+            this.ButtonCategory = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // LblCategoryName
+            // ButtonCategory
             // 
-            this.LblCategoryName.AutoSize = true;
-            this.LblCategoryName.BackColor = System.Drawing.Color.Transparent;
-            this.LblCategoryName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LblCategoryName.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LblCategoryName.ForeColor = System.Drawing.Color.White;
-            this.LblCategoryName.Location = new System.Drawing.Point(13, 18);
-            this.LblCategoryName.Name = "LblCategoryName";
-            this.LblCategoryName.Padding = new System.Windows.Forms.Padding(2);
-            this.LblCategoryName.Size = new System.Drawing.Size(52, 24);
-            this.LblCategoryName.TabIndex = 0;
-            this.LblCategoryName.Text = "label1";
-            this.LblCategoryName.Click += new System.EventHandler(this.LblCategoryName_Click);
+            this.ButtonCategory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(209)))));
+            this.ButtonCategory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ButtonCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ButtonCategory.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ButtonCategory.ForeColor = System.Drawing.Color.White;
+            this.ButtonCategory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ButtonCategory.Location = new System.Drawing.Point(0, 0);
+            this.ButtonCategory.Name = "ButtonCategory";
+            this.ButtonCategory.Size = new System.Drawing.Size(170, 49);
+            this.ButtonCategory.TabIndex = 63;
+            this.ButtonCategory.Text = "Category";
+            this.ButtonCategory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ButtonCategory.UseVisualStyleBackColor = false;
+            this.ButtonCategory.Click += new System.EventHandler(this.ButtonCategory_Click);
             // 
             // BtnProductCategoryControl
             // 
@@ -53,20 +55,18 @@ namespace Main.Forms.POSManagementForms.Controls
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.LblCategoryName);
+            this.Controls.Add(this.ButtonCategory);
             this.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.Name = "BtnProductCategoryControl";
-            this.Size = new System.Drawing.Size(170, 68);
+            this.Size = new System.Drawing.Size(170, 49);
             this.Load += new System.EventHandler(this.BtnProductCategoryControl_Load);
-            this.Click += new System.EventHandler(this.BtnProductCategoryControl_Click);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label LblCategoryName;
+        private System.Windows.Forms.Button ButtonCategory;
     }
 }

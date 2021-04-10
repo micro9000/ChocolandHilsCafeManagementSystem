@@ -111,6 +111,12 @@
     <None Update="Resources\reset-white-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\restaurant-table-green-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\restaurant-table-red-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\sales-report.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

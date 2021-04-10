@@ -18,15 +18,18 @@ namespace Main.Forms.POSManagementForms
     public partial class FrmMainPOSTerminal : Form
     {
         private readonly IProductData _productData;
+        private readonly IComboMealData _comboMealData;
         private readonly IProductCategoryData _productCategoryData;
         private readonly OtherSettings _otherSettings;
 
         public FrmMainPOSTerminal(IProductData productData, 
+                                IComboMealData comboMealData,
                                 IProductCategoryData productCategoryData,
                                 IOptions<OtherSettings> otherSettings)
         {
             InitializeComponent();
             _productData = productData;
+            _comboMealData = comboMealData;
             _productCategoryData = productCategoryData;
             _otherSettings = otherSettings.Value;
         }
@@ -48,73 +51,191 @@ namespace Main.Forms.POSManagementForms
         }
 
 
+        private List<ComboMealModel> _comboMeals;
+
+        public List<ComboMealModel> ComboMeals
+        {
+            get { return _comboMeals; }
+            set { _comboMeals = value; }
+        }
+
+
         private void FrmMainPOSTerminal_Load(object sender, EventArgs e)
         {
             SetDGVCartItemsFontAndColors();
             this.Products = _productData.GetAllNotDeleted();
             this.ProductCategories = _productCategoryData.GetAllNotDeleted();
+            this.ComboMeals = _comboMealData.GetAllNotDeleted();
 
             DisplayProductList(this.Products);
             DisplayProductCategoryList(this.ProductCategories);
+            DisplayComboMealList(this.ComboMeals);
 
+            this.LblCurrentProductCategory.Text = "ALL";
+
+            // Temprary method
             DisplaySampleProductsInCart(this.Products);
+
+            InitiateTab2DineInOrdersTableStatus();
+        }
+
+        public void InitiateTab2DineInOrdersTableStatus()
+        {
+            this.PanelDineInOrdersTableStatus.Controls.Clear();
+            FrmDineInStatus frmDineInStatus = new FrmDineInStatus();
+            frmDineInStatus.TopLevel = false;
+            frmDineInStatus.FormBorderStyle = FormBorderStyle.None;
+            frmDineInStatus.Dock = DockStyle.Fill;
+            this.PanelDineInOrdersTableStatus.Controls.Add(frmDineInStatus);
+            frmDineInStatus.BringToFront();
+            frmDineInStatus.Show();
         }
 
         public void DisplayProductList(List<ProductModel> products)
         {
+            FLPanelProductList.Controls.Clear();
             if (products != null)
             {
                 foreach (var prod in products)
                 {
                     var prodItemControl = new ProductItemControl(prod, _otherSettings);
+                    prodItemControl.ClickThisProduct += HandleClickProductItem;
                     FLPanelProductList.Controls.Add(prodItemControl);
                 }
             }
         }
 
+
+        private void BtnRefreshProductList_Click(object sender, EventArgs e)
+        {
+            this.LblCurrentProductCategory.Text = "ALL";
+            DisplayProductList(this.Products);
+        }
+
+        private void HandleClickProductItem(object sender, EventArgs e)
+        {
+            ProductItemControl productItemControl = (ProductItemControl)sender;
+
+            if (productItemControl != null && productItemControl.Product != null)
+            {
+                FrmEnterProductQuantity frmEnterProductQuantity = new(productItemControl.Product, _otherSettings);
+                frmEnterProductQuantity.ShowDialog();
+
+                if (frmEnterProductQuantity.IsCancelled == false)
+                {
+                    MessageBox.Show(frmEnterProductQuantity.Quantity.ToString());
+                }
+                
+            }
+        }
+
         public void DisplayProductCategoryList(List<ProductCategoryModel> categories)
         {
+            FLPanelProductCategories.Controls.Clear();
             if (categories != null)
             {
                 foreach(var category in categories)
                 {
                     var btnCategoryControl = new BtnProductCategoryControl(category);
+                    btnCategoryControl.ClickThisCategoryButton += HandleClickProductCategoryItem;
                     FLPanelProductCategories.Controls.Add(btnCategoryControl);
                 }
             }
         }
 
 
+        private void HandleClickProductCategoryItem(object sender, EventArgs e)
+        {
+            BtnProductCategoryControl btnProductCategoryControl = (BtnProductCategoryControl)sender;
+
+            if (btnProductCategoryControl != null && btnProductCategoryControl.ProductCategory != null)
+            {
+                long selectedCategoryId = btnProductCategoryControl.ProductCategory.Id;
+
+                this.LblCurrentProductCategory.Text = btnProductCategoryControl.ProductCategory.ProdCategory;
+
+                var products = this.Products.Where(x => x.CategoryId == selectedCategoryId).ToList();
+                DisplayProductList(products);
+            }
+        }
+
+
+
+        public void DisplayComboMealList(List<ComboMealModel> comboMeals)
+        {
+            this.FlowLayoutComboMealItems.Controls.Clear();
+            if (comboMeals != null)
+            {
+                foreach(var meal in comboMeals)
+                {
+                    var comboMealItemControl = new ComboMealItemControl(meal, _otherSettings);
+                    comboMealItemControl.ClickThisComboMeal += HandleClickComboMealItem;
+                    comboMealItemControl.ClickThisComboMeal += DisplayFormToEnterQuantityAndAddInCartComboMeal;
+                    this.FlowLayoutComboMealItems.Controls.Add(comboMealItemControl);
+                }
+            }
+        }
+
+        public void DisplayFormToEnterQuantityAndAddInCartComboMeal(object sender, EventArgs e)
+        {
+            ComboMealItemControl comboMealItemObj = (ComboMealItemControl)sender;
+
+            if (comboMealItemObj != null && comboMealItemObj.ComboMeal != null)
+            {
+                FrmEnterComboMealQuantity frmEnterComboMealQuantity = new(comboMealItemObj.ComboMeal, _otherSettings);
+                frmEnterComboMealQuantity.ShowDialog();
+                
+                if(frmEnterComboMealQuantity.IsCancelled == false)
+                {
+                    MessageBox.Show(frmEnterComboMealQuantity.Quantity.ToString());
+                }
+            }
+        }
+
+
+        private void HandleClickComboMealItem(object sender, EventArgs e)
+        {
+            ComboMealItemControl comboMealItemObj = (ComboMealItemControl)sender;
+
+            if (comboMealItemObj != null && comboMealItemObj.ComboMeal != null)
+            {
+                long selectedComboMealId = comboMealItemObj.ComboMeal.Id;
+
+                DisplayComboMealProducts(comboMealItemObj.ComboMeal);
+            }
+        }
+
+
+        private void DisplayComboMealProducts (ComboMealModel comboMealItem)
+        {
+            this.LVComboMealProducts.Items.Clear();
+            if (comboMealItem.Products != null)
+            {
+                foreach (var prod in comboMealItem.Products)
+                {
+                    string[] item = new string[] { prod.Product.ProdName, prod.Product.PricePerOrder.ToString("0.##") };
+
+                    var listViewItem = new ListViewItem(item);
+                    listViewItem.Tag = prod;
+
+                    this.LVComboMealProducts.Items.Add(listViewItem);
+                }
+            }
+        }
+
         private void SetDGVCartItemsFontAndColors()
         {
             this.DGVCartItems.BackgroundColor = Color.White;
             this.DGVCartItems.DefaultCellStyle.Font = new Font("Century Gothic", 11);
-            //this.DGVEmployees.DefaultCellStyle.ForeColor = Color.White;
-            //this.DGVEmployees.DefaultCellStyle.BackColor = Color.FromArgb(99, 99, 138);
-            //this.DGVEmployees.DefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 64);
-            //this.DGVEmployees.DefaultCellStyle.SelectionBackColor = Color.WhiteSmoke;
-
             this.DGVCartItems.RowHeadersVisible = false;
             this.DGVCartItems.RowTemplate.Height = 35;
             this.DGVCartItems.RowTemplate.Resizable = DataGridViewTriState.True;
             this.DGVCartItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             this.DGVCartItems.AllowUserToResizeRows = false;
             this.DGVCartItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             this.DGVCartItems.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-
-            //this.DGVEmployees.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
-            //this.DGVEmployees.ColumnHeadersDefaultCellStyle.BackColor = Color.WhiteSmoke;
-            //this.DGVEmployees.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 64);
-            //this.DGVEmployees.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.WhiteSmoke;
-
-
             this.DGVCartItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.DGVCartItems.MultiSelect = false;
-
-            //this.DGVCartItems.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            //this.DGVCartItems.ColumnHeadersHeight = 30;
-
         }
 
 

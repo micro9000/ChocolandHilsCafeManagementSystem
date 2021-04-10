@@ -31,6 +31,13 @@ namespace Main.Forms.POSManagementForms.Controls
             set { product = value; }
         }
 
+
+        public event EventHandler ClickThisProduct;
+        protected virtual void OnClickThisProduct(EventArgs e)
+        {
+            ClickThisProduct?.Invoke(this, e);
+        }
+
         private void ProductItemControl_Load(object sender, EventArgs e)
         {
             if (PicBoxProductImage.Image != null)
@@ -59,17 +66,19 @@ namespace Main.Forms.POSManagementForms.Controls
                     }
                 }
             }
+
+            initControlsRecursive(this.Controls);
         }
 
-
-        public event EventHandler ClickThisProduct;
-        protected virtual void OnClickThisProduct(EventArgs e)
+        private void initControlsRecursive(ControlCollection coll)
         {
-            ClickThisProduct?.Invoke(this, e);
-        }
-        private void ProductItemControl_Click(object sender, EventArgs e)
-        {
-            OnClickThisProduct(EventArgs.Empty);
+            foreach (Control c in coll)
+            {
+                c.MouseClick += (sender, e) => {
+                    OnClickThisProduct(EventArgs.Empty);
+                };
+                initControlsRecursive(c.Controls);
+            }
         }
     }
 }

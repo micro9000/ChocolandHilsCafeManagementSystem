@@ -36,23 +36,17 @@ namespace Main.Forms.POSManagementForms.Controls
             ClickThisCategoryButton?.Invoke(this, e);
         }
 
-        private void BtnProductCategoryControl_Click(object sender, EventArgs e)
-        {
-            OnClickThisCategoryButton(EventArgs.Empty);
-        }
-
-        private void LblCategoryName_Click(object sender, EventArgs e)
-        {
-            OnClickThisCategoryButton(EventArgs.Empty);
-        }
-
         private void BtnProductCategoryControl_Load(object sender, EventArgs e)
         {
             if (this.ProductCategory != null)
             {
-                this.LblCategoryName.Text = this.ProductCategory.ProdCategory;
+                this.ButtonCategory.Text = this.ProductCategory.ProdCategory;
             }
         }
 
+        private void ButtonCategory_Click(object sender, EventArgs e)
+        {
+            OnClickThisCategoryButton(EventArgs.Empty);
+        }
     }
 }
