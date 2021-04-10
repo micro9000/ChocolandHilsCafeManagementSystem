@@ -43,6 +43,7 @@ using Main.Forms.InventoryManagementForms;
 using Main.Controllers.InventoryControllers.ControllerInterface;
 using Main.Controllers.InventoryControllers;
 using Main.Controllers.InventoryControllers.Validator;
+using Main.Forms.POSManagementForms;
 
 namespace Main
 {
@@ -208,6 +209,7 @@ namespace Main
             services.AddTransient<FrmPayroll>();
             services.AddTransient<AttendanceTerminalForm>();
             services.AddTransient<FrmInventory>();
+            services.AddTransient<FrmMainPOSTerminal>();
 
             services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
             services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();

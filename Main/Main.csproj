@@ -84,6 +84,12 @@
     <None Update="Resources\inventory.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\less-than-white-30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\more-than-white-30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\payroll-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -121,7 +127,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\PayrollController\" />
-    <Folder Include="Forms\POSManagementForms\" />
     <Folder Include="Forms\PayrollForms\PdfHtmlTemplates\" />
   </ItemGroup>
 

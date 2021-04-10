@@ -717,3 +717,17 @@ CREATE TABLE IF NOT EXISTS ComboMealProducts(
 
 select * from ComboMealProducts;
 
+
+-- Point of sale tables:
+
+CREATE TABLE IF NOT EXISTS ComboMealProducts(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(comboMealId) REFERENCES ComboMeals(id),
+    FOREIGN KEY(productId) REFERENCES Products(id)
+)ENGINE=INNODB;
+

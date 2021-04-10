@@ -183,6 +183,16 @@ namespace Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap less_than_white_30 {
+            get {
+                object obj = ResourceManager.GetObject("less-than-white-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap payroll {
             get {
                 object obj = ResourceManager.GetObject("payroll", resourceCulture);
@@ -216,6 +226,16 @@ namespace Main.Properties {
         internal static System.Drawing.Bitmap sales_report {
             get {
                 object obj = ResourceManager.GetObject("sales-report", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap store_front_white_32 {
+            get {
+                object obj = ResourceManager.GetObject("store-front-white-32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

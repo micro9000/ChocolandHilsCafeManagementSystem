@@ -4,6 +4,7 @@ using Main.Forms.EmployeeManagementForms;
 using Main.Forms.InventoryManagementForms;
 using Main.Forms.OtherDataForms;
 using Main.Forms.PayrollForms;
+using Main.Forms.POSManagementForms;
 using Main.Forms.UserManagementForms;
 using Microsoft.Extensions.Options;
 using Shared;
@@ -29,6 +30,7 @@ namespace Main
         private readonly FrmUserManagement _frmUserManagement;
         private readonly AttendanceTerminalForm _attendanceTerminalForm;
         private readonly FrmInventory _frmInventory;
+        private readonly FrmMainPOSTerminal _frmMainPOSTerminal;
         private readonly HomeFrm _frmHome;
         private readonly IIngredientInventoryData _ingredientInventoryData;
         private Button currentButton;
@@ -42,6 +44,7 @@ namespace Main
                         FrmUserManagement frmUserManagement,
                         AttendanceTerminalForm attendanceTerminalForm,
                         FrmInventory frmInventory,
+                        FrmMainPOSTerminal frmMainPOSTerminal,
                         HomeFrm frmHome,
                         IIngredientInventoryData ingredientInventoryData)
         {
@@ -54,6 +57,7 @@ namespace Main
             _frmUserManagement = frmUserManagement;
             _attendanceTerminalForm = attendanceTerminalForm;
             _frmInventory = frmInventory;
+            _frmMainPOSTerminal = frmMainPOSTerminal;
             _frmHome = frmHome;
             _ingredientInventoryData = ingredientInventoryData;
         }
@@ -66,7 +70,6 @@ namespace Main
 
 
         public void DisplayHomeControl() {
-            
         }
 
 
@@ -83,7 +86,7 @@ namespace Main
                     this.BtnPayrollSystem.Visible = false;
                     this.BtnInventorySystem.Visible = false;
                     this.BtnSalesReportSystem.Visible = false;
-                    this.BtnSettingsSystem.Visible = false;
+                    this.BtnPointOfSale.Visible = false;
                     this.BtnUserMgnment.Visible = false;
                     this.BtnOtherData.Visible = false;
                 }
@@ -214,6 +217,25 @@ namespace Main
         private void BtnGoToHomeFrm_Click(object sender, EventArgs e)
         {
             OpenChildForm(_frmHome, sender);
+        }
+
+        private void BtnPointOfSale_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(_frmMainPOSTerminal, sender);
+        }
+
+        private void BtnToggleMenu_Click(object sender, EventArgs e)
+        {
+            if (panelSidebar.Width == 55)
+            {
+                panelSidebar.Width = 212;
+                BtnToggleMenu.Image = Image.FromFile("./Resources/less-than-white-30.png");
+            }
+            else
+            {
+                BtnToggleMenu.Image = Image.FromFile("./Resources/more-than-white-30.png");
+                panelSidebar.Width = 55;
+            }
         }
     }
 }
