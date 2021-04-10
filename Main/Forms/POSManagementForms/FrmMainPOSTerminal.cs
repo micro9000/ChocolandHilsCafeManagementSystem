@@ -77,6 +77,8 @@ namespace Main.Forms.POSManagementForms
             DisplaySampleProductsInCart(this.Products);
 
             InitiateTab2DineInOrdersTableStatus();
+            InitializePOSCheckOutController();
+            InitializeTotalAndReceiptPreviewControl();
         }
 
         public void InitiateTab2DineInOrdersTableStatus()
@@ -89,6 +91,25 @@ namespace Main.Forms.POSManagementForms
             this.PanelDineInOrdersTableStatus.Controls.Add(frmDineInStatus);
             frmDineInStatus.BringToFront();
             frmDineInStatus.Show();
+        }
+
+
+        public void InitializePOSCheckOutController()
+        {
+            this.POSControllerSplitContainer.Panel2.Controls.Clear();
+            POSCheckOutControllerControl pOSCheckOutControllerControl = new();
+            pOSCheckOutControllerControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
+            this.POSControllerSplitContainer.Panel2.Controls.Add(pOSCheckOutControllerControl);
+        }
+
+
+        public void InitializeTotalAndReceiptPreviewControl()
+        {
+            this.POSControllerSplitContainer.Panel1.Controls.Clear();
+            TotalAndReceiptPreviewControl totalAndReceiptPreviewControl = new();
+            totalAndReceiptPreviewControl.Dock = DockStyle.Fill;
+            //totalAndReceiptPreviewControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
+            this.POSControllerSplitContainer.Panel1.Controls.Add(totalAndReceiptPreviewControl);
         }
 
         public void DisplayProductList(List<ProductModel> products)
@@ -109,7 +130,26 @@ namespace Main.Forms.POSManagementForms
         private void BtnRefreshProductList_Click(object sender, EventArgs e)
         {
             this.LblCurrentProductCategory.Text = "ALL";
+            this.TbxSearchProducts.Text = "";
             DisplayProductList(this.Products);
+        }
+
+
+        private void TbxSearchProducts_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (this.Products != null && string.IsNullOrWhiteSpace(TbxSearchProducts.Text) == false)
+                {
+                    var searchResults = this.Products.Where(x =>
+                                                x.ProdName
+                                                .ToLower()
+                                                .Contains(TbxSearchProducts.Text.ToLower())
+                                               ).ToList();
+
+                    DisplayProductList(searchResults);
+                }
+            }
         }
 
         private void HandleClickProductItem(object sender, EventArgs e)
@@ -220,6 +260,31 @@ namespace Main.Forms.POSManagementForms
 
                     this.LVComboMealProducts.Items.Add(listViewItem);
                 }
+            }
+        }
+
+
+        private void BtnRefreshComboMealItems_Click(object sender, EventArgs e)
+        {
+            this.TboxSearchComboMeals.Text = "";
+            this.LVComboMealProducts.Items.Clear();
+            DisplayComboMealList(this.ComboMeals);
+        }
+
+        private void TboxSearchComboMeals_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter &&
+                this.ComboMeals != null && 
+                string.IsNullOrWhiteSpace(TboxSearchComboMeals.Text) == false)
+            {
+                var searchResults = this.ComboMeals.Where(x =>
+                                                x.Title
+                                                .ToLower()
+                                                .Contains(TboxSearchComboMeals.Text.ToLower())
+                                              ).ToList();
+
+                this.LVComboMealProducts.Items.Clear();
+                DisplayComboMealList(searchResults);
             }
         }
 

@@ -33,21 +33,6 @@ namespace Main.Forms.POSManagementForms
             this.LeftSideSplitInnerContainer = new System.Windows.Forms.SplitContainer();
             this.DGVCartItems = new System.Windows.Forms.DataGridView();
             this.POSControllerSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.BtnCancelAllEmployeePayslip = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.TopPanelInSplitContainerPanel1 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -61,7 +46,7 @@ namespace Main.Forms.POSManagementForms
             this.TopPanelInSplitContainerPanel2 = new System.Windows.Forms.Panel();
             this.LblCurrentProductCategory = new System.Windows.Forms.Label();
             this.BtnRefreshProductList = new System.Windows.Forms.Button();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.TbxSearchProducts = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -70,13 +55,15 @@ namespace Main.Forms.POSManagementForms
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.BtnRefreshComboMealItems = new System.Windows.Forms.Button();
+            this.TboxSearchComboMeals = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabPageStore = new System.Windows.Forms.TabPage();
             this.TabPageActiveDineInOrders = new System.Windows.Forms.TabPage();
             this.PanelDineInOrdersTableStatus = new System.Windows.Forms.Panel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -87,9 +74,7 @@ namespace Main.Forms.POSManagementForms
             this.LeftSideSplitInnerContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVCartItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).BeginInit();
-            this.POSControllerSplitContainer.Panel2.SuspendLayout();
             this.POSControllerSplitContainer.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.TopPanelInSplitContainerPanel1.SuspendLayout();
             this.TabControlProductsAndComboMeals.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -165,176 +150,9 @@ namespace Main.Forms.POSManagementForms
             this.POSControllerSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.POSControllerSplitContainer.Location = new System.Drawing.Point(0, 0);
             this.POSControllerSplitContainer.Name = "POSControllerSplitContainer";
-            // 
-            // POSControllerSplitContainer.Panel2
-            // 
-            this.POSControllerSplitContainer.Panel2.Controls.Add(this.panel1);
             this.POSControllerSplitContainer.Size = new System.Drawing.Size(603, 234);
             this.POSControllerSplitContainer.SplitterDistance = 231;
             this.POSControllerSplitContainer.TabIndex = 0;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.BtnCancelAllEmployeePayslip);
-            this.panel1.Controls.Add(this.label8);
-            this.panel1.Controls.Add(this.comboBox1);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.textBox5);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.textBox2);
-            this.panel1.Controls.Add(this.textBox4);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.textBox1);
-            this.panel1.Controls.Add(this.textBox3);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(368, 234);
-            this.panel1.TabIndex = 9;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(204, 170);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 38);
-            this.button1.TabIndex = 62;
-            this.button1.Text = "CHECK OUT";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // BtnCancelAllEmployeePayslip
-            // 
-            this.BtnCancelAllEmployeePayslip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnCancelAllEmployeePayslip.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnCancelAllEmployeePayslip.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnCancelAllEmployeePayslip.ForeColor = System.Drawing.Color.White;
-            this.BtnCancelAllEmployeePayslip.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelAllEmployeePayslip.Location = new System.Drawing.Point(80, 170);
-            this.BtnCancelAllEmployeePayslip.Name = "BtnCancelAllEmployeePayslip";
-            this.BtnCancelAllEmployeePayslip.Size = new System.Drawing.Size(88, 27);
-            this.BtnCancelAllEmployeePayslip.TabIndex = 61;
-            this.BtnCancelAllEmployeePayslip.Text = "VIEW TABLES";
-            this.BtnCancelAllEmployeePayslip.UseVisualStyleBackColor = false;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label8.Location = new System.Drawing.Point(13, 119);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(119, 17);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "TABLES AVAILABLE";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(13, 139);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(155, 25);
-            this.comboBox1.TabIndex = 11;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label7.Location = new System.Drawing.Point(196, 119);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(32, 17);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "Due";
-            // 
-            // textBox5
-            // 
-            this.textBox5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox5.Location = new System.Drawing.Point(196, 139);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(119, 25);
-            this.textBox5.TabIndex = 10;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label6.Location = new System.Drawing.Point(196, 62);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 17);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "Change";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.textBox2.Location = new System.Drawing.Point(196, 31);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(119, 25);
-            this.textBox2.TabIndex = 4;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox4.Location = new System.Drawing.Point(196, 82);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(119, 25);
-            this.textBox4.TabIndex = 8;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(196, 11);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 17);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Cash";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(17, 62);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(105, 17);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Customer name";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.Location = new System.Drawing.Point(13, 31);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(155, 25);
-            this.textBox1.TabIndex = 2;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox3.Location = new System.Drawing.Point(13, 82);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(155, 25);
-            this.textBox3.TabIndex = 6;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(13, 11);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(123, 17);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Document number";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TopPanelInSplitContainerPanel1
             // 
@@ -452,7 +270,7 @@ namespace Main.Forms.POSManagementForms
             // 
             this.TopPanelInSplitContainerPanel2.Controls.Add(this.LblCurrentProductCategory);
             this.TopPanelInSplitContainerPanel2.Controls.Add(this.BtnRefreshProductList);
-            this.TopPanelInSplitContainerPanel2.Controls.Add(this.textBox6);
+            this.TopPanelInSplitContainerPanel2.Controls.Add(this.TbxSearchProducts);
             this.TopPanelInSplitContainerPanel2.Controls.Add(this.label2);
             this.TopPanelInSplitContainerPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.TopPanelInSplitContainerPanel2.Location = new System.Drawing.Point(3, 3);
@@ -487,13 +305,14 @@ namespace Main.Forms.POSManagementForms
             this.BtnRefreshProductList.UseVisualStyleBackColor = false;
             this.BtnRefreshProductList.Click += new System.EventHandler(this.BtnRefreshProductList_Click);
             // 
-            // textBox6
+            // TbxSearchProducts
             // 
-            this.textBox6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox6.Location = new System.Drawing.Point(127, 10);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(284, 29);
-            this.textBox6.TabIndex = 1;
+            this.TbxSearchProducts.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TbxSearchProducts.Location = new System.Drawing.Point(127, 10);
+            this.TbxSearchProducts.Name = "TbxSearchProducts";
+            this.TbxSearchProducts.Size = new System.Drawing.Size(284, 29);
+            this.TbxSearchProducts.TabIndex = 1;
+            this.TbxSearchProducts.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TbxSearchProducts_KeyUp);
             // 
             // label2
             // 
@@ -573,7 +392,8 @@ namespace Main.Forms.POSManagementForms
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Controls.Add(this.textBox8);
+            this.panel2.Controls.Add(this.BtnRefreshComboMealItems);
+            this.panel2.Controls.Add(this.TboxSearchComboMeals);
             this.panel2.Controls.Add(this.label11);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(3, 3);
@@ -581,13 +401,29 @@ namespace Main.Forms.POSManagementForms
             this.panel2.Size = new System.Drawing.Size(586, 54);
             this.panel2.TabIndex = 2;
             // 
-            // textBox8
+            // BtnRefreshComboMealItems
             // 
-            this.textBox8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox8.Location = new System.Drawing.Point(127, 17);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(284, 29);
-            this.textBox8.TabIndex = 1;
+            this.BtnRefreshComboMealItems.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnRefreshComboMealItems.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRefreshComboMealItems.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnRefreshComboMealItems.ForeColor = System.Drawing.Color.White;
+            this.BtnRefreshComboMealItems.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRefreshComboMealItems.Location = new System.Drawing.Point(434, 15);
+            this.BtnRefreshComboMealItems.Name = "BtnRefreshComboMealItems";
+            this.BtnRefreshComboMealItems.Size = new System.Drawing.Size(136, 31);
+            this.BtnRefreshComboMealItems.TabIndex = 63;
+            this.BtnRefreshComboMealItems.Text = "Refresh Combo Meals";
+            this.BtnRefreshComboMealItems.UseVisualStyleBackColor = false;
+            this.BtnRefreshComboMealItems.Click += new System.EventHandler(this.BtnRefreshComboMealItems_Click);
+            // 
+            // TboxSearchComboMeals
+            // 
+            this.TboxSearchComboMeals.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TboxSearchComboMeals.Location = new System.Drawing.Point(127, 17);
+            this.TboxSearchComboMeals.Name = "TboxSearchComboMeals";
+            this.TboxSearchComboMeals.Size = new System.Drawing.Size(284, 29);
+            this.TboxSearchComboMeals.TabIndex = 1;
+            this.TboxSearchComboMeals.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TboxSearchComboMeals_KeyUp);
             // 
             // label11
             // 
@@ -653,6 +489,16 @@ namespace Main.Forms.POSManagementForms
             this.tabPage1.Text = "History";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label12.Location = new System.Drawing.Point(235, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(137, 21);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "Search item code";
+            // 
             // FrmMainPOSTerminal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -671,11 +517,8 @@ namespace Main.Forms.POSManagementForms
             ((System.ComponentModel.ISupportInitialize)(this.LeftSideSplitInnerContainer)).EndInit();
             this.LeftSideSplitInnerContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVCartItems)).EndInit();
-            this.POSControllerSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).EndInit();
             this.POSControllerSplitContainer.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.TopPanelInSplitContainerPanel1.ResumeLayout(false);
             this.TopPanelInSplitContainerPanel1.PerformLayout();
             this.TabControlProductsAndComboMeals.ResumeLayout(false);
@@ -711,27 +554,12 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.DataGridView DGVCartItems;
         private System.Windows.Forms.FlowLayoutPanel FLPanelProductList;
         private System.Windows.Forms.FlowLayoutPanel FLPanelProductCategories;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.SplitContainer POSControllerSplitContainer;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button BtnCancelAllEmployeePayslip;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox TbxSearchProducts;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage TabPageStore;
         private System.Windows.Forms.TabPage TabPageActiveDineInOrders;
@@ -741,7 +569,7 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox TboxSearchComboMeals;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.FlowLayoutPanel FlowLayoutComboMealItems;
@@ -750,5 +578,7 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button BtnRefreshProductList;
         private System.Windows.Forms.Label LblCurrentProductCategory;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button BtnRefreshComboMealItems;
     }
 }

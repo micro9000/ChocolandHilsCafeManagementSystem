@@ -56,5 +56,19 @@ namespace EntitiesShared
             awol = 2,
             error = 1
         }
+
+        public enum POSTransactionType
+        {
+            DineIn = 1,
+            TakeOut = 2
+        }
+
+        public enum POSTransactionStatus
+        {
+            OnGoing = 1,
+            Paid = 2,
+            Cancelled = 3
+        }
+
     }
 }

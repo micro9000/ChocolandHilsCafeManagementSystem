@@ -722,15 +722,17 @@ select * from ComboMealProducts;
 
 CREATE TABLE IF NOT EXISTS SalesTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	receptNumber VARCHAR(100),
-    currentUser VARCHAR(255),
-    totalAmount DECIMAL(9,2),
-    customerName VARCHAR(255),
-    customerCash DECIMAL(9,2),
-    customerChange DECIMAL(9,2),
-    customerDue DECIMAL(9,2),
-    tableNumber INT,
-    discount DECIMAL(9,2),
+    transactionType INT, -- Dine-in or Take-out (Enum values)
+	ticketNumber VARCHAR(100), -- generate after new transaction created
+    customerName VARCHAR(255), -- provided upon initialization
+    totalAmount DECIMAL(9,2), -- zero upon initialization
+    discountAmount DECIMAL(9,2), -- zero upon initialization
+    customerCashAmount DECIMAL(9,2), -- zero upon initialization
+    customerChangeAmount DECIMAL(9,2), -- zero upon initialization
+    customerDueAmount DECIMAL(9,2), -- zero upon initialization
+    tableNumber INT, -- provided upon initialization
+    transStatus INT, -- OnGoing, Paid or cancelled (Enum values)
+    currentUser VARCHAR(255), -- upon initialization
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
