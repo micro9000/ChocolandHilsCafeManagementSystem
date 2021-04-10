@@ -720,14 +720,49 @@ select * from ComboMealProducts;
 
 -- Point of sale tables:
 
-CREATE TABLE IF NOT EXISTS ComboMealProducts(
+CREATE TABLE IF NOT EXISTS SalesTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	
+	receptNumber VARCHAR(100),
+    currentUser VARCHAR(255),
+    totalAmount DECIMAL(9,2),
+    customerName VARCHAR(255),
+    customerCash DECIMAL(9,2),
+    customerChange DECIMAL(9,2),
+    customerDue DECIMAL(9,2),
+    tableNumber INT,
+    discount DECIMAL(9,2),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    salesTransId BIGINT NOT NULL,
+	productId BIGINT NOT NULL,
+    productCurrentPrice DECIMAL(9,2),
+    qty INT,
+    totalAmount DECIMAL(9,2),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(comboMealId) REFERENCES ComboMeals(id),
-    FOREIGN KEY(productId) REFERENCES Products(id)
+    FOREIGN KEY (salesTransId) REFERENCES SalesTransactions(id),
+    FOREIGN KEY (productId) REFERENCES Products (id)
 )ENGINE=INNODB;
 
+CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    salesTransId BIGINT NOT NULL,
+	comboMealId BIGINT NOT NULL,
+    comboMealCurrentPrice DECIMAL(9,2),
+    qty INT,
+    totalAmount DECIMAL(9,2),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY (salesTransId) REFERENCES SalesTransactions(id),
+    FOREIGN KEY (comboMealId) REFERENCES ComboMeals (id)
+)ENGINE=INNODB;
