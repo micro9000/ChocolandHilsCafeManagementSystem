@@ -21,6 +21,8 @@ namespace Main.Forms.POSManagementForms.Controls
 
         public int TableNumber { get; set; }
 
+        public string TableTitle { get; set; }
+
         private void RestaurantTableItemControl_Load(object sender, EventArgs e)
         {
             if (PicBoxTableStatus.Image != null)
@@ -42,7 +44,7 @@ namespace Main.Forms.POSManagementForms.Controls
                 PicBoxTableStatus.SizeMode = PictureBoxSizeMode.StretchImage;
             }
 
-            this.LblTableNumber.Text = $"T-{TableNumber}";
+            this.LblTableNumber.Text = this.TableTitle;
         }
     }
 }

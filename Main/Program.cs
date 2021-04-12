@@ -44,6 +44,11 @@ using Main.Controllers.InventoryControllers.ControllerInterface;
 using Main.Controllers.InventoryControllers;
 using Main.Controllers.InventoryControllers.Validator;
 using Main.Forms.POSManagementForms;
+using DataAccess.Data.POSManagement.Contracts;
+using DataAccess.Data.POSManagement.Implementations;
+using Main.Controllers.POSControllers.ControllerInterface;
+using Main.Controllers.POSControllers;
+using Main.Controllers.POSControllers.Validators;
 
 namespace Main
 {
@@ -158,6 +163,10 @@ namespace Main
             services.AddTransient<IComboMealData, ComboMealData>();
             services.AddTransient<IComboMealProductData, ComboMealProductData>();
 
+            // POS
+            services.AddTransient<ISaleTransactionData, SaleTransactionData>();
+            services.AddTransient<ISaleTransactionProductData, SaleTransactionProductData>();
+
 
             // Employee Management
             // validator
@@ -177,6 +186,10 @@ namespace Main
             services.AddTransient<IngredientInventoryAddUpdateValidator>();
             services.AddTransient<ProductAddUpdateValidator>();
             services.AddTransient<ProductIngredientAddUpdateValidator>();
+            // POS
+            services.AddTransient<InitiateNewDineInSalesTransactionValidator>();
+            services.AddTransient<InitiateNewTakeOutSalesTransactionValidator>();
+            services.AddTransient<CheckOutSalesTransactionValidator>();
 
             // controllers
             services.AddTransient<IEmployeeBenefitsDeductionsController, EmployeeBenefitsDeductionsController>();
@@ -198,6 +211,10 @@ namespace Main
             services.AddTransient<IProductCategoryController, ProductCategoryController>();
             services.AddTransient<IProductController, ProductController>();
             services.AddTransient<IComboMealController, ComboMealController>();
+
+            services.AddTransient<IPOSCommandController, POSCommandController>();
+            services.AddTransient<IPOSReadController, POSReadController>();
+
 
             // forms
             services.AddTransient<HomeFrm>();

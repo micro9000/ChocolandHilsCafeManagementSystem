@@ -504,9 +504,24 @@ CREATE TABLE IF NOT EXISTS Roles(
 
 SELECT * FROM Roles;
 
+
+-- --------------------------------------------------------------------------------------
+
+-- Apr. 12, 2021:
+
+-- DROP ALL TABLES BELOW
+-- in order to create POS tables,
+-- there are some changes on data type we used on previous updates that needs to implement
+
+
+
+-- --------------------------------------------------------------------------------------
+
+
+
 -- you can store employee number as userName
 CREATE TABLE IF NOT EXISTS Users(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userName CHAR(20) UNIQUE,
     fullName VARCHAR(50),
 	passwordSha512 VARCHAR(255),
@@ -517,6 +532,7 @@ CREATE TABLE IF NOT EXISTS Users(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+
 CREATE TABLE IF NOT EXISTS UserActivityLog(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userName CHAR(20),
@@ -526,9 +542,10 @@ CREATE TABLE IF NOT EXISTS UserActivityLog(
 
 SELECT * FROM Users;
 
+
 CREATE TABLE IF NOT EXISTS UserRoles(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    userId INT NOT NULL,
+    userId BIGINT NOT NULL,
     roleId INT NOT NULL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -538,30 +555,25 @@ CREATE TABLE IF NOT EXISTS UserRoles(
     FOREIGN KEY (roleId) REFERENCES Roles(id)
 )ENGINE=INNODB;
 
+
 SELECT * FROM UserRoles;
-
-
-SELECT *
-FROM UserRoles AS UR
-JOIN Roles AS R ON R.id = UR.roleId
-WHERE UR.isDeleted=False AND UR.userId=1;
 
 -- testing data:
 INSERT INTO Roles (rolekey) VALUES ("normal"), ("admin");
 
+
 -- Password: Welcome2021
 INSERT INTO Users (userName, fullName, passwordSha512)
-VALUES ("20210001", "Testing1", "5511F5AC0EDC25929F8CFE01485FFDEF12A83944BFB4708048C79869C22F17FF4F7CBD168146942F61E67756EB60C1E15DD4CC35596207ED626805199A805328"),
-("20210002", "Testing2", "5511F5AC0EDC25929F8CFE01485FFDEF12A83944BFB4708048C79869C22F17FF4F7CBD168146942F61E67756EB60C1E15DD4CC35596207ED626805199A805328"),
-("20210003", "Testing3", "5511F5AC0EDC25929F8CFE01485FFDEF12A83944BFB4708048C79869C22F17FF4F7CBD168146942F61E67756EB60C1E15DD4CC35596207ED626805199A805328");
+VALUES ("admin", "Raniel", "5511F5AC0EDC25929F8CFE01485FFDEF12A83944BFB4708048C79869C22F17FF4F7CBD168146942F61E67756EB60C1E15DD4CC35596207ED626805199A805328");
 SELECT * FROM Users;
 
 INSERT INTO UserRoles (userId, roleId)
-VALUES (1,1), (2,2);
+VALUES (1,2);
 
 -- --------------------------------------------------------------------------------------
 -- Inventory and POS related tables:
 -- --------------------------------------------------------------------------------------
+
 
 CREATE TABLE IF NOT EXISTS IngredientCategories(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -572,7 +584,6 @@ CREATE TABLE IF NOT EXISTS IngredientCategories(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
-SELECT * FROM IngredientCategories;
 
 CREATE TABLE IF NOT EXISTS Ingredients(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -587,6 +598,8 @@ CREATE TABLE IF NOT EXISTS Ingredients(
 )ENGINE=INNODB;
 
 SELECT * FROM Ingredients;
+
+
 
 CREATE TABLE IF NOT EXISTS IngredientInventory(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -603,6 +616,7 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
+
 SELECT * FROM IngredientInventory WHERE ingredientId=10 AND isDeleted=false;
 
 
@@ -613,7 +627,7 @@ CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
     qtyVal DECIMAL,
     unitCost DECIMAL(9,2),
     expirationDate DATE,
-    userId INT NOT NULL,
+    userId BIGINT NOT NULL,
     remarks VARCHAR(255),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
@@ -622,6 +636,7 @@ CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id),
     FOREIGN KEY(userId) REFERENCES Users(id)
 )ENGINE=INNODB;
+
 
 SELECT * FROM IngInventoryTransactions;
 SELECT * FROM Users;
@@ -635,36 +650,25 @@ CREATE TABLE IF NOT EXISTS ProductCategories(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+
+
+
 SELECT * FROM ProductCategories;
 
 CREATE TABLE IF NOT EXISTS Products(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    barcodeLbl VARCHAR(250),
     categoryId BIGINT NOT NULL,
 	prodName VARCHAR(255),
     pricePerOrder DECIMAL(9,2),
+    imageFileName VARCHAR(250),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(categoryId) REFERENCES ProductCategories(id)
 )ENGINE=INNODB;
-ALTER TABLE Products
-DROP COLUMN estimatedNumOrders; -- If you have this column in your table, just run this query to remove
-ALTER TABLE Products
-ADD COLUMN imageFileName VARCHAR(250);
-ALTER TABLE Products
-ADD COLUMN barcodeLbl VARCHAR(250);
 
-
-SELECT * FROM Products;
-
-
-SELECT * FROM Employees;
-
-SELECT *
-FROM Products AS P
-JOIN ProductCategories AS PC ON P.categoryId = PC.id
-WHERE P.isDeleted=false;
 
 -- Per order
 CREATE TABLE IF NOT EXISTS ProductIngredients(
@@ -682,22 +686,18 @@ CREATE TABLE IF NOT EXISTS ProductIngredients(
 )ENGINE=INNODB;
 
 
-SELECT * FROM Ingredients;
-
 
 CREATE TABLE IF NOT EXISTS ComboMeals(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    barcodeLbl VARCHAR(250),
 	title VARCHAR(255),
     price DECIMAL(9,2),
+    imageFileName VARCHAR(250),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
-ALTER TABLE ComboMeals
-ADD COLUMN barcodeLbl VARCHAR(250);
-ALTER TABLE ComboMeals
-ADD COLUMN imageFileName VARCHAR(250);
 
 SELECT * FROM ComboMeals;
 
@@ -715,18 +715,27 @@ CREATE TABLE IF NOT EXISTS ComboMealProducts(
     FOREIGN KEY(productId) REFERENCES Products(id)
 )ENGINE=INNODB;
 
+
 select * from ComboMealProducts;
 
 
 -- Point of sale tables:
+
+-- CREATE TABLE IF NOT EXISTS TableStatus(
+-- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+-- 	tableNumber INT,
+--     tableTitle VARCHAR(50),
+--     isOccupied BOOLEAN DEFAULT False
+-- )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS SalesTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     transactionType INT, -- Dine-in or Take-out (Enum values)
 	ticketNumber VARCHAR(100), -- generate after new transaction created
     customerName VARCHAR(255), -- provided upon initialization
-    totalAmount DECIMAL(9,2), -- zero upon initialization
+    subTotalAmount DECIMAL(9,2),
     discountAmount DECIMAL(9,2), -- zero upon initialization
+    totalAmount DECIMAL(9,2), -- zero upon initialization
     customerCashAmount DECIMAL(9,2), -- zero upon initialization
     customerChangeAmount DECIMAL(9,2), -- zero upon initialization
     customerDueAmount DECIMAL(9,2), -- zero upon initialization
@@ -738,6 +747,9 @@ CREATE TABLE IF NOT EXISTS SalesTransactions(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+SELECT * FROM SalesTransactions
+WHERE isDeleted=false AND transStatus=1;
 
 CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

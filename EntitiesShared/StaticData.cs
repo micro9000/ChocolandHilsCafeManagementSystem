@@ -57,6 +57,12 @@ namespace EntitiesShared
             error = 1
         }
 
+        public enum TableStatus
+        {
+            Available = 1,
+            Occupied = 2
+        }
+
         public enum POSTransactionType
         {
             DineIn = 1,

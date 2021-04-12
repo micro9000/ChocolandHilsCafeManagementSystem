@@ -1,15 +1,22 @@
 ﻿using DataAccess.Data.InventoryManagement.Contracts;
+using EntitiesShared;
 using EntitiesShared.InventoryManagement;
+using EntitiesShared.POSManagement;
+using EntitiesShared.POSManagement.CustomModels;
+using Main.Controllers.POSControllers.ControllerInterface;
 using Main.Forms.POSManagementForms.Controls;
 using Microsoft.Extensions.Options;
 using Shared;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,17 +27,23 @@ namespace Main.Forms.POSManagementForms
         private readonly IProductData _productData;
         private readonly IComboMealData _comboMealData;
         private readonly IProductCategoryData _productCategoryData;
+        private readonly IPOSCommandController _iPOSCommandController;
+        private readonly IPOSReadController _pOSReadController;
         private readonly OtherSettings _otherSettings;
 
-        public FrmMainPOSTerminal(IProductData productData, 
+        public FrmMainPOSTerminal(IProductData productData,
                                 IComboMealData comboMealData,
                                 IProductCategoryData productCategoryData,
+                                IPOSCommandController iPOSCommandController,
+                                IPOSReadController pOSReadController,
                                 IOptions<OtherSettings> otherSettings)
         {
             InitializeComponent();
             _productData = productData;
             _comboMealData = comboMealData;
             _productCategoryData = productCategoryData;
+            _iPOSCommandController = iPOSCommandController;
+            _pOSReadController = pOSReadController;
             _otherSettings = otherSettings.Value;
         }
 
@@ -60,12 +73,31 @@ namespace Main.Forms.POSManagementForms
         }
 
 
+        private List<TableStatusModel> _tableStatuses;
+
+        public List<TableStatusModel> TableStatus
+        {
+            get { return _tableStatuses; }
+            set { _tableStatuses = value; }
+        }
+
+        private SaleTransactionModel _currentSaleTransaction = new SaleTransactionModel();
+
+        public SaleTransactionModel CurrentSaleTransaction
+        {
+            get { return _currentSaleTransaction; }
+            set { _currentSaleTransaction = value; }
+        }
+
+        POSControllerControl pOSControllerControl;
+
         private void FrmMainPOSTerminal_Load(object sender, EventArgs e)
         {
             SetDGVCartItemsFontAndColors();
             this.Products = _productData.GetAllNotDeleted();
             this.ProductCategories = _productCategoryData.GetAllNotDeleted();
             this.ComboMeals = _comboMealData.GetAllNotDeleted();
+            //this.TableStatus = _pOSReadController.GetTableStatus();
 
             DisplayProductList(this.Products);
             DisplayProductCategoryList(this.ProductCategories);
@@ -73,36 +105,38 @@ namespace Main.Forms.POSManagementForms
 
             this.LblCurrentProductCategory.Text = "ALL";
 
-            // Temprary method
-            DisplaySampleProductsInCart(this.Products);
-
-            InitiateTab2DineInOrdersTableStatus();
-            InitializePOSCheckOutController();
+            // initialize controls
+            InitializePOSControllerControl();
             InitializeTotalAndReceiptPreviewControl();
         }
 
-        public void InitiateTab2DineInOrdersTableStatus()
+        public void InitializePOSControllerControl()
         {
-            this.PanelDineInOrdersTableStatus.Controls.Clear();
-            FrmDineInStatus frmDineInStatus = new FrmDineInStatus();
-            frmDineInStatus.TopLevel = false;
-            frmDineInStatus.FormBorderStyle = FormBorderStyle.None;
-            frmDineInStatus.Dock = DockStyle.Fill;
-            this.PanelDineInOrdersTableStatus.Controls.Add(frmDineInStatus);
-            frmDineInStatus.BringToFront();
-            frmDineInStatus.Show();
+            this.PanelPOSController.Controls.Clear();
+            this.pOSControllerControl = new(_iPOSCommandController, _pOSReadController);
+            //pOSControllerControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
+            this.pOSControllerControl.Dock = DockStyle.Fill;
+            this.pOSControllerControl.NewTransactionInitiated += HandleOnNewTransactionInitiated;
+            this.pOSControllerControl.ViewDineInTransDetails += HandleOnViewDineInTransDetails;
+
+            this.PanelPOSController.Controls.Add(this.pOSControllerControl);
+        }
+
+        private void HandleOnNewTransactionInitiated(object sender, EventArgs e)
+        {
+            POSControllerControl pOSControllerControl = (POSControllerControl)sender;
+
+            // set newly created sale transaction object
+            this.CurrentSaleTransaction = pOSControllerControl.CurrentSaleTransaction;
+        }
+
+        private void HandleOnViewDineInTransDetails(object sender, EventArgs e)
+        {
+            DisplayCurrentSaleTransactionProductsInCartDGV(this.pOSControllerControl.CurrentSaleTransactionProducts);
         }
 
 
-        public void InitializePOSCheckOutController()
-        {
-            this.POSControllerSplitContainer.Panel2.Controls.Clear();
-            POSCheckOutControllerControl pOSCheckOutControllerControl = new();
-            pOSCheckOutControllerControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
-            this.POSControllerSplitContainer.Panel2.Controls.Add(pOSCheckOutControllerControl);
-        }
-
-
+        // Total and receip preview control
         public void InitializeTotalAndReceiptPreviewControl()
         {
             this.POSControllerSplitContainer.Panel1.Controls.Clear();
@@ -111,6 +145,8 @@ namespace Main.Forms.POSManagementForms
             //totalAndReceiptPreviewControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
             this.POSControllerSplitContainer.Panel1.Controls.Add(totalAndReceiptPreviewControl);
         }
+
+
 
         public void DisplayProductList(List<ProductModel> products)
         {
@@ -161,11 +197,37 @@ namespace Main.Forms.POSManagementForms
                 FrmEnterProductQuantity frmEnterProductQuantity = new(productItemControl.Product, _otherSettings);
                 frmEnterProductQuantity.ShowDialog();
 
-                if (frmEnterProductQuantity.IsCancelled == false)
+                if (frmEnterProductQuantity.IsCancelled == false && frmEnterProductQuantity.Product != null)
                 {
-                    MessageBox.Show(frmEnterProductQuantity.Quantity.ToString());
+                    var existingProdInCart = this.pOSControllerControl.CurrentSaleTransactionProducts
+                                                        .Where(x => x.ProductId == frmEnterProductQuantity.Product.Id)
+                                                        .FirstOrDefault();
+
+                    if (existingProdInCart == null)
+                    {
+                        var newProductRef = JsonSerializer.Deserialize<ProductModel>(JsonSerializer.Serialize(frmEnterProductQuantity.Product));
+
+                        this.pOSControllerControl.CurrentSaleTransactionProducts.Add(new SaleTransactionProductModel
+                        {
+                            ProductId = newProductRef.Id,
+                            Qty = frmEnterProductQuantity.Quantity,
+                            productCurrentPrice = newProductRef.PricePerOrder,
+                            Product = newProductRef,
+                            totalAmount = (frmEnterProductQuantity.Quantity * newProductRef.PricePerOrder)
+                        });
+                    }
+                    else
+                    {
+                        existingProdInCart.Qty += frmEnterProductQuantity.Quantity;
+                        existingProdInCart.totalAmount = (existingProdInCart.Qty * existingProdInCart.productCurrentPrice);
+
+                    }
+
+
+                    DisplayCurrentSaleTransactionProductsInCartDGV(this.pOSControllerControl.CurrentSaleTransactionProducts);
+
+                    //MessageBox.Show(.ToString());
                 }
-                
             }
         }
 
@@ -304,7 +366,7 @@ namespace Main.Forms.POSManagementForms
         }
 
 
-        public void DisplaySampleProductsInCart(List<ProductModel> products)
+        public void DisplayCurrentSaleTransactionProductsInCartDGV(List<SaleTransactionProductModel> products)
         {
             if (products != null)
             {
@@ -364,22 +426,46 @@ namespace Main.Forms.POSManagementForms
                 btnRemoveItem.CellTemplate.Style.Font = new Font("Century Gothic", 14, FontStyle.Bold);
                 this.DGVCartItems.Columns.Add(btnRemoveItem);
 
-                foreach (var prod in products)
+                foreach (var item in products)
                 {
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(DGVCartItems);
                     row.Height = 35;
 
-                    //row.DefaultCellStyle.Padding = new Padding(0, 10, 0, 10);
-
-                    row.Cells[0].Value = prod.Id;
-                    row.Cells[1].Value = prod.ProdName;
-                    row.Cells[2].Value = prod.PricePerOrder;
-                    row.Cells[3].Value = 1;
-                    row.Cells[4].Value = 100;
+                    row.Cells[0].Value = item.Id;
+                    row.Cells[1].Value = item.Product.ProdName;
+                    row.Cells[2].Value = item.productCurrentPrice;
+                    row.Cells[3].Value = item.Qty;
+                    row.Cells[4].Value = item.totalAmount;
 
                     DGVCartItems.Rows.Add(row);
                 }
+            }
+        }
+
+        private void POSMainTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Tables tab
+            if (POSMainTabControl.SelectedTab == POSMainTabControl.TabPages[1])
+            {
+                this.TableStatus = _pOSReadController.GetTableStatus();
+                DisplayTableStatus(this.TableStatus);
+            }
+        }
+
+        public void DisplayTableStatus(List<TableStatusModel> tableStatus)
+        {
+            this.FlowLayoutTables.Controls.Clear();
+            foreach (var table in tableStatus)
+            {
+                var tableItemControl = new RestaurantTableItemControl()
+                {
+                    IsOccupied = table.Status == StaticData.TableStatus.Occupied,
+                    TableNumber = table.TableNumber,
+                    TableTitle = table.TableTitle
+                };
+
+                this.FlowLayoutTables.Controls.Add(tableItemControl);
             }
         }
 

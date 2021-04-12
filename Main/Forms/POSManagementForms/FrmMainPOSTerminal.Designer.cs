@@ -33,6 +33,7 @@ namespace Main.Forms.POSManagementForms
             this.LeftSideSplitInnerContainer = new System.Windows.Forms.SplitContainer();
             this.DGVCartItems = new System.Windows.Forms.DataGridView();
             this.POSControllerSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.PanelPOSController = new System.Windows.Forms.Panel();
             this.TopPanelInSplitContainerPanel1 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -58,10 +59,14 @@ namespace Main.Forms.POSManagementForms
             this.BtnRefreshComboMealItems = new System.Windows.Forms.Button();
             this.TboxSearchComboMeals = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.POSMainTabControl = new System.Windows.Forms.TabControl();
             this.TabPageStore = new System.Windows.Forms.TabPage();
-            this.TabPageActiveDineInOrders = new System.Windows.Forms.TabPage();
+            this.TabPageTableStatus = new System.Windows.Forms.TabPage();
             this.PanelDineInOrdersTableStatus = new System.Windows.Forms.Panel();
+            this.FlowLayoutTables = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
@@ -74,6 +79,7 @@ namespace Main.Forms.POSManagementForms
             this.LeftSideSplitInnerContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVCartItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).BeginInit();
+            this.POSControllerSplitContainer.Panel2.SuspendLayout();
             this.POSControllerSplitContainer.SuspendLayout();
             this.TopPanelInSplitContainerPanel1.SuspendLayout();
             this.TabControlProductsAndComboMeals.SuspendLayout();
@@ -89,9 +95,11 @@ namespace Main.Forms.POSManagementForms
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this.POSMainTabControl.SuspendLayout();
             this.TabPageStore.SuspendLayout();
-            this.TabPageActiveDineInOrders.SuspendLayout();
+            this.TabPageTableStatus.SuspendLayout();
+            this.PanelDineInOrdersTableStatus.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -150,9 +158,21 @@ namespace Main.Forms.POSManagementForms
             this.POSControllerSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.POSControllerSplitContainer.Location = new System.Drawing.Point(0, 0);
             this.POSControllerSplitContainer.Name = "POSControllerSplitContainer";
+            // 
+            // POSControllerSplitContainer.Panel2
+            // 
+            this.POSControllerSplitContainer.Panel2.Controls.Add(this.PanelPOSController);
             this.POSControllerSplitContainer.Size = new System.Drawing.Size(603, 234);
-            this.POSControllerSplitContainer.SplitterDistance = 231;
+            this.POSControllerSplitContainer.SplitterDistance = 229;
             this.POSControllerSplitContainer.TabIndex = 0;
+            // 
+            // PanelPOSController
+            // 
+            this.PanelPOSController.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelPOSController.Location = new System.Drawing.Point(0, 0);
+            this.PanelPOSController.Name = "PanelPOSController";
+            this.PanelPOSController.Size = new System.Drawing.Size(370, 234);
+            this.PanelPOSController.TabIndex = 0;
             // 
             // TopPanelInSplitContainerPanel1
             // 
@@ -435,18 +455,19 @@ namespace Main.Forms.POSManagementForms
             this.label11.TabIndex = 0;
             this.label11.Text = "Search item";
             // 
-            // tabControl1
+            // POSMainTabControl
             // 
-            this.tabControl1.Controls.Add(this.TabPageStore);
-            this.tabControl1.Controls.Add(this.TabPageActiveDineInOrders);
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1221, 672);
-            this.tabControl1.TabIndex = 1;
+            this.POSMainTabControl.Controls.Add(this.TabPageStore);
+            this.POSMainTabControl.Controls.Add(this.TabPageTableStatus);
+            this.POSMainTabControl.Controls.Add(this.tabPage1);
+            this.POSMainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.POSMainTabControl.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.POSMainTabControl.Location = new System.Drawing.Point(0, 0);
+            this.POSMainTabControl.Name = "POSMainTabControl";
+            this.POSMainTabControl.SelectedIndex = 0;
+            this.POSMainTabControl.Size = new System.Drawing.Size(1221, 672);
+            this.POSMainTabControl.TabIndex = 1;
+            this.POSMainTabControl.SelectedIndexChanged += new System.EventHandler(this.POSMainTabControl_SelectedIndexChanged);
             // 
             // TabPageStore
             // 
@@ -459,26 +480,71 @@ namespace Main.Forms.POSManagementForms
             this.TabPageStore.Text = "Store";
             this.TabPageStore.UseVisualStyleBackColor = true;
             // 
-            // TabPageActiveDineInOrders
+            // TabPageTableStatus
             // 
-            this.TabPageActiveDineInOrders.Controls.Add(this.PanelDineInOrdersTableStatus);
-            this.TabPageActiveDineInOrders.Location = new System.Drawing.Point(4, 30);
-            this.TabPageActiveDineInOrders.Name = "TabPageActiveDineInOrders";
-            this.TabPageActiveDineInOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageActiveDineInOrders.Size = new System.Drawing.Size(1213, 638);
-            this.TabPageActiveDineInOrders.TabIndex = 1;
-            this.TabPageActiveDineInOrders.Text = "Active D-IN Orders";
-            this.TabPageActiveDineInOrders.UseVisualStyleBackColor = true;
+            this.TabPageTableStatus.Controls.Add(this.PanelDineInOrdersTableStatus);
+            this.TabPageTableStatus.Location = new System.Drawing.Point(4, 30);
+            this.TabPageTableStatus.Name = "TabPageTableStatus";
+            this.TabPageTableStatus.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageTableStatus.Size = new System.Drawing.Size(1213, 638);
+            this.TabPageTableStatus.TabIndex = 1;
+            this.TabPageTableStatus.Text = "Tables";
+            this.TabPageTableStatus.UseVisualStyleBackColor = true;
             // 
             // PanelDineInOrdersTableStatus
             // 
             this.PanelDineInOrdersTableStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.PanelDineInOrdersTableStatus.Location = new System.Drawing.Point(63, 40);
+            this.PanelDineInOrdersTableStatus.Controls.Add(this.FlowLayoutTables);
+            this.PanelDineInOrdersTableStatus.Controls.Add(this.panel1);
+            this.PanelDineInOrdersTableStatus.Location = new System.Drawing.Point(63, 23);
             this.PanelDineInOrdersTableStatus.Name = "PanelDineInOrdersTableStatus";
-            this.PanelDineInOrdersTableStatus.Size = new System.Drawing.Size(1101, 550);
+            this.PanelDineInOrdersTableStatus.Size = new System.Drawing.Size(1101, 567);
             this.PanelDineInOrdersTableStatus.TabIndex = 0;
+            // 
+            // FlowLayoutTables
+            // 
+            this.FlowLayoutTables.AutoScroll = true;
+            this.FlowLayoutTables.BackColor = System.Drawing.Color.White;
+            this.FlowLayoutTables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FlowLayoutTables.Location = new System.Drawing.Point(0, 62);
+            this.FlowLayoutTables.Name = "FlowLayoutTables";
+            this.FlowLayoutTables.Size = new System.Drawing.Size(1101, 505);
+            this.FlowLayoutTables.TabIndex = 2;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1101, 62);
+            this.panel1.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Red;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(146, 11);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(132, 32);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "OCCUPIED";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.LawnGreen;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(0, 11);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(140, 32);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "AVAILABLE";
             // 
             // tabPage1
             // 
@@ -504,7 +570,7 @@ namespace Main.Forms.POSManagementForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1221, 672);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.POSMainTabControl);
             this.Name = "FrmMainPOSTerminal";
             this.Text = "Point of sale terminal";
             this.Load += new System.EventHandler(this.FrmMainPOSTerminal_Load);
@@ -517,6 +583,7 @@ namespace Main.Forms.POSManagementForms
             ((System.ComponentModel.ISupportInitialize)(this.LeftSideSplitInnerContainer)).EndInit();
             this.LeftSideSplitInnerContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVCartItems)).EndInit();
+            this.POSControllerSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).EndInit();
             this.POSControllerSplitContainer.ResumeLayout(false);
             this.TopPanelInSplitContainerPanel1.ResumeLayout(false);
@@ -536,9 +603,12 @@ namespace Main.Forms.POSManagementForms
             this.splitContainer1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
+            this.POSMainTabControl.ResumeLayout(false);
             this.TabPageStore.ResumeLayout(false);
-            this.TabPageActiveDineInOrders.ResumeLayout(false);
+            this.TabPageTableStatus.ResumeLayout(false);
+            this.PanelDineInOrdersTableStatus.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -560,9 +630,9 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TbxSearchProducts;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl POSMainTabControl;
         private System.Windows.Forms.TabPage TabPageStore;
-        private System.Windows.Forms.TabPage TabPageActiveDineInOrders;
+        private System.Windows.Forms.TabPage TabPageTableStatus;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel PanelDineInOrdersTableStatus;
         private System.Windows.Forms.TabControl TabControlProductsAndComboMeals;
@@ -580,5 +650,10 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.Label LblCurrentProductCategory;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button BtnRefreshComboMealItems;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.FlowLayoutPanel FlowLayoutTables;
+        private System.Windows.Forms.Panel PanelPOSController;
     }
 }

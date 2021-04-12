@@ -42,6 +42,9 @@
     <None Update="Resources\checkbox-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\checkout-24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\edit-24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -132,7 +135,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\PayrollController\" />
     <Folder Include="Forms\PayrollForms\PdfHtmlTemplates\" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using EntitiesShared.UserManagement;
+﻿using EntitiesShared.POSManagement;
+using EntitiesShared.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
