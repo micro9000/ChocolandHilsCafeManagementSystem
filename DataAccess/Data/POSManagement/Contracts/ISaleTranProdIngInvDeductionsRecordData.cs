@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Data.POSManagement.Contracts
 {
-    public interface ISaleTransactionProductData : IDataManagerCRUD<SaleTransactionProductModel>
+    public interface ISaleTranProdIngInvDeductionsRecordData : IDataManagerCRUD<SaleTranProdIngInvDeductionsRecordModel>
     {
-        IEnumerable<SaleTransactionProductModel> GetAllBySaleTransId(long saleTransactionId);
     }
 }

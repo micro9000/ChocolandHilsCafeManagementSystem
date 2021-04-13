@@ -669,6 +669,7 @@ CREATE TABLE IF NOT EXISTS Products(
     FOREIGN KEY(categoryId) REFERENCES ProductCategories(id)
 )ENGINE=INNODB;
 
+SELECT * FROM Products;
 
 -- Per order
 CREATE TABLE IF NOT EXISTS ProductIngredients(
@@ -685,7 +686,7 @@ CREATE TABLE IF NOT EXISTS ProductIngredients(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
-
+SELECT * FROM ProductIngredients;
 
 CREATE TABLE IF NOT EXISTS ComboMeals(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -766,6 +767,14 @@ CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
     FOREIGN KEY (productId) REFERENCES Products (id)
 )ENGINE=INNODB;
 
+SELECT *
+FROM SalesTransactionProducts AS STPrd
+JOIN Products AS Prd ON STPrd.productId=Prd.id
+WHERE STPrd.isDeleted=false AND STPrd.salesTransId=@SaleTransId;
+
+
+select * from SalesTransactionProducts;
+
 CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     salesTransId BIGINT NOT NULL,
@@ -779,4 +788,24 @@ CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY (salesTransId) REFERENCES SalesTransactions(id),
     FOREIGN KEY (comboMealId) REFERENCES ComboMeals (id)
+)ENGINE=INNODB;
+
+-- Sale Transaction's Product's Ingredient's Inventory deduction history :D
+-- we just need to store the ingredients we used in our product and 
+-- where inventory we deduct the required qty value(amount ex. 500ml of ingredient)
+-- because in single ingredient, we can have multiple inventory records
+CREATE TABLE IF NOT EXISTS SaleTranProdIngInvDeductionsRecords(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	saleTransProductId BIGINT NOT NULL,
+    ingredientId BIGINT NOT NULL,
+    ingredientInventoryId BIGINT NOT NULL,
+    ingredientUOM INT,
+    usedUOM INT,
+    deductedQtyValue DECIMAL,
+    ingInvCurrentunitCost DECIMAL,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(saleTransProdId) REFERENCES SalesTransactionProducts(id)
 )ENGINE=INNODB;

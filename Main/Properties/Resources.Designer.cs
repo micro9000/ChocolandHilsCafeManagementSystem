@@ -73,6 +73,16 @@ namespace Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap checkout_white_30 {
+            get {
+                object obj = ResourceManager.GetObject("checkout-white-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap folder_white_24 {
             get {
                 object obj = ResourceManager.GetObject("folder-white-24", resourceCulture);
@@ -226,6 +236,16 @@ namespace Main.Properties {
         internal static System.Drawing.Bitmap sales_report {
             get {
                 object obj = ResourceManager.GetObject("sales-report", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap save_white_26 {
+            get {
+                object obj = ResourceManager.GetObject("save-white-26", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

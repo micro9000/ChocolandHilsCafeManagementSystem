@@ -39,6 +39,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.DGVActiveDineInTransactions = new System.Windows.Forms.DataGridView();
             this.TabPageCheckout = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.BtnSave = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.TboxNumberOfItems = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -48,6 +49,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TboxCustomerName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TboxTableNumber = new System.Windows.Forms.TextBox();
+            this.BtnCancelCurrentTransaction = new System.Windows.Forms.Button();
             this.TabControlMain.SuspendLayout();
             this.TabPageControls.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -178,6 +180,8 @@ namespace Main.Forms.POSManagementForms.Controls
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.BtnCancelCurrentTransaction);
+            this.panel1.Controls.Add(this.BtnSave);
             this.panel1.Controls.Add(this.button3);
             this.panel1.Controls.Add(this.TboxNumberOfItems);
             this.panel1.Controls.Add(this.label1);
@@ -189,21 +193,42 @@ namespace Main.Forms.POSManagementForms.Controls
             this.panel1.Controls.Add(this.TboxTableNumber);
             this.panel1.Location = new System.Drawing.Point(14, 14);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(347, 217);
+            this.panel1.Size = new System.Drawing.Size(429, 232);
             this.panel1.TabIndex = 72;
+            // 
+            // BtnSave
+            // 
+            this.BtnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnSave.ForeColor = System.Drawing.Color.White;
+            this.BtnSave.Image = global::Main.Properties.Resources.save_white_26;
+            this.BtnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSave.Location = new System.Drawing.Point(152, 163);
+            this.BtnSave.Name = "BtnSave";
+            this.BtnSave.Size = new System.Drawing.Size(87, 45);
+            this.BtnSave.TabIndex = 70;
+            this.BtnSave.Text = "SAVE";
+            this.BtnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BtnSave.UseVisualStyleBackColor = false;
+            this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // button3
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Image = global::Main.Properties.Resources.checkout_white_30;
             this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(197, 165);
+            this.button3.Location = new System.Drawing.Point(266, 163);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(120, 42);
+            this.button3.Size = new System.Drawing.Size(122, 45);
             this.button3.TabIndex = 69;
-            this.button3.Text = "CHECK OUT";
+            this.button3.Text = "CHECKOUT";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button3.UseVisualStyleBackColor = false;
             // 
             // TboxNumberOfItems
@@ -211,7 +236,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TboxNumberOfItems.Enabled = false;
             this.TboxNumberOfItems.Location = new System.Drawing.Point(110, 15);
             this.TboxNumberOfItems.Name = "TboxNumberOfItems";
-            this.TboxNumberOfItems.Size = new System.Drawing.Size(207, 27);
+            this.TboxNumberOfItems.Size = new System.Drawing.Size(244, 27);
             this.TboxNumberOfItems.TabIndex = 68;
             // 
             // label1
@@ -228,7 +253,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TboxTicketNumber.Enabled = false;
             this.TboxTicketNumber.Location = new System.Drawing.Point(110, 52);
             this.TboxTicketNumber.Name = "TboxTicketNumber";
-            this.TboxTicketNumber.Size = new System.Drawing.Size(207, 27);
+            this.TboxTicketNumber.Size = new System.Drawing.Size(244, 27);
             this.TboxTicketNumber.TabIndex = 1;
             // 
             // label8
@@ -254,7 +279,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TboxCustomerName.Enabled = false;
             this.TboxCustomerName.Location = new System.Drawing.Point(110, 87);
             this.TboxCustomerName.Name = "TboxCustomerName";
-            this.TboxCustomerName.Size = new System.Drawing.Size(207, 27);
+            this.TboxCustomerName.Size = new System.Drawing.Size(244, 27);
             this.TboxCustomerName.TabIndex = 3;
             // 
             // label3
@@ -271,8 +296,26 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TboxTableNumber.Enabled = false;
             this.TboxTableNumber.Location = new System.Drawing.Point(110, 121);
             this.TboxTableNumber.Name = "TboxTableNumber";
-            this.TboxTableNumber.Size = new System.Drawing.Size(207, 27);
+            this.TboxTableNumber.Size = new System.Drawing.Size(244, 27);
             this.TboxTableNumber.TabIndex = 5;
+            // 
+            // BtnCancelCurrentTransaction
+            // 
+            this.BtnCancelCurrentTransaction.BackColor = System.Drawing.Color.DarkRed;
+            this.BtnCancelCurrentTransaction.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnCancelCurrentTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCancelCurrentTransaction.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnCancelCurrentTransaction.ForeColor = System.Drawing.Color.White;
+            this.BtnCancelCurrentTransaction.Image = global::Main.Properties.Resources.save_white_26;
+            this.BtnCancelCurrentTransaction.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCancelCurrentTransaction.Location = new System.Drawing.Point(14, 163);
+            this.BtnCancelCurrentTransaction.Name = "BtnCancelCurrentTransaction";
+            this.BtnCancelCurrentTransaction.Size = new System.Drawing.Size(108, 45);
+            this.BtnCancelCurrentTransaction.TabIndex = 71;
+            this.BtnCancelCurrentTransaction.Text = "CANCEL";
+            this.BtnCancelCurrentTransaction.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BtnCancelCurrentTransaction.UseVisualStyleBackColor = false;
+            this.BtnCancelCurrentTransaction.Click += new System.EventHandler(this.BtnCancelCurrentTransaction_Click);
             // 
             // POSControllerControl
             // 
@@ -316,5 +359,7 @@ namespace Main.Forms.POSManagementForms.Controls
         private System.Windows.Forms.TextBox TboxCustomerName;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox TboxTableNumber;
+        private System.Windows.Forms.Button BtnSave;
+        private System.Windows.Forms.Button BtnCancelCurrentTransaction;
     }
 }

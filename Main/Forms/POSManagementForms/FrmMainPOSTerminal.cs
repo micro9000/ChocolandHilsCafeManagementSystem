@@ -29,6 +29,7 @@ namespace Main.Forms.POSManagementForms
         private readonly IProductCategoryData _productCategoryData;
         private readonly IPOSCommandController _iPOSCommandController;
         private readonly IPOSReadController _pOSReadController;
+        private readonly POSState _pOSState;
         private readonly OtherSettings _otherSettings;
 
         public FrmMainPOSTerminal(IProductData productData,
@@ -36,6 +37,7 @@ namespace Main.Forms.POSManagementForms
                                 IProductCategoryData productCategoryData,
                                 IPOSCommandController iPOSCommandController,
                                 IPOSReadController pOSReadController,
+                                POSState pOSState,
                                 IOptions<OtherSettings> otherSettings)
         {
             InitializeComponent();
@@ -44,6 +46,7 @@ namespace Main.Forms.POSManagementForms
             _productCategoryData = productCategoryData;
             _iPOSCommandController = iPOSCommandController;
             _pOSReadController = pOSReadController;
+            _pOSState = pOSState;
             _otherSettings = otherSettings.Value;
         }
 
@@ -81,13 +84,6 @@ namespace Main.Forms.POSManagementForms
             set { _tableStatuses = value; }
         }
 
-        private SaleTransactionModel _currentSaleTransaction = new SaleTransactionModel();
-
-        public SaleTransactionModel CurrentSaleTransaction
-        {
-            get { return _currentSaleTransaction; }
-            set { _currentSaleTransaction = value; }
-        }
 
         POSControllerControl pOSControllerControl;
 
@@ -108,31 +104,24 @@ namespace Main.Forms.POSManagementForms
             // initialize controls
             InitializePOSControllerControl();
             InitializeTotalAndReceiptPreviewControl();
+
+            _pOSState.PropertyChanged += TestingHandlingPOSStateChange;
+        }
+
+        public void TestingHandlingPOSStateChange(object sender, PropertyChangedEventArgs e)
+        {
+            MessageBox.Show("YES!");
+            DisplayCurrentSaleTransactionProductsInCartDGV();
         }
 
         public void InitializePOSControllerControl()
         {
             this.PanelPOSController.Controls.Clear();
-            this.pOSControllerControl = new(_iPOSCommandController, _pOSReadController);
+            this.pOSControllerControl = new(_iPOSCommandController, _pOSReadController, _pOSState);
             //pOSControllerControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
             this.pOSControllerControl.Dock = DockStyle.Fill;
-            this.pOSControllerControl.NewTransactionInitiated += HandleOnNewTransactionInitiated;
-            this.pOSControllerControl.ViewDineInTransDetails += HandleOnViewDineInTransDetails;
 
             this.PanelPOSController.Controls.Add(this.pOSControllerControl);
-        }
-
-        private void HandleOnNewTransactionInitiated(object sender, EventArgs e)
-        {
-            POSControllerControl pOSControllerControl = (POSControllerControl)sender;
-
-            // set newly created sale transaction object
-            this.CurrentSaleTransaction = pOSControllerControl.CurrentSaleTransaction;
-        }
-
-        private void HandleOnViewDineInTransDetails(object sender, EventArgs e)
-        {
-            DisplayCurrentSaleTransactionProductsInCartDGV(this.pOSControllerControl.CurrentSaleTransactionProducts);
         }
 
 
@@ -190,6 +179,12 @@ namespace Main.Forms.POSManagementForms
 
         private void HandleClickProductItem(object sender, EventArgs e)
         {
+            if (_pOSState.CurrentSaleTransaction == null)
+            {
+                MessageBox.Show("Kindly initiate or select existing transaction to add item in the cart.", "Add item", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             ProductItemControl productItemControl = (ProductItemControl)sender;
 
             if (productItemControl != null && productItemControl.Product != null)
@@ -199,32 +194,31 @@ namespace Main.Forms.POSManagementForms
 
                 if (frmEnterProductQuantity.IsCancelled == false && frmEnterProductQuantity.Product != null)
                 {
-                    var existingProdInCart = this.pOSControllerControl.CurrentSaleTransactionProducts
+                    var existingProdInCart = _pOSState.CurrentSaleTransactionProducts
                                                         .Where(x => x.ProductId == frmEnterProductQuantity.Product.Id)
                                                         .FirstOrDefault();
 
                     if (existingProdInCart == null)
                     {
-                        var newProductRef = JsonSerializer.Deserialize<ProductModel>(JsonSerializer.Serialize(frmEnterProductQuantity.Product));
+                        var newProductObjRef = JsonSerializer.Deserialize<ProductModel>(JsonSerializer.Serialize(frmEnterProductQuantity.Product));
 
-                        this.pOSControllerControl.CurrentSaleTransactionProducts.Add(new SaleTransactionProductModel
+                        _pOSState.CurrentSaleTransactionProducts.Add(new SaleTransactionProductModel
                         {
-                            ProductId = newProductRef.Id,
+                            ProductId = newProductObjRef.Id,
                             Qty = frmEnterProductQuantity.Quantity,
-                            productCurrentPrice = newProductRef.PricePerOrder,
-                            Product = newProductRef,
-                            totalAmount = (frmEnterProductQuantity.Quantity * newProductRef.PricePerOrder)
+                            productCurrentPrice = newProductObjRef.PricePerOrder,
+                            Product = newProductObjRef,
+                            totalAmount = (frmEnterProductQuantity.Quantity * newProductObjRef.PricePerOrder)
                         });
                     }
                     else
                     {
                         existingProdInCart.Qty += frmEnterProductQuantity.Quantity;
                         existingProdInCart.totalAmount = (existingProdInCart.Qty * existingProdInCart.productCurrentPrice);
-
                     }
 
 
-                    DisplayCurrentSaleTransactionProductsInCartDGV(this.pOSControllerControl.CurrentSaleTransactionProducts);
+                    DisplayCurrentSaleTransactionProductsInCartDGV();
 
                     //MessageBox.Show(.ToString());
                 }
@@ -280,6 +274,12 @@ namespace Main.Forms.POSManagementForms
 
         public void DisplayFormToEnterQuantityAndAddInCartComboMeal(object sender, EventArgs e)
         {
+            if (_pOSState.CurrentSaleTransaction == null)
+            {
+                MessageBox.Show("Kindly initiate or select existing transaction to add item in the cart.", "Add item", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             ComboMealItemControl comboMealItemObj = (ComboMealItemControl)sender;
 
             if (comboMealItemObj != null && comboMealItemObj.ComboMeal != null)
@@ -287,9 +287,33 @@ namespace Main.Forms.POSManagementForms
                 FrmEnterComboMealQuantity frmEnterComboMealQuantity = new(comboMealItemObj.ComboMeal, _otherSettings);
                 frmEnterComboMealQuantity.ShowDialog();
                 
-                if(frmEnterComboMealQuantity.IsCancelled == false)
+                if(frmEnterComboMealQuantity.IsCancelled == false && frmEnterComboMealQuantity.ComboMeal != null)
                 {
-                    MessageBox.Show(frmEnterComboMealQuantity.Quantity.ToString());
+                    var existingComboMealInCart = _pOSState.CurrentSaleTransactionComboMeals
+                                                    .Where(x => x.ComboMealId == frmEnterComboMealQuantity.ComboMeal.Id)
+                                                    .FirstOrDefault();
+
+                    if (existingComboMealInCart == null)
+                    {
+                        var newComboMealObjRef = JsonSerializer.Deserialize<ComboMealModel>(JsonSerializer.Serialize(frmEnterComboMealQuantity.ComboMeal));
+
+                        _pOSState.CurrentSaleTransactionComboMeals.Add(new SaleTransactionComboMealModel { 
+                            ComboMealId = newComboMealObjRef.Id,
+                            Qty = frmEnterComboMealQuantity.Quantity,
+                            ComboMealCurrentPrice = newComboMealObjRef.Price,
+                            ComboMeal = newComboMealObjRef,
+                            totalAmount = (frmEnterComboMealQuantity.Quantity * newComboMealObjRef.Price)
+                        });
+                    }
+                    else
+                    {
+                        existingComboMealInCart.Qty += frmEnterComboMealQuantity.Quantity;
+                        existingComboMealInCart.totalAmount = (existingComboMealInCart.Qty * existingComboMealInCart.ComboMealCurrentPrice);
+                    }
+
+
+
+                    DisplayCurrentSaleTransactionProductsInCartDGV();
                 }
             }
         }
@@ -353,94 +377,123 @@ namespace Main.Forms.POSManagementForms
         private void SetDGVCartItemsFontAndColors()
         {
             this.DGVCartItems.BackgroundColor = Color.White;
-            this.DGVCartItems.DefaultCellStyle.Font = new Font("Century Gothic", 11);
+            this.DGVCartItems.DefaultCellStyle.Font = new Font("Century Gothic", 10);
             this.DGVCartItems.RowHeadersVisible = false;
             this.DGVCartItems.RowTemplate.Height = 35;
             this.DGVCartItems.RowTemplate.Resizable = DataGridViewTriState.True;
             this.DGVCartItems.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             this.DGVCartItems.AllowUserToResizeRows = false;
             this.DGVCartItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.DGVCartItems.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVCartItems.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 10);
             this.DGVCartItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.DGVCartItems.MultiSelect = false;
         }
 
 
-        public void DisplayCurrentSaleTransactionProductsInCartDGV(List<SaleTransactionProductModel> products)
+        public void DisplayCurrentSaleTransactionProductsInCartDGV()
         {
+            List<SaleTransactionProductModel> products = _pOSState.CurrentSaleTransactionProducts;
+            List<SaleTransactionComboMealModel> comboMeals = _pOSState.CurrentSaleTransactionComboMeals;
+
+            this.DGVCartItems.Rows.Clear();
+            this.DGVCartItems.ColumnCount = 6;
+
+            this.DGVCartItems.Columns[0].Name = "ProductId";
+            this.DGVCartItems.Columns[0].Visible = false;
+
+            this.DGVCartItems.Columns[1].Name = "ProductType"; // Product or ComboMeal
+            this.DGVCartItems.Columns[1].Visible = false;
+
+            this.DGVCartItems.Columns[2].Name = "ItemName";
+            this.DGVCartItems.Columns[2].HeaderText = "ItemName";
+            this.DGVCartItems.Columns[2].Width = 260;
+
+            this.DGVCartItems.Columns[3].Name = "Price";
+            this.DGVCartItems.Columns[3].HeaderText = "Price";
+            this.DGVCartItems.Columns[3].Width = 80;
+
+            this.DGVCartItems.Columns[4].Name = "Quantity";
+            this.DGVCartItems.Columns[4].HeaderText = "Qty";
+            this.DGVCartItems.Columns[4].Width = 80;
+
+            this.DGVCartItems.Columns[5].Name = "Total";
+            this.DGVCartItems.Columns[5].HeaderText = "Total";
+            this.DGVCartItems.Columns[5].Width = 80;
+
+            DataGridViewButtonColumn btnIncreaseQty = new DataGridViewButtonColumn();
+            btnIncreaseQty.HeaderText = "Inc";
+            btnIncreaseQty.Text = "+";
+            btnIncreaseQty.Name = "btnIncreaseQty";
+            btnIncreaseQty.UseColumnTextForButtonValue = true;
+            btnIncreaseQty.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            btnIncreaseQty.FlatStyle = FlatStyle.Flat;
+            btnIncreaseQty.CellTemplate.Style.BackColor = Color.FromArgb(71, 125, 78);
+            btnIncreaseQty.CellTemplate.Style.Font = new Font("Century Gothic", 14, FontStyle.Bold);
+            this.DGVCartItems.Columns.Add(btnIncreaseQty);
+
+            DataGridViewButtonColumn btnDecreaseQty = new DataGridViewButtonColumn();
+            btnDecreaseQty.HeaderText = "Dec";
+            btnDecreaseQty.Text = "-";
+            btnDecreaseQty.Name = "btnDecreaseQty";
+            btnDecreaseQty.UseColumnTextForButtonValue = true;
+            btnDecreaseQty.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            btnDecreaseQty.FlatStyle = FlatStyle.Flat;
+            btnDecreaseQty.CellTemplate.Style.BackColor = Color.FromArgb(125, 112, 71);
+            btnDecreaseQty.CellTemplate.Style.Font = new Font("Century Gothic", 14, FontStyle.Bold);
+            this.DGVCartItems.Columns.Add(btnDecreaseQty);
+
+            DataGridViewButtonColumn btnRemoveItem = new DataGridViewButtonColumn();
+            btnRemoveItem.HeaderText = "Rem";
+            btnRemoveItem.Text = "x";
+            btnRemoveItem.Name = "btnRemvoeItem";
+            btnRemoveItem.UseColumnTextForButtonValue = true;
+            btnRemoveItem.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            btnRemoveItem.FlatStyle = FlatStyle.Flat;
+            btnRemoveItem.CellTemplate.Style.BackColor = Color.FromArgb(145, 82, 48);
+            btnRemoveItem.CellTemplate.Style.Font = new Font("Century Gothic", 14, FontStyle.Bold);
+            this.DGVCartItems.Columns.Add(btnRemoveItem);
+
             if (products != null)
             {
-                this.DGVCartItems.Rows.Clear();
-                this.DGVCartItems.ColumnCount = 5;
-
-                this.DGVCartItems.Columns[0].Name = "ProductId";
-                this.DGVCartItems.Columns[0].Visible = false;
-
-                this.DGVCartItems.Columns[1].Name = "ItemName";
-                this.DGVCartItems.Columns[1].HeaderText = "ItemName";
-                this.DGVCartItems.Columns[1].Width = 300;
-
-                this.DGVCartItems.Columns[2].Name = "Price";
-                this.DGVCartItems.Columns[2].HeaderText = "Price";
-                this.DGVCartItems.Columns[2].Width = 80;
-
-                this.DGVCartItems.Columns[3].Name = "Quantity";
-                this.DGVCartItems.Columns[3].HeaderText = "Qty";
-                this.DGVCartItems.Columns[3].Width = 60;
-
-                this.DGVCartItems.Columns[4].Name = "Total";
-                this.DGVCartItems.Columns[4].HeaderText = "Total";
-                this.DGVCartItems.Columns[4].Width = 80;
-
-                DataGridViewButtonColumn btnIncreaseQty = new DataGridViewButtonColumn();
-                btnIncreaseQty.HeaderText = "Inc. Qty";
-                btnIncreaseQty.Text = "+";
-                btnIncreaseQty.Name = "btnIncreaseQty";
-                btnIncreaseQty.UseColumnTextForButtonValue = true;
-                btnIncreaseQty.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                btnIncreaseQty.FlatStyle = FlatStyle.Flat;
-                btnIncreaseQty.CellTemplate.Style.BackColor = Color.FromArgb(71, 125, 78);
-                btnIncreaseQty.CellTemplate.Style.Font = new Font("Century Gothic", 14, FontStyle.Bold);
-                this.DGVCartItems.Columns.Add(btnIncreaseQty);
-
-                DataGridViewButtonColumn btnDecreaseQty = new DataGridViewButtonColumn();
-                btnDecreaseQty.HeaderText = "Dec. Qty";
-                btnDecreaseQty.Text = "-";
-                btnDecreaseQty.Name = "btnDecreaseQty";
-                btnDecreaseQty.UseColumnTextForButtonValue = true;
-                btnDecreaseQty.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                btnDecreaseQty.FlatStyle = FlatStyle.Flat;
-                btnDecreaseQty.CellTemplate.Style.BackColor = Color.FromArgb(125, 112, 71);
-                btnDecreaseQty.CellTemplate.Style.Font = new Font("Century Gothic", 14, FontStyle.Bold);
-                this.DGVCartItems.Columns.Add(btnDecreaseQty);
-
-
-                DataGridViewButtonColumn btnRemoveItem = new DataGridViewButtonColumn();
-                btnRemoveItem.HeaderText = "Remove";
-                btnRemoveItem.Text = "X";
-                btnRemoveItem.Name = "btnRemvoeItem";
-                btnRemoveItem.UseColumnTextForButtonValue = true;
-                btnRemoveItem.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                btnRemoveItem.FlatStyle = FlatStyle.Flat;
-                btnRemoveItem.CellTemplate.Style.BackColor = Color.FromArgb(145, 82, 48);
-                btnRemoveItem.CellTemplate.Style.Font = new Font("Century Gothic", 14, FontStyle.Bold);
-                this.DGVCartItems.Columns.Add(btnRemoveItem);
-
                 foreach (var item in products)
                 {
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(DGVCartItems);
                     row.Height = 35;
 
-                    row.Cells[0].Value = item.Id;
-                    row.Cells[1].Value = item.Product.ProdName;
-                    row.Cells[2].Value = item.productCurrentPrice;
-                    row.Cells[3].Value = item.Qty;
-                    row.Cells[4].Value = item.totalAmount;
+                    row.Cells[0].Value = item.ProductId;
+                    row.Cells[1].Value = "PROD";
+                    row.Cells[2].Value = item.Product.ProdName;
+                    row.Cells[3].Value = item.productCurrentPrice;
+                    row.Cells[4].Value = item.Qty;
+                    row.Cells[5].Value = item.totalAmount;
 
                     DGVCartItems.Rows.Add(row);
                 }
             }
+
+            if (comboMeals != null)
+            {
+                foreach (var item in comboMeals)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(DGVCartItems);
+                    row.Height = 35;
+
+                    row.Cells[0].Value = item.ComboMealId;
+                    row.Cells[1].Value = "COMBO";
+                    row.Cells[2].Value = item.ComboMeal.Title;
+                    row.Cells[3].Value = item.ComboMealCurrentPrice;
+                    row.Cells[4].Value = item.Qty;
+                    row.Cells[5].Value = item.totalAmount;
+
+                    DGVCartItems.Rows.Add(row);
+                }
+            }
+
+            DGVCartItems.ClearSelection();
+
+
         }
 
         private void POSMainTabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -469,5 +522,169 @@ namespace Main.Forms.POSManagementForms
             }
         }
 
+        private void DGVCartItems_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // increase quantity
+            if ((e.ColumnIndex == 6) && e.RowIndex > -1)
+            {
+                if (DGVCartItems.CurrentRow != null && _pOSState.CurrentSaleTransaction != null)
+                {
+                    string prodType = DGVCartItems.CurrentRow.Cells["ProductType"].Value.ToString();
+                    
+
+                    if (_pOSState.CurrentSaleTransactionProducts != null && _pOSState.CurrentSaleTransactionProducts.Count > 0 
+                            && prodType == "PROD")
+                    {
+                        long productId = long.Parse(DGVCartItems.CurrentRow.Cells["ProductId"].Value.ToString());
+
+                        var existingProductInCart = _pOSState.CurrentSaleTransactionProducts
+                                                        .Where(x => x.ProductId == productId).FirstOrDefault();
+
+                        if (existingProductInCart != null)
+                        {
+                            existingProductInCart.Qty += 1;
+                            existingProductInCart.totalAmount = (existingProductInCart.Qty * existingProductInCart.productCurrentPrice);
+                            DisplayCurrentSaleTransactionProductsInCartDGV();
+                        }
+                    }
+
+                    if (_pOSState.CurrentSaleTransactionComboMeals != null && _pOSState.CurrentSaleTransactionComboMeals.Count > 0 
+                            && prodType == "COMBO")
+                    {
+                        long comboMealId = long.Parse(DGVCartItems.CurrentRow.Cells["ProductId"].Value.ToString());
+
+                        var existingComboMealInCart = _pOSState.CurrentSaleTransactionComboMeals
+                                                        .Where(x => x.ComboMealId == comboMealId).FirstOrDefault();
+
+                        if (existingComboMealInCart != null)
+                        {
+                            existingComboMealInCart.Qty += 1;
+                            existingComboMealInCart.totalAmount = (existingComboMealInCart.Qty * existingComboMealInCart.ComboMealCurrentPrice);
+                            DisplayCurrentSaleTransactionProductsInCartDGV();
+                        }
+                    }
+                }
+            }
+
+            // decrase quantity
+            if ((e.ColumnIndex == 7) && e.RowIndex > -1)
+            {
+                if (DGVCartItems.CurrentRow != null && _pOSState.CurrentSaleTransaction != null)
+                {
+                    string prodType = DGVCartItems.CurrentRow.Cells["ProductType"].Value.ToString();
+
+
+                    if (_pOSState.CurrentSaleTransactionProducts != null && _pOSState.CurrentSaleTransactionProducts.Count > 0
+                            && prodType == "PROD")
+                    {
+                        long productId = long.Parse(DGVCartItems.CurrentRow.Cells["ProductId"].Value.ToString());
+
+                        var existingProductInCart = _pOSState.CurrentSaleTransactionProducts
+                                                        .Where(x => x.ProductId == productId).FirstOrDefault();
+
+                        if (existingProductInCart != null)
+                        {
+                            if (existingProductInCart.Qty <= 1)
+                            {
+                                DialogResult dialogResult = MessageBox.Show($"Continue to remove {existingProductInCart.Product.ProdName}?", "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                if (dialogResult == DialogResult.Yes)
+                                {
+                                    _pOSState.CurrentSaleTransactionProducts.Remove(existingProductInCart);
+                                }
+                                   
+                            }
+                            else
+                            {
+                                existingProductInCart.Qty -= 1;
+                                existingProductInCart.totalAmount = (existingProductInCart.Qty * existingProductInCart.productCurrentPrice);
+                            }
+                            DisplayCurrentSaleTransactionProductsInCartDGV();
+                        }
+                    }
+
+                    if (_pOSState.CurrentSaleTransactionComboMeals != null && _pOSState.CurrentSaleTransactionComboMeals.Count > 0
+                            && prodType == "COMBO")
+                    {
+                        long comboMealId = long.Parse(DGVCartItems.CurrentRow.Cells["ProductId"].Value.ToString());
+
+                        var existingComboMealInCart = _pOSState.CurrentSaleTransactionComboMeals
+                                                        .Where(x => x.ComboMealId == comboMealId).FirstOrDefault();
+
+                        if (existingComboMealInCart != null)
+                        {
+                            if (existingComboMealInCart.Qty <= 1)
+                            {
+                                DialogResult dialogResult = MessageBox.Show($"Continue to remove {existingComboMealInCart.ComboMeal.Title}?", "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                if (dialogResult == DialogResult.Yes)
+                                {
+                                    _pOSState.CurrentSaleTransactionComboMeals.Remove(existingComboMealInCart);
+                                }
+                            }
+                            else
+                            {
+                                existingComboMealInCart.Qty -= 1;
+                                existingComboMealInCart.totalAmount = (existingComboMealInCart.Qty * existingComboMealInCart.ComboMealCurrentPrice);
+                            }
+                            DisplayCurrentSaleTransactionProductsInCartDGV();
+                        }
+                    }
+                }
+            }
+
+            // remove item
+            if ((e.ColumnIndex == 8) && e.RowIndex > -1)
+            {
+                if (DGVCartItems.CurrentRow != null && _pOSState.CurrentSaleTransaction != null)
+                {
+                    string prodType = DGVCartItems.CurrentRow.Cells["ProductType"].Value.ToString();
+
+                    if (_pOSState.CurrentSaleTransactionProducts != null && _pOSState.CurrentSaleTransactionProducts.Count > 0
+                            && prodType == "PROD")
+                    {
+                        long productId = long.Parse(DGVCartItems.CurrentRow.Cells["ProductId"].Value.ToString());
+
+                        var existingProductInCart = _pOSState.CurrentSaleTransactionProducts
+                                                        .Where(x => x.ProductId == productId).FirstOrDefault();
+
+                        if (existingProductInCart != null)
+                        {
+                            DialogResult dialogResult = MessageBox.Show($"Continue to remove {existingProductInCart.Product.ProdName}?", "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                _pOSState.CurrentSaleTransactionProducts.Remove(existingProductInCart);
+                                DisplayCurrentSaleTransactionProductsInCartDGV();
+                            }
+
+                        }
+                    }
+
+                    if (_pOSState.CurrentSaleTransactionComboMeals != null && _pOSState.CurrentSaleTransactionComboMeals.Count > 0
+                            && prodType == "COMBO")
+                    {
+                        long comboMealId = long.Parse(DGVCartItems.CurrentRow.Cells["ProductId"].Value.ToString());
+
+                        var existingComboMealInCart = _pOSState.CurrentSaleTransactionComboMeals
+                                                        .Where(x => x.ComboMealId == comboMealId).FirstOrDefault();
+
+                        if (existingComboMealInCart != null)
+                        {
+                            DialogResult dialogResult = MessageBox.Show($"Continue to remove {existingComboMealInCart.ComboMeal.Title}?", "Remove item", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                            if (dialogResult == DialogResult.Yes)
+                            {
+                                _pOSState.CurrentSaleTransactionComboMeals.Remove(existingComboMealInCart);
+                                DisplayCurrentSaleTransactionProductsInCartDGV();
+                            }
+
+                        }
+                    }
+                }
+            }
+
+
+        }
     }
 }

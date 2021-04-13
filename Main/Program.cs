@@ -123,6 +123,7 @@ namespace Main
             services.AddTransient<IDbConnectionFactory, MySQLConnection>(); // database settings, including connection string
 
             services.AddSingleton<Sessions>(); // application state or session
+            services.AddSingleton<POSState>();
             services.AddSingleton<Hashing>();
             services.AddSingleton<DecimalMinutesToHrsConverter>();
             services.AddSingleton<UOMConverter>();
@@ -166,7 +167,8 @@ namespace Main
             // POS
             services.AddTransient<ISaleTransactionData, SaleTransactionData>();
             services.AddTransient<ISaleTransactionProductData, SaleTransactionProductData>();
-
+            services.AddTransient<ISaleTransactionComboMealData, SaleTransactionComboMealData>();
+            services.AddTransient<ISaleTranProdIngInvDeductionsRecordData, SaleTranProdIngInvDeductionsRecordData>();
 
             // Employee Management
             // validator

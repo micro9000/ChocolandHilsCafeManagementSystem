@@ -15,7 +15,6 @@ namespace EntitiesShared.POSManagement
 
         public string TicketNumber { get;set; }
 
-
         public string CurrentUser { get; set; }
 
         public string CustomerName { get; set; }

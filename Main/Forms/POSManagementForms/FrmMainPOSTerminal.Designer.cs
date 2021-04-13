@@ -152,6 +152,7 @@ namespace Main.Forms.POSManagementForms
             this.DGVCartItems.RowTemplate.Height = 25;
             this.DGVCartItems.Size = new System.Drawing.Size(603, 340);
             this.DGVCartItems.TabIndex = 0;
+            this.DGVCartItems.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVCartItems_CellClick);
             // 
             // POSControllerSplitContainer
             // 

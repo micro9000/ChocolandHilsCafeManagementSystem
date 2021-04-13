@@ -14,27 +14,21 @@ using System.Windows.Forms;
 
 namespace Main.Forms.POSManagementForms.Controls
 {
-    public partial class POSControllerControl : UserControl, INotifyPropertyChanged
+    public partial class POSControllerControl : UserControl
     {
         private readonly IPOSCommandController _iPOSCommandController;
         private readonly IPOSReadController _pOSReadController;
+        private readonly POSState _pOSState;
 
-        public POSControllerControl(IPOSCommandController iPOSCommandController, IPOSReadController pOSReadController)
+        public POSControllerControl(IPOSCommandController iPOSCommandController, IPOSReadController pOSReadController, POSState pOSState)
         {
             InitializeComponent();
             _iPOSCommandController = iPOSCommandController;
             _pOSReadController = pOSReadController;
+            _pOSState = pOSState;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
 
         private List<SaleTransactionModel> _activedineInTransactions;
 
@@ -45,32 +39,11 @@ namespace Main.Forms.POSManagementForms.Controls
         }
 
 
-        private SaleTransactionModel _currentSaleTransaction;
-
-        public SaleTransactionModel CurrentSaleTransaction
-        {
-            get { return _currentSaleTransaction; }
-            set {
-                _currentSaleTransaction = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-
-        private List<SaleTransactionProductModel> _currentSaleTransactionProducts = new List<SaleTransactionProductModel>();
-
-        public List<SaleTransactionProductModel> CurrentSaleTransactionProducts
-        {
-            get { return _currentSaleTransactionProducts; }
-            set { _currentSaleTransactionProducts = value; }
-        }
-
-
         private void POSCheckOutControllerControl_Load(object sender, EventArgs e)
         {
             SetDGVActiveDineInTransactionsFontAndColors();
 
-            this.PropertyChanged += HandleOnCurrentSaleTransactionChanged;
+            _pOSState.PropertyChanged += HandleOnCurrentSaleTransactionChanged;
         }
 
         public void HandleOnCurrentSaleTransactionChanged(object sender, PropertyChangedEventArgs e)
@@ -82,12 +55,12 @@ namespace Main.Forms.POSManagementForms.Controls
         private void DisplayCurrentSaleTransaction()
         {
             this.ClearCheckOutForm();
-            if (this.CurrentSaleTransaction != null)
+            if (_pOSState.CurrentSaleTransaction != null)
             {
                 this.TboxNumberOfItems.Text = "";
-                this.TboxTicketNumber.Text = this.CurrentSaleTransaction.TicketNumber;
-                this.TboxCustomerName.Text = this.CurrentSaleTransaction.CustomerName;
-                this.TboxTableNumber.Text = this.CurrentSaleTransaction.TableNumber.ToString();
+                this.TboxTicketNumber.Text = _pOSState.CurrentSaleTransaction.TicketNumber;
+                this.TboxCustomerName.Text = _pOSState.CurrentSaleTransaction.CustomerName;
+                this.TboxTableNumber.Text = _pOSState.CurrentSaleTransaction.TableNumber.ToString();
             }
         }
 
@@ -114,18 +87,12 @@ namespace Main.Forms.POSManagementForms.Controls
             this.DGVActiveDineInTransactions.MultiSelect = false;
         }
 
-
-        public event EventHandler NewTransactionInitiated;
-        protected virtual void OnNewTransactionInitiate(EventArgs e)
-        {
-            NewTransactionInitiated?.Invoke(this, e);
-        }
-
         private void BtnNewTransaction_Click(object sender, EventArgs e)
         {
-            if (this.CurrentSaleTransaction != null)
+            if (_pOSState.CurrentSaleTransaction != null)
             {
-                // TODO: Ask the user if needs to save current transaction
+                MessageBox.Show("Please save current transaction before creating new.", "Creating new transaction", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
             OpenFrmNewTransaction();
@@ -133,7 +100,8 @@ namespace Main.Forms.POSManagementForms.Controls
 
         public void OpenFrmNewTransaction()
         {
-            this.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
+            _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
+            _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
 
             var tableStatuses = _pOSReadController.GetTableStatus();
             FrmNewTransaction frmNewTransaction = new(_iPOSCommandController, tableStatuses);
@@ -144,8 +112,8 @@ namespace Main.Forms.POSManagementForms.Controls
 
             if (isCancelled == false && isInitiateSuccessful == true)
             {
-                this.CurrentSaleTransaction = frmNewTransaction.NewSalesTransaction;
-                OnNewTransactionInitiate(EventArgs.Empty);
+                _pOSState.Transaction = POSStateTransaction.New;
+                _pOSState.CurrentSaleTransaction = frmNewTransaction.NewSalesTransaction;
             }
         }
 
@@ -200,12 +168,6 @@ namespace Main.Forms.POSManagementForms.Controls
         }
 
 
-        public event EventHandler ViewDineInTransDetails;
-        protected virtual void OnViewDineInTransDetails(EventArgs e)
-        {
-            ViewDineInTransDetails?.Invoke(this, e);
-        }
-
         public event EventHandler CheckOutDineInTransaction;
         protected virtual void OnCheckOutDineInTransaction(EventArgs e)
         {
@@ -231,16 +193,36 @@ namespace Main.Forms.POSManagementForms.Controls
         {
             var selectedDineInTransaction = this.ActiveDineInTransactions.Where(x => x.Id == selectedDineInTransactionId).FirstOrDefault();
 
-            if (this.CurrentSaleTransaction != null && selectedDineInTransaction != this.CurrentSaleTransaction)
+            if (_pOSState.CurrentSaleTransaction != null && selectedDineInTransaction != _pOSState.CurrentSaleTransaction)
             {
                 // TODO: ask the user if need to save current transaction
             }
 
-            this.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
-            this.CurrentSaleTransaction = selectedDineInTransaction;
-
-            OnViewDineInTransDetails(EventArgs.Empty);
+            _pOSState.Transaction = POSStateTransaction.Existing;
+            _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
+            _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
+            _pOSState.CurrentSaleTransaction = selectedDineInTransaction;
         }
 
+        private void BtnCancelCurrentTransaction_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Continue to cancel current transaction?", "Cancel current transaction", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                _pOSState.Transaction = POSStateTransaction.Existing;
+                _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
+                _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
+                _pOSState.CurrentSaleTransaction = null;
+
+
+                // TODO: revert all deduction in inventory
+            }
+        }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

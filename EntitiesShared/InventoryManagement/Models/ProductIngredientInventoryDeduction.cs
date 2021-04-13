@@ -13,5 +13,7 @@ namespace EntitiesShared.InventoryManagement.Models
         public long IngredientInventoryid { get; set; }
 
         public decimal DeductQtyValue { get; set; }
+
+        public StaticData.UOM UsedUOM { get; set; }
     }
 }
