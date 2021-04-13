@@ -216,6 +216,8 @@ namespace Main.Controllers.POSControllers
             return results;
         }
 
+        // TODO: return all deducted qty value to Ingredient's inventory
+        // Get all 
 
         public void DeductRequiredIngredientsFromInventory(ProductModel productInfo, int orderQty, long saleTransProdId)
         {
