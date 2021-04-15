@@ -10,7 +10,11 @@ namespace Main.Controllers.POSControllers.ControllerInterface
 {
     public interface IPOSReadController
     {
-        List<SaleTransactionModel> GetActiveDineInSalesTransaction();
+        List<SaleTransactionModel> GetActiveSalesTransactions();
+        List<SaleTransactionModel> GetActiveDineInSalesTransactions();
         List<TableStatusModel> GetTableStatus();
+
+        IEnumerable<SaleTransactionProductModel> GetSaleTranProducts(long saleTransactionId);
+        IEnumerable<SaleTransactionComboMealModel> GetSaleTranComboMeals(long saleTransactionId);
     }
 }

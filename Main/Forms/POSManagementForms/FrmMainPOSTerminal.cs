@@ -110,7 +110,6 @@ namespace Main.Forms.POSManagementForms
 
         public void TestingHandlingPOSStateChange(object sender, PropertyChangedEventArgs e)
         {
-            MessageBox.Show("YES!");
             DisplayCurrentSaleTransactionProductsInCartDGV();
         }
 

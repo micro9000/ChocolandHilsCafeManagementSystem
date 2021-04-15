@@ -149,7 +149,6 @@ namespace Main.Controllers.POSControllers
 
         public EntityResult<string> SaveSaleTransaction(long saleTransId, List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals)
         {
-
             var results = new EntityResult<string>();
             results.IsSuccess = false;
 
@@ -210,6 +209,9 @@ namespace Main.Controllers.POSControllers
                 _salesTransactionData.Update(saleTransactionDetailsInDb);
 
                 transaction.Complete();
+
+                results.IsSuccess = true;
+                results.Messages.Add("Successfully saved current transaction.");
             }
             catch (Exception ex)
             {
@@ -218,7 +220,6 @@ namespace Main.Controllers.POSControllers
             }
 
             return results;
-
         }
 
         public EntityResult<string> SaveSaleTransactionProducts(long saleTransactionId, List<SaleTransactionProductModel> products)
@@ -263,6 +264,7 @@ namespace Main.Controllers.POSControllers
                 }
 
                 item.SalesTransId = saleTransactionId;
+                item.totalAmount = item.Qty * item.productCurrentPrice;
 
                 if (existingSaleTranProducts == null || (existingSaleTranProducts != null && existingSaleTranProducts.Count == 0))
                 {
@@ -286,7 +288,10 @@ namespace Main.Controllers.POSControllers
                         {
                             // get removed qty by the user
                             int orderQtyDiff = existingSaleTranProd.Qty - item.Qty;
-                            existingSaleTranProd.Qty = item.Qty; // replace the existing qty to new
+                            //existingSaleTranProd.Qty = item.Qty; // replace the existing qty to new
+
+                            // update existing sale transaction product
+                            _mapper.Map(item, existingSaleTranProd);
 
                             _saleTransactionProductData.Update(existingSaleTranProd);
                             this.ReturnRequiredIngredientQtyToInventory(productInfo, orderQtyDiff, existingSaleTranProd.Id);
@@ -297,7 +302,10 @@ namespace Main.Controllers.POSControllers
                         {
                             // get the added qty by the user
                             int orderQtyDiff = item.Qty - existingSaleTranProd.Qty;
-                            existingSaleTranProd.Qty = item.Qty; // replace the existing qty to new
+                            //existingSaleTranProd.Qty = item.Qty; // replace the existing qty to new
+
+                            // update existing sale transaction product
+                            _mapper.Map(item, existingSaleTranProd);
 
                             _saleTransactionProductData.Update(existingSaleTranProd);// <--- save sale transaction product
                             this.DeductRequiredIngredientsFromInventory(productInfo, orderQtyDiff, existingSaleTranProd.Id);
@@ -472,6 +480,7 @@ namespace Main.Controllers.POSControllers
                     throw new Exception($"{item.ComboMeal.Title}: Combo Meal's products not found.");
 
                 item.SalesTransId = saleTransactionId;
+                item.totalAmount = item.Qty * item.ComboMealCurrentPrice;
 
                 if (existingSaleTranComboMeals == null || (existingSaleTranComboMeals != null && existingSaleTranComboMeals.Count == 0))
                 {
@@ -495,7 +504,10 @@ namespace Main.Controllers.POSControllers
                         {
                             //get removed qty
                             int returnOrderQtyDiff = saleTranComboMeal.Qty - item.Qty;
-                            saleTranComboMeal.Qty = item.Qty;
+                            //saleTranComboMeal.Qty = item.Qty;
+
+                            // update sale transaction combo meal
+                            _mapper.Map(item, saleTranComboMeal);
 
                             _saleTransactionComboMealData.Update(saleTranComboMeal);
                             this.ReturnRequiredComboMealProdsIngredients(comboMealProducts, returnOrderQtyDiff, saleTranComboMeal.Id);
@@ -505,8 +517,9 @@ namespace Main.Controllers.POSControllers
                         {
                             // get added qty
                             int addedOrderQtyDiff = item.Qty - saleTranComboMeal.Qty;
-                            saleTranComboMeal.Qty = item.Qty;
+                            //saleTranComboMeal.Qty = item.Qty;
 
+                            _mapper.Map(item, saleTranComboMeal);
                             _saleTransactionComboMealData.Update(saleTranComboMeal);
                             this.DeductRequiredComboMealProdsIngredients(comboMealProducts, item.Qty, saleTranComboMeal.Id);
                         }
@@ -665,5 +678,83 @@ namespace Main.Controllers.POSControllers
                 _saleTranComboMealIngInvDeductionsRecordData.UpdateRange(saleTranComboMealIngInvDeductionRecords);
             }
         }
+
+
+        public EntityResult<string> CancelSaleTransaction(long saleTransId)
+        {
+            var results = new EntityResult<string>();
+            results.IsSuccess = false;
+
+            try
+            {
+                if (saleTransId == 0 || saleTransId == long.MinValue)
+                {
+                    results.Messages.Add("Unable to save this current transaction, kindly initiate new.");
+                    return results;
+                }
+
+                var saleTransactionDetailsInDb = _salesTransactionData.Get(saleTransId);
+
+                if (saleTransactionDetailsInDb == null)
+                {
+                    results.Messages.Add("Unable to save this current transaction, kindly initiate new.");
+                    return results;
+                }
+
+                using var transaction = new TransactionScope();
+
+                saleTransactionDetailsInDb.TransStatus = StaticData.POSTransactionStatus.Cancelled;
+
+                _salesTransactionData.Update(saleTransactionDetailsInDb);
+
+                this.ReturnAllSaleTransactionProducts(saleTransactionDetailsInDb.Id);
+                this.ReturnAllSaleTransactionComboMeals(saleTransactionDetailsInDb.Id);
+
+                transaction.Complete();
+
+                results.IsSuccess = true;
+                results.Messages.Add("Successfully cancel current transaction.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add(ex.Message);
+            }
+
+            return results;
+        }
+
+        public void ReturnAllSaleTransactionProducts(long saleTransactionId)
+        {
+            var existingSaleTranProducts = _saleTransactionProductData.GetAllBySaleTransId(saleTransactionId).ToList();
+            foreach (var existingSaleTranProd in existingSaleTranProducts)
+            {
+                var productInfo = _productData.Get(existingSaleTranProd.ProductId);
+
+                existingSaleTranProd.IsDeleted = true;
+                existingSaleTranProd.DeletedAt = DateTime.Now;
+
+                _saleTransactionProductData.Update(existingSaleTranProd);
+                this.ReturnRequiredIngredientQtyToInventory(productInfo, existingSaleTranProd.Qty, existingSaleTranProd.Id);
+            }
+        }
+
+
+        public void ReturnAllSaleTransactionComboMeals(long saleTransactionId)
+        {
+            var existingSaleTranComboMeals = _saleTransactionComboMealData.GetAllBySaleTranId(saleTransactionId).ToList();
+
+            foreach (var existingSaleTranComboMeal in existingSaleTranComboMeals)
+            {
+                var comboMealProducts = _comboMealProductData.GetAllByComboMealPlain(existingSaleTranComboMeal.ComboMealId);
+
+                existingSaleTranComboMeal.IsDeleted = true;
+                existingSaleTranComboMeal.DeletedAt = DateTime.Now;
+
+                _saleTransactionComboMealData.Update(existingSaleTranComboMeal);
+                this.ReturnRequiredComboMealProdsIngredients(comboMealProducts, existingSaleTranComboMeal.Qty, existingSaleTranComboMeal.Id);
+            }
+        }
+
     }
 }

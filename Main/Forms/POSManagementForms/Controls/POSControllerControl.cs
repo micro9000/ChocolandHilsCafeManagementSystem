@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EntitiesShared;
 
 namespace Main.Forms.POSManagementForms.Controls
 {
@@ -121,19 +122,19 @@ namespace Main.Forms.POSManagementForms.Controls
         {
             if (TabControlMain.SelectedTab == TabControlMain.TabPages[1])
             {
-                var activeDineInTransactions = _pOSReadController.GetActiveDineInSalesTransaction();
-                this.DisplayActiveDineInTransactions(activeDineInTransactions);
+                var activeDineInTransactions = _pOSReadController.GetActiveSalesTransactions();
+                this.DisplayActiveTransactions(activeDineInTransactions);
             }
         }
 
-        private void DisplayActiveDineInTransactions(List<SaleTransactionModel> dineInSalesTransactions)
+        private void DisplayActiveTransactions(List<SaleTransactionModel> dineInSalesTransactions)
         {
             ActiveDineInTransactions = dineInSalesTransactions;
 
             this.DGVActiveDineInTransactions.Rows.Clear();
             if (dineInSalesTransactions != null)
             {
-                this.DGVActiveDineInTransactions.ColumnCount = 4;
+                this.DGVActiveDineInTransactions.ColumnCount = 5;
 
                 this.DGVActiveDineInTransactions.Columns[0].Name = "TransactionId";
                 this.DGVActiveDineInTransactions.Columns[0].Visible = false;
@@ -146,6 +147,9 @@ namespace Main.Forms.POSManagementForms.Controls
 
                 this.DGVActiveDineInTransactions.Columns[3].Name = "TableNumber";
                 this.DGVActiveDineInTransactions.Columns[3].HeaderText = "Table";
+
+                this.DGVActiveDineInTransactions.Columns[4].Name = "TransactionType";
+                this.DGVActiveDineInTransactions.Columns[4].HeaderText = "Type";
 
                 DataGridViewImageColumn btnViewDetailsImg = new DataGridViewImageColumn();
                 btnViewDetailsImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -161,6 +165,7 @@ namespace Main.Forms.POSManagementForms.Controls
                     row.Cells[1].Value = tran.TicketNumber;
                     row.Cells[2].Value = tran.CustomerName;
                     row.Cells[3].Value = $"T-{tran.TableNumber}";
+                    row.Cells[4].Value = tran.TransactionType == StaticData.POSTransactionType.DineIn ? "IN" : "OUT";
 
                     DGVActiveDineInTransactions.Rows.Add(row);
                 }
@@ -178,8 +183,14 @@ namespace Main.Forms.POSManagementForms.Controls
         private void DGVActiveDineInTransactions_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // view details button
-            if ((e.ColumnIndex == 4) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 5) && e.RowIndex > -1)
             {
+                if (_pOSState.CurrentSaleTransaction != null)
+                {
+                    MessageBox.Show("Please save current transaction before creating new.", "Creating new transaction", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (DGVActiveDineInTransactions.CurrentRow != null && this.ActiveDineInTransactions != null)
                 {
                     long selectedDineInTransactionId = long.Parse(DGVActiveDineInTransactions.CurrentRow.Cells[0].Value.ToString());
@@ -193,14 +204,9 @@ namespace Main.Forms.POSManagementForms.Controls
         {
             var selectedDineInTransaction = this.ActiveDineInTransactions.Where(x => x.Id == selectedDineInTransactionId).FirstOrDefault();
 
-            if (_pOSState.CurrentSaleTransaction != null && selectedDineInTransaction != _pOSState.CurrentSaleTransaction)
-            {
-                // TODO: ask the user if need to save current transaction
-            }
-
             _pOSState.Transaction = POSStateTransaction.Existing;
-            _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
-            _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
+            _pOSState.CurrentSaleTransactionProducts = _pOSReadController.GetSaleTranProducts(selectedDineInTransaction.Id).ToList();
+            _pOSState.CurrentSaleTransactionComboMeals = _pOSReadController.GetSaleTranComboMeals(selectedDineInTransaction.Id).ToList();
             _pOSState.CurrentSaleTransaction = selectedDineInTransaction;
         }
 
@@ -210,13 +216,27 @@ namespace Main.Forms.POSManagementForms.Controls
 
             if (dialogResult == DialogResult.Yes)
             {
-                _pOSState.Transaction = POSStateTransaction.Existing;
-                _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
-                _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
-                _pOSState.CurrentSaleTransaction = null;
+                var cancelResults = _iPOSCommandController.CancelSaleTransaction(_pOSState.CurrentSaleTransaction.Id);
 
+                string resMsg = "";
+                foreach (var msg in cancelResults.Messages)
+                {
+                    resMsg += msg;
+                }
 
-                // TODO: revert all deduction in inventory
+                if (cancelResults.IsSuccess == true)
+                {
+                    MessageBox.Show(resMsg, "Cancel current transaction", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    _pOSState.Transaction = POSStateTransaction.Empty;
+                    _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
+                    _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
+                    _pOSState.CurrentSaleTransaction = null;
+                }
+                else
+                {
+                    MessageBox.Show(resMsg, "Cancel current transaction", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
@@ -232,13 +252,18 @@ namespace Main.Forms.POSManagementForms.Controls
                     resMsg += msg;
                 }
 
-                MessageBox.Show(resMsg);
                 if (saveResults.IsSuccess == true)
                 {
+                    MessageBox.Show(resMsg, "Save current transaction", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                     _pOSState.Transaction = POSStateTransaction.Existing;
                     _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
                     _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
                     _pOSState.CurrentSaleTransaction = null;
+                }
+                else
+                {
+                    MessageBox.Show(resMsg, "Save current transaction", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
