@@ -18,5 +18,18 @@ namespace DataAccess.Data.POSManagement.Implementations
         {
             _dbConnFactory = dbConnFactory;
         }
+
+        public List<SaleTranProdIngInvDeductionsRecordModel> GetAllBySaleTranProductId (long saleTranProdId, long ingredientId)
+        {
+            string query = @"SELECT *
+                            FROM SaleTranProdIngInvDeductionsRecords 
+                            WHERE isDeleted=false AND saleTransProductId=@SaleTransProductId AND ingredientId=@IngredientId";
+
+            return this.GetAll(query, 
+                new { 
+                    SaleTransProductId = saleTranProdId,
+                    IngredientId = ingredientId
+                });
+        }
     }
 }

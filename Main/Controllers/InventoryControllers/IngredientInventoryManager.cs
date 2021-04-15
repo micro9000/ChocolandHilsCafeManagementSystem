@@ -125,18 +125,15 @@ namespace Main.Controllers.InventoryControllers
             switch (uom)
             {
                 case StaticData.UOM.g:
-                    actualQtyValue = qtyValue / 1000; // convert 500g to 0.5kg or 0.5 in decimal value
-                    break;
-
-                case StaticData.UOM.ml:
-                    actualQtyValue = qtyValue / 1000; // convert 500ml to 0.5L or 0.5 in decimal value, so we can easily deduct in our inventory
-                    break;
-
                 case StaticData.UOM.pc:
                 case StaticData.UOM.pcs:
+                case StaticData.UOM.ml:
+                    actualQtyValue = qtyValue;
+                    break;
+
                 case StaticData.UOM.kg:
                 case StaticData.UOM.L:
-                    actualQtyValue = qtyValue;
+                    actualQtyValue = qtyValue * 1000;
                     break;
 
                 default:
@@ -157,6 +154,7 @@ namespace Main.Controllers.InventoryControllers
             if (ingredeintDetails == null)
                 return productIngredientInventoryDeductionFromList;
 
+            // deduct from the inventory that near on expiration date
             var ingredientInventories = _ingredientInventoryData.GetAllByIngredient(ingredientId).OrderBy(x => x.ExpirationDate);
 
             if (ingredientInventories == null)
@@ -166,15 +164,17 @@ namespace Main.Controllers.InventoryControllers
             // so we need 500ml for the product, we will deduct 500 in 30000, the RemainingQtyValue is 29500ml
             decimal remainingProdIngredientQtyValue = prodIngredientRequireQtyValue;
 
+            int deductionSequence = 1;
             foreach (var inventory in ingredientInventories)
             {
                 if (inventory.RemainingQtyValue >= remainingProdIngredientQtyValue && remainingProdIngredientQtyValue > 0)
                 {
                     productIngredientInventoryDeductionFromList.Add(new ProductIngredientInventoryDeduction
                     {
+                        DeductionSequence = deductionSequence,
                         IngredientId = ingredeintDetails.Id,
                         IngredientInventoryid = inventory.Id,
-                        DeductQtyValue = remainingProdIngredientQtyValue,
+                        DeductQtyValue = GetProductIngredientActualQtyValueNeedToDeduct(prodIngredientRequireUOM, remainingProdIngredientQtyValue),
                         UsedUOM = prodIngredientRequireUOM
                     });
 
@@ -185,15 +185,17 @@ namespace Main.Controllers.InventoryControllers
                 {
                     productIngredientInventoryDeductionFromList.Add(new ProductIngredientInventoryDeduction
                     {
+                        DeductionSequence = deductionSequence,
                         IngredientId = ingredeintDetails.Id,
                         IngredientInventoryid = inventory.Id,
-                        DeductQtyValue = inventory.RemainingQtyValue,
+                        DeductQtyValue = GetProductIngredientActualQtyValueNeedToDeduct(prodIngredientRequireUOM, inventory.RemainingQtyValue),
                         UsedUOM = prodIngredientRequireUOM
                     });
 
                     remainingProdIngredientQtyValue = remainingProdIngredientQtyValue - inventory.RemainingQtyValue;
                 }
 
+                deductionSequence += 1;
                 if (remainingProdIngredientQtyValue == 0)
                     break;
             }

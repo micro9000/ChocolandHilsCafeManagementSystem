@@ -27,8 +27,11 @@ namespace Main.Controllers.POSControllers
         private readonly ISaleTransactionProductData _saleTransactionProductData;
         private readonly ISaleTransactionComboMealData _saleTransactionComboMealData;
         private readonly ISaleTranProdIngInvDeductionsRecordData _saleTranProdIngInvDeductionsRecordData;
+        private readonly ISaleTranComboMealIngInvDeductionsRecordData _saleTranComboMealIngInvDeductionsRecordData;
         private readonly IProductData _productData;
         private readonly IProductIngredientData _productIngredientData;
+        private readonly IComboMealData _comboMealData;
+        private readonly IComboMealProductData _comboMealProductData;
         private readonly IIngredientInventoryData _ingredientInventoryData;
         private readonly IIngredientInventoryManager _ingredientInventoryManager;
         private readonly Sessions _sessions;
@@ -41,8 +44,11 @@ namespace Main.Controllers.POSControllers
                                 ISaleTransactionProductData saleTransactionProductData,
                                 ISaleTransactionComboMealData saleTransactionComboMealData,
                                 ISaleTranProdIngInvDeductionsRecordData saleTranProdIngInvDeductionsRecordData,
+                                ISaleTranComboMealIngInvDeductionsRecordData saleTranComboMealIngInvDeductionsRecordData,
                                 IProductData productData,
                                 IProductIngredientData productIngredientData,
+                                IComboMealData comboMealData,
+                                IComboMealProductData comboMealProductData,
                                 IIngredientInventoryData ingredientInventoryData,
                                 IIngredientInventoryManager ingredientInventoryManager,
                                 Sessions sessions,
@@ -55,8 +61,11 @@ namespace Main.Controllers.POSControllers
             _saleTransactionProductData = saleTransactionProductData;
             _saleTransactionComboMealData = saleTransactionComboMealData;
             _saleTranProdIngInvDeductionsRecordData = saleTranProdIngInvDeductionsRecordData;
+            _saleTranComboMealIngInvDeductionsRecordData = saleTranComboMealIngInvDeductionsRecordData;
             _productData = productData;
             _productIngredientData = productIngredientData;
+            _comboMealData = comboMealData;
+            _comboMealProductData = comboMealProductData;
             _ingredientInventoryData = ingredientInventoryData;
             _ingredientInventoryManager = ingredientInventoryManager;
             _sessions = sessions;
@@ -138,73 +147,68 @@ namespace Main.Controllers.POSControllers
         }
 
 
-        //public void SaveSaleTransaction(SaleTransactionModel newSalesTransaction)
-        //{
-
-        //}
-
-        public EntityResult<string> SaveSaleTransactionProducts(long saleTransactionId, List<SaleTransactionProductModel> products)
+        public EntityResult<string> SaveSaleTransaction(long saleTransId, List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals)
         {
+
             var results = new EntityResult<string>();
             results.IsSuccess = false;
 
             try
             {
-                // NOTE for TODO next: we will return the qty value to last ingredient's inventory
-                var existingSaleTranProducts = _saleTransactionProductData.GetAllBySaleTransId(saleTransactionId).ToList();
-
-                // transaction scope for better handling of inventory
-                using var transaction = new TransactionScope();
-
-                foreach(var item in products)
+                if (products == null && comboMeals == null)
                 {
-                    var productInfo = _productData.Get(item.ProductId);
-
-                    if (productInfo == null)
-                        throw new Exception($"{item.Product.ProdName}: Product not found.");
-
-                    item.SaleTransId = saleTransactionId;
-
-                    if (existingSaleTranProducts != null && existingSaleTranProducts.Count > 0)
-                    {
-                        var saleTranProd = existingSaleTranProducts.Where(x => x.ProductId == item.ProductId).FirstOrDefault();
-
-                        if (saleTranProd != null)
-                        {
-                            if (saleTranProd.Qty > item.Qty)
-                            {
-                                // get removed qty by the user
-                                int qtyDiff = saleTranProd.Qty - item.Qty;
-                                saleTranProd.Qty = item.Qty;
-
-                                // meaning, the user decrease the qty of existing prod
-                            }
-
-                            if (saleTranProd.Qty < item.Qty)
-                            {
-                                // get added qty by the user
-                                int qtyDiff = item.Qty - saleTranProd.Qty;
-
-                                saleTranProd.Qty = item.Qty; // replace the existing qty to new
-
-                                this.DeductRequiredIngredientsFromInventory(productInfo, qtyDiff, saleTranProd.Id);
-                                // the user increase the qty of existing prod
-                            }
-                        }
-                    }
-
-                    if (existingSaleTranProducts == null)
-                    {
-                        var saleTransProdId = _saleTransactionProductData.Add(item);
-                        this.DeductRequiredIngredientsFromInventory(productInfo, item.Qty, saleTransProdId);
-                    }
-                    
-
-                    
-
+                    results.Messages.Add("Add item first.");
+                    return results;
                 }
 
-                // Commit all changes
+                if (saleTransId == 0 || saleTransId == long.MinValue)
+                {
+                    results.Messages.Add("Unable to save this current transaction, kindly initiate new.");
+                    return results;
+                }
+
+                var saleTransactionDetailsInDb = _salesTransactionData.Get(saleTransId);
+
+                if (saleTransactionDetailsInDb == null)
+                {
+                    results.Messages.Add("Unable to save this current transaction, kindly initiate new.");
+                    return results;
+                }
+
+                using var transaction = new TransactionScope();
+
+                //_mapper.Map(newSalesTransaction, saleTransactionDetailsInDb);
+
+                var saveProductsResults = this.SaveSaleTransactionProducts(saleTransactionDetailsInDb.Id, products);
+
+                foreach (var res in saveProductsResults.Messages)
+                {
+                    results.Messages.Add(res);
+                }
+
+                var saveComboMealsResults = this.SaveSaleTransactionComboMeals(saleTransactionDetailsInDb.Id, comboMeals);
+
+                foreach (var res in saveComboMealsResults.Messages)
+                {
+                    results.Messages.Add(res);
+                }
+
+                decimal subTotal = 0;
+
+                foreach(var prod in products)
+                {
+                    subTotal += prod.totalAmount;
+                }
+
+                foreach(var cm in comboMeals)
+                {
+                    subTotal += cm.totalAmount;
+                }
+
+                saleTransactionDetailsInDb.SubTotalAmount = subTotal;
+
+                _salesTransactionData.Update(saleTransactionDetailsInDb);
+
                 transaction.Complete();
             }
             catch (Exception ex)
@@ -214,10 +218,172 @@ namespace Main.Controllers.POSControllers
             }
 
             return results;
+
         }
 
-        // TODO: return all deducted qty value to Ingredient's inventory
-        // Get all 
+        public EntityResult<string> SaveSaleTransactionProducts(long saleTransactionId, List<SaleTransactionProductModel> products)
+        {
+            var results = new EntityResult<string>();
+            results.IsSuccess = false;
+
+            // NOTE for TODO next: we will return the qty value to last ingredient's inventory
+            var existingSaleTranProducts = _saleTransactionProductData.GetAllBySaleTransId(saleTransactionId).ToList();
+
+            foreach(var existingSaleTranProd in existingSaleTranProducts)
+            {
+                var existingProdInProductList = products.Where(x => x.ProductId == existingSaleTranProd.ProductId).FirstOrDefault();
+
+                // meaning, we completely delete the item from order or cart
+                if (existingProdInProductList == null)
+                {
+                    var productInfo = _productData.Get(existingSaleTranProd.ProductId);
+
+                    if (productInfo == null)
+                    {
+                        results.Messages.Add($"{existingProdInProductList.Product.ProdName}: Product not found.");
+                        return results;
+                    }
+
+                    existingSaleTranProd.IsDeleted = true;
+                    existingSaleTranProd.DeletedAt = DateTime.Now;
+
+                    _saleTransactionProductData.Update(existingSaleTranProd);
+                    this.ReturnRequiredIngredientQtyToInventory(productInfo, existingSaleTranProd.Qty, existingSaleTranProd.Id);
+                }
+            }
+
+            foreach (var item in products)
+            {
+                var productInfo = _productData.Get(item.ProductId);
+
+                if (productInfo == null)
+                {
+                    results.Messages.Add($"{item.Product.ProdName}: Product not found.");
+                    return results;
+                }
+
+                item.SalesTransId = saleTransactionId;
+
+                if (existingSaleTranProducts == null || (existingSaleTranProducts != null && existingSaleTranProducts.Count == 0))
+                {
+                    var saleTransProdId = _saleTransactionProductData.Add(item); // <--- save sale transaction product
+                    this.DeductRequiredIngredientsFromInventory(productInfo, item.Qty, saleTransProdId);
+                }
+
+                if (existingSaleTranProducts != null && existingSaleTranProducts.Count > 0)
+                {
+                    var existingSaleTranProd = existingSaleTranProducts.Where(x => x.ProductId == item.ProductId).FirstOrDefault();
+
+                    if (existingSaleTranProd == null)
+                    {
+                        var saleTransProdId = _saleTransactionProductData.Add(item);// <--- save sale transaction product
+                        this.DeductRequiredIngredientsFromInventory(productInfo, item.Qty, saleTransProdId);
+                    }
+
+                    if (existingSaleTranProd != null)
+                    {
+                        if (existingSaleTranProd.Qty > item.Qty)
+                        {
+                            // get removed qty by the user
+                            int orderQtyDiff = existingSaleTranProd.Qty - item.Qty;
+                            existingSaleTranProd.Qty = item.Qty; // replace the existing qty to new
+
+                            _saleTransactionProductData.Update(existingSaleTranProd);
+                            this.ReturnRequiredIngredientQtyToInventory(productInfo, orderQtyDiff, existingSaleTranProd.Id);
+                            // meaning, the user decrease the qty of existing prod
+                        }
+
+                        if (existingSaleTranProd.Qty < item.Qty)
+                        {
+                            // get the added qty by the user
+                            int orderQtyDiff = item.Qty - existingSaleTranProd.Qty;
+                            existingSaleTranProd.Qty = item.Qty; // replace the existing qty to new
+
+                            _saleTransactionProductData.Update(existingSaleTranProd);// <--- save sale transaction product
+                            this.DeductRequiredIngredientsFromInventory(productInfo, orderQtyDiff, existingSaleTranProd.Id);
+                            // the user increase the qty of existing prod
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public void ReturnRequiredIngredientQtyToInventory(ProductModel productInfo, int orderReturnQty, long saleTransProdId)
+        {
+            // Get all needed ingredients for current product
+            var productIngredients = _productIngredientData.GetAllByProduct(productInfo.Id);
+
+            foreach (var prodIngredient in productIngredients)
+            {
+                // Qty Value we need to return based on number of return order(s)
+                var productQtyWeNeedToReturn = prodIngredient.QtyValue * orderReturnQty; // ex. 500ml * 5 orders
+
+                // return the qty to the last inventory (far from expiration date)
+                var saleTranProdIngInvDeductionRecords = _saleTranProdIngInvDeductionsRecordData
+                                                            .GetAllBySaleTranProductId(saleTransProdId, prodIngredient.IngredientId)
+                                                            .OrderByDescending(x => x.DeductionSequence).ToList();
+
+                // we need the ing's inventory id, qty value we need to return
+                foreach(var invDeductionRec in saleTranProdIngInvDeductionRecords)
+                {
+                    var ingInventory = _ingredientInventoryData.GetByIdAndIngredientIncludeDeletedAndSoldOut(invDeductionRec.IngredientId, invDeductionRec.IngredientInventoryId);
+                    
+                    if (ingInventory == null)
+                    {
+                        throw new Exception("Invalid ingredient inventory id");
+                    }
+
+                    if (invDeductionRec.DeductedQtyValue >= productQtyWeNeedToReturn && productQtyWeNeedToReturn > 0)
+                    {
+                        decimal actualQtyValueWeNeedToReturn = _ingredientInventoryManager.GetProductIngredientActualQtyValueNeedToDeduct(invDeductionRec.UsedUOM, productQtyWeNeedToReturn);
+
+                        // return qty value in inventory
+                        ingInventory.RemainingQtyValue += actualQtyValueWeNeedToReturn;
+                        ingInventory.IsDeleted = false;
+                        ingInventory.IsSoldOut = false;
+
+                        // assume that deducted qty value is greater than the return qty value
+                        decimal remainingInDeductedQtyVal = invDeductionRec.DeductedQtyValue - actualQtyValueWeNeedToReturn;
+
+                        if (remainingInDeductedQtyVal == 0)
+                        {
+                            invDeductionRec.IsDeleted = true;
+                            invDeductionRec.DeletedAt = DateTime.Now;
+                        }
+
+                        if (remainingInDeductedQtyVal > 0)
+                        {
+                            invDeductionRec.DeductedQtyValue = remainingInDeductedQtyVal;
+                        }
+
+                        productQtyWeNeedToReturn = 0;
+                    }
+
+                    if (invDeductionRec.DeductedQtyValue < productQtyWeNeedToReturn && productQtyWeNeedToReturn > 0)
+                    {
+                        productQtyWeNeedToReturn = productQtyWeNeedToReturn - invDeductionRec.DeductedQtyValue;
+
+                        decimal actualQtyValueWeNeedToReturn = _ingredientInventoryManager.GetProductIngredientActualQtyValueNeedToDeduct(invDeductionRec.UsedUOM, invDeductionRec.DeductedQtyValue);
+
+                        // return qty value in inventory
+                        ingInventory.RemainingQtyValue += actualQtyValueWeNeedToReturn;
+                        ingInventory.IsDeleted = false;
+                        ingInventory.IsSoldOut = false;
+
+                        invDeductionRec.IsDeleted = true;
+                        invDeductionRec.DeletedAt = DateTime.Now;
+                    }
+
+                    // update this ingredient inventory immediately 
+                    _ingredientInventoryData.Update(ingInventory);
+                }
+
+                // update sale transaction product ingredient deduction records
+                _saleTranProdIngInvDeductionsRecordData.UpdateRange(saleTranProdIngInvDeductionRecords);
+            }
+        }
 
         public void DeductRequiredIngredientsFromInventory(ProductModel productInfo, int orderQty, long saleTransProdId)
         {
@@ -231,19 +397,32 @@ namespace Main.Controllers.POSControllers
                 // we need the list of inventories we can deduct the product's ingredient qty value
                 // because, in single ingredient, we can have multiple inventory
                 var inventoriesWhereWeCanDeductProductIngredientQtyValue = _ingredientInventoryManager
-                                                                            .GetWhereInventoryThisProductIngredientToDeduct(prodIngredient.IngredientId, prodIngredient.QtyValue, prodIngredient.UOM);
+                                                                            .GetWhereInventoryThisProductIngredientToDeduct(prodIngredient.IngredientId, prodIngredient.QtyValue, prodIngredient.UOM)
+                                                                            .OrderBy(x => x.DeductionSequence);
 
                 // deduct require qty value in our ingredient's inventories
                 foreach (var inventory in inventoriesWhereWeCanDeductProductIngredientQtyValue)
                 {
                     var inventoryDetails = _ingredientInventoryData.GetByIdAndIngredient(inventory.IngredientId, inventory.IngredientInventoryid);
-                    inventoryDetails.RemainingQtyValue = (inventoryDetails.RemainingQtyValue - inventory.DeductQtyValue);
+
+                    decimal newRemainingQtyValue = (inventoryDetails.RemainingQtyValue - inventory.DeductQtyValue);
+
+                    if (newRemainingQtyValue == 0)
+                    {
+                        inventoryDetails.RemainingQtyValue = 0;
+                        inventoryDetails.IsSoldOut = true;
+                    }
+                    else
+                    {
+                        inventoryDetails.RemainingQtyValue = newRemainingQtyValue;
+                    }
 
                     _ingredientInventoryData.Update(inventoryDetails);
 
                     // store above data so we can use it in case we need to revert all deductions
                     _saleTranProdIngInvDeductionsRecordData.Add(new SaleTranProdIngInvDeductionsRecordModel
                     {
+                        DeductionSequence = inventory.DeductionSequence,
                         SaleTransProductId = saleTransProdId,
                         IngredientId = prodIngredient.IngredientId,
                         IngredientInventoryId = inventory.IngredientInventoryid,
@@ -256,5 +435,235 @@ namespace Main.Controllers.POSControllers
             }
         }
 
+
+        public EntityResult<string> SaveSaleTransactionComboMeals(long saleTransactionId, List<SaleTransactionComboMealModel> comboMeals)
+        {
+            var results = new EntityResult<string>();
+            results.IsSuccess = false;
+
+            // NOTE for TODO next: we will return the qty value to last ingredient's inventory
+            var existingSaleTranComboMeals = _saleTransactionComboMealData.GetAllBySaleTranId(saleTransactionId).ToList();
+
+            foreach(var existingSaleTranComboMeal in existingSaleTranComboMeals)
+            {
+                var existingComboMealInTheComboMealList = comboMeals.Where(x => x.ComboMealId == existingSaleTranComboMeal.ComboMealId).FirstOrDefault();
+
+                // meaning, we completely delete the item from order or cart
+                if (existingComboMealInTheComboMealList == null)
+                {
+                    var comboMealProducts = _comboMealProductData.GetAllByComboMealPlain(existingSaleTranComboMeal.ComboMealId);
+
+                    if (comboMealProducts == null)
+                        throw new Exception($"{existingComboMealInTheComboMealList.ComboMeal.Title}: Combo Meal's products not found.");
+
+                    existingSaleTranComboMeal.IsDeleted = true;
+                    existingSaleTranComboMeal.DeletedAt = DateTime.Now;
+
+                    _saleTransactionComboMealData.Update(existingSaleTranComboMeal);
+                    this.ReturnRequiredComboMealProdsIngredients(comboMealProducts, existingSaleTranComboMeal.Qty, existingSaleTranComboMeal.Id);
+                }
+            }
+
+            foreach (var item in comboMeals)
+            {
+                var comboMealProducts = _comboMealProductData.GetAllByComboMealPlain(item.ComboMealId);
+
+                if (comboMealProducts == null)
+                    throw new Exception($"{item.ComboMeal.Title}: Combo Meal's products not found.");
+
+                item.SalesTransId = saleTransactionId;
+
+                if (existingSaleTranComboMeals == null || (existingSaleTranComboMeals != null && existingSaleTranComboMeals.Count == 0))
+                {
+                    var saleTransComboMealId = _saleTransactionComboMealData.Add(item);
+                    this.DeductRequiredComboMealProdsIngredients(comboMealProducts, item.Qty, saleTransComboMealId);
+                }
+
+                if (existingSaleTranComboMeals != null && existingSaleTranComboMeals.Count > 0)
+                {
+                    var saleTranComboMeal = existingSaleTranComboMeals.Where(x => x.ComboMealId == item.ComboMealId).FirstOrDefault();
+
+                    if (saleTranComboMeal == null)
+                    {
+                        var saleTransComboMealId = _saleTransactionComboMealData.Add(item);
+                        this.DeductRequiredComboMealProdsIngredients(comboMealProducts, item.Qty, saleTransComboMealId);
+                    }
+
+                    if (saleTranComboMeal != null)
+                    {
+                        if (saleTranComboMeal.Qty > item.Qty)
+                        {
+                            //get removed qty
+                            int returnOrderQtyDiff = saleTranComboMeal.Qty - item.Qty;
+                            saleTranComboMeal.Qty = item.Qty;
+
+                            _saleTransactionComboMealData.Update(saleTranComboMeal);
+                            this.ReturnRequiredComboMealProdsIngredients(comboMealProducts, returnOrderQtyDiff, saleTranComboMeal.Id);
+                        }
+
+                        if (saleTranComboMeal.Qty < item.Qty)
+                        {
+                            // get added qty
+                            int addedOrderQtyDiff = item.Qty - saleTranComboMeal.Qty;
+                            saleTranComboMeal.Qty = item.Qty;
+
+                            _saleTransactionComboMealData.Update(saleTranComboMeal);
+                            this.DeductRequiredComboMealProdsIngredients(comboMealProducts, item.Qty, saleTranComboMeal.Id);
+                        }
+
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public void DeductRequiredComboMealProdsIngredients(List<ComboMealProductModel> comboMealProducts, int orderQty, long saleTransComboMealId)
+        {
+            foreach(var comboMealProd in comboMealProducts)
+            {
+                var productInfo = _productData.Get(comboMealProd.ProductId);
+                int realOrderQty = comboMealProd.Quantity * orderQty;
+
+                this.DeductComboMealProdRequiredIngredientsFromInventory(productInfo, realOrderQty, saleTransComboMealId);
+            }
+        }
+
+        public void ReturnRequiredComboMealProdsIngredients(List<ComboMealProductModel> comboMealProducts, int returnOrderQty, long saleTransComboMealId)
+        {
+            foreach (var comboMealProd in comboMealProducts)
+            {
+                var productInfo = _productData.Get(comboMealProd.ProductId);
+                int realReturnOrderQty = comboMealProd.Quantity * returnOrderQty;
+
+                this.ReturnComboMealProdRequiredIngredientQtyToInventory(productInfo, realReturnOrderQty, saleTransComboMealId);
+            }
+        }
+
+        public void DeductComboMealProdRequiredIngredientsFromInventory(ProductModel productInfo, int orderQty, long saleTransComboMealId)
+        {
+            // Get all needed ingredients for current product
+            var productIngredients = _productIngredientData.GetAllByProduct(productInfo.Id);
+            foreach (var prodIngredient in productIngredients)
+            {
+                // Qty Value we need to deduct based on number of orders
+                var productQtyWeNeedToDeduct = prodIngredient.QtyValue * orderQty; // ex. 500ml * 5 orders
+
+                // we need the list of inventories we can deduct the product's ingredient qty value
+                // because, in single ingredient, we can have multiple inventory
+                var inventoriesWhereWeCanDeductProductIngredientQtyValue = _ingredientInventoryManager
+                                                                            .GetWhereInventoryThisProductIngredientToDeduct(prodIngredient.IngredientId, prodIngredient.QtyValue, prodIngredient.UOM)
+                                                                            .OrderBy(x => x.DeductionSequence);
+
+                // deduct require qty value in our ingredient's inventories
+                foreach (var inventory in inventoriesWhereWeCanDeductProductIngredientQtyValue)
+                {
+                    var inventoryDetails = _ingredientInventoryData.GetByIdAndIngredient(inventory.IngredientId, inventory.IngredientInventoryid);
+
+                    decimal newRemainingQtyValue = (inventoryDetails.RemainingQtyValue - inventory.DeductQtyValue);
+
+                    if (newRemainingQtyValue == 0)
+                    {
+                        inventoryDetails.RemainingQtyValue = 0;
+                        inventoryDetails.IsSoldOut = true;
+                    }
+                    else
+                    {
+                        inventoryDetails.RemainingQtyValue = newRemainingQtyValue;
+                    }
+
+                    _ingredientInventoryData.Update(inventoryDetails);
+
+                    // store above data so we can use it in case we need to revert all deductions
+                    _saleTranComboMealIngInvDeductionsRecordData.Add(new SaleTranComboMealIngInvDeductionsRecordModel
+                    {
+                        DeductionSequence = inventory.DeductionSequence,
+                        SaleTransComboMealId = saleTransComboMealId,
+                        ProductId = productInfo.Id,
+                        IngredientId = prodIngredient.IngredientId,
+                        IngredientInventoryId = inventory.IngredientInventoryid,
+                        IngredientUOM = prodIngredient.Ingredient.UOM,
+                        UsedUOM = prodIngredient.UOM,
+                        DeductedQtyValue = inventory.DeductQtyValue,
+                        IngInvCurrentUnitCost = inventoryDetails.UnitCost
+                    });
+                }
+            }
+        }
+
+        public void ReturnComboMealProdRequiredIngredientQtyToInventory(ProductModel productInfo, int orderReturnQty, long saleTransComboMealId)
+        {
+            // Get all needed ingredients for current product
+            var productIngredients = _productIngredientData.GetAllByProduct(productInfo.Id);
+
+            foreach (var prodIngredient in productIngredients)
+            {
+                // Qty Value we need to return based on number of return order(s)
+                var productQtyWeNeedToReturn = prodIngredient.QtyValue * orderReturnQty; // ex. 500ml * 5 orders
+
+                // return the qty to the last inventory (far from expiration date)
+                var saleTranComboMealIngInvDeductionRecords = _saleTranComboMealIngInvDeductionsRecordData
+                                                            .GetAllBySaleTranComboMealId(saleTransComboMealId, productInfo.Id, prodIngredient.IngredientId)
+                                                            .OrderByDescending(x => x.DeductionSequence).ToList();
+
+                // we need the ing's inventory id, qty value we need to return
+                foreach (var invDeductionRec in saleTranComboMealIngInvDeductionRecords)
+                {
+                    var ingInventory = _ingredientInventoryData.GetByIdAndIngredientIncludeDeletedAndSoldOut(invDeductionRec.IngredientId, invDeductionRec.IngredientInventoryId);
+
+                    if (ingInventory == null)
+                    {
+                        throw new Exception("Invalid ingredient inventory id");
+                    }
+
+                    if (invDeductionRec.DeductedQtyValue >= productQtyWeNeedToReturn && productQtyWeNeedToReturn > 0)
+                    {
+                        decimal actualQtyValueWeNeedToReturn = _ingredientInventoryManager.GetProductIngredientActualQtyValueNeedToDeduct(invDeductionRec.UsedUOM, productQtyWeNeedToReturn);
+
+                        // return qty value in inventory
+                        ingInventory.RemainingQtyValue += actualQtyValueWeNeedToReturn;
+                        ingInventory.IsDeleted = false;
+                        ingInventory.IsSoldOut = false;
+
+                        // assume that deducted qty value is greater than the return qty value
+                        decimal remainingInDeductedQtyVal = invDeductionRec.DeductedQtyValue - actualQtyValueWeNeedToReturn;
+
+                        if (remainingInDeductedQtyVal == 0)
+                        {
+                            invDeductionRec.IsDeleted = true;
+                            invDeductionRec.DeletedAt = DateTime.Now;
+                        }
+
+                        if (remainingInDeductedQtyVal > 0)
+                        {
+                            invDeductionRec.DeductedQtyValue = remainingInDeductedQtyVal;
+                        }
+
+                        productQtyWeNeedToReturn = 0;
+                    }
+
+                    if (invDeductionRec.DeductedQtyValue < productQtyWeNeedToReturn && productQtyWeNeedToReturn > 0)
+                    {
+                        productQtyWeNeedToReturn = productQtyWeNeedToReturn - invDeductionRec.DeductedQtyValue;
+                       
+                        decimal actualQtyValueWeNeedToReturn = _ingredientInventoryManager.GetProductIngredientActualQtyValueNeedToDeduct(invDeductionRec.UsedUOM, invDeductionRec.DeductedQtyValue);
+
+                        // return qty value in inventory
+                        ingInventory.RemainingQtyValue += actualQtyValueWeNeedToReturn;
+                        ingInventory.IsDeleted = false;
+                        ingInventory.IsSoldOut = false;
+
+                        invDeductionRec.IsDeleted = true;
+                        invDeductionRec.DeletedAt = DateTime.Now;
+                    }
+
+                    // update this ingredient inventory immediately 
+                    _ingredientInventoryData.Update(ingInventory);
+                }
+
+                // update sale transaction product ingredient deduction records
+                _saleTranComboMealIngInvDeductionsRecordData.UpdateRange(saleTranComboMealIngInvDeductionRecords);
+            }
+        }
     }
 }

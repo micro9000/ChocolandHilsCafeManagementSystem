@@ -10,5 +10,6 @@ namespace DataAccess.Data.POSManagement.Contracts
 {
     public interface ISaleTranProdIngInvDeductionsRecordData : IDataManagerCRUD<SaleTranProdIngInvDeductionsRecordModel>
     {
+        List<SaleTranProdIngInvDeductionsRecordModel> GetAllBySaleTranProductId(long saleTranProdId, long ingredientId);
     }
 }

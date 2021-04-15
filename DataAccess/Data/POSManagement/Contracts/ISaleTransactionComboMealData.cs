@@ -10,5 +10,6 @@ namespace DataAccess.Data.POSManagement.Contracts
 {
     public interface ISaleTransactionComboMealData : IDataManagerCRUD<SaleTransactionComboMealModel>
     {
+        IEnumerable<SaleTransactionComboMealModel> GetAllBySaleTranId(long saleTransactionId);
     }
 }

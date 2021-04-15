@@ -617,7 +617,8 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
 )ENGINE=INNODB;
 
 
-SELECT * FROM IngredientInventory WHERE ingredientId=10 AND isDeleted=false;
+SELECT * FROM IngredientInventory
+ORDER BY expirationDate DESC;
 
 
 CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
@@ -790,6 +791,11 @@ CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
     FOREIGN KEY (comboMealId) REFERENCES ComboMeals (id)
 )ENGINE=INNODB;
 
+SELECT *
+FROM SalesTransactionComboMeals AS STComMl
+JOIN ComboMeals AS ComMl ON STComMl.comboMealId = ComMl.id
+WHERE STComMl.isDeleted=false AND STComMl.salesTransId=@SaleTranId;
+
 -- Sale Transaction's Product's Ingredient's Inventory deduction history :D
 -- we just need to store the ingredients we used in our product and 
 -- where inventory we deduct the required qty value(amount ex. 500ml of ingredient)
@@ -800,12 +806,41 @@ CREATE TABLE IF NOT EXISTS SaleTranProdIngInvDeductionsRecords(
     ingredientId BIGINT NOT NULL,
     ingredientInventoryId BIGINT NOT NULL,
     ingredientUOM INT,
+    deductionSequence INT DEFAULT 0,
     usedUOM INT,
     deductedQtyValue DECIMAL,
-    ingInvCurrentunitCost DECIMAL,
+    ingInvCurrentUnitCost DECIMAL,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(saleTransProdId) REFERENCES SalesTransactionProducts(id)
+    FOREIGN KEY(saleTransProductId) REFERENCES SalesTransactionProducts(id),
+    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id),
+    FOREIGN KEY(ingredientInventoryId) REFERENCES IngredientInventory(id)
 )ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS SaleTranComboMealIngInvDeductionsRecords(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	saleTransComboMealId BIGINT NOT NULL,
+    productId BIGINT NOT NULL,
+    ingredientId BIGINT NOT NULL,
+    ingredientInventoryId BIGINT NOT NULL,
+    ingredientUOM INT,
+    deductionSequence INT DEFAULT 0,
+    usedUOM INT,
+    deductedQtyValue DECIMAL,
+    ingInvCurrentUnitCost DECIMAL,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(saleTransComboMealId) REFERENCES SalesTransactionComboMeals(id),
+    FOREIGN KEY(productId) REFERENCES Products(id),
+    FOREIGN KEY(ingredientId) REFERENCES Ingredients(id),
+    FOREIGN KEY(ingredientInventoryId) REFERENCES IngredientInventory(id)
+)ENGINE=INNODB;
+
+SELECT * 
+FROM SaleTranComboMealIngInvDeductionsRecords
+WHERE isDeleted=false AND saleTransComboMealId=@SaleTranComboMealId 
+AND productId=@ProductId AND ingredientId=@IngredientId

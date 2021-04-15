@@ -13,6 +13,7 @@ namespace DataAccess.Data.InventoryManagement.Contracts
         decimal GetRemainingQtyValueByIngredient(long ingredientId);
         List<IngredientInventoryModel> GetAllByIngredient(long ingredientId);
         IngredientInventoryModel GetByIdAndIngredient(long ingredientId, long id);
+        IngredientInventoryModel GetByIdAndIngredientIncludeDeletedAndSoldOut(long ingredientId, long id);
         List<IngredientInventoryModel> GetAllByExpirationDateRange(DateTime startDate, DateTime endDate);
         int GetCountOfIngredientInventoryByExpirationDate(DateTime startDate, DateTime endDate);
     }

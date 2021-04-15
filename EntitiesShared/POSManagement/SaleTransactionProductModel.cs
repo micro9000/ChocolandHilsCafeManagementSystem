@@ -11,7 +11,7 @@ namespace EntitiesShared.POSManagement
     [Table("SalesTransactionProducts")]
     public class SaleTransactionProductModel : BaseLongModel
     {
-        public long SaleTransId { get; set; }
+        public long SalesTransId { get; set; }
 
         public long ProductId { get; set; }
 

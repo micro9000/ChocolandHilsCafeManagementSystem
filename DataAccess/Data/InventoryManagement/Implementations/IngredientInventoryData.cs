@@ -46,6 +46,14 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return this.GetFirstOrDefault(query, new { IngredientId = ingredientId, Id = id });
         }
 
+        public IngredientInventoryModel GetByIdAndIngredientIncludeDeletedAndSoldOut(long ingredientId, long id)
+        {
+            string query = @"SELECT * FROM IngredientInventory 
+                            WHERE ingredientId=@IngredientId AND id=@Id";
+
+            return this.GetFirstOrDefault(query, new { IngredientId = ingredientId, Id = id });
+        }
+
         public List<IngredientInventoryModel> GetAllByExpirationDateRange (DateTime startDate, DateTime endDate)
         {
             string query = @"SELECT *

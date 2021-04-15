@@ -8,6 +8,8 @@ namespace EntitiesShared.InventoryManagement.Models
 {
     public class ProductIngredientInventoryDeduction
     {
+        public int DeductionSequence { get; set; }
+
         public long IngredientId { get; set; }
 
         public long IngredientInventoryid { get; set; }

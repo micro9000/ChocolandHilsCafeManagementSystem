@@ -11,7 +11,7 @@ namespace EntitiesShared.POSManagement
     [Table("SalesTransactionComboMeals")]
     public class SaleTransactionComboMealModel : BaseLongModel
     {
-        public long SaleTransId { get; set; }
+        public long SalesTransId { get; set; }
 
         public long ComboMealId { get; set; }
 

@@ -20,6 +20,12 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
+        public List<ComboMealProductModel> GetAllByComboMealPlain(long comboMealId)
+        {
+            string query = "SELECT * FROM ComboMealProducts WHERE comboMealId=@ComboMealId";
+            return this.GetAll(query, new { ComboMealId = comboMealId });
+        }
+
         public List<ComboMealProductModel> GetAllByComboMeal(long comboMealId)
         {
             string query = @"SELECT * 

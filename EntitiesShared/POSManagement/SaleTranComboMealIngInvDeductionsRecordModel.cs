@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace EntitiesShared.POSManagement
 {
-    [Table("SaleTranProdIngInvDeductionsRecords")]
-    public class SaleTranProdIngInvDeductionsRecordModel : BaseLongModel
+    [Table("SaleTranComboMealIngInvDeductionsRecords")]
+    public class SaleTranComboMealIngInvDeductionsRecordModel : BaseLongModel
     {
-        public long SaleTransProductId { get; set; }
+        public long SaleTransComboMealId { get; set; }
+
+        public long ProductId { get; set; }
 
         public long IngredientId { get; set; }
 

@@ -222,7 +222,25 @@ namespace Main.Forms.POSManagementForms.Controls
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
+            if (_pOSState.CurrentSaleTransaction != null)
+            {
+                var saveResults = _iPOSCommandController.SaveSaleTransaction(_pOSState.CurrentSaleTransaction.Id, _pOSState.CurrentSaleTransactionProducts, _pOSState.CurrentSaleTransactionComboMeals);
 
+                string resMsg = "";
+                foreach(var msg in saveResults.Messages)
+                {
+                    resMsg += msg;
+                }
+
+                MessageBox.Show(resMsg);
+                if (saveResults.IsSuccess == true)
+                {
+                    _pOSState.Transaction = POSStateTransaction.Existing;
+                    _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
+                    _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
+                    _pOSState.CurrentSaleTransaction = null;
+                }
+            }
         }
     }
 }

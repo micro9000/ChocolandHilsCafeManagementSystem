@@ -11,5 +11,6 @@ namespace Main.Controllers.POSControllers.ControllerInterface
     public interface IPOSCommandController
     {
         EntityResult<SaleTransactionModel> InitiateNewTransaction(SaleTransactionModel newSalesTransaction);
+        EntityResult<string> SaveSaleTransaction(long saleTransId, List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals);
     }
 }
