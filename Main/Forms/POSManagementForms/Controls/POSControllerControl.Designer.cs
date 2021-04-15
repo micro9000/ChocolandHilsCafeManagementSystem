@@ -39,6 +39,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.DGVActiveDineInTransactions = new System.Windows.Forms.DataGridView();
             this.TabPageCheckout = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.BtnCancelCurrentTransaction = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.TboxNumberOfItems = new System.Windows.Forms.TextBox();
@@ -49,7 +50,12 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TboxCustomerName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TboxTableNumber = new System.Windows.Forms.TextBox();
-            this.BtnCancelCurrentTransaction = new System.Windows.Forms.Button();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.LblSubTotal = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.TabControlMain.SuspendLayout();
             this.TabPageControls.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -57,20 +63,27 @@ namespace Main.Forms.POSManagementForms.Controls
             ((System.ComponentModel.ISupportInitialize)(this.DGVActiveDineInTransactions)).BeginInit();
             this.TabPageCheckout.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControlMain
             // 
-            this.TabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControlMain.Controls.Add(this.TabPageControls);
             this.TabControlMain.Controls.Add(this.TabPageActiveDineInTransactions);
             this.TabControlMain.Controls.Add(this.TabPageCheckout);
+            this.TabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TabControlMain.Location = new System.Drawing.Point(0, 0);
             this.TabControlMain.Name = "TabControlMain";
             this.TabControlMain.SelectedIndex = 0;
-            this.TabControlMain.Size = new System.Drawing.Size(509, 308);
+            this.TabControlMain.Size = new System.Drawing.Size(548, 308);
             this.TabControlMain.TabIndex = 12;
             this.TabControlMain.SelectedIndexChanged += new System.EventHandler(this.TabControlMain_SelectedIndexChanged);
             // 
@@ -80,7 +93,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TabPageControls.Location = new System.Drawing.Point(4, 30);
             this.TabPageControls.Name = "TabPageControls";
             this.TabPageControls.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageControls.Size = new System.Drawing.Size(501, 274);
+            this.TabPageControls.Size = new System.Drawing.Size(540, 274);
             this.TabPageControls.TabIndex = 0;
             this.TabPageControls.Text = "Controls";
             this.TabPageControls.UseVisualStyleBackColor = true;
@@ -93,7 +106,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(495, 268);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(534, 268);
             this.flowLayoutPanel1.TabIndex = 68;
             // 
             // BtnNewTransaction
@@ -145,7 +158,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TabPageActiveDineInTransactions.Location = new System.Drawing.Point(4, 30);
             this.TabPageActiveDineInTransactions.Name = "TabPageActiveDineInTransactions";
             this.TabPageActiveDineInTransactions.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageActiveDineInTransactions.Size = new System.Drawing.Size(501, 274);
+            this.TabPageActiveDineInTransactions.Size = new System.Drawing.Size(540, 274);
             this.TabPageActiveDineInTransactions.TabIndex = 1;
             this.TabPageActiveDineInTransactions.Text = "ACTIVE DINE-IN";
             this.TabPageActiveDineInTransactions.UseVisualStyleBackColor = true;
@@ -162,7 +175,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.DGVActiveDineInTransactions.Name = "DGVActiveDineInTransactions";
             this.DGVActiveDineInTransactions.ReadOnly = true;
             this.DGVActiveDineInTransactions.RowTemplate.Height = 25;
-            this.DGVActiveDineInTransactions.Size = new System.Drawing.Size(495, 268);
+            this.DGVActiveDineInTransactions.Size = new System.Drawing.Size(534, 268);
             this.DGVActiveDineInTransactions.TabIndex = 0;
             this.DGVActiveDineInTransactions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVActiveDineInTransactions_CellClick);
             // 
@@ -173,7 +186,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TabPageCheckout.Location = new System.Drawing.Point(4, 30);
             this.TabPageCheckout.Name = "TabPageCheckout";
             this.TabPageCheckout.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageCheckout.Size = new System.Drawing.Size(501, 274);
+            this.TabPageCheckout.Size = new System.Drawing.Size(540, 274);
             this.TabPageCheckout.TabIndex = 2;
             this.TabPageCheckout.Text = "Checkout";
             this.TabPageCheckout.UseVisualStyleBackColor = true;
@@ -195,6 +208,24 @@ namespace Main.Forms.POSManagementForms.Controls
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(429, 232);
             this.panel1.TabIndex = 72;
+            // 
+            // BtnCancelCurrentTransaction
+            // 
+            this.BtnCancelCurrentTransaction.BackColor = System.Drawing.Color.DarkRed;
+            this.BtnCancelCurrentTransaction.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnCancelCurrentTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCancelCurrentTransaction.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnCancelCurrentTransaction.ForeColor = System.Drawing.Color.White;
+            this.BtnCancelCurrentTransaction.Image = global::Main.Properties.Resources.save_white_26;
+            this.BtnCancelCurrentTransaction.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCancelCurrentTransaction.Location = new System.Drawing.Point(14, 163);
+            this.BtnCancelCurrentTransaction.Name = "BtnCancelCurrentTransaction";
+            this.BtnCancelCurrentTransaction.Size = new System.Drawing.Size(108, 45);
+            this.BtnCancelCurrentTransaction.TabIndex = 71;
+            this.BtnCancelCurrentTransaction.Text = "CANCEL";
+            this.BtnCancelCurrentTransaction.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BtnCancelCurrentTransaction.UseVisualStyleBackColor = false;
+            this.BtnCancelCurrentTransaction.Click += new System.EventHandler(this.BtnCancelCurrentTransaction_Click);
             // 
             // BtnSave
             // 
@@ -299,33 +330,91 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TboxTableNumber.Size = new System.Drawing.Size(244, 27);
             this.TboxTableNumber.TabIndex = 5;
             // 
-            // BtnCancelCurrentTransaction
+            // splitContainer1
             // 
-            this.BtnCancelCurrentTransaction.BackColor = System.Drawing.Color.DarkRed;
-            this.BtnCancelCurrentTransaction.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BtnCancelCurrentTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnCancelCurrentTransaction.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.BtnCancelCurrentTransaction.ForeColor = System.Drawing.Color.White;
-            this.BtnCancelCurrentTransaction.Image = global::Main.Properties.Resources.save_white_26;
-            this.BtnCancelCurrentTransaction.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelCurrentTransaction.Location = new System.Drawing.Point(14, 163);
-            this.BtnCancelCurrentTransaction.Name = "BtnCancelCurrentTransaction";
-            this.BtnCancelCurrentTransaction.Size = new System.Drawing.Size(108, 45);
-            this.BtnCancelCurrentTransaction.TabIndex = 71;
-            this.BtnCancelCurrentTransaction.Text = "CANCEL";
-            this.BtnCancelCurrentTransaction.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BtnCancelCurrentTransaction.UseVisualStyleBackColor = false;
-            this.BtnCancelCurrentTransaction.Click += new System.EventHandler(this.BtnCancelCurrentTransaction_Click);
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.TabControlMain);
+            this.splitContainer1.Size = new System.Drawing.Size(828, 308);
+            this.splitContainer1.SplitterDistance = 276;
+            this.splitContainer1.TabIndex = 13;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.panel2);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
+            this.splitContainer2.Size = new System.Drawing.Size(276, 308);
+            this.splitContainer2.SplitterDistance = 53;
+            this.splitContainer2.TabIndex = 1;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.LblSubTotal);
+            this.panel2.Controls.Add(this.label5);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(276, 53);
+            this.panel2.TabIndex = 0;
+            // 
+            // LblSubTotal
+            // 
+            this.LblSubTotal.Location = new System.Drawing.Point(71, 7);
+            this.LblSubTotal.Name = "LblSubTotal";
+            this.LblSubTotal.Size = new System.Drawing.Size(169, 25);
+            this.LblSubTotal.TabIndex = 1;
+            this.LblSubTotal.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 7);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 25);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Total:";
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(276, 251);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
             // 
             // POSControllerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.TabControlMain);
+            this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "POSControllerControl";
-            this.Size = new System.Drawing.Size(509, 308);
+            this.Size = new System.Drawing.Size(828, 308);
             this.Load += new System.EventHandler(this.POSCheckOutControllerControl_Load);
             this.TabControlMain.ResumeLayout(false);
             this.TabPageControls.ResumeLayout(false);
@@ -335,6 +424,16 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TabPageCheckout.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -361,5 +460,11 @@ namespace Main.Forms.POSManagementForms.Controls
         private System.Windows.Forms.TextBox TboxTableNumber;
         private System.Windows.Forms.Button BtnSave;
         private System.Windows.Forms.Button BtnCancelCurrentTransaction;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label LblSubTotal;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

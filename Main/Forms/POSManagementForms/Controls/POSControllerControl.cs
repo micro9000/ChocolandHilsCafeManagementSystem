@@ -29,8 +29,6 @@ namespace Main.Forms.POSManagementForms.Controls
             _pOSState = pOSState;
         }
 
-
-
         private List<SaleTransactionModel> _activedineInTransactions;
 
         public List<SaleTransactionModel> ActiveDineInTransactions
@@ -62,7 +60,40 @@ namespace Main.Forms.POSManagementForms.Controls
                 this.TboxTicketNumber.Text = _pOSState.CurrentSaleTransaction.TicketNumber;
                 this.TboxCustomerName.Text = _pOSState.CurrentSaleTransaction.CustomerName;
                 this.TboxTableNumber.Text = _pOSState.CurrentSaleTransaction.TableNumber.ToString();
+
+                this.LblSubTotal.Text = GetCurrentTransactionSubTotal().ToString("0.##");
             }
+
+            DisplayCurrentSaleTransactionSubTotal();
+        }
+
+        public void DisplayCurrentSaleTransactionSubTotal()
+        {
+            this.LblSubTotal.Text = "0";
+            if (_pOSState.CurrentSaleTransaction != null)
+            {
+                this.LblSubTotal.Text = GetCurrentTransactionSubTotal().ToString("#,##0.##");
+            }
+        }
+
+        private decimal GetCurrentTransactionSubTotal()
+        {
+            var products = _pOSState.CurrentSaleTransactionProducts;
+            var comboMeals = _pOSState.CurrentSaleTransactionComboMeals;
+
+            decimal subTotal = 0;
+
+            foreach(var prod in products)
+            {
+                subTotal += prod.Qty * prod.productCurrentPrice;
+            }
+
+            foreach(var cm in comboMeals)
+            {
+                subTotal += cm.Qty * cm.ComboMealCurrentPrice;
+            }
+
+            return subTotal;
         }
 
         private void ClearCheckOutForm()

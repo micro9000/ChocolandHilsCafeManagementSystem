@@ -750,6 +750,9 @@ CREATE TABLE IF NOT EXISTS SalesTransactions(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+DELETE FROM SalesTransactions where id > 0;
+
+
 SELECT * FROM SalesTransactions
 WHERE isDeleted=false AND transStatus=1;
 
@@ -768,11 +771,15 @@ CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
     FOREIGN KEY (productId) REFERENCES Products (id)
 )ENGINE=INNODB;
 
+DELETE FROM SalesTransactionProducts where id > 0;
+
+
 SELECT *
 FROM SalesTransactionProducts AS STPrd
 JOIN Products AS Prd ON STPrd.productId=Prd.id
 WHERE STPrd.isDeleted=false AND STPrd.salesTransId=@SaleTransId;
 
+DELETE FROM SalesTransactionProducts WHERE id> 0;
 
 select * from SalesTransactionProducts;
 
@@ -791,10 +798,13 @@ CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
     FOREIGN KEY (comboMealId) REFERENCES ComboMeals (id)
 )ENGINE=INNODB;
 
+DELETE FROM SalesTransactionComboMeals where id > 0;
+
+
 SELECT *
 FROM SalesTransactionComboMeals AS STComMl
 JOIN ComboMeals AS ComMl ON STComMl.comboMealId = ComMl.id
-WHERE STComMl.isDeleted=false AND STComMl.salesTransId=@SaleTranId;
+WHERE STComMl.isDeleted=false AND STComMl.salesTransId=1;
 
 -- Sale Transaction's Product's Ingredient's Inventory deduction history :D
 -- we just need to store the ingredients we used in our product and 
@@ -819,6 +829,12 @@ CREATE TABLE IF NOT EXISTS SaleTranProdIngInvDeductionsRecords(
     FOREIGN KEY(ingredientInventoryId) REFERENCES IngredientInventory(id)
 )ENGINE=INNODB;
 
+
+DELETE FROM SaleTranProdIngInvDeductionsRecords where id > 0;
+
+
+SELECT * FROM SaleTranProdIngInvDeductionsRecords;
+
 CREATE TABLE IF NOT EXISTS SaleTranComboMealIngInvDeductionsRecords(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	saleTransComboMealId BIGINT NOT NULL,
@@ -840,7 +856,6 @@ CREATE TABLE IF NOT EXISTS SaleTranComboMealIngInvDeductionsRecords(
     FOREIGN KEY(ingredientInventoryId) REFERENCES IngredientInventory(id)
 )ENGINE=INNODB;
 
-SELECT * 
-FROM SaleTranComboMealIngInvDeductionsRecords
-WHERE isDeleted=false AND saleTransComboMealId=@SaleTranComboMealId 
-AND productId=@ProductId AND ingredientId=@IngredientId
+DELETE FROM SaleTranComboMealIngInvDeductionsRecords where id > 0;
+
+SELECT * FROM SaleTranComboMealIngInvDeductionsRecords;

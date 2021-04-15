@@ -103,7 +103,6 @@ namespace Main.Forms.POSManagementForms
 
             // initialize controls
             InitializePOSControllerControl();
-            InitializeTotalAndReceiptPreviewControl();
 
             _pOSState.PropertyChanged += TestingHandlingPOSStateChange;
         }
@@ -115,26 +114,13 @@ namespace Main.Forms.POSManagementForms
 
         public void InitializePOSControllerControl()
         {
-            this.PanelPOSController.Controls.Clear();
+            this.LeftSideSplitInnerContainer.Panel2.Controls.Clear();
             this.pOSControllerControl = new(_iPOSCommandController, _pOSReadController, _pOSState);
             //pOSControllerControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
             this.pOSControllerControl.Dock = DockStyle.Fill;
 
-            this.PanelPOSController.Controls.Add(this.pOSControllerControl);
+            this.LeftSideSplitInnerContainer.Panel2.Controls.Add(this.pOSControllerControl);
         }
-
-
-        // Total and receip preview control
-        public void InitializeTotalAndReceiptPreviewControl()
-        {
-            this.POSControllerSplitContainer.Panel1.Controls.Clear();
-            TotalAndReceiptPreviewControl totalAndReceiptPreviewControl = new();
-            totalAndReceiptPreviewControl.Dock = DockStyle.Fill;
-            //totalAndReceiptPreviewControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
-            this.POSControllerSplitContainer.Panel1.Controls.Add(totalAndReceiptPreviewControl);
-        }
-
-
 
         public void DisplayProductList(List<ProductModel> products)
         {
@@ -391,6 +377,8 @@ namespace Main.Forms.POSManagementForms
 
         public void DisplayCurrentSaleTransactionProductsInCartDGV()
         {
+            this.pOSControllerControl.DisplayCurrentSaleTransactionSubTotal();
+
             List<SaleTransactionProductModel> products = _pOSState.CurrentSaleTransactionProducts;
             List<SaleTransactionComboMealModel> comboMeals = _pOSState.CurrentSaleTransactionComboMeals;
 

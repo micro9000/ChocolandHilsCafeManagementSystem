@@ -405,7 +405,7 @@ namespace Main.Controllers.POSControllers
                 // we need the list of inventories we can deduct the product's ingredient qty value
                 // because, in single ingredient, we can have multiple inventory
                 var inventoriesWhereWeCanDeductProductIngredientQtyValue = _ingredientInventoryManager
-                                                                            .GetWhereInventoryThisProductIngredientToDeduct(prodIngredient.IngredientId, prodIngredient.QtyValue, prodIngredient.UOM)
+                                                                            .GetWhereInventoryThisProductIngredientToDeduct(prodIngredient.IngredientId, productQtyWeNeedToDeduct, prodIngredient.UOM)
                                                                             .OrderBy(x => x.DeductionSequence);
 
                 // deduct require qty value in our ingredient's inventories
@@ -565,7 +565,7 @@ namespace Main.Controllers.POSControllers
                 // we need the list of inventories we can deduct the product's ingredient qty value
                 // because, in single ingredient, we can have multiple inventory
                 var inventoriesWhereWeCanDeductProductIngredientQtyValue = _ingredientInventoryManager
-                                                                            .GetWhereInventoryThisProductIngredientToDeduct(prodIngredient.IngredientId, prodIngredient.QtyValue, prodIngredient.UOM)
+                                                                            .GetWhereInventoryThisProductIngredientToDeduct(prodIngredient.IngredientId, productQtyWeNeedToDeduct, prodIngredient.UOM)
                                                                             .OrderBy(x => x.DeductionSequence);
 
                 // deduct require qty value in our ingredient's inventories

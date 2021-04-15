@@ -32,8 +32,6 @@ namespace Main.Forms.POSManagementForms
             this.MainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.LeftSideSplitInnerContainer = new System.Windows.Forms.SplitContainer();
             this.DGVCartItems = new System.Windows.Forms.DataGridView();
-            this.POSControllerSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.PanelPOSController = new System.Windows.Forms.Panel();
             this.TopPanelInSplitContainerPanel1 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -69,18 +67,16 @@ namespace Main.Forms.POSManagementForms
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label12 = new System.Windows.Forms.Label();
+            this.PanelPOSController = new System.Windows.Forms.Panel();
+            this.POSControllerSplitContainer = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
             this.MainSplitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LeftSideSplitInnerContainer)).BeginInit();
             this.LeftSideSplitInnerContainer.Panel1.SuspendLayout();
-            this.LeftSideSplitInnerContainer.Panel2.SuspendLayout();
             this.LeftSideSplitInnerContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVCartItems)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).BeginInit();
-            this.POSControllerSplitContainer.Panel2.SuspendLayout();
-            this.POSControllerSplitContainer.SuspendLayout();
             this.TopPanelInSplitContainerPanel1.SuspendLayout();
             this.TabControlProductsAndComboMeals.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -100,6 +96,9 @@ namespace Main.Forms.POSManagementForms
             this.TabPageTableStatus.SuspendLayout();
             this.PanelDineInOrdersTableStatus.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).BeginInit();
+            this.POSControllerSplitContainer.Panel2.SuspendLayout();
+            this.POSControllerSplitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -132,10 +131,6 @@ namespace Main.Forms.POSManagementForms
             // LeftSideSplitInnerContainer.Panel1
             // 
             this.LeftSideSplitInnerContainer.Panel1.Controls.Add(this.DGVCartItems);
-            // 
-            // LeftSideSplitInnerContainer.Panel2
-            // 
-            this.LeftSideSplitInnerContainer.Panel2.Controls.Add(this.POSControllerSplitContainer);
             this.LeftSideSplitInnerContainer.Size = new System.Drawing.Size(603, 578);
             this.LeftSideSplitInnerContainer.SplitterDistance = 340;
             this.LeftSideSplitInnerContainer.TabIndex = 2;
@@ -153,27 +148,6 @@ namespace Main.Forms.POSManagementForms
             this.DGVCartItems.Size = new System.Drawing.Size(603, 340);
             this.DGVCartItems.TabIndex = 0;
             this.DGVCartItems.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVCartItems_CellClick);
-            // 
-            // POSControllerSplitContainer
-            // 
-            this.POSControllerSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.POSControllerSplitContainer.Location = new System.Drawing.Point(0, 0);
-            this.POSControllerSplitContainer.Name = "POSControllerSplitContainer";
-            // 
-            // POSControllerSplitContainer.Panel2
-            // 
-            this.POSControllerSplitContainer.Panel2.Controls.Add(this.PanelPOSController);
-            this.POSControllerSplitContainer.Size = new System.Drawing.Size(603, 234);
-            this.POSControllerSplitContainer.SplitterDistance = 229;
-            this.POSControllerSplitContainer.TabIndex = 0;
-            // 
-            // PanelPOSController
-            // 
-            this.PanelPOSController.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelPOSController.Location = new System.Drawing.Point(0, 0);
-            this.PanelPOSController.Name = "PanelPOSController";
-            this.PanelPOSController.Size = new System.Drawing.Size(370, 234);
-            this.PanelPOSController.TabIndex = 0;
             // 
             // TopPanelInSplitContainerPanel1
             // 
@@ -412,7 +386,6 @@ namespace Main.Forms.POSManagementForms
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.Controls.Add(this.BtnRefreshComboMealItems);
             this.panel2.Controls.Add(this.TboxSearchComboMeals);
             this.panel2.Controls.Add(this.label11);
@@ -566,6 +539,26 @@ namespace Main.Forms.POSManagementForms
             this.label12.TabIndex = 3;
             this.label12.Text = "Search item code";
             // 
+            // PanelPOSController
+            // 
+            this.PanelPOSController.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelPOSController.Location = new System.Drawing.Point(0, 0);
+            this.PanelPOSController.Name = "PanelPOSController";
+            this.PanelPOSController.Size = new System.Drawing.Size(370, 234);
+            this.PanelPOSController.TabIndex = 0;
+            // 
+            // POSControllerSplitContainer
+            // 
+            this.POSControllerSplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.POSControllerSplitContainer.Name = "POSControllerSplitContainer";
+            // 
+            // POSControllerSplitContainer.Panel2
+            // 
+            this.POSControllerSplitContainer.Panel2.Controls.Add(this.PanelPOSController);
+            this.POSControllerSplitContainer.Size = new System.Drawing.Size(603, 234);
+            this.POSControllerSplitContainer.SplitterDistance = 229;
+            this.POSControllerSplitContainer.TabIndex = 0;
+            // 
             // FrmMainPOSTerminal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -580,13 +573,9 @@ namespace Main.Forms.POSManagementForms
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).EndInit();
             this.MainSplitContainer.ResumeLayout(false);
             this.LeftSideSplitInnerContainer.Panel1.ResumeLayout(false);
-            this.LeftSideSplitInnerContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LeftSideSplitInnerContainer)).EndInit();
             this.LeftSideSplitInnerContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVCartItems)).EndInit();
-            this.POSControllerSplitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).EndInit();
-            this.POSControllerSplitContainer.ResumeLayout(false);
             this.TopPanelInSplitContainerPanel1.ResumeLayout(false);
             this.TopPanelInSplitContainerPanel1.PerformLayout();
             this.TabControlProductsAndComboMeals.ResumeLayout(false);
@@ -610,6 +599,9 @@ namespace Main.Forms.POSManagementForms
             this.PanelDineInOrdersTableStatus.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.POSControllerSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).EndInit();
+            this.POSControllerSplitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -625,7 +617,6 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.DataGridView DGVCartItems;
         private System.Windows.Forms.FlowLayoutPanel FLPanelProductList;
         private System.Windows.Forms.FlowLayoutPanel FLPanelProductCategories;
-        private System.Windows.Forms.SplitContainer POSControllerSplitContainer;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBox7;
@@ -656,5 +647,6 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.FlowLayoutPanel FlowLayoutTables;
         private System.Windows.Forms.Panel PanelPOSController;
+        private System.Windows.Forms.SplitContainer POSControllerSplitContainer;
     }
 }
