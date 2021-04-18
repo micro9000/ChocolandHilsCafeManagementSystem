@@ -21,5 +21,10 @@ namespace Main.Controllers.POSControllers.ControllerInterface
 
         IEnumerable<SaleTransactionProductModel> GetSaleTranProducts(long saleTransactionId);
         IEnumerable<SaleTransactionComboMealModel> GetSaleTranComboMeals(long saleTransactionId);
+
+        decimal GetTotalSalesByDate(DateTime transDate);
+
+        CashRegisterCashOutTransactionModel GetCashRegisterLastTransaction();
+        List<CashRegisterCashOutTransactionModel> GetCashRegisterTransByDateRange(int numberOfDays, DateTime lastDate);
     }
 }

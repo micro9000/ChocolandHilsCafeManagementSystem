@@ -170,6 +170,7 @@ namespace Main
             services.AddTransient<ISaleTransactionComboMealData, SaleTransactionComboMealData>();
             services.AddTransient<ISaleTranProdIngInvDeductionsRecordData, SaleTranProdIngInvDeductionsRecordData>();
             services.AddTransient<ISaleTranComboMealIngInvDeductionsRecordData, SaleTranComboMealIngInvDeductionsRecordData>();
+            services.AddTransient<ICashRegisterCashOutTransactionData, CashRegisterCashOutTransactionData>();
 
             // Employee Management
             // validator

@@ -231,10 +231,10 @@ namespace Main.Forms.AttendanceTerminal
 
                 // we need to get the schedule time and align them on today's date and time
                 // if today is 2021/03/13 and schedule time is 8:30AM
-                // the startTime should be 2021/03/13 8:30AM, because in our database, the date is different, 
+                // the startTime should be 2021/03/13 8:30AM, because in our database, the date is set to other date, 
                 // so we need to align the date to today's date
-                DateTime startDateTime = DateTime.Today.Add(shiftDetails.StartTime.TimeOfDay);
-                DateTime endDateTime = DateTime.Today.Add(shiftDetails.EndTime.TimeOfDay);
+                DateTime shiftStartDateTime = DateTime.Today.Add(shiftDetails.StartTime.TimeOfDay);
+                DateTime shiftEndDateTime = DateTime.Today.Add(shiftDetails.EndTime.TimeOfDay);
                 DateTime earlyTimeOutDateTime = DateTime.Today.Add(shiftDetails.EarlyTimeOut.TimeOfDay);
                 DateTime lateTimeInDateTime = DateTime.Today.Add(shiftDetails.LateTimeIn.TimeOfDay);
 
@@ -272,7 +272,7 @@ namespace Main.Forms.AttendanceTerminal
                     TimeSpan hrsDiffFromINandLateTimeINTimespan = lateTimeInDateTime - todaysDateAndTime;
                     int hrsDiffFromINandLateTimeIN = (int)hrsDiffFromINandLateTimeINTimespan.TotalHours;
 
-                    TimeSpan hrsDiffFromINandEndDateTimeTimespan = endDateTime - todaysDateAndTime;
+                    TimeSpan hrsDiffFromINandEndDateTimeTimespan = shiftEndDateTime - todaysDateAndTime;
                     int hrsDiffFromINandEndDateTime = (int)hrsDiffFromINandEndDateTimeTimespan.TotalHours;
 
 
@@ -284,7 +284,7 @@ namespace Main.Forms.AttendanceTerminal
                     };
 
 
-                    if (startDateTime < todaysDateAndTime &&
+                    if (shiftStartDateTime < todaysDateAndTime &&
                         earlyTimeOutDateTime > todaysDateAndTime &&
                         hrsDiffFromINandLateTimeIN > 1)
                     {
@@ -292,7 +292,7 @@ namespace Main.Forms.AttendanceTerminal
                         // compute late for first-half
 
 
-                        TimeSpan lateInterval = todaysDateAndTime - startDateTime;
+                        TimeSpan lateInterval = todaysDateAndTime - shiftStartDateTime;
                         //int lateHrs = (int)lateInterval.TotalHours;
                         decimal lateMins = (decimal)lateInterval.TotalMinutes;
 
@@ -315,7 +315,7 @@ namespace Main.Forms.AttendanceTerminal
                         }
 
                     }
-                    else if (startDateTime >= todaysDateAndTime && earlyTimeOutDateTime > todaysDateAndTime)
+                    else if (shiftStartDateTime >= todaysDateAndTime && earlyTimeOutDateTime > todaysDateAndTime)
                     {
                         //MessageBox.Show("good time-in for first half");
                         // good time-in for first half
@@ -338,7 +338,7 @@ namespace Main.Forms.AttendanceTerminal
                         }
 
                     }
-                    else if (startDateTime < todaysDateAndTime &&
+                    else if (shiftStartDateTime < todaysDateAndTime &&
                             earlyTimeOutDateTime < todaysDateAndTime &&
                             lateTimeInDateTime >= todaysDateAndTime)
                     {
@@ -365,10 +365,10 @@ namespace Main.Forms.AttendanceTerminal
 
 
                     }
-                    else if (startDateTime < todaysDateAndTime &&
+                    else if (shiftStartDateTime < todaysDateAndTime &&
                            earlyTimeOutDateTime < todaysDateAndTime &&
                            lateTimeInDateTime < todaysDateAndTime &&
-                           endDateTime > todaysDateAndTime &&
+                           shiftEndDateTime > todaysDateAndTime &&
                            hrsDiffFromINandEndDateTime >= 1)
                     {
                         // put null for first-half time and out and 0 for hrs
@@ -402,7 +402,7 @@ namespace Main.Forms.AttendanceTerminal
 
 
                     }
-                    else if (startDateTime < todaysDateAndTime &&
+                    else if (shiftStartDateTime < todaysDateAndTime &&
                              lateTimeInDateTime > todaysDateAndTime &&
                              hrsDiffFromINandLateTimeIN <= 1)
                     {
@@ -445,7 +445,7 @@ namespace Main.Forms.AttendanceTerminal
                         }
 
                         // time-out time should not earlier than shift start-time
-                        if (todaysDateAndTime <= startDateTime)
+                        if (todaysDateAndTime <= shiftStartDateTime)
                         {
                             MessageBox.Show("Invalid transaction", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
@@ -455,7 +455,7 @@ namespace Main.Forms.AttendanceTerminal
                         {
                             //MessageBox.Show("Good time-out for first-half");
 
-                            TimeSpan firstTimeOutHrsTimespan = todaysDateAndTime - startDateTime;
+                            TimeSpan firstTimeOutHrsTimespan = todaysDateAndTime - shiftStartDateTime;
                             decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes; // no need to store the sec
 
                             todayAttendance.IsTimeOutProvided = true;
@@ -490,7 +490,7 @@ namespace Main.Forms.AttendanceTerminal
                         }
                         else if (todaysDateAndTime < earlyTimeOutDateTime && lateTimeInDateTime >= todaysDateAndTime)
                         {
-                            TimeSpan firstTimeOutHrsTimespan = todaysDateAndTime - startDateTime;
+                            TimeSpan firstTimeOutHrsTimespan = todaysDateAndTime - shiftStartDateTime;
                             decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes; // no need to store the sec
 
                             TimeSpan underTimeTimespan = earlyTimeOutDateTime - todaysDateAndTime;
@@ -528,7 +528,7 @@ namespace Main.Forms.AttendanceTerminal
                         }
                         else if (todaysDateAndTime > earlyTimeOutDateTime && todaysDateAndTime > lateTimeInDateTime)
                         {
-                            TimeSpan firstTimeOutHrsTimespan = earlyTimeOutDateTime - startDateTime;
+                            TimeSpan firstTimeOutHrsTimespan = earlyTimeOutDateTime - shiftStartDateTime;
                             decimal firstTimeOutHrs = (int)firstTimeOutHrsTimespan.TotalMinutes;
 
                             todayAttendance.IsTimeOutProvided = true;
@@ -539,13 +539,13 @@ namespace Main.Forms.AttendanceTerminal
                                 todayAttendance.FirstHalfHrs = firstTimeOutHrs;
                             }
 
-                            if (todaysDateAndTime < endDateTime)
+                            if (todaysDateAndTime < shiftEndDateTime)
                             {
 
                                 TimeSpan secondTimeOutHrsTimespan = todaysDateAndTime - lateTimeInDateTime;
                                 decimal secondTimeOutHrs = (int)secondTimeOutHrsTimespan.TotalMinutes;// no need to store the sec
 
-                                TimeSpan underTimeTimespan = endDateTime - todaysDateAndTime;
+                                TimeSpan underTimeTimespan = shiftEndDateTime - todaysDateAndTime;
                                 decimal underTime = (int)underTimeTimespan.TotalMinutes;// no need to store the sec
 
                                 todayAttendance.SecondTimeIn = lateTimeInDateTime;
@@ -583,7 +583,7 @@ namespace Main.Forms.AttendanceTerminal
                             else
                             {
 
-                                TimeSpan secondTimeOutHrsTimespan = endDateTime - lateTimeInDateTime;
+                                TimeSpan secondTimeOutHrsTimespan = shiftEndDateTime - lateTimeInDateTime;
                                 decimal secondTimeOutHrs = (int)secondTimeOutHrsTimespan.TotalMinutes;// no need to store the sec
 
                                 TimeSpan overTimeHrsTimespan = todaysDateAndTime - lateTimeInDateTime;

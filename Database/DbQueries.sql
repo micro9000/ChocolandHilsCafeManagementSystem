@@ -755,13 +755,20 @@ ALTER TABLE SalesTransactions
 ADD COLUMN discountIsPercentage BOOLEAN DEFAULT FALSE;
 ALTER TABLE SalesTransactions
 ADD COLUMN discountPercent DECIMAL;
+ALTER TABLE SalesTransactions
+ADD COLUMN isCashOut BOOLEAN DEFAULT false;
 
+SELECT * FROM SalesTransactions;
+
+SELECT SUM(totalAmount) as totalSales FROM SalesTransactions WHERE isDeleted=false AND transStatus=@TransStatus AND createdAt=@TransDate;
 
 DELETE FROM SalesTransactions where id > 0;
 
 
 SELECT * FROM SalesTransactions
 WHERE isDeleted=false AND transStatus=1;
+
+SELECT * FROM SalesTransactions WHERE DATE(createdAt)='2021-04-18' AND transStatus=2;
 
 CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -866,3 +873,21 @@ CREATE TABLE IF NOT EXISTS SaleTranComboMealIngInvDeductionsRecords(
 DELETE FROM SaleTranComboMealIngInvDeductionsRecords where id > 0;
 
 SELECT * FROM SaleTranComboMealIngInvDeductionsRecords;
+
+
+CREATE TABLE IF NOT EXISTS CashRegisterCashOutTransactions(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    totalSales DECIMAL(9,2),
+    cashOut DECIMAL(9,2),
+	remainingCash DECIMAL(9,2),
+    currentUser VARCHAR(100),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+SELECT * FROM CashRegisterCashOutTransactions;
+
+
+SELECT * FROM CashRegisterCashOutTransactions WHERE isDeleted=false ORDER By id DESC LIMIT 1;

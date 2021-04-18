@@ -85,9 +85,32 @@ namespace Main.Forms.POSManagementForms
             this.Status = new System.Windows.Forms.ColumnHeader();
             this.CashierName = new System.Windows.Forms.ColumnHeader();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.DGVCashRegisterTransactions = new System.Windows.Forms.DataGridView();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.NumUpDwnTotalCash = new System.Windows.Forms.NumericUpDown();
+            this.BtnCancelUpdateCashRegisterTrans = new System.Windows.Forms.Button();
+            this.BtnSaveCashRegisterTransaction = new System.Windows.Forms.Button();
+            this.label18 = new System.Windows.Forms.Label();
+            this.NumUpDwnRemCash = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.NumUpDwnCashOut = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.NumUpDwnTotalSalesToday = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.NumUpDwnPrevDayRemCash = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.PanelPOSController = new System.Windows.Forms.Panel();
             this.POSControllerSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.label15 = new System.Windows.Forms.Label();
+            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.label17 = new System.Windows.Forms.Label();
+            this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.label20 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -118,9 +141,22 @@ namespace Main.Forms.POSManagementForms
             this.tabPage1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVCashRegisterTransactions)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnTotalCash)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnRemCash)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnCashOut)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnTotalSalesToday)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnPrevDayRemCash)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).BeginInit();
             this.POSControllerSplitContainer.Panel2.SuspendLayout();
             this.POSControllerSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -716,6 +752,7 @@ namespace Main.Forms.POSManagementForms
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.panel4);
             this.tabPage4.Location = new System.Drawing.Point(4, 30);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -723,6 +760,196 @@ namespace Main.Forms.POSManagementForms
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Cash Register";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // panel4
+            // 
+            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel4.Controls.Add(this.label20);
+            this.panel4.Controls.Add(this.DGVCashRegisterTransactions);
+            this.panel4.Controls.Add(this.groupBox2);
+            this.panel4.Location = new System.Drawing.Point(8, 13);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1197, 617);
+            this.panel4.TabIndex = 3;
+            // 
+            // DGVCashRegisterTransactions
+            // 
+            this.DGVCashRegisterTransactions.AllowUserToAddRows = false;
+            this.DGVCashRegisterTransactions.AllowUserToDeleteRows = false;
+            this.DGVCashRegisterTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVCashRegisterTransactions.Location = new System.Drawing.Point(495, 89);
+            this.DGVCashRegisterTransactions.Name = "DGVCashRegisterTransactions";
+            this.DGVCashRegisterTransactions.ReadOnly = true;
+            this.DGVCashRegisterTransactions.RowTemplate.Height = 25;
+            this.DGVCashRegisterTransactions.Size = new System.Drawing.Size(614, 452);
+            this.DGVCashRegisterTransactions.TabIndex = 71;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label19);
+            this.groupBox2.Controls.Add(this.NumUpDwnTotalCash);
+            this.groupBox2.Controls.Add(this.BtnCancelUpdateCashRegisterTrans);
+            this.groupBox2.Controls.Add(this.BtnSaveCashRegisterTransaction);
+            this.groupBox2.Controls.Add(this.label18);
+            this.groupBox2.Controls.Add(this.NumUpDwnRemCash);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.NumUpDwnCashOut);
+            this.groupBox2.Controls.Add(this.label13);
+            this.groupBox2.Controls.Add(this.NumUpDwnTotalSalesToday);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.NumUpDwnPrevDayRemCash);
+            this.groupBox2.Location = new System.Drawing.Point(138, 71);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(318, 470);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Cash Register Current value";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(24, 186);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(83, 21);
+            this.label19.TabIndex = 7;
+            this.label19.Text = "Total Cash";
+            // 
+            // NumUpDwnTotalCash
+            // 
+            this.NumUpDwnTotalCash.DecimalPlaces = 2;
+            this.NumUpDwnTotalCash.Enabled = false;
+            this.NumUpDwnTotalCash.Location = new System.Drawing.Point(24, 210);
+            this.NumUpDwnTotalCash.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.NumUpDwnTotalCash.Name = "NumUpDwnTotalCash";
+            this.NumUpDwnTotalCash.Size = new System.Drawing.Size(261, 29);
+            this.NumUpDwnTotalCash.TabIndex = 6;
+            // 
+            // BtnCancelUpdateCashRegisterTrans
+            // 
+            this.BtnCancelUpdateCashRegisterTrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnCancelUpdateCashRegisterTrans.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCancelUpdateCashRegisterTrans.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnCancelUpdateCashRegisterTrans.ForeColor = System.Drawing.Color.White;
+            this.BtnCancelUpdateCashRegisterTrans.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCancelUpdateCashRegisterTrans.Location = new System.Drawing.Point(107, 389);
+            this.BtnCancelUpdateCashRegisterTrans.Name = "BtnCancelUpdateCashRegisterTrans";
+            this.BtnCancelUpdateCashRegisterTrans.Size = new System.Drawing.Size(81, 38);
+            this.BtnCancelUpdateCashRegisterTrans.TabIndex = 65;
+            this.BtnCancelUpdateCashRegisterTrans.Text = "Cancel";
+            this.BtnCancelUpdateCashRegisterTrans.UseVisualStyleBackColor = false;
+            // 
+            // BtnSaveCashRegisterTransaction
+            // 
+            this.BtnSaveCashRegisterTransaction.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnSaveCashRegisterTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSaveCashRegisterTransaction.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnSaveCashRegisterTransaction.ForeColor = System.Drawing.Color.White;
+            this.BtnSaveCashRegisterTransaction.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSaveCashRegisterTransaction.Location = new System.Drawing.Point(204, 389);
+            this.BtnSaveCashRegisterTransaction.Name = "BtnSaveCashRegisterTransaction";
+            this.BtnSaveCashRegisterTransaction.Size = new System.Drawing.Size(81, 38);
+            this.BtnSaveCashRegisterTransaction.TabIndex = 64;
+            this.BtnSaveCashRegisterTransaction.Text = "Submit";
+            this.BtnSaveCashRegisterTransaction.UseVisualStyleBackColor = false;
+            this.BtnSaveCashRegisterTransaction.Click += new System.EventHandler(this.BtnSaveCashRegisterTransaction_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(27, 312);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(123, 21);
+            this.label18.TabIndex = 7;
+            this.label18.Text = "Remaining cash";
+            // 
+            // NumUpDwnRemCash
+            // 
+            this.NumUpDwnRemCash.DecimalPlaces = 2;
+            this.NumUpDwnRemCash.Enabled = false;
+            this.NumUpDwnRemCash.Location = new System.Drawing.Point(24, 336);
+            this.NumUpDwnRemCash.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.NumUpDwnRemCash.Name = "NumUpDwnRemCash";
+            this.NumUpDwnRemCash.Size = new System.Drawing.Size(261, 29);
+            this.NumUpDwnRemCash.TabIndex = 6;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(24, 250);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(73, 21);
+            this.label14.TabIndex = 5;
+            this.label14.Text = "Cash out";
+            // 
+            // NumUpDwnCashOut
+            // 
+            this.NumUpDwnCashOut.DecimalPlaces = 2;
+            this.NumUpDwnCashOut.Location = new System.Drawing.Point(24, 274);
+            this.NumUpDwnCashOut.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.NumUpDwnCashOut.Name = "NumUpDwnCashOut";
+            this.NumUpDwnCashOut.Size = new System.Drawing.Size(261, 29);
+            this.NumUpDwnCashOut.TabIndex = 4;
+            this.NumUpDwnCashOut.KeyUp += new System.Windows.Forms.KeyEventHandler(this.NumUpDwnCashOut_KeyUp);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(24, 120);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(130, 21);
+            this.label13.TabIndex = 3;
+            this.label13.Text = "Total sales today";
+            // 
+            // NumUpDwnTotalSalesToday
+            // 
+            this.NumUpDwnTotalSalesToday.DecimalPlaces = 2;
+            this.NumUpDwnTotalSalesToday.Enabled = false;
+            this.NumUpDwnTotalSalesToday.Location = new System.Drawing.Point(24, 145);
+            this.NumUpDwnTotalSalesToday.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.NumUpDwnTotalSalesToday.Name = "NumUpDwnTotalSalesToday";
+            this.NumUpDwnTotalSalesToday.Size = new System.Drawing.Size(261, 29);
+            this.NumUpDwnTotalSalesToday.TabIndex = 2;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(24, 55);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(215, 21);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Previous day remaining cash";
+            // 
+            // NumUpDwnPrevDayRemCash
+            // 
+            this.NumUpDwnPrevDayRemCash.DecimalPlaces = 2;
+            this.NumUpDwnPrevDayRemCash.Enabled = false;
+            this.NumUpDwnPrevDayRemCash.Location = new System.Drawing.Point(24, 79);
+            this.NumUpDwnPrevDayRemCash.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this.NumUpDwnPrevDayRemCash.Name = "NumUpDwnPrevDayRemCash";
+            this.NumUpDwnPrevDayRemCash.Size = new System.Drawing.Size(261, 29);
+            this.NumUpDwnPrevDayRemCash.TabIndex = 0;
             // 
             // label12
             // 
@@ -753,6 +980,78 @@ namespace Main.Forms.POSManagementForms
             this.POSControllerSplitContainer.Size = new System.Drawing.Size(603, 234);
             this.POSControllerSplitContainer.SplitterDistance = 229;
             this.POSControllerSplitContainer.TabIndex = 0;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(23, 208);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(54, 15);
+            this.label15.TabIndex = 5;
+            this.label15.Text = "Cash out";
+            // 
+            // numericUpDown4
+            // 
+            this.numericUpDown4.Location = new System.Drawing.Point(23, 232);
+            this.numericUpDown4.Name = "numericUpDown4";
+            this.numericUpDown4.Size = new System.Drawing.Size(217, 23);
+            this.numericUpDown4.TabIndex = 4;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Controls.Add(this.numericUpDown4);
+            this.groupBox3.Controls.Add(this.label16);
+            this.groupBox3.Controls.Add(this.numericUpDown5);
+            this.groupBox3.Controls.Add(this.label17);
+            this.groupBox3.Controls.Add(this.numericUpDown6);
+            this.groupBox3.Location = new System.Drawing.Point(8, 8);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(413, 364);
+            this.groupBox3.TabIndex = 6;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Cash Register Current value";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(23, 132);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(93, 15);
+            this.label16.TabIndex = 3;
+            this.label16.Text = "Total sales today";
+            // 
+            // numericUpDown5
+            // 
+            this.numericUpDown5.Location = new System.Drawing.Point(23, 157);
+            this.numericUpDown5.Name = "numericUpDown5";
+            this.numericUpDown5.Size = new System.Drawing.Size(217, 23);
+            this.numericUpDown5.TabIndex = 2;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(23, 54);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(158, 15);
+            this.label17.TabIndex = 1;
+            this.label17.Text = "Previous day remaining cash";
+            // 
+            // numericUpDown6
+            // 
+            this.numericUpDown6.Location = new System.Drawing.Point(23, 78);
+            this.numericUpDown6.Name = "numericUpDown6";
+            this.numericUpDown6.Size = new System.Drawing.Size(217, 23);
+            this.numericUpDown6.TabIndex = 0;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(499, 53);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(248, 21);
+            this.label20.TabIndex = 72;
+            this.label20.Text = "Last 30 days cash out transaction";
             // 
             // FrmMainPOSTerminal
             // 
@@ -799,9 +1098,25 @@ namespace Main.Forms.POSManagementForms
             this.panel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVCashRegisterTransactions)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnTotalCash)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnRemCash)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnCashOut)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnTotalSalesToday)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnPrevDayRemCash)).EndInit();
             this.POSControllerSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).EndInit();
             this.POSControllerSplitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -867,5 +1182,28 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DateTimePicker DPickerEndDateForSalesHistory;
         private System.Windows.Forms.DateTimePicker DPickerStartDateForSalesHistory;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown NumUpDwnPrevDayRemCash;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown NumUpDwnCashOut;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.NumericUpDown NumUpDwnTotalSalesToday;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown numericUpDown4;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown numericUpDown5;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.NumericUpDown numericUpDown6;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.NumericUpDown NumUpDwnRemCash;
+        private System.Windows.Forms.Button BtnSaveCashRegisterTransaction;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Button BtnCancelUpdateCashRegisterTrans;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.NumericUpDown NumUpDwnTotalCash;
+        private System.Windows.Forms.DataGridView DGVCashRegisterTransactions;
+        private System.Windows.Forms.Label label20;
     }
 }

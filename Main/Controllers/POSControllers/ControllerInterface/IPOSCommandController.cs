@@ -16,5 +16,7 @@ namespace Main.Controllers.POSControllers.ControllerInterface
         EntityResult<string> CancelSaleTransaction(long saleTransId);
 
         EntityResult<string> Checkout(SaleTransactionModel saleTransaction);
+
+        EntityResult<string> SaveCashRegisterCashOutTransaction(CashRegisterCashOutTransactionModel cashOutTrans, bool isNew);
     }
 }

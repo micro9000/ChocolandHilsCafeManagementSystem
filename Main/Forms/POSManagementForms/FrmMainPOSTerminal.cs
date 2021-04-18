@@ -90,6 +90,8 @@ namespace Main.Forms.POSManagementForms
         private void FrmMainPOSTerminal_Load(object sender, EventArgs e)
         {
             SetDGVCartItemsFontAndColors();
+            SetDGVCashRegisterTransactionsFontAndColors();
+
             this.Products = _productData.GetAllNotDeleted();
             this.ProductCategories = _productCategoryData.GetAllNotDeleted();
             this.ComboMeals = _comboMealData.GetAllNotDeleted();
@@ -496,6 +498,12 @@ namespace Main.Forms.POSManagementForms
                 var salesTransactionToday = _pOSReadController.GetByDate(DateTime.Now, StaticData.POSTransactionStatus.Paid);
                 this.DisplaySalesHistory(salesTransactionToday);
             }
+
+            if (POSMainTabControl.SelectedTab == POSMainTabControl.TabPages[3])
+            {
+                GetCashRegisterRemainingCashOnPrevDayAndTotalSales();
+                DisplayOneMonthCashRegisterTransactions();
+            }
         }
 
         public void DisplayTableStatus(List<TableStatusModel> tableStatus)
@@ -720,5 +728,245 @@ namespace Main.Forms.POSManagementForms
             var searchResultsSalesTrans = _pOSReadController.GetByDateRange(startDate, endDate, StaticData.POSTransactionStatus.Paid);
             this.DisplaySalesHistory(searchResultsSalesTrans);
         }
+
+
+        public void GetCashRegisterRemainingCashOnPrevDayAndTotalSales()
+        {
+            var cashRegisterLastTrans = _pOSReadController.GetCashRegisterLastTransaction();
+            decimal cashRegisterRemCashFrmPrevDay = cashRegisterLastTrans != null ? cashRegisterLastTrans.RemainingCash : 0;
+            decimal totalSalesToday = _pOSReadController.GetTotalSalesByDate(DateTime.Now);
+
+            this.NumUpDwnPrevDayRemCash.Value = cashRegisterRemCashFrmPrevDay;
+            this.NumUpDwnTotalSalesToday.Value = totalSalesToday;
+
+            this.NumUpDwnTotalCash.Value = cashRegisterRemCashFrmPrevDay + totalSalesToday;
+        }
+
+
+        private void NumUpDwnCashOut_KeyUp(object sender, KeyEventArgs e)
+        {
+            decimal cashOutValue = NumUpDwnCashOut.Value;
+            decimal totalCashInRegister = this.NumUpDwnTotalCash.Value;
+            
+            if (cashOutValue > totalCashInRegister)
+            {
+                MessageBox.Show("Invalid cash out value", "Remaining Cash computation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            decimal remainingCash = totalCashInRegister - cashOutValue;
+
+            NumUpDwnRemCash.Value = remainingCash > 0 ? remainingCash : 0;
+        }
+
+
+        private CashRegisterCashOutTransactionModel _cashRegisterTransaction;
+
+        public CashRegisterCashOutTransactionModel CashRegisterTransaction
+        {
+            get { return _cashRegisterTransaction; }
+            set { _cashRegisterTransaction = value; }
+        }
+
+
+        public bool IsNewCashRegisterTransaction { get; set; } = true;
+
+        private void BtnSaveCashRegisterTransaction_Click(object sender, EventArgs e)
+        {
+            decimal totalSales = _pOSReadController.GetTotalSalesByDate(DateTime.Now);
+            decimal remainingCash = totalSales - NumUpDwnCashOut.Value;
+
+            if (totalSales == 0 || NumUpDwnCashOut.Value == 0)
+            {
+                MessageBox.Show("Invalid transaction", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (IsNewCashRegisterTransaction == true)
+            {
+                CashRegisterTransaction = new CashRegisterCashOutTransactionModel {
+                    TotalSales = totalSales,
+                    CashOut = NumUpDwnCashOut.Value,
+                    RemainingCash = remainingCash > 0 ? remainingCash : 0
+                };
+            }
+
+            if (IsNewCashRegisterTransaction == false && CashRegisterTransaction == null)
+            {
+                MessageBox.Show("Cash out object is null, invalid request", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (IsNewCashRegisterTransaction == false && CashRegisterTransaction != null)
+            {
+                CashRegisterTransaction.TotalSales = totalSales;
+                CashRegisterTransaction.CashOut = NumUpDwnCashOut.Value;
+                CashRegisterTransaction.RemainingCash = remainingCash > 0 ? remainingCash : 0;
+            }
+
+            var saveResults = _iPOSCommandController.SaveCashRegisterCashOutTransaction(CashRegisterTransaction, IsNewCashRegisterTransaction);
+
+            string resMsg = "";
+            foreach (var msg in saveResults.Messages)
+            {
+                resMsg += msg;
+            }
+
+            if (saveResults.IsSuccess)
+            {
+                MessageBox.Show(resMsg, "Save cash register transaction", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                GetCashRegisterRemainingCashOnPrevDayAndTotalSales();
+                NumUpDwnTotalCash.Value = 0;
+                NumUpDwnCashOut.Value = 0;
+                NumUpDwnRemCash.Value = 0;
+            }
+            else
+            {
+                MessageBox.Show(resMsg, "Save cash register transaction", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private void SetDGVCashRegisterTransactionsFontAndColors()
+        {
+            this.DGVCashRegisterTransactions.BackgroundColor = Color.White;
+            this.DGVCashRegisterTransactions.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVCashRegisterTransactions.RowHeadersVisible = false;
+            this.DGVCashRegisterTransactions.RowTemplate.Height = 35;
+            this.DGVCashRegisterTransactions.RowTemplate.Resizable = DataGridViewTriState.True;
+            this.DGVCashRegisterTransactions.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVCashRegisterTransactions.AllowUserToResizeRows = false;
+            this.DGVCashRegisterTransactions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.DGVCashRegisterTransactions.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVCashRegisterTransactions.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVCashRegisterTransactions.MultiSelect = false;
+        }
+
+        public void DisplayOneMonthCashRegisterTransactions()
+        {
+            var transactions = _pOSReadController.GetCashRegisterTransByDateRange(30, DateTime.Now);
+            DisplayCashRegisterTranactions(transactions);
+        }
+
+        private List<CashRegisterCashOutTransactionModel> _cashRegisterCashOutTransactions;
+
+        public List<CashRegisterCashOutTransactionModel> CashRegisterCashOutTransactions
+        {
+            get { return _cashRegisterCashOutTransactions; }
+            set { _cashRegisterCashOutTransactions = value; }
+        }
+
+
+        public void DisplayCashRegisterTranactions(List<CashRegisterCashOutTransactionModel> transactions)
+        {
+            this.CashRegisterCashOutTransactions = transactions;
+            this.DGVCashRegisterTransactions.Rows.Clear();
+
+            if (transactions != null)
+            {
+                this.DGVCashRegisterTransactions.ColumnCount = 6;
+
+                this.DGVCashRegisterTransactions.Columns[0].Name = "TrasactionId";
+                this.DGVCashRegisterTransactions.Columns[0].Visible = false;
+
+                this.DGVCashRegisterTransactions.Columns[1].Name = "Date";
+                this.DGVCashRegisterTransactions.Columns[1].Visible = true;
+
+                this.DGVCashRegisterTransactions.Columns[2].Name = "TotalSales";
+                this.DGVCashRegisterTransactions.Columns[2].HeaderText = "Total Sales";
+
+                this.DGVCashRegisterTransactions.Columns[3].Name = "CashOut";
+                this.DGVCashRegisterTransactions.Columns[3].HeaderText = "Cash out";
+
+                this.DGVCashRegisterTransactions.Columns[4].Name = "RemCash";
+                this.DGVCashRegisterTransactions.Columns[4].HeaderText = "RemainingCash";
+
+                this.DGVCashRegisterTransactions.Columns[5].Name = "CashOutUser";
+                this.DGVCashRegisterTransactions.Columns[5].HeaderText = "User";
+
+                //DataGridViewImageColumn btnEditImg = new DataGridViewImageColumn();
+                //btnEditImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //btnEditImg.Image = Image.FromFile("./Resources/edit-24.png");
+                //this.DGVCashRegisterTransactions.Columns.Add(btnEditImg);
+
+                //DataGridViewImageColumn btnCancelImg = new DataGridViewImageColumn();
+                //btnCancelImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //btnCancelImg.Image = Image.FromFile("./Resources/remove-24.png");
+                //this.DGVCashRegisterTransactions.Columns.Add(btnCancelImg);
+
+                foreach (var trans in transactions)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(DGVCashRegisterTransactions);
+
+                    row.Cells[0].Value = trans.Id;
+                    row.Cells[1].Value = trans.CreatedAt.ToShortDateString();
+                    row.Cells[2].Value = trans.TotalSales.ToString("0.##");
+                    row.Cells[3].Value = trans.CashOut.ToString("0.##");
+                    row.Cells[4].Value = trans.RemainingCash.ToString("0.##");
+                    row.Cells[5].Value = trans.CurrentUser;
+
+                    this.DGVCashRegisterTransactions.Rows.Add(row);
+                }
+            }
+        }
+
+        //public void GetAndDisplayCashRegisterTrans(long transId)
+        //{
+        //    if (this.CashRegisterCashOutTransactions != null)
+        //    {
+        //        var transDetails = this.CashRegisterCashOutTransactions.Where(x => x.Id == transId).FirstOrDefault();
+
+        //        if (transDetails == null)
+        //        {
+        //            MessageBox.Show("Transaction id is invalid", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            return;
+        //        }
+
+        //        if (transDetails.CreatedAt != DateTime.Now)
+        //        {
+        //            MessageBox.Show("Not allowed to update this transaction", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            return;
+        //        }
+
+
+        //    }
+        //}
+
+        //private void DGVCashRegisterTransactions_CellClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    // update
+        //    if ((e.ColumnIndex == 6) && e.RowIndex == 0)
+        //    {
+        //        if (DGVCashRegisterTransactions.CurrentRow != null)
+        //        {
+        //            long transactionId = long.Parse(DGVCashRegisterTransactions.CurrentRow.Cells[0].Value.ToString());
+        //        }
+        //    }
+
+        //    // update
+        //    if ((e.ColumnIndex == 6) && e.RowIndex > 0)
+        //    {
+        //        MessageBox.Show("Not allowed to update", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //        return;
+        //    }
+
+        //    // Cancel
+        //    if ((e.ColumnIndex == 7) && e.RowIndex == 0)
+        //    {
+        //        if (DGVCashRegisterTransactions.CurrentRow != null)
+        //        {
+        //            long transactionId = long.Parse(DGVCashRegisterTransactions.CurrentRow.Cells[0].Value.ToString());
+        //        }
+        //    }
+
+        //    // Cancel
+        //    if ((e.ColumnIndex == 7) && e.RowIndex > 0)
+        //    {
+        //        MessageBox.Show("Not allowed to cancel", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //        return;
+        //    }
+        //}
     }
 }

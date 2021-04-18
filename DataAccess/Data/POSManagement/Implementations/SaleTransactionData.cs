@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace DataAccess.Data.POSManagement.Implementations
 {
@@ -22,7 +23,7 @@ namespace DataAccess.Data.POSManagement.Implementations
 
         public List<SaleTransactionModel> GetAllByTransactionDate (DateTime transDate, StaticData.POSTransactionStatus POSTransactionStatus)
         {
-            string query = "SELECT * FROM SalesTransactions WHERE createdAt=@TransactionDate AND transStatus=@TransStatus";
+            string query = "SELECT * FROM SalesTransactions WHERE DATE(createdAt)=@TransactionDate AND transStatus=@TransStatus";
             return this.GetAll(query, 
                     new { 
                         TransactionDate = transDate.ToString("yyyy-MM-dd"),
@@ -32,6 +33,7 @@ namespace DataAccess.Data.POSManagement.Implementations
 
         public List<SaleTransactionModel> GetAllByTransactionDateRange(DateTime startDate, DateTime endDate, StaticData.POSTransactionStatus POSTransactionStatus)
         {
+            endDate = endDate.AddDays(1);
             string query = "SELECT * FROM SalesTransactions WHERE createdAt BETWEEN @StartDate AND @EndDate AND transStatus=@TransStatus";
             return this.GetAll(query, 
                 new { 
@@ -62,6 +64,8 @@ namespace DataAccess.Data.POSManagement.Implementations
 
         public List<SaleTransactionModel> GetSalesTransactionByStatus(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate)
         {
+            endDate = endDate.AddDays(1);
+
             string query = @"SELECT * FROM SalesTransactions
                                 WHERE isDeleted=false AND transStatus=@TransStatus";
 
@@ -70,6 +74,39 @@ namespace DataAccess.Data.POSManagement.Implementations
                 StartDate = startDate.ToString("yyyy-MM-dd"),
                 EndDate = endDate.ToString("yyyy-MM-dd")
             });
+        }
+
+
+        public decimal GetDayTotalSales (StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate)
+        {
+            string query = @"SELECT SUM(totalAmount) as totalSales 
+                            FROM SalesTransactions
+                            WHERE isDeleted=false AND isCashOut=false AND transStatus=@TransStatus AND DATE(createdAt)=@TransDate";
+
+            return this.GetValue<decimal>(query,
+                new { 
+                    TransStatus = POSTransactionStatus, 
+                    TransDate = transDate.ToString("yyyy-MM-dd") 
+                });
+        }
+
+        public bool MassSalesTransactionSalesCashout(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate)
+        {
+            string query = @"UPDATE SalesTransactions SET isCashOut=true 
+                            WHERE isDeleted=false AND isCashOut=false AND transStatus=@TransStatus AND DATE(createdAt)=@TransDate";
+
+            int rowsAffected = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                rowsAffected = conn.Execute(query,
+                        new { 
+                            TransStatus = POSTransactionStatus, 
+                            TransDate = transDate.ToString("yyyy-MM-dd") 
+                        });
+                conn.Close();
+            }
+
+            return rowsAffected > 0;
         }
     }
 }

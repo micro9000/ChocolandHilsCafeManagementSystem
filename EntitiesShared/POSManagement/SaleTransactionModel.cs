@@ -39,5 +39,6 @@ namespace EntitiesShared.POSManagement
 
         public StaticData.POSTransactionStatus TransStatus { get; set; }
 
+        public bool IsCashOut { get; set; }
     }
 }

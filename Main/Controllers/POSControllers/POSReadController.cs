@@ -22,6 +22,7 @@ namespace Main.Controllers.POSControllers
         private readonly ISaleTransactionData _salesTransactionData;
         private readonly ISaleTransactionProductData _saleTransactionProductData;
         private readonly ISaleTransactionComboMealData _saleTransactionComboMealData;
+        private readonly ICashRegisterCashOutTransactionData _cashRegisterCashOutTransactionData;
         private readonly OtherSettings _otherSettings;
 
         public POSReadController(ILogger<POSReadController> logger,
@@ -29,6 +30,7 @@ namespace Main.Controllers.POSControllers
                                 ISaleTransactionData salesTransactionData,
                                 ISaleTransactionProductData saleTransactionProductData,
                                 ISaleTransactionComboMealData saleTransactionComboMealData,
+                                ICashRegisterCashOutTransactionData cashRegisterCashOutTransactionData,
                                 IOptions<OtherSettings> otherSettings)
         {
             _logger = logger;
@@ -36,6 +38,7 @@ namespace Main.Controllers.POSControllers
             _salesTransactionData = salesTransactionData;
             _saleTransactionProductData = saleTransactionProductData;
             _saleTransactionComboMealData = saleTransactionComboMealData;
+            _cashRegisterCashOutTransactionData = cashRegisterCashOutTransactionData;
             _otherSettings = otherSettings.Value;
         }
 
@@ -93,5 +96,22 @@ namespace Main.Controllers.POSControllers
             return _saleTransactionComboMealData.GetAllBySaleTranId(saleTransactionId);
         }
 
+
+        public decimal GetTotalSalesByDate (DateTime transDate)
+        {
+            return _salesTransactionData.GetDayTotalSales(StaticData.POSTransactionStatus.Paid, transDate);
+        }
+
+        public CashRegisterCashOutTransactionModel GetCashRegisterLastTransaction()
+        {
+            return _cashRegisterCashOutTransactionData.GetLastTransaction();
+        }
+
+        public List<CashRegisterCashOutTransactionModel> GetCashRegisterTransByDateRange(int numberOfDays, DateTime lastDate)
+        {
+            DateTime startDate = lastDate.AddDays(-numberOfDays);
+
+            return _cashRegisterCashOutTransactionData.GetByDateRange(startDate, lastDate);
+        }
     }
 }

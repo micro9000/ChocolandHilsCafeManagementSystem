@@ -34,6 +34,7 @@ namespace Main.Controllers.POSControllers
         private readonly IComboMealProductData _comboMealProductData;
         private readonly IIngredientInventoryData _ingredientInventoryData;
         private readonly IIngredientInventoryManager _ingredientInventoryManager;
+        private readonly ICashRegisterCashOutTransactionData _cashRegisterCashOutTransactionData;
         private readonly Sessions _sessions;
         private readonly InitiateNewDineInSalesTransactionValidator _initiateNewDineInSalesTransValidator;
         private readonly InitiateNewTakeOutSalesTransactionValidator _initiateNewTakeOutSalesTransValidator;
@@ -51,6 +52,7 @@ namespace Main.Controllers.POSControllers
                                 IComboMealProductData comboMealProductData,
                                 IIngredientInventoryData ingredientInventoryData,
                                 IIngredientInventoryManager ingredientInventoryManager,
+                                ICashRegisterCashOutTransactionData cashRegisterCashOutTransactionData,
                                 Sessions sessions,
                                 InitiateNewDineInSalesTransactionValidator initiateNewDineInSalesTransValidator,
                                 InitiateNewTakeOutSalesTransactionValidator initiateNewTakeOutSalesTransValidator)
@@ -68,6 +70,7 @@ namespace Main.Controllers.POSControllers
             _comboMealProductData = comboMealProductData;
             _ingredientInventoryData = ingredientInventoryData;
             _ingredientInventoryManager = ingredientInventoryManager;
+            _cashRegisterCashOutTransactionData = cashRegisterCashOutTransactionData;
             _sessions = sessions;
             _initiateNewDineInSalesTransValidator = initiateNewDineInSalesTransValidator;
             _initiateNewTakeOutSalesTransValidator = initiateNewTakeOutSalesTransValidator;
@@ -796,5 +799,92 @@ namespace Main.Controllers.POSControllers
             return results;
         }
 
+
+        public EntityResult<string> SaveCashRegisterCashOutTransaction(CashRegisterCashOutTransactionModel cashOutTrans, bool isNew)
+        {
+            var results = new EntityResult<string>();
+            results.IsSuccess = false;
+
+            try
+            {
+                if (cashOutTrans == null)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Invalid cash out transaction");
+                    return results;
+                }
+
+                cashOutTrans.CurrentUser = _sessions.CurrentLoggedInUser.FullName;
+
+                if (isNew)
+                {
+                    //var lastTrans = _cashRegisterCashOutTransactionData.GetLastTransaction();
+
+                    //if (lastTrans != null && lastTrans.CreatedAt == DateTime.Now)
+                    //{
+                    //    results.IsSuccess = false;
+                    //    results.Messages.Add("");
+                    //    return results;
+                    //}
+
+                    long cashTransId = 0;
+
+                    // transaction scope
+                    using var transaction = new TransactionScope();
+                    cashTransId = _cashRegisterCashOutTransactionData.Add(cashOutTrans);
+                    _salesTransactionData.MassSalesTransactionSalesCashout(StaticData.POSTransactionStatus.Paid, DateTime.Now);
+                    transaction.Complete();
+
+
+                    if (cashTransId > 0)
+                    {
+                        results.IsSuccess = true;
+                        results.Messages.Add("Successfull save cash out transaction.");
+                        return results;
+                    }
+
+                }
+
+                if (isNew == false)
+                {
+                    // update
+                    if (cashOutTrans.Id == 0 || cashOutTrans.Id == long.MinValue)
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add("Cash out transaction object: missing id");
+                        return results;
+                    }
+
+                    var cashOutTransInOurDb = _cashRegisterCashOutTransactionData.Get(cashOutTrans.Id);
+
+                    _mapper.Map(cashOutTrans, cashOutTransInOurDb);
+
+                    bool isDoneUpdate = false;
+
+                    // transaction scope
+                    using var transaction = new TransactionScope();
+                    isDoneUpdate = _cashRegisterCashOutTransactionData.Update(cashOutTransInOurDb);
+                    _salesTransactionData.MassSalesTransactionSalesCashout(StaticData.POSTransactionStatus.Paid, DateTime.Now);
+                    transaction.Complete();
+
+                    if (isDoneUpdate)
+                    {
+                        results.IsSuccess = true;
+                        results.Messages.Add("Successfull save cash out transaction.");
+                        return results;
+                    }
+                }
+
+                results.IsSuccess = false;
+                results.Messages.Add("Unable to save cash out transaction.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add(ex.Message);
+            }
+
+            return results;
+        }
     }
 }
