@@ -705,7 +705,8 @@ namespace Main.Forms.POSManagementForms
                         tran.DiscountPercent.ToString("0.##"),
                         tran.TotalAmount.ToString("0.##"),
                         tran.TransStatus.ToString(),
-                        tran.CurrentUser
+                        tran.CurrentUser,
+                        tran.CreatedAt.ToShortDateString()
                     };
 
                     totalSales += tran.TotalAmount;

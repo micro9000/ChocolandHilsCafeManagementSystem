@@ -23,7 +23,9 @@ namespace DataAccess.Data.POSManagement.Implementations
 
         public List<SaleTransactionModel> GetAllByTransactionDate (DateTime transDate, StaticData.POSTransactionStatus POSTransactionStatus)
         {
-            string query = "SELECT * FROM SalesTransactions WHERE DATE(createdAt)=@TransactionDate AND transStatus=@TransStatus";
+            string query = @"SELECT * FROM SalesTransactions 
+                            WHERE DATE(createdAt)=@TransactionDate AND transStatus=@TransStatus
+                            ORDER BY id DESC";
             return this.GetAll(query, 
                     new { 
                         TransactionDate = transDate.ToString("yyyy-MM-dd"),
@@ -34,7 +36,9 @@ namespace DataAccess.Data.POSManagement.Implementations
         public List<SaleTransactionModel> GetAllByTransactionDateRange(DateTime startDate, DateTime endDate, StaticData.POSTransactionStatus POSTransactionStatus)
         {
             endDate = endDate.AddDays(1);
-            string query = "SELECT * FROM SalesTransactions WHERE createdAt BETWEEN @StartDate AND @EndDate AND transStatus=@TransStatus";
+            string query = @"SELECT * FROM SalesTransactions 
+                            WHERE createdAt BETWEEN @StartDate AND @EndDate AND transStatus=@TransStatus
+                            ORDER BY id DESC";
             return this.GetAll(query, 
                 new { 
                     StartDate = startDate.ToString("yyyy-MM-dd"), 
@@ -46,7 +50,8 @@ namespace DataAccess.Data.POSManagement.Implementations
         public List<SaleTransactionModel> GetSalesTransactionByStatusAndTransType(StaticData.POSTransactionStatus POSTransactionStatus, StaticData.POSTransactionType posTransactionType)
         {
             string query = @"SELECT * FROM SalesTransactions
-                                WHERE isDeleted=false AND transactionType=@TransactionType AND transStatus=@TransStatus";
+                                WHERE isDeleted=false AND transactionType=@TransactionType AND transStatus=@TransStatus
+                                ORDER BY id DESC";
 
             return this.GetAll(query, new {
                 TransactionType = (int)posTransactionType,
@@ -67,7 +72,7 @@ namespace DataAccess.Data.POSManagement.Implementations
             endDate = endDate.AddDays(1);
 
             string query = @"SELECT * FROM SalesTransactions
-                                WHERE isDeleted=false AND transStatus=@TransStatus";
+                                WHERE isDeleted=false AND transStatus=@TransStatus ORDER BY id DESC";
 
             return this.GetAll(query, new { 
                 TransStatus = (int)POSTransactionStatus,

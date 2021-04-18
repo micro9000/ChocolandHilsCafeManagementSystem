@@ -86,6 +86,7 @@ namespace Main.Forms.POSManagementForms
             this.CashierName = new System.Windows.Forms.ColumnHeader();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.label20 = new System.Windows.Forms.Label();
             this.DGVCashRegisterTransactions = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label19 = new System.Windows.Forms.Label();
@@ -110,7 +111,7 @@ namespace Main.Forms.POSManagementForms
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.label20 = new System.Windows.Forms.Label();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -699,7 +700,8 @@ namespace Main.Forms.POSManagementForms
             this.Percentage,
             this.Total,
             this.Status,
-            this.CashierName});
+            this.CashierName,
+            this.columnHeader3});
             this.LVTransactionHistory.FullRowSelect = true;
             this.LVTransactionHistory.GridLines = true;
             this.LVTransactionHistory.HideSelection = false;
@@ -773,6 +775,15 @@ namespace Main.Forms.POSManagementForms
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1197, 617);
             this.panel4.TabIndex = 3;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(499, 53);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(248, 21);
+            this.label20.TabIndex = 72;
+            this.label20.Text = "Last 30 days cash out transaction";
             // 
             // DGVCashRegisterTransactions
             // 
@@ -1044,14 +1055,10 @@ namespace Main.Forms.POSManagementForms
             this.numericUpDown6.Size = new System.Drawing.Size(217, 23);
             this.numericUpDown6.TabIndex = 0;
             // 
-            // label20
+            // columnHeader3
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(499, 53);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(248, 21);
-            this.label20.TabIndex = 72;
-            this.label20.Text = "Last 30 days cash out transaction";
+            this.columnHeader3.Text = "Date";
+            this.columnHeader3.Width = 120;
             // 
             // FrmMainPOSTerminal
             // 
@@ -1205,5 +1212,6 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.NumericUpDown NumUpDwnTotalCash;
         private System.Windows.Forms.DataGridView DGVCashRegisterTransactions;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }
