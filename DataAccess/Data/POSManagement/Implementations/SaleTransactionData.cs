@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using EntitiesShared.POSManagement.CustomModels;
 
 namespace DataAccess.Data.POSManagement.Implementations
 {
@@ -112,6 +113,120 @@ namespace DataAccess.Data.POSManagement.Implementations
             }
 
             return rowsAffected > 0;
+        }
+
+
+        public List<YearSalesReportModel> GetYearlySalesReport()
+        {
+            string query = @"SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
+                            FROM CashRegisterCashOutTransactions
+                            WHERE isDeleted=false
+                            GROUP BY YEAR(createdAt)";
+
+            var results = new List<YearSalesReportModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<YearSalesReportModel>(query).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        public List<YearSalesReportModel> GetYearlySalesReport(int startYear, int endYear)
+        {
+            string query = @"SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
+                            FROM CashRegisterCashOutTransactions
+                            WHERE isDeleted=false AND YEAR(createdAt) BETWEEN @StartYear AND @EndYear
+                            GROUP BY YEAR(createdAt)";
+
+            var results = new List<YearSalesReportModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<YearSalesReportModel>(query, new {
+                    StartYear = startYear,
+                    EndYear = endYear
+                }).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        public List<MonthSalesReportModel> GetMonthlySalesReport(int year)
+        {
+            string query = @"SELECT SUM(totalSales) as TotalSales, MONTH(createdAt) as Mnth
+                                FROM CashRegisterCashOutTransactions
+                                WHERE isDeleted=false AND YEAR(createdAt) = @Year
+                                GROUP BY MONTH(createdAt)";
+
+            var results = new List<MonthSalesReportModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<MonthSalesReportModel>(query, new { Year = year }).ToList();
+                conn.Close();
+            }
+
+            return results;
+
+        }
+
+        public List<WeekSalesReportModel> GetWeeklySalesReportByYear (int year)
+        {
+            string query = @"SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
+                            FROM CashRegisterCashOutTransactions
+                            WHERE isDeleted=false AND YEAR(createdAt) = @Year
+                            GROUP BY WEEK(createdAt)";
+
+            var results = new List<WeekSalesReportModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<WeekSalesReportModel>(query, new { Year = year }).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
+
+        public List<WeekSalesReportModel> GetWeeklySalesReportByMonth(int month)
+        {
+            string query = @"SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
+                            FROM CashRegisterCashOutTransactions
+                            WHERE isDeleted=false AND MONTH(createdAt) = @Month
+                            GROUP BY WEEK(createdAt)";
+
+            var results = new List<WeekSalesReportModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<WeekSalesReportModel>(query, new { Month = month }).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
+
+
+        public List<DaySalesReportModel> GetDailySalesReportByMonth (int month)
+        {
+            string query = @"SELECT SUM(totalSales) as TotalSales, DAY(createdAt) as dy
+                            FROM CashRegisterCashOutTransactions
+                            WHERE isDeleted=false AND MONTH(createdAt) = @Month
+                            GROUP BY DAY(createdAt)";
+
+            var results = new List<DaySalesReportModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<DaySalesReportModel>(query, new { Month = month }).ToList();
+                conn.Close();
+            }
+
+            return results;
         }
     }
 }

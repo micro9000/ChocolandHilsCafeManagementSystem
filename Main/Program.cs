@@ -49,6 +49,7 @@ using DataAccess.Data.POSManagement.Implementations;
 using Main.Controllers.POSControllers.ControllerInterface;
 using Main.Controllers.POSControllers;
 using Main.Controllers.POSControllers.Validators;
+using Main.Forms.SalesReport;
 
 namespace Main
 {
@@ -231,6 +232,7 @@ namespace Main
             services.AddTransient<AttendanceTerminalForm>();
             services.AddTransient<FrmInventory>();
             services.AddTransient<FrmMainPOSTerminal>();
+            services.AddTransient<FrmMainSalesReport>();
 
             services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
             services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();

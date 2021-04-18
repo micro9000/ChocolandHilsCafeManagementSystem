@@ -762,7 +762,6 @@ SELECT * FROM SalesTransactions;
 
 SELECT SUM(totalAmount) as totalSales FROM SalesTransactions WHERE isDeleted=false AND transStatus=@TransStatus AND createdAt=@TransDate;
 
-DELETE FROM SalesTransactions where id > 0;
 
 
 SELECT * FROM SalesTransactions
@@ -785,7 +784,6 @@ CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
     FOREIGN KEY (productId) REFERENCES Products (id)
 )ENGINE=INNODB;
 
-DELETE FROM SalesTransactionProducts where id > 0;
 
 
 SELECT *
@@ -888,6 +886,38 @@ CREATE TABLE IF NOT EXISTS CashRegisterCashOutTransactions(
 )ENGINE=INNODB;
 
 SELECT * FROM CashRegisterCashOutTransactions;
-
-
 SELECT * FROM CashRegisterCashOutTransactions WHERE isDeleted=false ORDER By id DESC LIMIT 1;
+
+-- yearly report
+SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false
+GROUP BY YEAR(createdAt);
+
+SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false AND YEAR(createdAt) BETWEEN 2020 AND 2021
+GROUP BY YEAR(createdAt);
+
+-- monthly report
+SELECT SUM(totalSales) as TotalSales, MONTH(createdAt) as Mnth
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false AND YEAR(createdAt) = 2021
+GROUP BY MONTH(createdAt);
+
+-- weekly report, filter by year
+SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false AND YEAR(createdAt) = 2021
+GROUP BY WEEK(createdAt);
+
+-- weekly report, filter by month
+SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false AND MONTH(createdAt) = 4
+GROUP BY WEEK(createdAt);
+
+SELECT SUM(totalSales) as TotalSales, DAY(createdAt) as dy
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false AND MONTH(createdAt) = 4
+GROUP BY DAY(createdAt);

@@ -237,6 +237,7 @@ namespace Main
             this.BtnSalesReportSystem.TabIndex = 5;
             this.BtnSalesReportSystem.Text = "Sales Report";
             this.BtnSalesReportSystem.UseVisualStyleBackColor = false;
+            this.BtnSalesReportSystem.Click += new System.EventHandler(this.BtnSalesReportSystem_Click);
             // 
             // BtnInventorySystem
             // 

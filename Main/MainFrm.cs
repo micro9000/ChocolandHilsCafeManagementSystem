@@ -5,6 +5,7 @@ using Main.Forms.InventoryManagementForms;
 using Main.Forms.OtherDataForms;
 using Main.Forms.PayrollForms;
 using Main.Forms.POSManagementForms;
+using Main.Forms.SalesReport;
 using Main.Forms.UserManagementForms;
 using Microsoft.Extensions.Options;
 using Shared;
@@ -31,6 +32,7 @@ namespace Main
         private readonly AttendanceTerminalForm _attendanceTerminalForm;
         private readonly FrmInventory _frmInventory;
         private readonly FrmMainPOSTerminal _frmMainPOSTerminal;
+        private readonly FrmMainSalesReport _frmMainSalesReport;
         private readonly HomeFrm _frmHome;
         private readonly IIngredientInventoryData _ingredientInventoryData;
         private Button currentButton;
@@ -45,6 +47,7 @@ namespace Main
                         AttendanceTerminalForm attendanceTerminalForm,
                         FrmInventory frmInventory,
                         FrmMainPOSTerminal frmMainPOSTerminal,
+                        FrmMainSalesReport frmMainSalesReport,
                         HomeFrm frmHome,
                         IIngredientInventoryData ingredientInventoryData)
         {
@@ -58,6 +61,7 @@ namespace Main
             _attendanceTerminalForm = attendanceTerminalForm;
             _frmInventory = frmInventory;
             _frmMainPOSTerminal = frmMainPOSTerminal;
+            _frmMainSalesReport = frmMainSalesReport;
             _frmHome = frmHome;
             _ingredientInventoryData = ingredientInventoryData;
         }
@@ -236,6 +240,11 @@ namespace Main
                 BtnToggleMenu.Image = Image.FromFile("./Resources/more-than-white-30.png");
                 panelSidebar.Width = 55;
             }
+        }
+
+        private void BtnSalesReportSystem_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(_frmMainSalesReport, sender);
         }
     }
 }

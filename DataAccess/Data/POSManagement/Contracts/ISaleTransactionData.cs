@@ -1,6 +1,7 @@
 ﻿using DapperGenericDataManager;
 using EntitiesShared;
 using EntitiesShared.POSManagement;
+using EntitiesShared.POSManagement.CustomModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,13 @@ namespace DataAccess.Data.POSManagement.Contracts
 
         decimal GetDayTotalSales(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate);
         bool MassSalesTransactionSalesCashout(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate);
+
+        List<YearSalesReportModel> GetYearlySalesReport();
+        List<YearSalesReportModel> GetYearlySalesReport(int startYear, int endYear);
+        List<MonthSalesReportModel> GetMonthlySalesReport(int year);
+        List<WeekSalesReportModel> GetWeeklySalesReportByYear(int year);
+        List<WeekSalesReportModel> GetWeeklySalesReportByMonth(int month);
+        List<DaySalesReportModel> GetDailySalesReportByMonth(int month);
+
     }
 }
