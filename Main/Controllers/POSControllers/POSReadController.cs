@@ -39,6 +39,16 @@ namespace Main.Controllers.POSControllers
             _otherSettings = otherSettings.Value;
         }
 
+        public List<SaleTransactionModel> GetByDate (DateTime date, StaticData.POSTransactionStatus POSTransactionStatus)
+        {
+            return this._salesTransactionData.GetAllByTransactionDate(date, POSTransactionStatus);
+        }
+
+        public List<SaleTransactionModel> GetByDateRange(DateTime startDate, DateTime endDate, StaticData.POSTransactionStatus POSTransactionStatus)
+        {
+            return this._salesTransactionData.GetAllByTransactionDateRange(startDate, endDate, POSTransactionStatus);
+        }
+
         public List<SaleTransactionModel> GetActiveDineInSalesTransactions()
         {
             var activeDineInSalesTrans = _salesTransactionData.GetSalesTransactionByStatusAndTransType(StaticData.POSTransactionStatus.OnGoing, StaticData.POSTransactionType.DineIn);

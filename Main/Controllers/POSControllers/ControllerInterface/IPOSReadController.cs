@@ -1,4 +1,5 @@
-﻿using EntitiesShared.POSManagement;
+﻿using EntitiesShared;
+using EntitiesShared.POSManagement;
 using EntitiesShared.POSManagement.CustomModels;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,10 @@ namespace Main.Controllers.POSControllers.ControllerInterface
 {
     public interface IPOSReadController
     {
+
+        List<SaleTransactionModel> GetByDate(DateTime date, StaticData.POSTransactionStatus POSTransactionStatus);
+        List<SaleTransactionModel> GetByDateRange(DateTime startDate, DateTime endDate, StaticData.POSTransactionStatus POSTransactionStatus);
+
         List<SaleTransactionModel> GetActiveSalesTransactions();
         List<SaleTransactionModel> GetActiveDineInSalesTransactions();
         List<TableStatusModel> GetTableStatus();

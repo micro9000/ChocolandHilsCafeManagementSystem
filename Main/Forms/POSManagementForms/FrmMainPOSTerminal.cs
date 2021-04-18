@@ -479,8 +479,6 @@ namespace Main.Forms.POSManagementForms
             }
 
             DGVCartItems.ClearSelection();
-
-
         }
 
         private void POSMainTabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -490,6 +488,13 @@ namespace Main.Forms.POSManagementForms
             {
                 this.TableStatus = _pOSReadController.GetTableStatus();
                 DisplayTableStatus(this.TableStatus);
+            }
+
+
+            if (POSMainTabControl.SelectedTab == POSMainTabControl.TabPages[2])
+            {
+                var salesTransactionToday = _pOSReadController.GetByDate(DateTime.Now, StaticData.POSTransactionStatus.Paid);
+                this.DisplaySalesHistory(salesTransactionToday);
             }
         }
 
@@ -671,7 +676,49 @@ namespace Main.Forms.POSManagementForms
                 }
             }
 
+        }
 
+
+        private void DisplaySalesHistory(List<SaleTransactionModel> saleTransactions)
+        {
+            this.LVTransactionHistory.Items.Clear();
+
+            decimal totalSales = 0;
+            if (saleTransactions != null)
+            {
+                foreach(var tran in saleTransactions)
+                {
+                    var row = new string[]
+                    {
+                        tran.TicketNumber,
+                        tran.CustomerName,
+                        tran.SubTotalAmount.ToString("0.##"),
+                        tran.DiscountAmount.ToString("0.##"),
+                        tran.DiscountPercent.ToString("0.##"),
+                        tran.TotalAmount.ToString("0.##"),
+                        tran.TransStatus.ToString(),
+                        tran.CurrentUser
+                    };
+
+                    totalSales += tran.TotalAmount;
+
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = tran;
+
+                    this.LVTransactionHistory.Items.Add(listViewItem);
+                }
+            }
+
+            this.LblTotalSales.Text = totalSales.ToString("0.##");
+        }
+
+        private void BtnFilterSaleHistory_Click(object sender, EventArgs e)
+        {
+            DateTime startDate = this.DPickerStartDateForSalesHistory.Value;
+            DateTime endDate = this.DPickerEndDateForSalesHistory.Value;
+
+            var searchResultsSalesTrans = _pOSReadController.GetByDateRange(startDate, endDate, StaticData.POSTransactionStatus.Paid);
+            this.DisplaySalesHistory(searchResultsSalesTrans);
         }
     }
 }

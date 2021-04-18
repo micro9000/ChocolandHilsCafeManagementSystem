@@ -66,6 +66,25 @@ namespace Main.Forms.POSManagementForms
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.LblTotalSales = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BtnFilterSaleHistory = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.DPickerEndDateForSalesHistory = new System.Windows.Forms.DateTimePicker();
+            this.DPickerStartDateForSalesHistory = new System.Windows.Forms.DateTimePicker();
+            this.LVTransactionHistory = new System.Windows.Forms.ListView();
+            this.TicketNumber = new System.Windows.Forms.ColumnHeader();
+            this.CustomerName = new System.Windows.Forms.ColumnHeader();
+            this.SubTotal = new System.Windows.Forms.ColumnHeader();
+            this.Discount = new System.Windows.Forms.ColumnHeader();
+            this.Percentage = new System.Windows.Forms.ColumnHeader();
+            this.Total = new System.Windows.Forms.ColumnHeader();
+            this.Status = new System.Windows.Forms.ColumnHeader();
+            this.CashierName = new System.Windows.Forms.ColumnHeader();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.label12 = new System.Windows.Forms.Label();
             this.PanelPOSController = new System.Windows.Forms.Panel();
             this.POSControllerSplitContainer = new System.Windows.Forms.SplitContainer();
@@ -96,6 +115,9 @@ namespace Main.Forms.POSManagementForms
             this.TabPageTableStatus.SuspendLayout();
             this.PanelDineInOrdersTableStatus.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).BeginInit();
             this.POSControllerSplitContainer.Panel2.SuspendLayout();
             this.POSControllerSplitContainer.SuspendLayout();
@@ -434,6 +456,7 @@ namespace Main.Forms.POSManagementForms
             this.POSMainTabControl.Controls.Add(this.TabPageStore);
             this.POSMainTabControl.Controls.Add(this.TabPageTableStatus);
             this.POSMainTabControl.Controls.Add(this.tabPage1);
+            this.POSMainTabControl.Controls.Add(this.tabPage4);
             this.POSMainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.POSMainTabControl.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.POSMainTabControl.Location = new System.Drawing.Point(0, 0);
@@ -522,12 +545,184 @@ namespace Main.Forms.POSManagementForms
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.panel3);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.LVTransactionHistory);
             this.tabPage1.Location = new System.Drawing.Point(4, 30);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(1213, 638);
             this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "History";
+            this.tabPage1.Text = "Sales History";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // panel3
+            // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.LblTotalSales);
+            this.panel3.Controls.Add(this.label6);
+            this.panel3.Location = new System.Drawing.Point(622, 15);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(583, 104);
+            this.panel3.TabIndex = 27;
+            // 
+            // LblTotalSales
+            // 
+            this.LblTotalSales.AutoSize = true;
+            this.LblTotalSales.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblTotalSales.ForeColor = System.Drawing.Color.Chartreuse;
+            this.LblTotalSales.Location = new System.Drawing.Point(136, 28);
+            this.LblTotalSales.Name = "LblTotalSales";
+            this.LblTotalSales.Size = new System.Drawing.Size(76, 40);
+            this.LblTotalSales.TabIndex = 25;
+            this.LblTotalSales.Text = "0.00";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label6.Location = new System.Drawing.Point(21, 28);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(92, 40);
+            this.label6.TabIndex = 24;
+            this.label6.Text = "Total:";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.BtnFilterSaleHistory);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.DPickerEndDateForSalesHistory);
+            this.groupBox1.Controls.Add(this.DPickerStartDateForSalesHistory);
+            this.groupBox1.Location = new System.Drawing.Point(8, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(358, 116);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Filter";
+            // 
+            // BtnFilterSaleHistory
+            // 
+            this.BtnFilterSaleHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnFilterSaleHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnFilterSaleHistory.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnFilterSaleHistory.ForeColor = System.Drawing.Color.White;
+            this.BtnFilterSaleHistory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnFilterSaleHistory.Location = new System.Drawing.Point(251, 55);
+            this.BtnFilterSaleHistory.Name = "BtnFilterSaleHistory";
+            this.BtnFilterSaleHistory.Size = new System.Drawing.Size(81, 38);
+            this.BtnFilterSaleHistory.TabIndex = 63;
+            this.BtnFilterSaleHistory.Text = "Filter";
+            this.BtnFilterSaleHistory.UseVisualStyleBackColor = false;
+            this.BtnFilterSaleHistory.Click += new System.EventHandler(this.BtnFilterSaleHistory_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(21, 70);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(37, 21);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "End";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(21, 35);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(45, 21);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Start";
+            // 
+            // DPickerEndDateForSalesHistory
+            // 
+            this.DPickerEndDateForSalesHistory.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPickerEndDateForSalesHistory.Location = new System.Drawing.Point(94, 64);
+            this.DPickerEndDateForSalesHistory.Name = "DPickerEndDateForSalesHistory";
+            this.DPickerEndDateForSalesHistory.Size = new System.Drawing.Size(128, 29);
+            this.DPickerEndDateForSalesHistory.TabIndex = 1;
+            // 
+            // DPickerStartDateForSalesHistory
+            // 
+            this.DPickerStartDateForSalesHistory.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPickerStartDateForSalesHistory.Location = new System.Drawing.Point(94, 28);
+            this.DPickerStartDateForSalesHistory.Name = "DPickerStartDateForSalesHistory";
+            this.DPickerStartDateForSalesHistory.Size = new System.Drawing.Size(128, 29);
+            this.DPickerStartDateForSalesHistory.TabIndex = 0;
+            // 
+            // LVTransactionHistory
+            // 
+            this.LVTransactionHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LVTransactionHistory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.TicketNumber,
+            this.CustomerName,
+            this.SubTotal,
+            this.Discount,
+            this.Percentage,
+            this.Total,
+            this.Status,
+            this.CashierName});
+            this.LVTransactionHistory.FullRowSelect = true;
+            this.LVTransactionHistory.GridLines = true;
+            this.LVTransactionHistory.HideSelection = false;
+            this.LVTransactionHistory.Location = new System.Drawing.Point(8, 125);
+            this.LVTransactionHistory.Name = "LVTransactionHistory";
+            this.LVTransactionHistory.Size = new System.Drawing.Size(1197, 505);
+            this.LVTransactionHistory.TabIndex = 0;
+            this.LVTransactionHistory.UseCompatibleStateImageBehavior = false;
+            this.LVTransactionHistory.View = System.Windows.Forms.View.Details;
+            // 
+            // TicketNumber
+            // 
+            this.TicketNumber.Text = "Ticket #";
+            this.TicketNumber.Width = 120;
+            // 
+            // CustomerName
+            // 
+            this.CustomerName.Text = "Customer";
+            this.CustomerName.Width = 120;
+            // 
+            // SubTotal
+            // 
+            this.SubTotal.Text = "Sub Total";
+            this.SubTotal.Width = 100;
+            // 
+            // Discount
+            // 
+            this.Discount.Text = "Discount";
+            this.Discount.Width = 100;
+            // 
+            // Percentage
+            // 
+            this.Percentage.Text = "Disc. Percent";
+            this.Percentage.Width = 120;
+            // 
+            // Total
+            // 
+            this.Total.Text = "Total";
+            this.Total.Width = 120;
+            // 
+            // Status
+            // 
+            this.Status.Text = "Status";
+            this.Status.Width = 120;
+            // 
+            // CashierName
+            // 
+            this.CashierName.Text = "Cashier";
+            this.CashierName.Width = 200;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(4, 30);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(1213, 638);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Cash Register";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // label12
             // 
@@ -599,6 +794,11 @@ namespace Main.Forms.POSManagementForms
             this.PanelDineInOrdersTableStatus.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.POSControllerSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.POSControllerSplitContainer)).EndInit();
             this.POSControllerSplitContainer.ResumeLayout(false);
@@ -648,5 +848,24 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.FlowLayoutPanel FlowLayoutTables;
         private System.Windows.Forms.Panel PanelPOSController;
         private System.Windows.Forms.SplitContainer POSControllerSplitContainer;
+        private System.Windows.Forms.ListView LVTransactionHistory;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.ColumnHeader TicketNumber;
+        private System.Windows.Forms.ColumnHeader CustomerName;
+        private System.Windows.Forms.ColumnHeader SubTotal;
+        private System.Windows.Forms.ColumnHeader Discount;
+        private System.Windows.Forms.ColumnHeader Percentage;
+        private System.Windows.Forms.ColumnHeader Total;
+        private System.Windows.Forms.ColumnHeader Status;
+        private System.Windows.Forms.ColumnHeader CashierName;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label LblTotalSales;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button BtnFilterSaleHistory;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DateTimePicker DPickerEndDateForSalesHistory;
+        private System.Windows.Forms.DateTimePicker DPickerStartDateForSalesHistory;
     }
 }
