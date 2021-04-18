@@ -162,7 +162,8 @@ namespace Main.Controllers.InventoryControllers
 
             // RemainingQtyValue in our database is in g, ml format, meeting if we have 30L, the RemainingQtyValue is 30000, or 30000ml
             // so we need 500ml for the product, we will deduct 500 in 30000, the RemainingQtyValue is 29500ml
-            decimal remainingProdIngredientQtyValue = prodIngredientRequireQtyValue;
+            decimal remainingProdIngredientQtyValue = GetProductIngredientActualQtyValueNeedToDeduct(prodIngredientRequireUOM, prodIngredientRequireQtyValue);
+                //prodIngredientRequireQtyValue;
 
             int deductionSequence = 1;
             foreach (var inventory in ingredientInventories)
@@ -174,7 +175,7 @@ namespace Main.Controllers.InventoryControllers
                         DeductionSequence = deductionSequence,
                         IngredientId = ingredeintDetails.Id,
                         IngredientInventoryid = inventory.Id,
-                        DeductQtyValue = GetProductIngredientActualQtyValueNeedToDeduct(prodIngredientRequireUOM, remainingProdIngredientQtyValue),
+                        DeductQtyValue = remainingProdIngredientQtyValue,//GetProductIngredientActualQtyValueNeedToDeduct(prodIngredientRequireUOM, remainingProdIngredientQtyValue),
                         UsedUOM = prodIngredientRequireUOM
                     });
 
