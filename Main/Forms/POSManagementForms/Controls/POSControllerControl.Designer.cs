@@ -41,7 +41,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.panel1 = new System.Windows.Forms.Panel();
             this.BtnCancelCurrentTransaction = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.BtnCheckout = new System.Windows.Forms.Button();
             this.TboxNumberOfItems = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.TboxTicketNumber = new System.Windows.Forms.TextBox();
@@ -195,7 +195,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // 
             this.panel1.Controls.Add(this.BtnCancelCurrentTransaction);
             this.panel1.Controls.Add(this.BtnSave);
-            this.panel1.Controls.Add(this.button3);
+            this.panel1.Controls.Add(this.BtnCheckout);
             this.panel1.Controls.Add(this.TboxNumberOfItems);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.TboxTicketNumber);
@@ -216,7 +216,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnCancelCurrentTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnCancelCurrentTransaction.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelCurrentTransaction.ForeColor = System.Drawing.Color.White;
-            this.BtnCancelCurrentTransaction.Image = global::Main.Properties.Resources.save_white_26;
+            this.BtnCancelCurrentTransaction.Image = global::Main.Properties.Resources.icons8_cancel_30;
             this.BtnCancelCurrentTransaction.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnCancelCurrentTransaction.Location = new System.Drawing.Point(14, 163);
             this.BtnCancelCurrentTransaction.Name = "BtnCancelCurrentTransaction";
@@ -245,22 +245,23 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnSave.UseVisualStyleBackColor = false;
             this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
-            // button3
+            // BtnCheckout
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.button3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Image = global::Main.Properties.Resources.checkout_white_30;
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.Location = new System.Drawing.Point(266, 163);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(122, 45);
-            this.button3.TabIndex = 69;
-            this.button3.Text = "CHECKOUT";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button3.UseVisualStyleBackColor = false;
+            this.BtnCheckout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.BtnCheckout.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnCheckout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnCheckout.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnCheckout.ForeColor = System.Drawing.Color.White;
+            this.BtnCheckout.Image = global::Main.Properties.Resources.checkout_white_30;
+            this.BtnCheckout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnCheckout.Location = new System.Drawing.Point(266, 163);
+            this.BtnCheckout.Name = "BtnCheckout";
+            this.BtnCheckout.Size = new System.Drawing.Size(122, 45);
+            this.BtnCheckout.TabIndex = 69;
+            this.BtnCheckout.Text = "CHECKOUT";
+            this.BtnCheckout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BtnCheckout.UseVisualStyleBackColor = false;
+            this.BtnCheckout.Click += new System.EventHandler(this.BtnCheckout_Click);
             // 
             // TboxNumberOfItems
             // 
@@ -369,7 +370,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.BackColor = System.Drawing.Color.DimGray;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Controls.Add(this.LblSubTotal);
             this.panel2.Controls.Add(this.label5);
@@ -382,20 +383,21 @@ namespace Main.Forms.POSManagementForms.Controls
             // 
             // LblSubTotal
             // 
-            this.LblSubTotal.Location = new System.Drawing.Point(71, 7);
+            this.LblSubTotal.ForeColor = System.Drawing.Color.PaleGreen;
+            this.LblSubTotal.Location = new System.Drawing.Point(125, 16);
             this.LblSubTotal.Name = "LblSubTotal";
-            this.LblSubTotal.Size = new System.Drawing.Size(169, 25);
+            this.LblSubTotal.Size = new System.Drawing.Size(136, 25);
             this.LblSubTotal.TabIndex = 1;
             this.LblSubTotal.Text = "0";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 7);
+            this.label5.Location = new System.Drawing.Point(16, 16);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(58, 25);
+            this.label5.Size = new System.Drawing.Size(95, 25);
             this.label5.TabIndex = 0;
-            this.label5.Text = "Total:";
+            this.label5.Text = "Sub Total:";
             // 
             // richTextBox1
             // 
@@ -449,7 +451,7 @@ namespace Main.Forms.POSManagementForms.Controls
         private System.Windows.Forms.TabPage TabPageCheckout;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button BtnCheckout;
         private System.Windows.Forms.TextBox TboxNumberOfItems;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TboxTicketNumber;

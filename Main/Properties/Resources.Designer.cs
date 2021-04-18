@@ -103,6 +103,26 @@ namespace Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_cancel_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-cancel-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_cancel_301 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-cancel-301", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_double_exclamation_mark_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-double-exclamation-mark-48", resourceCulture);

@@ -737,6 +737,8 @@ CREATE TABLE IF NOT EXISTS SalesTransactions(
     customerName VARCHAR(255), -- provided upon initialization
     subTotalAmount DECIMAL(9,2),
     discountAmount DECIMAL(9,2), -- zero upon initialization
+    discountIsPercentage BOOLEAN DEFAULT FALSE,
+    discountPercent DECIMAL,
     totalAmount DECIMAL(9,2), -- zero upon initialization
     customerCashAmount DECIMAL(9,2), -- zero upon initialization
     customerChangeAmount DECIMAL(9,2), -- zero upon initialization
@@ -749,6 +751,11 @@ CREATE TABLE IF NOT EXISTS SalesTransactions(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+ALTER TABLE SalesTransactions
+ADD COLUMN discountIsPercentage BOOLEAN DEFAULT FALSE;
+ALTER TABLE SalesTransactions
+ADD COLUMN discountPercent DECIMAL;
+
 
 DELETE FROM SalesTransactions where id > 0;
 

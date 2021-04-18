@@ -756,5 +756,45 @@ namespace Main.Controllers.POSControllers
             }
         }
 
+
+
+        public EntityResult<string> Checkout(SaleTransactionModel saleTransaction)
+        {
+            var results = new EntityResult<string>();
+            results.IsSuccess = false;
+
+            try
+            {
+                if (saleTransaction.Id == 0 || saleTransaction.Id == long.MinValue)
+                {
+                    results.Messages.Add("Unable to save this current transaction, kindly initiate new.");
+                    return results;
+                }
+
+                var saleTransactionInDB = _salesTransactionData.Get(saleTransaction.Id);
+
+                _mapper.Map(saleTransaction, saleTransactionInDB);
+
+                saleTransactionInDB.TransStatus = StaticData.POSTransactionStatus.Paid;
+
+                if (_salesTransactionData.Update(saleTransactionInDB))
+                {
+                    results.IsSuccess = true;
+                    results.Messages.Add("Checkout transaction successfully");
+                    return results;
+                }
+
+                results.IsSuccess = false;
+                results.Messages.Add("Unable to process checkout transaction");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add(ex.Message);
+            }
+
+            return results;
+        }
+
     }
 }

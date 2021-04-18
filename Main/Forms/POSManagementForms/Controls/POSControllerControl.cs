@@ -61,7 +61,7 @@ namespace Main.Forms.POSManagementForms.Controls
                 this.TboxCustomerName.Text = _pOSState.CurrentSaleTransaction.CustomerName;
                 this.TboxTableNumber.Text = _pOSState.CurrentSaleTransaction.TableNumber.ToString();
 
-                this.LblSubTotal.Text = GetCurrentTransactionSubTotal().ToString("0.##");
+                this.LblSubTotal.Text = _pOSState.ToStringSubTotal;
             }
 
             DisplayCurrentSaleTransactionSubTotal();
@@ -72,28 +72,8 @@ namespace Main.Forms.POSManagementForms.Controls
             this.LblSubTotal.Text = "0";
             if (_pOSState.CurrentSaleTransaction != null)
             {
-                this.LblSubTotal.Text = GetCurrentTransactionSubTotal().ToString("#,##0.##");
+                this.LblSubTotal.Text = _pOSState.ToStringSubTotal;
             }
-        }
-
-        private decimal GetCurrentTransactionSubTotal()
-        {
-            var products = _pOSState.CurrentSaleTransactionProducts;
-            var comboMeals = _pOSState.CurrentSaleTransactionComboMeals;
-
-            decimal subTotal = 0;
-
-            foreach(var prod in products)
-            {
-                subTotal += prod.Qty * prod.productCurrentPrice;
-            }
-
-            foreach(var cm in comboMeals)
-            {
-                subTotal += cm.Qty * cm.ComboMealCurrentPrice;
-            }
-
-            return subTotal;
         }
 
         private void ClearCheckOutForm()
@@ -297,6 +277,44 @@ namespace Main.Forms.POSManagementForms.Controls
                     MessageBox.Show(resMsg, "Save current transaction", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+
+        private void BtnCheckout_Click(object sender, EventArgs e)
+        {
+            if (_pOSState.CurrentSaleTransaction != null)
+            {
+                var saveResults = _iPOSCommandController.SaveSaleTransaction(_pOSState.CurrentSaleTransaction.Id, _pOSState.CurrentSaleTransactionProducts, _pOSState.CurrentSaleTransactionComboMeals);
+
+                string resMsg = "";
+                foreach (var msg in saveResults.Messages)
+                {
+                    resMsg += msg;
+                }
+
+                if (saveResults.IsSuccess == true)
+                {
+                    FrmCheckOut frmCheckOut = new FrmCheckOut(_iPOSCommandController, _pOSState);
+                    frmCheckOut.ShowDialog();
+
+                    bool isCheckoutIsSuccessful = frmCheckOut.IsSuccessfulCheckout;
+
+                    if (isCheckoutIsSuccessful)
+                    {
+                        _pOSState.Transaction = POSStateTransaction.Existing;
+                        _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
+                        _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
+                        _pOSState.CurrentSaleTransaction = null;
+
+
+                        this.TabControlMain.SelectedIndex = this.TabControlMain.TabPages.IndexOf(TabPageCheckout);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(resMsg, "Save current transaction", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
         }
     }
 }

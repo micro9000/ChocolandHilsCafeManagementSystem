@@ -62,5 +62,35 @@ namespace Main.Forms.POSManagementForms
             set { _currentSaleTransactionComboMeals = value; }
         }
 
+        public decimal SubTotal
+        {
+            get
+            {
+                var products = this.CurrentSaleTransactionProducts;
+                var comboMeals = this.CurrentSaleTransactionComboMeals;
+
+                decimal subTotal = 0;
+
+                foreach (var prod in products)
+                {
+                    subTotal += prod.Qty * prod.productCurrentPrice;
+                }
+
+                foreach (var cm in comboMeals)
+                {
+                    subTotal += cm.Qty * cm.ComboMealCurrentPrice;
+                }
+
+                return subTotal;
+            }
+        }
+
+
+        public string ToStringSubTotal {
+            get
+            {
+                return this.SubTotal.ToString("#,##0.##");
+            }
+        }
     }
 }

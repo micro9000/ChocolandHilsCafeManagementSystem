@@ -14,5 +14,7 @@ namespace Main.Controllers.POSControllers.ControllerInterface
         EntityResult<string> SaveSaleTransaction(long saleTransId, List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals);
 
         EntityResult<string> CancelSaleTransaction(long saleTransId);
+
+        EntityResult<string> Checkout(SaleTransactionModel saleTransaction);
     }
 }

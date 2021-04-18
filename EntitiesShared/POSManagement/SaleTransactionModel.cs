@@ -23,6 +23,10 @@ namespace EntitiesShared.POSManagement
 
         public decimal DiscountAmount { get; set; }
 
+        public bool DiscountIsPercentage { get; set; }
+
+        public decimal DiscountPercent { get; set; }
+
         public decimal TotalAmount { get; set; }
 
         public decimal CustomerCashAmount { get; set; }
