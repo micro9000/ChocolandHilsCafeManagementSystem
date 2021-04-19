@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace Main.Forms.SalesReport
 {
-    public partial class FrmMainSalesReport : Form
+    public partial class FrmSalesReport : Form
     {
-        public FrmMainSalesReport()
+        public FrmSalesReport()
         {
             InitializeComponent();
 

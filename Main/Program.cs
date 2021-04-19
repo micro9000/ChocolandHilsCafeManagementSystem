@@ -232,7 +232,7 @@ namespace Main
             services.AddTransient<AttendanceTerminalForm>();
             services.AddTransient<FrmInventory>();
             services.AddTransient<FrmMainPOSTerminal>();
-            services.AddTransient<FrmMainSalesReport>();
+            services.AddTransient<FrmSalesReport>();
 
             services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
             services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();

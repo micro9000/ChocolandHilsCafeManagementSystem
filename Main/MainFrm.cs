@@ -32,7 +32,7 @@ namespace Main
         private readonly AttendanceTerminalForm _attendanceTerminalForm;
         private readonly FrmInventory _frmInventory;
         private readonly FrmMainPOSTerminal _frmMainPOSTerminal;
-        private readonly FrmMainSalesReport _frmMainSalesReport;
+        private readonly FrmSalesReport _frmSalesReport;
         private readonly HomeFrm _frmHome;
         private readonly IIngredientInventoryData _ingredientInventoryData;
         private Button currentButton;
@@ -47,7 +47,7 @@ namespace Main
                         AttendanceTerminalForm attendanceTerminalForm,
                         FrmInventory frmInventory,
                         FrmMainPOSTerminal frmMainPOSTerminal,
-                        FrmMainSalesReport frmMainSalesReport,
+                        FrmSalesReport frmSalesReport,
                         HomeFrm frmHome,
                         IIngredientInventoryData ingredientInventoryData)
         {
@@ -61,7 +61,7 @@ namespace Main
             _attendanceTerminalForm = attendanceTerminalForm;
             _frmInventory = frmInventory;
             _frmMainPOSTerminal = frmMainPOSTerminal;
-            _frmMainSalesReport = frmMainSalesReport;
+            _frmSalesReport = frmSalesReport;
             _frmHome = frmHome;
             _ingredientInventoryData = ingredientInventoryData;
         }
@@ -244,7 +244,7 @@ namespace Main
 
         private void BtnSalesReportSystem_Click(object sender, EventArgs e)
         {
-            OpenChildForm(_frmMainSalesReport, sender);
+            OpenChildForm(_frmSalesReport, sender);
         }
     }
 }

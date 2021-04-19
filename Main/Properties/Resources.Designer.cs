@@ -103,6 +103,16 @@ namespace Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_calendar_96 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-calendar-96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_cancel_30 {
             get {
                 object obj = ResourceManager.GetObject("icons8-cancel-30", resourceCulture);
@@ -176,6 +186,16 @@ namespace Main.Properties {
         internal static System.Drawing.Bitmap icons8_settings_24 {
             get {
                 object obj = ResourceManager.GetObject("icons8-settings-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_total_sales_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-total-sales-64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
