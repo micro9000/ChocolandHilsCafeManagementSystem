@@ -10,6 +10,7 @@ namespace Main.Controllers.InventoryControllers
 {
     public interface IIngredientInventoryManager
     {
+        decimal GetActualCostByIngredientQtyValueAndUnitCost(StaticData.UOM uom, decimal ingredientUnitCost);
         decimal GetProductIngredientCost(long ingredientId, decimal prodIngredientQtyValue, StaticData.UOM prodIngredientUOM);
 
         decimal GetProductIngredientActualQtyValueNeedToDeduct(StaticData.UOM uom, decimal qtyValue);

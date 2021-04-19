@@ -34,51 +34,55 @@ namespace Main.Forms.SalesReport
             this.splitContainerHeaderReports = new System.Windows.Forms.SplitContainer();
             this.splitContainerHeaderReportsLeft = new System.Windows.Forms.SplitContainer();
             this.panelNumberOfSales = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.LblNumberOfTransactionsWhatFor = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.LblNumberOfTransactionsByYear = new System.Windows.Forms.Label();
             this.panelYearlySales = new System.Windows.Forms.Panel();
             this.panelYearlySalesRevProCost = new System.Windows.Forms.Panel();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
+            this.LblYearlyCost = new System.Windows.Forms.Label();
+            this.LblYearlyProfit = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.LblYearlySaleReportWhatYear = new System.Windows.Forms.Label();
+            this.LblYearlySaleReportAmount = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainerHeaderReportsRight = new System.Windows.Forms.SplitContainer();
             this.panelMonthlySales = new System.Windows.Forms.Panel();
-            this.panelMonthlySalesRevProCost = new System.Windows.Forms.Panel();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.LblMonthlyCost = new System.Windows.Forms.Label();
+            this.LblMonthlyProfit = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.LblMonthlySaleReportWhatFor = new System.Windows.Forms.Label();
+            this.LblMonthlySaleReportAmount = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.panelWeeklySales = new System.Windows.Forms.Panel();
-            this.panelWeeklySalesRevProCost = new System.Windows.Forms.Panel();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.LblWeeklyCost = new System.Windows.Forms.Label();
+            this.LblWeeklyProfit = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.LblWeeklySaleReportWhatFor = new System.Windows.Forms.Label();
+            this.LblWeeklySaleReportAmount = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.CboxFilterYearlySales = new System.Windows.Forms.ComboBox();
             this.panelDashboardBody = new System.Windows.Forms.Panel();
             this.panelTransactions = new System.Windows.Forms.Panel();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.LVTransactionHistory = new System.Windows.Forms.ListView();
+            this.TicketNumber = new System.Windows.Forms.ColumnHeader();
+            this.CustomerName = new System.Windows.Forms.ColumnHeader();
+            this.SubTotal = new System.Windows.Forms.ColumnHeader();
+            this.Discount = new System.Windows.Forms.ColumnHeader();
+            this.Percentage = new System.Windows.Forms.ColumnHeader();
+            this.Total = new System.Windows.Forms.ColumnHeader();
+            this.Status = new System.Windows.Forms.ColumnHeader();
+            this.CashierName = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label36 = new System.Windows.Forms.Label();
             this.splitContainerCharts = new System.Windows.Forms.SplitContainer();
@@ -87,9 +91,10 @@ namespace Main.Forms.SalesReport
             this.label31 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabTrendFilter = new System.Windows.Forms.TabPage();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.FlowLayoutCheckBoxYears = new System.Windows.Forms.FlowLayoutPanel();
+            this.RBtnFilterTrendByWeek = new System.Windows.Forms.RadioButton();
+            this.RBtnFilterTrendByYear = new System.Windows.Forms.RadioButton();
+            this.RBtnFilterTrendByMonth = new System.Windows.Forms.RadioButton();
             this.tabReport = new System.Windows.Forms.TabPage();
             this.BtnLogin = new System.Windows.Forms.Button();
             this.label35 = new System.Windows.Forms.Label();
@@ -118,10 +123,10 @@ namespace Main.Forms.SalesReport
             this.splitContainerHeaderReportsRight.Panel2.SuspendLayout();
             this.splitContainerHeaderReportsRight.SuspendLayout();
             this.panelMonthlySales.SuspendLayout();
-            this.panelMonthlySalesRevProCost.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panelWeeklySales.SuspendLayout();
-            this.panelWeeklySalesRevProCost.SuspendLayout();
+            this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.panelDashboardBody.SuspendLayout();
             this.panelTransactions.SuspendLayout();
@@ -200,15 +205,32 @@ namespace Main.Forms.SalesReport
             // panelNumberOfSales
             // 
             this.panelNumberOfSales.BackColor = System.Drawing.Color.White;
+            this.panelNumberOfSales.Controls.Add(this.button1);
             this.panelNumberOfSales.Controls.Add(this.pictureBox4);
-            this.panelNumberOfSales.Controls.Add(this.label10);
+            this.panelNumberOfSales.Controls.Add(this.LblNumberOfTransactionsWhatFor);
             this.panelNumberOfSales.Controls.Add(this.label12);
-            this.panelNumberOfSales.Controls.Add(this.label11);
+            this.panelNumberOfSales.Controls.Add(this.LblNumberOfTransactionsByYear);
             this.panelNumberOfSales.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelNumberOfSales.Location = new System.Drawing.Point(10, 10);
             this.panelNumberOfSales.Name = "panelNumberOfSales";
             this.panelNumberOfSales.Size = new System.Drawing.Size(237, 216);
             this.panelNumberOfSales.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Image = global::Main.Properties.Resources.reset_white_24;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(16, 172);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(102, 32);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "Refresh";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button1.UseVisualStyleBackColor = false;
             // 
             // pictureBox4
             // 
@@ -220,44 +242,44 @@ namespace Main.Forms.SalesReport
             this.pictureBox4.TabIndex = 8;
             this.pictureBox4.TabStop = false;
             // 
-            // label10
+            // LblNumberOfTransactionsWhatFor
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
-            this.label10.Location = new System.Drawing.Point(102, 81);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(46, 21);
-            this.label10.TabIndex = 7;
-            this.label10.Text = "2021";
+            this.LblNumberOfTransactionsWhatFor.AutoSize = true;
+            this.LblNumberOfTransactionsWhatFor.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
+            this.LblNumberOfTransactionsWhatFor.Location = new System.Drawing.Point(102, 81);
+            this.LblNumberOfTransactionsWhatFor.Name = "LblNumberOfTransactionsWhatFor";
+            this.LblNumberOfTransactionsWhatFor.Size = new System.Drawing.Size(46, 21);
+            this.LblNumberOfTransactionsWhatFor.TabIndex = 7;
+            this.LblNumberOfTransactionsWhatFor.Text = "2021";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label12.Location = new System.Drawing.Point(16, 9);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(203, 30);
+            this.label12.Size = new System.Drawing.Size(182, 25);
             this.label12.TabIndex = 5;
             this.label12.Text = "NUMBER OF SALES";
             // 
-            // label11
+            // LblNumberOfTransactionsByYear
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label11.ForeColor = System.Drawing.Color.Green;
-            this.label11.Location = new System.Drawing.Point(102, 51);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 30);
-            this.label11.TabIndex = 6;
-            this.label11.Text = "200";
+            this.LblNumberOfTransactionsByYear.AutoSize = true;
+            this.LblNumberOfTransactionsByYear.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblNumberOfTransactionsByYear.ForeColor = System.Drawing.Color.Green;
+            this.LblNumberOfTransactionsByYear.Location = new System.Drawing.Point(102, 51);
+            this.LblNumberOfTransactionsByYear.Name = "LblNumberOfTransactionsByYear";
+            this.LblNumberOfTransactionsByYear.Size = new System.Drawing.Size(49, 30);
+            this.LblNumberOfTransactionsByYear.TabIndex = 6;
+            this.LblNumberOfTransactionsByYear.Text = "200";
             // 
             // panelYearlySales
             // 
             this.panelYearlySales.BackColor = System.Drawing.Color.White;
             this.panelYearlySales.Controls.Add(this.panelYearlySalesRevProCost);
             this.panelYearlySales.Controls.Add(this.pictureBox1);
-            this.panelYearlySales.Controls.Add(this.label2);
-            this.panelYearlySales.Controls.Add(this.label3);
+            this.panelYearlySales.Controls.Add(this.LblYearlySaleReportWhatYear);
+            this.panelYearlySales.Controls.Add(this.LblYearlySaleReportAmount);
             this.panelYearlySales.Controls.Add(this.label1);
             this.panelYearlySales.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelYearlySales.Location = new System.Drawing.Point(10, 10);
@@ -270,52 +292,40 @@ namespace Main.Forms.SalesReport
             this.panelYearlySalesRevProCost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelYearlySalesRevProCost.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelYearlySalesRevProCost.Controls.Add(this.label18);
-            this.panelYearlySalesRevProCost.Controls.Add(this.label17);
-            this.panelYearlySalesRevProCost.Controls.Add(this.label16);
+            this.panelYearlySalesRevProCost.Controls.Add(this.LblYearlyCost);
+            this.panelYearlySalesRevProCost.Controls.Add(this.LblYearlyProfit);
             this.panelYearlySalesRevProCost.Controls.Add(this.label15);
             this.panelYearlySalesRevProCost.Controls.Add(this.label14);
-            this.panelYearlySalesRevProCost.Controls.Add(this.label13);
             this.panelYearlySalesRevProCost.Location = new System.Drawing.Point(13, 123);
             this.panelYearlySalesRevProCost.Name = "panelYearlySalesRevProCost";
             this.panelYearlySalesRevProCost.Size = new System.Drawing.Size(210, 83);
             this.panelYearlySalesRevProCost.TabIndex = 5;
             // 
-            // label18
+            // LblYearlyCost
             // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label18.Location = new System.Drawing.Point(86, 48);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(32, 17);
-            this.label18.TabIndex = 5;
-            this.label18.Text = "0,00";
+            this.LblYearlyCost.AutoSize = true;
+            this.LblYearlyCost.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblYearlyCost.Location = new System.Drawing.Point(86, 38);
+            this.LblYearlyCost.Name = "LblYearlyCost";
+            this.LblYearlyCost.Size = new System.Drawing.Size(32, 17);
+            this.LblYearlyCost.TabIndex = 5;
+            this.LblYearlyCost.Text = "0,00";
             // 
-            // label17
+            // LblYearlyProfit
             // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label17.Location = new System.Drawing.Point(86, 29);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(32, 17);
-            this.label17.TabIndex = 4;
-            this.label17.Text = "0,00";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label16.Location = new System.Drawing.Point(86, 9);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(32, 17);
-            this.label16.TabIndex = 3;
-            this.label16.Text = "0,00";
+            this.LblYearlyProfit.AutoSize = true;
+            this.LblYearlyProfit.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblYearlyProfit.Location = new System.Drawing.Point(86, 19);
+            this.LblYearlyProfit.Name = "LblYearlyProfit";
+            this.LblYearlyProfit.Size = new System.Drawing.Size(32, 17);
+            this.LblYearlyProfit.TabIndex = 4;
+            this.LblYearlyProfit.Text = "0,00";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label15.Location = new System.Drawing.Point(10, 48);
+            this.label15.Location = new System.Drawing.Point(10, 38);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(41, 17);
             this.label15.TabIndex = 2;
@@ -325,21 +335,11 @@ namespace Main.Forms.SalesReport
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label14.Location = new System.Drawing.Point(10, 29);
+            this.label14.Location = new System.Drawing.Point(10, 19);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(53, 17);
             this.label14.TabIndex = 1;
             this.label14.Text = "PROFIT";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label13.Location = new System.Drawing.Point(10, 9);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(65, 17);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "REVENUE";
             // 
             // pictureBox1
             // 
@@ -351,36 +351,36 @@ namespace Main.Forms.SalesReport
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
-            // label2
+            // LblYearlySaleReportWhatYear
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(100, 81);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 21);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "2021";
+            this.LblYearlySaleReportWhatYear.AutoSize = true;
+            this.LblYearlySaleReportWhatYear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
+            this.LblYearlySaleReportWhatYear.Location = new System.Drawing.Point(100, 81);
+            this.LblYearlySaleReportWhatYear.Name = "LblYearlySaleReportWhatYear";
+            this.LblYearlySaleReportWhatYear.Size = new System.Drawing.Size(46, 21);
+            this.LblYearlySaleReportWhatYear.TabIndex = 3;
+            this.LblYearlySaleReportWhatYear.Text = "2021";
             // 
-            // label3
+            // LblYearlySaleReportAmount
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.ForeColor = System.Drawing.Color.Green;
-            this.label3.Location = new System.Drawing.Point(100, 51);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(86, 30);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "100,000";
+            this.LblYearlySaleReportAmount.AutoSize = true;
+            this.LblYearlySaleReportAmount.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblYearlySaleReportAmount.ForeColor = System.Drawing.Color.Green;
+            this.LblYearlySaleReportAmount.Location = new System.Drawing.Point(100, 51);
+            this.LblYearlySaleReportAmount.Name = "LblYearlySaleReportAmount";
+            this.LblYearlySaleReportAmount.Size = new System.Drawing.Size(86, 30);
+            this.LblYearlySaleReportAmount.TabIndex = 2;
+            this.LblYearlySaleReportAmount.Text = "100,000";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.Location = new System.Drawing.Point(13, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 30);
+            this.label1.Size = new System.Drawing.Size(169, 25);
             this.label1.TabIndex = 0;
-            this.label1.Text = "YEARLY";
+            this.label1.Text = "YEARLY REVENUE";
             // 
             // splitContainerHeaderReportsRight
             // 
@@ -406,10 +406,10 @@ namespace Main.Forms.SalesReport
             // panelMonthlySales
             // 
             this.panelMonthlySales.BackColor = System.Drawing.Color.White;
-            this.panelMonthlySales.Controls.Add(this.panelMonthlySalesRevProCost);
+            this.panelMonthlySales.Controls.Add(this.panel1);
             this.panelMonthlySales.Controls.Add(this.pictureBox2);
-            this.panelMonthlySales.Controls.Add(this.label4);
-            this.panelMonthlySales.Controls.Add(this.label5);
+            this.panelMonthlySales.Controls.Add(this.LblMonthlySaleReportWhatFor);
+            this.panelMonthlySales.Controls.Add(this.LblMonthlySaleReportAmount);
             this.panelMonthlySales.Controls.Add(this.label6);
             this.panelMonthlySales.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMonthlySales.Location = new System.Drawing.Point(10, 10);
@@ -417,81 +417,59 @@ namespace Main.Forms.SalesReport
             this.panelMonthlySales.Size = new System.Drawing.Size(238, 216);
             this.panelMonthlySales.TabIndex = 1;
             // 
-            // panelMonthlySalesRevProCost
+            // panel1
             // 
-            this.panelMonthlySalesRevProCost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelMonthlySalesRevProCost.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelMonthlySalesRevProCost.Controls.Add(this.label19);
-            this.panelMonthlySalesRevProCost.Controls.Add(this.label20);
-            this.panelMonthlySalesRevProCost.Controls.Add(this.label21);
-            this.panelMonthlySalesRevProCost.Controls.Add(this.label22);
-            this.panelMonthlySalesRevProCost.Controls.Add(this.label23);
-            this.panelMonthlySalesRevProCost.Controls.Add(this.label24);
-            this.panelMonthlySalesRevProCost.Location = new System.Drawing.Point(14, 123);
-            this.panelMonthlySalesRevProCost.Name = "panelMonthlySalesRevProCost";
-            this.panelMonthlySalesRevProCost.Size = new System.Drawing.Size(210, 83);
-            this.panelMonthlySalesRevProCost.TabIndex = 9;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.LblMonthlyCost);
+            this.panel1.Controls.Add(this.LblMonthlyProfit);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Location = new System.Drawing.Point(14, 123);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(210, 83);
+            this.panel1.TabIndex = 9;
             // 
-            // label19
+            // LblMonthlyCost
             // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label19.Location = new System.Drawing.Point(86, 48);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(32, 17);
-            this.label19.TabIndex = 5;
-            this.label19.Text = "0,00";
+            this.LblMonthlyCost.AutoSize = true;
+            this.LblMonthlyCost.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblMonthlyCost.Location = new System.Drawing.Point(86, 38);
+            this.LblMonthlyCost.Name = "LblMonthlyCost";
+            this.LblMonthlyCost.Size = new System.Drawing.Size(32, 17);
+            this.LblMonthlyCost.TabIndex = 5;
+            this.LblMonthlyCost.Text = "0,00";
             // 
-            // label20
+            // LblMonthlyProfit
             // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label20.Location = new System.Drawing.Point(86, 29);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(32, 17);
-            this.label20.TabIndex = 4;
-            this.label20.Text = "0,00";
+            this.LblMonthlyProfit.AutoSize = true;
+            this.LblMonthlyProfit.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblMonthlyProfit.Location = new System.Drawing.Point(86, 19);
+            this.LblMonthlyProfit.Name = "LblMonthlyProfit";
+            this.LblMonthlyProfit.Size = new System.Drawing.Size(32, 17);
+            this.LblMonthlyProfit.TabIndex = 4;
+            this.LblMonthlyProfit.Text = "0,00";
             // 
-            // label21
+            // label4
             // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label21.Location = new System.Drawing.Point(86, 9);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(32, 17);
-            this.label21.TabIndex = 3;
-            this.label21.Text = "0,00";
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(10, 38);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 17);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "COST";
             // 
-            // label22
+            // label5
             // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label22.Location = new System.Drawing.Point(10, 48);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(41, 17);
-            this.label22.TabIndex = 2;
-            this.label22.Text = "COST";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label23.Location = new System.Drawing.Point(10, 29);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(53, 17);
-            this.label23.TabIndex = 1;
-            this.label23.Text = "PROFIT";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label24.Location = new System.Drawing.Point(10, 9);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(65, 17);
-            this.label24.TabIndex = 0;
-            this.label24.Text = "REVENUE";
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label5.Location = new System.Drawing.Point(10, 19);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 17);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "PROFIT";
             // 
             // pictureBox2
             // 
@@ -503,44 +481,44 @@ namespace Main.Forms.SalesReport
             this.pictureBox2.TabIndex = 8;
             this.pictureBox2.TabStop = false;
             // 
-            // label4
+            // LblMonthlySaleReportWhatFor
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(95, 81);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(51, 21);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "APRIL";
+            this.LblMonthlySaleReportWhatFor.AutoSize = true;
+            this.LblMonthlySaleReportWhatFor.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
+            this.LblMonthlySaleReportWhatFor.Location = new System.Drawing.Point(95, 81);
+            this.LblMonthlySaleReportWhatFor.Name = "LblMonthlySaleReportWhatFor";
+            this.LblMonthlySaleReportWhatFor.Size = new System.Drawing.Size(51, 21);
+            this.LblMonthlySaleReportWhatFor.TabIndex = 7;
+            this.LblMonthlySaleReportWhatFor.Text = "APRIL";
             // 
-            // label5
+            // LblMonthlySaleReportAmount
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label5.ForeColor = System.Drawing.Color.Green;
-            this.label5.Location = new System.Drawing.Point(95, 51);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(86, 30);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "100,000";
+            this.LblMonthlySaleReportAmount.AutoSize = true;
+            this.LblMonthlySaleReportAmount.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblMonthlySaleReportAmount.ForeColor = System.Drawing.Color.Green;
+            this.LblMonthlySaleReportAmount.Location = new System.Drawing.Point(95, 51);
+            this.LblMonthlySaleReportAmount.Name = "LblMonthlySaleReportAmount";
+            this.LblMonthlySaleReportAmount.Size = new System.Drawing.Size(86, 30);
+            this.LblMonthlySaleReportAmount.TabIndex = 6;
+            this.LblMonthlySaleReportAmount.Text = "100,000";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label6.Location = new System.Drawing.Point(18, 9);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(117, 30);
+            this.label6.Size = new System.Drawing.Size(195, 25);
             this.label6.TabIndex = 5;
-            this.label6.Text = "MONTHLY";
+            this.label6.Text = "MONTHLY REVENUE";
             // 
             // panelWeeklySales
             // 
             this.panelWeeklySales.BackColor = System.Drawing.Color.White;
-            this.panelWeeklySales.Controls.Add(this.panelWeeklySalesRevProCost);
+            this.panelWeeklySales.Controls.Add(this.panel4);
             this.panelWeeklySales.Controls.Add(this.pictureBox3);
-            this.panelWeeklySales.Controls.Add(this.label7);
-            this.panelWeeklySales.Controls.Add(this.label8);
+            this.panelWeeklySales.Controls.Add(this.LblWeeklySaleReportWhatFor);
+            this.panelWeeklySales.Controls.Add(this.LblWeeklySaleReportAmount);
             this.panelWeeklySales.Controls.Add(this.label9);
             this.panelWeeklySales.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelWeeklySales.Location = new System.Drawing.Point(10, 10);
@@ -548,81 +526,59 @@ namespace Main.Forms.SalesReport
             this.panelWeeklySales.Size = new System.Drawing.Size(229, 216);
             this.panelWeeklySales.TabIndex = 1;
             // 
-            // panelWeeklySalesRevProCost
+            // panel4
             // 
-            this.panelWeeklySalesRevProCost.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelWeeklySalesRevProCost.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelWeeklySalesRevProCost.Controls.Add(this.label25);
-            this.panelWeeklySalesRevProCost.Controls.Add(this.label26);
-            this.panelWeeklySalesRevProCost.Controls.Add(this.label27);
-            this.panelWeeklySalesRevProCost.Controls.Add(this.label28);
-            this.panelWeeklySalesRevProCost.Controls.Add(this.label29);
-            this.panelWeeklySalesRevProCost.Controls.Add(this.label30);
-            this.panelWeeklySalesRevProCost.Location = new System.Drawing.Point(9, 123);
-            this.panelWeeklySalesRevProCost.Name = "panelWeeklySalesRevProCost";
-            this.panelWeeklySalesRevProCost.Size = new System.Drawing.Size(210, 83);
-            this.panelWeeklySalesRevProCost.TabIndex = 10;
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Controls.Add(this.LblWeeklyCost);
+            this.panel4.Controls.Add(this.LblWeeklyProfit);
+            this.panel4.Controls.Add(this.label19);
+            this.panel4.Controls.Add(this.label20);
+            this.panel4.Location = new System.Drawing.Point(9, 123);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(210, 83);
+            this.panel4.TabIndex = 9;
             // 
-            // label25
+            // LblWeeklyCost
             // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label25.Location = new System.Drawing.Point(86, 48);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(32, 17);
-            this.label25.TabIndex = 5;
-            this.label25.Text = "0,00";
+            this.LblWeeklyCost.AutoSize = true;
+            this.LblWeeklyCost.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblWeeklyCost.Location = new System.Drawing.Point(86, 38);
+            this.LblWeeklyCost.Name = "LblWeeklyCost";
+            this.LblWeeklyCost.Size = new System.Drawing.Size(32, 17);
+            this.LblWeeklyCost.TabIndex = 5;
+            this.LblWeeklyCost.Text = "0,00";
             // 
-            // label26
+            // LblWeeklyProfit
             // 
-            this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label26.Location = new System.Drawing.Point(86, 29);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(32, 17);
-            this.label26.TabIndex = 4;
-            this.label26.Text = "0,00";
+            this.LblWeeklyProfit.AutoSize = true;
+            this.LblWeeklyProfit.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblWeeklyProfit.Location = new System.Drawing.Point(86, 19);
+            this.LblWeeklyProfit.Name = "LblWeeklyProfit";
+            this.LblWeeklyProfit.Size = new System.Drawing.Size(32, 17);
+            this.LblWeeklyProfit.TabIndex = 4;
+            this.LblWeeklyProfit.Text = "0,00";
             // 
-            // label27
+            // label19
             // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label27.Location = new System.Drawing.Point(86, 9);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(32, 17);
-            this.label27.TabIndex = 3;
-            this.label27.Text = "0,00";
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label19.Location = new System.Drawing.Point(10, 38);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(41, 17);
+            this.label19.TabIndex = 2;
+            this.label19.Text = "COST";
             // 
-            // label28
+            // label20
             // 
-            this.label28.AutoSize = true;
-            this.label28.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label28.Location = new System.Drawing.Point(10, 48);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(41, 17);
-            this.label28.TabIndex = 2;
-            this.label28.Text = "COST";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label29.Location = new System.Drawing.Point(10, 29);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(53, 17);
-            this.label29.TabIndex = 1;
-            this.label29.Text = "PROFIT";
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label30.Location = new System.Drawing.Point(10, 9);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(65, 17);
-            this.label30.TabIndex = 0;
-            this.label30.Text = "REVENUE";
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label20.Location = new System.Drawing.Point(10, 19);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(53, 17);
+            this.label20.TabIndex = 1;
+            this.label20.Text = "PROFIT";
             // 
             // pictureBox3
             // 
@@ -634,36 +590,36 @@ namespace Main.Forms.SalesReport
             this.pictureBox3.TabIndex = 8;
             this.pictureBox3.TabStop = false;
             // 
-            // label7
+            // LblWeeklySaleReportWhatFor
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
-            this.label7.Location = new System.Drawing.Point(90, 81);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(56, 21);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "WK 16";
+            this.LblWeeklySaleReportWhatFor.AutoSize = true;
+            this.LblWeeklySaleReportWhatFor.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point);
+            this.LblWeeklySaleReportWhatFor.Location = new System.Drawing.Point(90, 81);
+            this.LblWeeklySaleReportWhatFor.Name = "LblWeeklySaleReportWhatFor";
+            this.LblWeeklySaleReportWhatFor.Size = new System.Drawing.Size(56, 21);
+            this.LblWeeklySaleReportWhatFor.TabIndex = 7;
+            this.LblWeeklySaleReportWhatFor.Text = "WK 16";
             // 
-            // label8
+            // LblWeeklySaleReportAmount
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label8.ForeColor = System.Drawing.Color.Green;
-            this.label8.Location = new System.Drawing.Point(90, 51);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(86, 30);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "100,000";
+            this.LblWeeklySaleReportAmount.AutoSize = true;
+            this.LblWeeklySaleReportAmount.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblWeeklySaleReportAmount.ForeColor = System.Drawing.Color.Green;
+            this.LblWeeklySaleReportAmount.Location = new System.Drawing.Point(90, 51);
+            this.LblWeeklySaleReportAmount.Name = "LblWeeklySaleReportAmount";
+            this.LblWeeklySaleReportAmount.Size = new System.Drawing.Size(86, 30);
+            this.LblWeeklySaleReportAmount.TabIndex = 6;
+            this.LblWeeklySaleReportAmount.Text = "100,000";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label9.Location = new System.Drawing.Point(17, 9);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(93, 30);
+            this.label9.Size = new System.Drawing.Size(173, 25);
             this.label9.TabIndex = 5;
-            this.label9.Text = "WEEKLY";
+            this.label9.Text = "WEEKLY REVENUE";
             // 
             // CboxFilterYearlySales
             // 
@@ -693,24 +649,81 @@ namespace Main.Forms.SalesReport
             this.panelTransactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelTransactions.Controls.Add(this.listView1);
+            this.panelTransactions.Controls.Add(this.LVTransactionHistory);
             this.panelTransactions.Controls.Add(this.panel3);
             this.panelTransactions.Location = new System.Drawing.Point(10, 321);
             this.panelTransactions.Name = "panelTransactions";
             this.panelTransactions.Size = new System.Drawing.Size(1010, 268);
             this.panelTransactions.TabIndex = 4;
             // 
-            // listView1
+            // LVTransactionHistory
             // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.GridLines = true;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(0, 33);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1010, 235);
-            this.listView1.TabIndex = 4;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.LVTransactionHistory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.TicketNumber,
+            this.CustomerName,
+            this.SubTotal,
+            this.Discount,
+            this.Percentage,
+            this.Total,
+            this.Status,
+            this.CashierName,
+            this.columnHeader3});
+            this.LVTransactionHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LVTransactionHistory.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LVTransactionHistory.FullRowSelect = true;
+            this.LVTransactionHistory.GridLines = true;
+            this.LVTransactionHistory.HideSelection = false;
+            this.LVTransactionHistory.Location = new System.Drawing.Point(0, 33);
+            this.LVTransactionHistory.Name = "LVTransactionHistory";
+            this.LVTransactionHistory.Size = new System.Drawing.Size(1010, 235);
+            this.LVTransactionHistory.TabIndex = 4;
+            this.LVTransactionHistory.UseCompatibleStateImageBehavior = false;
+            this.LVTransactionHistory.View = System.Windows.Forms.View.Details;
+            // 
+            // TicketNumber
+            // 
+            this.TicketNumber.Text = "Ticket #";
+            this.TicketNumber.Width = 120;
+            // 
+            // CustomerName
+            // 
+            this.CustomerName.Text = "Customer";
+            this.CustomerName.Width = 120;
+            // 
+            // SubTotal
+            // 
+            this.SubTotal.Text = "Sub Total";
+            this.SubTotal.Width = 100;
+            // 
+            // Discount
+            // 
+            this.Discount.Text = "Discount";
+            this.Discount.Width = 100;
+            // 
+            // Percentage
+            // 
+            this.Percentage.Text = "Disc. Percent";
+            this.Percentage.Width = 120;
+            // 
+            // Total
+            // 
+            this.Total.Text = "Total";
+            this.Total.Width = 120;
+            // 
+            // Status
+            // 
+            this.Status.Text = "Status";
+            this.Status.Width = 120;
+            // 
+            // CashierName
+            // 
+            this.CashierName.Text = "Cashier";
+            this.CashierName.Width = 120;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Date";
+            this.columnHeader3.Width = 120;
             // 
             // panel3
             // 
@@ -795,9 +808,10 @@ namespace Main.Forms.SalesReport
             // 
             // TabTrendFilter
             // 
-            this.TabTrendFilter.Controls.Add(this.radioButton3);
-            this.TabTrendFilter.Controls.Add(this.radioButton1);
-            this.TabTrendFilter.Controls.Add(this.radioButton2);
+            this.TabTrendFilter.Controls.Add(this.FlowLayoutCheckBoxYears);
+            this.TabTrendFilter.Controls.Add(this.RBtnFilterTrendByWeek);
+            this.TabTrendFilter.Controls.Add(this.RBtnFilterTrendByYear);
+            this.TabTrendFilter.Controls.Add(this.RBtnFilterTrendByMonth);
             this.TabTrendFilter.Location = new System.Drawing.Point(4, 26);
             this.TabTrendFilter.Name = "TabTrendFilter";
             this.TabTrendFilter.Padding = new System.Windows.Forms.Padding(3);
@@ -806,40 +820,50 @@ namespace Main.Forms.SalesReport
             this.TabTrendFilter.Text = "Trend";
             this.TabTrendFilter.UseVisualStyleBackColor = true;
             // 
-            // radioButton3
+            // FlowLayoutCheckBoxYears
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.radioButton3.Location = new System.Drawing.Point(23, 93);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(119, 25);
-            this.radioButton3.TabIndex = 3;
-            this.radioButton3.Text = "Weekly trend";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.FlowLayoutCheckBoxYears.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FlowLayoutCheckBoxYears.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.FlowLayoutCheckBoxYears.Location = new System.Drawing.Point(23, 16);
+            this.FlowLayoutCheckBoxYears.Name = "FlowLayoutCheckBoxYears";
+            this.FlowLayoutCheckBoxYears.Size = new System.Drawing.Size(82, 205);
+            this.FlowLayoutCheckBoxYears.TabIndex = 4;
             // 
-            // radioButton1
+            // RBtnFilterTrendByWeek
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Checked = true;
-            this.radioButton1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.radioButton1.Location = new System.Drawing.Point(23, 31);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(111, 25);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Yearly trend";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.RBtnFilterTrendByWeek.AutoSize = true;
+            this.RBtnFilterTrendByWeek.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.RBtnFilterTrendByWeek.Location = new System.Drawing.Point(132, 122);
+            this.RBtnFilterTrendByWeek.Name = "RBtnFilterTrendByWeek";
+            this.RBtnFilterTrendByWeek.Size = new System.Drawing.Size(78, 25);
+            this.RBtnFilterTrendByWeek.TabIndex = 3;
+            this.RBtnFilterTrendByWeek.Text = "Weekly";
+            this.RBtnFilterTrendByWeek.UseVisualStyleBackColor = true;
             // 
-            // radioButton2
+            // RBtnFilterTrendByYear
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.radioButton2.Location = new System.Drawing.Point(23, 62);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(127, 25);
-            this.radioButton2.TabIndex = 2;
-            this.radioButton2.Text = "Monthly trend";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.RBtnFilterTrendByYear.AutoSize = true;
+            this.RBtnFilterTrendByYear.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.RBtnFilterTrendByYear.Location = new System.Drawing.Point(132, 60);
+            this.RBtnFilterTrendByYear.Name = "RBtnFilterTrendByYear";
+            this.RBtnFilterTrendByYear.Size = new System.Drawing.Size(70, 25);
+            this.RBtnFilterTrendByYear.TabIndex = 1;
+            this.RBtnFilterTrendByYear.Text = "Yearly";
+            this.RBtnFilterTrendByYear.UseVisualStyleBackColor = true;
+            // 
+            // RBtnFilterTrendByMonth
+            // 
+            this.RBtnFilterTrendByMonth.AutoSize = true;
+            this.RBtnFilterTrendByMonth.Checked = true;
+            this.RBtnFilterTrendByMonth.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.RBtnFilterTrendByMonth.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.RBtnFilterTrendByMonth.Location = new System.Drawing.Point(132, 91);
+            this.RBtnFilterTrendByMonth.Name = "RBtnFilterTrendByMonth";
+            this.RBtnFilterTrendByMonth.Size = new System.Drawing.Size(86, 25);
+            this.RBtnFilterTrendByMonth.TabIndex = 2;
+            this.RBtnFilterTrendByMonth.TabStop = true;
+            this.RBtnFilterTrendByMonth.Text = "Monthly";
+            this.RBtnFilterTrendByMonth.UseVisualStyleBackColor = true;
             // 
             // tabReport
             // 
@@ -853,7 +877,7 @@ namespace Main.Forms.SalesReport
             this.tabReport.Location = new System.Drawing.Point(4, 26);
             this.tabReport.Name = "tabReport";
             this.tabReport.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReport.Size = new System.Drawing.Size(297, 238);
+            this.tabReport.Size = new System.Drawing.Size(299, 238);
             this.tabReport.TabIndex = 1;
             this.tabReport.Text = "Report";
             this.tabReport.UseVisualStyleBackColor = true;
@@ -948,6 +972,7 @@ namespace Main.Forms.SalesReport
             this.Controls.Add(this.panelReportHeader);
             this.Name = "FrmSalesReport";
             this.Text = "FrmSalesReport";
+            this.Load += new System.EventHandler(this.FrmSalesReport_Load);
             this.panelReportHeader.ResumeLayout(false);
             this.splitContainerHeaderReports.Panel1.ResumeLayout(false);
             this.splitContainerHeaderReports.Panel2.ResumeLayout(false);
@@ -971,13 +996,13 @@ namespace Main.Forms.SalesReport
             this.splitContainerHeaderReportsRight.ResumeLayout(false);
             this.panelMonthlySales.ResumeLayout(false);
             this.panelMonthlySales.PerformLayout();
-            this.panelMonthlySalesRevProCost.ResumeLayout(false);
-            this.panelMonthlySalesRevProCost.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panelWeeklySales.ResumeLayout(false);
             this.panelWeeklySales.PerformLayout();
-            this.panelWeeklySalesRevProCost.ResumeLayout(false);
-            this.panelWeeklySalesRevProCost.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.panelDashboardBody.ResumeLayout(false);
             this.panelTransactions.ResumeLayout(false);
@@ -1013,44 +1038,28 @@ namespace Main.Forms.SalesReport
         private System.Windows.Forms.Panel panelMonthlySales;
         private System.Windows.Forms.Panel panelWeeklySales;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label LblYearlySaleReportWhatYear;
+        private System.Windows.Forms.Label LblYearlySaleReportAmount;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label LblNumberOfTransactionsWhatFor;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label LblNumberOfTransactionsByYear;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label LblMonthlySaleReportWhatFor;
+        private System.Windows.Forms.Label LblMonthlySaleReportAmount;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label LblWeeklySaleReportWhatFor;
+        private System.Windows.Forms.Label LblWeeklySaleReportAmount;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel panelDashboardBody;
         private System.Windows.Forms.SplitContainer splitContainerCharts;
         private System.Windows.Forms.Panel panelYearlySalesRevProCost;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label LblYearlyCost;
+        private System.Windows.Forms.Label LblYearlyProfit;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Panel panelMonthlySalesRevProCost;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Panel panelWeeklySalesRevProCost;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Panel panelSalesTrend;
         private System.Windows.Forms.Panel panelMainChart;
         private System.Windows.Forms.Label label31;
@@ -1072,6 +1081,30 @@ namespace Main.Forms.SalesReport
         private System.Windows.Forms.Panel panelTransactions;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView LVTransactionHistory;
+        private System.Windows.Forms.ColumnHeader TicketNumber;
+        private System.Windows.Forms.ColumnHeader CustomerName;
+        private System.Windows.Forms.ColumnHeader SubTotal;
+        private System.Windows.Forms.ColumnHeader Discount;
+        private System.Windows.Forms.ColumnHeader Percentage;
+        private System.Windows.Forms.ColumnHeader Total;
+        private System.Windows.Forms.ColumnHeader Status;
+        private System.Windows.Forms.ColumnHeader CashierName;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label LblMonthlyCost;
+        private System.Windows.Forms.Label LblMonthlyProfit;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label LblWeeklyCost;
+        private System.Windows.Forms.Label LblWeeklyProfit;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.FlowLayoutPanel FlowLayoutCheckBoxYears;
+        private System.Windows.Forms.RadioButton RBtnFilterTrendByWeek;
+        private System.Windows.Forms.RadioButton RBtnFilterTrendByYear;
+        private System.Windows.Forms.RadioButton RBtnFilterTrendByMonth;
     }
 }

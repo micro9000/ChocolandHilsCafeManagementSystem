@@ -273,6 +273,16 @@ namespace Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap reset_white_24 {
+            get {
+                object obj = ResourceManager.GetObject("reset-white-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap sales_report {
             get {
                 object obj = ResourceManager.GetObject("sales-report", resourceCulture);

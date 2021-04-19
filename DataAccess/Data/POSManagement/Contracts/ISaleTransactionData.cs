@@ -21,11 +21,19 @@ namespace DataAccess.Data.POSManagement.Contracts
         decimal GetDayTotalSales(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate);
         bool MassSalesTransactionSalesCashout(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate);
 
+        long GetNumberOfValidTransactionsByYear(int year, StaticData.POSTransactionStatus POSTransactionStatus);
+
         List<YearSalesReportModel> GetYearlySalesReport();
         List<YearSalesReportModel> GetYearlySalesReport(int startYear, int endYear);
+        YearSalesReportModel GetSalesReportByYear(int year);
+
         List<MonthSalesReportModel> GetMonthlySalesReport(int year);
+        MonthSalesReportModel GetSalesReportYearAndMonth(int year, int month);
+
+        WeekSalesReportModel GetWeeklySalesReportByYearAndWeek(int year, int week);
         List<WeekSalesReportModel> GetWeeklySalesReportByYear(int year);
         List<WeekSalesReportModel> GetWeeklySalesReportByMonth(int month);
+
         List<DaySalesReportModel> GetDailySalesReportByMonth(int month);
 
     }

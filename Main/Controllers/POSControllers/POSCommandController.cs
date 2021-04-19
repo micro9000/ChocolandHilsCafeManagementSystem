@@ -430,6 +430,7 @@ namespace Main.Controllers.POSControllers
 
                     _ingredientInventoryData.Update(inventoryDetails);
 
+
                     // store above data so we can use it in case we need to revert all deductions
                     _saleTranProdIngInvDeductionsRecordData.Add(new SaleTranProdIngInvDeductionsRecordModel
                     {
@@ -440,7 +441,8 @@ namespace Main.Controllers.POSControllers
                         IngredientUOM = prodIngredient.Ingredient.UOM,
                         UsedUOM = prodIngredient.UOM,
                         DeductedQtyValue = inventory.DeductQtyValue,
-                        IngInvCurrentUnitCost = inventoryDetails.UnitCost
+                        IngInvCurrentUnitCost = inventoryDetails.UnitCost,
+                        TotalCost = inventory.Cost
                     });
                 }
             }
@@ -601,7 +603,8 @@ namespace Main.Controllers.POSControllers
                         IngredientUOM = prodIngredient.Ingredient.UOM,
                         UsedUOM = prodIngredient.UOM,
                         DeductedQtyValue = inventory.DeductQtyValue,
-                        IngInvCurrentUnitCost = inventoryDetails.UnitCost
+                        IngInvCurrentUnitCost = inventoryDetails.UnitCost,
+                        TotalCost = inventory.Cost
                     });
                 }
             }

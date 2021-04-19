@@ -17,5 +17,7 @@ namespace EntitiesShared.InventoryManagement.Models
         public decimal DeductQtyValue { get; set; }
 
         public StaticData.UOM UsedUOM { get; set; }
+
+        public decimal Cost { get; set; }
     }
 }

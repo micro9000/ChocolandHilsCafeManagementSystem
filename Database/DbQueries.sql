@@ -760,6 +760,8 @@ ADD COLUMN isCashOut BOOLEAN DEFAULT false;
 
 SELECT * FROM SalesTransactions;
 
+SELECT COUNT(id) as counter FROM SalesTransactions WHERE YEAR(createdAt) = 2021;
+
 SELECT SUM(totalAmount) as totalSales FROM SalesTransactions WHERE isDeleted=false AND transStatus=@TransStatus AND createdAt=@TransDate;
 
 
@@ -840,12 +842,12 @@ CREATE TABLE IF NOT EXISTS SaleTranProdIngInvDeductionsRecords(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id),
     FOREIGN KEY(ingredientInventoryId) REFERENCES IngredientInventory(id)
 )ENGINE=INNODB;
-
-
-DELETE FROM SaleTranProdIngInvDeductionsRecords where id > 0;
+ALTER TABLE SaleTranProdIngInvDeductionsRecords
+ADD COLUMN totalCost DECIMAL(9,2);
 
 
 SELECT * FROM SaleTranProdIngInvDeductionsRecords;
+
 
 CREATE TABLE IF NOT EXISTS SaleTranComboMealIngInvDeductionsRecords(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -867,8 +869,8 @@ CREATE TABLE IF NOT EXISTS SaleTranComboMealIngInvDeductionsRecords(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id),
     FOREIGN KEY(ingredientInventoryId) REFERENCES IngredientInventory(id)
 )ENGINE=INNODB;
-
-DELETE FROM SaleTranComboMealIngInvDeductionsRecords where id > 0;
+ALTER TABLE SaleTranComboMealIngInvDeductionsRecords
+ADD COLUMN totalCost DECIMAL(9,2);
 
 SELECT * FROM SaleTranComboMealIngInvDeductionsRecords;
 
@@ -899,10 +901,22 @@ FROM CashRegisterCashOutTransactions
 WHERE isDeleted=false AND YEAR(createdAt) BETWEEN 2020 AND 2021
 GROUP BY YEAR(createdAt);
 
+-- single year
+SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false AND YEAR(createdAt) = 2021
+GROUP BY YEAR(createdAt);
+
 -- monthly report
 SELECT SUM(totalSales) as TotalSales, MONTH(createdAt) as Mnth
 FROM CashRegisterCashOutTransactions
 WHERE isDeleted=false AND YEAR(createdAt) = 2021
+GROUP BY MONTH(createdAt);
+
+-- single month report
+SELECT SUM(totalSales) as TotalSales, MONTH(createdAt) as Mnth
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false AND YEAR(createdAt) = 2021 AND MONTH(createdAt)=4
 GROUP BY MONTH(createdAt);
 
 -- weekly report, filter by year
@@ -917,6 +931,13 @@ FROM CashRegisterCashOutTransactions
 WHERE isDeleted=false AND MONTH(createdAt) = 4
 GROUP BY WEEK(createdAt);
 
+-- single weekly report, filter by month
+SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
+FROM CashRegisterCashOutTransactions
+WHERE isDeleted=false AND MONTH(createdAt) = 4 AND YEAR(createdAt)=2021
+GROUP BY WEEK(createdAt);
+
+-- daily
 SELECT SUM(totalSales) as TotalSales, DAY(createdAt) as dy
 FROM CashRegisterCashOutTransactions
 WHERE isDeleted=false AND MONTH(createdAt) = 4

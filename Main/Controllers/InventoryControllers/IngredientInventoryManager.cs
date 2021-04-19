@@ -144,6 +144,32 @@ namespace Main.Controllers.InventoryControllers
             return actualQtyValue;
         }
 
+        public decimal GetQtyValue(StaticData.UOM uom, decimal qtyValue)
+        {
+            decimal actualQtyValue = 0;
+
+            switch (uom)
+            {
+                case StaticData.UOM.g:
+                case StaticData.UOM.pc:
+                case StaticData.UOM.pcs:
+                case StaticData.UOM.ml:
+                    actualQtyValue = qtyValue;
+                    break;
+
+                case StaticData.UOM.kg:
+                case StaticData.UOM.L:
+                    actualQtyValue = qtyValue / 1000;
+                    break;
+
+                default:
+                    actualQtyValue = 0;
+                    break;
+            }
+
+            return actualQtyValue;
+        }
+
         // Since Ingredient can have multiple inventory 
         // we need to identify what inventories we will deduct the required Qty value of Product's ingredient based on Product's ingredient Unit of measurement
         public List<ProductIngredientInventoryDeduction> GetWhereInventoryThisProductIngredientToDeduct(long ingredientId, decimal prodIngredientRequireQtyValue, StaticData.UOM prodIngredientRequireUOM)
@@ -170,13 +196,19 @@ namespace Main.Controllers.InventoryControllers
             {
                 if (inventory.RemainingQtyValue >= remainingProdIngredientQtyValue && remainingProdIngredientQtyValue > 0)
                 {
+                    var actualUnitCost = this.GetActualCostByIngredientQtyValueAndUnitCost(prodIngredientRequireUOM, inventory.UnitCost);
+                    var qtyValBasedOnUOM = GetQtyValue(prodIngredientRequireUOM, remainingProdIngredientQtyValue);
+
+                    decimal cost = qtyValBasedOnUOM * actualUnitCost;
+
                     productIngredientInventoryDeductionFromList.Add(new ProductIngredientInventoryDeduction
                     {
                         DeductionSequence = deductionSequence,
                         IngredientId = ingredeintDetails.Id,
                         IngredientInventoryid = inventory.Id,
                         DeductQtyValue = remainingProdIngredientQtyValue,//GetProductIngredientActualQtyValueNeedToDeduct(prodIngredientRequireUOM, remainingProdIngredientQtyValue),
-                        UsedUOM = prodIngredientRequireUOM
+                        UsedUOM = prodIngredientRequireUOM,
+                        Cost = cost
                     });
 
                     remainingProdIngredientQtyValue = 0;
@@ -184,13 +216,19 @@ namespace Main.Controllers.InventoryControllers
                 }
                 else if (inventory.RemainingQtyValue < remainingProdIngredientQtyValue && remainingProdIngredientQtyValue > 0)
                 {
+                    var actualUnitCost = this.GetActualCostByIngredientQtyValueAndUnitCost(prodIngredientRequireUOM, inventory.UnitCost); 
+                    var qtyValBasedOnUOM = GetQtyValue(prodIngredientRequireUOM, inventory.RemainingQtyValue);
+
+                    decimal cost = qtyValBasedOnUOM * actualUnitCost;
+
                     productIngredientInventoryDeductionFromList.Add(new ProductIngredientInventoryDeduction
                     {
                         DeductionSequence = deductionSequence,
                         IngredientId = ingredeintDetails.Id,
                         IngredientInventoryid = inventory.Id,
                         DeductQtyValue = GetProductIngredientActualQtyValueNeedToDeduct(prodIngredientRequireUOM, inventory.RemainingQtyValue),
-                        UsedUOM = prodIngredientRequireUOM
+                        UsedUOM = prodIngredientRequireUOM,
+                        Cost = cost
                     });
 
                     remainingProdIngredientQtyValue = remainingProdIngredientQtyValue - inventory.RemainingQtyValue;

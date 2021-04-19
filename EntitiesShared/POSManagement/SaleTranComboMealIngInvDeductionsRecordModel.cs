@@ -27,5 +27,7 @@ namespace EntitiesShared.POSManagement
         public decimal DeductedQtyValue { get; set; }
 
         public decimal IngInvCurrentUnitCost { get; set; }
+
+        public decimal TotalCost { get; set; }
     }
 }
