@@ -64,7 +64,7 @@ namespace Main.Forms.SalesReport
 
             salesReports = _saleTransactionData.GetYearlySalesReport();
 
-            foreach(var report in salesReports)
+            foreach (var report in salesReports)
             {
                 var chbx = new CheckBox();
                 chbx.Name = $"Year_{report.Yr}";
@@ -100,6 +100,9 @@ namespace Main.Forms.SalesReport
             this.GetAndDisplayWeeklyRevenueProfitAndCost(dateNow.Year, currentWeekNum);
 
             DisplayMonthlyBarCharByYear(dateNow.Year);
+
+            //var temp = GetMonthlyReportCollection(2020);
+            //cartesianChart1.Series.Add(temp.Item2);
             //DisplayWeeklyBarCharByYear(dateNow.Year);
             //DisplayYearlyBarCharByYear();
         }
@@ -113,7 +116,7 @@ namespace Main.Forms.SalesReport
             this.LblNumberOfTransactionsWhatFor.Text = year.ToString();
         }
 
-        public void GetAndDisplayYearRevenueProfitAndCost (int year)
+        public void GetAndDisplayYearRevenueProfitAndCost(int year)
         {
             var report = _saleTransactionData.GetSalesReportByYear(year);
 
@@ -131,7 +134,7 @@ namespace Main.Forms.SalesReport
             }
         }
 
-        public void GetAndDisplayMonthlyRevenueProfitAndCost (int year, int month)
+        public void GetAndDisplayMonthlyRevenueProfitAndCost(int year, int month)
         {
             var report = _saleTransactionData.GetSalesReportYearAndMonth(year, month);
 
@@ -171,138 +174,205 @@ namespace Main.Forms.SalesReport
 
         public void DisplayMonthlyBarCharByYear(int year)
         {
-            List<MonthSalesReportModel> monthSalesReports = new List<MonthSalesReportModel>();
+            cartesianChart1.Series = new SeriesCollection();
 
-            monthSalesReports = _saleTransactionData.GetMonthlySalesReport(year);
+            var months = GetMonthsList();
 
-            List<string> months = monthSalesReports.Select(x => this.Months[x.Mnth]).ToList();
-            List<decimal> values = monthSalesReports.Select(x => x.TotalSales).ToList();
-
-            var monthlyReportSeries = new ColumnSeries
-            {
-                Title = year.ToString(),
-                Values = new ChartValues<decimal> (values)
-            };
-
-            cartesianChart1.Series = new SeriesCollection
-            {
-                monthlyReportSeries
-            };
-
+            cartesianChart1.AxisX.Clear();
+            cartesianChart1.AxisY.Clear();
             cartesianChart1.AxisX.Add(new Axis
             {
                 Title = "Months",
                 Labels = months.ToArray()
             });
-
             cartesianChart1.AxisY.Add(new Axis
             {
                 Title = "Sales",
                 LabelFormatter = value => value.ToString("N")
             });
-        }
 
 
-        public void DisplayWeeklyBarCharByYear(int year)
-        {
-            List<WeekSalesReportModel> salesReports = new List<WeekSalesReportModel>();
-
-            salesReports = _saleTransactionData.GetWeeklySalesReportByYear(year);
-
-            List<string> weeks = salesReports.Select(x => $"W{x.Wk}").ToList();
-            List<decimal> values = salesReports.Select(x => x.TotalSales).ToList();
-
-            var monthlyReportSeries = new ColumnSeries
+            var values = this.GetMonthlySalesReport(year);
+            cartesianChart1.Series.Add(new ColumnSeries
             {
                 Title = year.ToString(),
                 Values = new ChartValues<decimal>(values)
-            };
-
-            cartesianChart1.Series = new SeriesCollection
-            {
-                monthlyReportSeries
-            };
-
-            cartesianChart1.AxisX.Add(new Axis
-            {
-                Title = "Weeks",
-                Labels = weeks.ToArray()
-            });
-
-            cartesianChart1.AxisY.Add(new Axis
-            {
-                Title = "Sales",
-                LabelFormatter = value => value.ToString("N")
             });
         }
 
-
-        public void DisplayYearlyBarCharByYear()
+        public List<int> GetSelectedYears()
         {
-            List<YearSalesReportModel> salesReports = new List<YearSalesReportModel>();
-
-            salesReports = _saleTransactionData.GetYearlySalesReport();
-
-            List<string> weeks = salesReports.Select(x => x.Yr.ToString()).ToList();
-            List<decimal> values = salesReports.Select(x => x.TotalSales).ToList();
-
-            var monthlyReportSeries = new ColumnSeries
+            List<int> yearList = new List<int>();
+            foreach (var yearCkbox in FlowLayoutCheckBoxYears.Controls)
             {
-                Title = "Yearly",
-                Values = new ChartValues<decimal>(values)
-            };
-
-            cartesianChart1.Series = new SeriesCollection
-            {
-                monthlyReportSeries
-            };
-
-            cartesianChart1.AxisX.Add(new Axis
-            {
-                Title = "Years",
-                Labels = weeks.ToArray()
-            });
-
-            cartesianChart1.AxisY.Add(new Axis
-            {
-                Title = "Sales",
-                LabelFormatter = value => value.ToString("N")
-            });
-        }
-
-        public void SetChart()
-        {
-
-            cartesianChart1.Series = new SeriesCollection
-            {
-                new ColumnSeries
+                var chbox = (CheckBox)yearCkbox;
+                if (chbox.Checked)
                 {
-                    Title = "2015",
-                    Values = new ChartValues<double> { 10, 50, 39, 50 }
+                    yearList.Add(int.Parse(chbox.Text));
                 }
-            };
+            }
+            return yearList;
+        }
 
-            ////adding series will update and animate the chart automatically
-            //cartesianChart1.Series.Add(new ColumnSeries
-            //{
-            //    Title = "2016",
-            //    Values = new ChartValues<double> { 11, 56, 42 }
-            //});
+        public List<string> GetMonthsList()
+        {
+            List<string> months = new List<string>();
 
-            //also adding values updates and animates the chart automatically
-            //cartesianChart1.Series[1].Values.Add(48d);
-
-            cartesianChart1.AxisX.Add(new Axis
+            foreach (var month in this.Months)
             {
-                Title = "Sales Man",
-                Labels = new[] { "Maria", "Susan", "Charles", "Frida" }
-            });
+                months.Add(month.Value);
+            }
+
+            return months;
+        }
+
+        public List<int> GetWeekList()
+        {
+            int weeksNum = 52;
+
+            List<int> weeks = new List<int>();
+
+            for (var wk = 1; wk < weeksNum; wk++)
+            {
+                weeks.Add(wk);
+            }
+            return weeks;
+        }
+
+        private void BtnSubmitFilter_Click(object sender, EventArgs e)
+        {
+            bool isYearly = RBtnFilterTrendByYear.Checked;
+            bool isMonthly = RBtnFilterTrendByMonth.Checked;
+            bool isWeekly = RBtnFilterTrendByWeek.Checked;
+
+
+            cartesianChart1.Series = new SeriesCollection();
+            cartesianChart1.AxisX.Clear();
+            cartesianChart1.AxisY.Clear();
 
             cartesianChart1.AxisY.Add(new Axis
             {
-                Title = "Sold Apps",
+                Title = "Sales",
                 LabelFormatter = value => value.ToString("N")
             });
+
+
+            var selectedYears = GetSelectedYears();
+
+            if (isYearly)
+            {
+                cartesianChart1.AxisX.Add(new Axis
+                {
+                    Title = "Yearly",
+                    Labels = selectedYears.Select(x => x.ToString()).ToArray()
+                });
+
+                var salesReports = _saleTransactionData.GetYearlySalesReport(selectedYears.ToArray());
+
+                List<string> weeks = salesReports.Select(x => x.Yr.ToString()).ToList();
+                List<decimal> values = salesReports.Select(x => x.TotalSales).ToList();
+
+                var reportSeries = new ColumnSeries
+                {
+                    Title = "Yearly",
+                    Values = new ChartValues<decimal>(values)
+                };
+
+                cartesianChart1.Series.Add(reportSeries);
+            }
+
+            if (isMonthly)
+            {
+                var months = GetMonthsList();
+
+                cartesianChart1.AxisX.Add(new Axis
+                {
+                    Title = "Monthly",
+                    Labels = months.ToArray()
+                });
+
+
+                foreach(int year in selectedYears)
+                {
+                    var values = this.GetMonthlySalesReport(year);
+                    cartesianChart1.Series.Add(new ColumnSeries
+                    {
+                        Title = year.ToString(),
+                        Values = new ChartValues<decimal>(values)
+                    });
+                }
+            }
+
+            if (isWeekly)
+            {
+                var weeks = GetWeekList();
+                cartesianChart1.AxisX.Add(new Axis
+                {
+                    Title = "Weekly",
+                    Labels = weeks.Select(x => x.ToString()).ToArray()
+                });
+
+                foreach (int year in selectedYears)
+                {
+                    var values = this.GetWeeklySalesReport(year);
+                    cartesianChart1.Series.Add(new ColumnSeries
+                    {
+                        Title = year.ToString(),
+                        Values = new ChartValues<decimal>(values)
+                    });
+                }
+            }
+        }
+
+        public List<decimal> GetMonthlySalesReport(int year)
+        {
+            List<MonthSalesReportModel> monthSalesReports = new List<MonthSalesReportModel>();
+
+            monthSalesReports = _saleTransactionData.GetMonthlySalesReport(year);
+
+            List<decimal> values = new List<decimal>();
+
+            foreach (var month in this.Months)
+            {
+                var reportByCurrentMonth = monthSalesReports.Where(x => x.Mnth == month.Key).FirstOrDefault();
+
+                if (reportByCurrentMonth != null)
+                {
+                    values.Add(reportByCurrentMonth.TotalSales);
+                }
+                else
+                {
+                    values.Add(0);
+                }
+            }
+
+            return values;
+        }
+
+
+        public List<decimal> GetWeeklySalesReport (int year)
+        {
+            var salesReports = _saleTransactionData.GetWeeklySalesReportByYear(year);
+
+ 
+            List<decimal> values = new List<decimal>();
+
+            var weeks = GetWeekList();
+            foreach (var wk in weeks)
+            {
+                var reportByCurrentWeek = salesReports.Where(x => x.Wk == wk).FirstOrDefault();
+
+                if (reportByCurrentWeek != null)
+                {
+                    values.Add(reportByCurrentWeek.TotalSales);
+                }
+                else
+                {
+                    values.Add(0);
+                }
+            }
+
+            return values;
         }
 
     }

@@ -143,21 +143,18 @@ namespace DataAccess.Data.POSManagement.Implementations
             return results;
         }
 
-        public List<YearSalesReportModel> GetYearlySalesReport(int startYear, int endYear)
+        public List<YearSalesReportModel> GetYearlySalesReport(int[] yearList)
         {
             string query = @"SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
                             FROM CashRegisterCashOutTransactions
-                            WHERE isDeleted=false AND YEAR(createdAt) BETWEEN @StartYear AND @EndYear
+                            WHERE isDeleted=false AND YEAR(createdAt) IN @YearList
                             GROUP BY YEAR(createdAt)";
 
             var results = new List<YearSalesReportModel>();
 
             using (var conn = _dbConnFactory.CreateConnection())
             {
-                results = conn.Query<YearSalesReportModel>(query, new {
-                    StartYear = startYear,
-                    EndYear = endYear
-                }).ToList();
+                results = conn.Query<YearSalesReportModel>(query, new { YearList = yearList }).ToList();
                 conn.Close();
             }
 
@@ -201,7 +198,6 @@ namespace DataAccess.Data.POSManagement.Implementations
             }
 
             return results;
-
         }
 
         public MonthSalesReportModel GetSalesReportYearAndMonth(int year, int month)

@@ -24,7 +24,7 @@ namespace DataAccess.Data.POSManagement.Contracts
         long GetNumberOfValidTransactionsByYear(int year, StaticData.POSTransactionStatus POSTransactionStatus);
 
         List<YearSalesReportModel> GetYearlySalesReport();
-        List<YearSalesReportModel> GetYearlySalesReport(int startYear, int endYear);
+        List<YearSalesReportModel> GetYearlySalesReport(int[] yearList);
         YearSalesReportModel GetSalesReportByYear(int year);
 
         List<MonthSalesReportModel> GetMonthlySalesReport(int year);

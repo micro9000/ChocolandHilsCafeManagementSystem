@@ -91,6 +91,7 @@ namespace Main.Forms.SalesReport
             this.label31 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.TabTrendFilter = new System.Windows.Forms.TabPage();
+            this.BtnSubmitFilter = new System.Windows.Forms.Button();
             this.FlowLayoutCheckBoxYears = new System.Windows.Forms.FlowLayoutPanel();
             this.RBtnFilterTrendByWeek = new System.Windows.Forms.RadioButton();
             this.RBtnFilterTrendByYear = new System.Windows.Forms.RadioButton();
@@ -808,6 +809,7 @@ namespace Main.Forms.SalesReport
             // 
             // TabTrendFilter
             // 
+            this.TabTrendFilter.Controls.Add(this.BtnSubmitFilter);
             this.TabTrendFilter.Controls.Add(this.FlowLayoutCheckBoxYears);
             this.TabTrendFilter.Controls.Add(this.RBtnFilterTrendByWeek);
             this.TabTrendFilter.Controls.Add(this.RBtnFilterTrendByYear);
@@ -820,8 +822,26 @@ namespace Main.Forms.SalesReport
             this.TabTrendFilter.Text = "Trend";
             this.TabTrendFilter.UseVisualStyleBackColor = true;
             // 
+            // BtnSubmitFilter
+            // 
+            this.BtnSubmitFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BtnSubmitFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSubmitFilter.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnSubmitFilter.ForeColor = System.Drawing.Color.White;
+            this.BtnSubmitFilter.Image = global::Main.Properties.Resources.icons8_filter_24;
+            this.BtnSubmitFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSubmitFilter.Location = new System.Drawing.Point(132, 165);
+            this.BtnSubmitFilter.Name = "BtnSubmitFilter";
+            this.BtnSubmitFilter.Size = new System.Drawing.Size(102, 32);
+            this.BtnSubmitFilter.TabIndex = 14;
+            this.BtnSubmitFilter.Text = "Submit";
+            this.BtnSubmitFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BtnSubmitFilter.UseVisualStyleBackColor = false;
+            this.BtnSubmitFilter.Click += new System.EventHandler(this.BtnSubmitFilter_Click);
+            // 
             // FlowLayoutCheckBoxYears
             // 
+            this.FlowLayoutCheckBoxYears.AutoScroll = true;
             this.FlowLayoutCheckBoxYears.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.FlowLayoutCheckBoxYears.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.FlowLayoutCheckBoxYears.Location = new System.Drawing.Point(23, 16);
@@ -1106,5 +1126,6 @@ namespace Main.Forms.SalesReport
         private System.Windows.Forms.RadioButton RBtnFilterTrendByWeek;
         private System.Windows.Forms.RadioButton RBtnFilterTrendByYear;
         private System.Windows.Forms.RadioButton RBtnFilterTrendByMonth;
+        private System.Windows.Forms.Button BtnSubmitFilter;
     }
 }
