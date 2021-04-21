@@ -19,7 +19,8 @@ namespace Main.Forms.SalesReport
     public partial class FrmSalesReport : Form
     {
         private readonly ISaleTransactionData _saleTransactionData;
-
+        private readonly ISaleTranProdIngInvDeductionsRecordData _saleTranProdIngInvDeductionsRecordData;
+        private readonly ISaleTranComboMealIngInvDeductionsRecordData _saleTranComboMealIngInvDeductionsRecordData;
         private Dictionary<int, string> _months = new Dictionary<int, string>();
 
         public Dictionary<int, string> Months
@@ -28,13 +29,20 @@ namespace Main.Forms.SalesReport
             set { _months = value; }
         }
 
-        public FrmSalesReport(ISaleTransactionData saleTransactionData)
+        private const string _currencyFormat = "#,##0.##";
+
+        public FrmSalesReport(ISaleTransactionData saleTransactionData,
+                            ISaleTranProdIngInvDeductionsRecordData saleTranProdIngInvDeductionsRecordData,
+                            ISaleTranComboMealIngInvDeductionsRecordData saleTranComboMealIngInvDeductionsRecordData)
         {
             InitializeComponent();
 
 
             //SetChart();
             _saleTransactionData = saleTransactionData;
+            _saleTranProdIngInvDeductionsRecordData = saleTranProdIngInvDeductionsRecordData;
+            _saleTranComboMealIngInvDeductionsRecordData = saleTranComboMealIngInvDeductionsRecordData;
+
 
             Months.Add(1, "January");
             Months.Add(2, "February");
@@ -122,15 +130,26 @@ namespace Main.Forms.SalesReport
 
             if (report != null)
             {
-                this.LblYearlySaleReportAmount.Text = report.TotalSales.ToString("#,##0.##");
+                this.LblYearlySaleReportAmount.Text = report.TotalSales.ToString(_currencyFormat);
                 this.LblYearlySaleReportWhatYear.Text = report.Yr.ToString();
 
                 // profit and cost here
+                var product_yearlyCost = _saleTranProdIngInvDeductionsRecordData.GetTotalCostByYear(year);
+                var comboMeal_yearlyCost = _saleTranComboMealIngInvDeductionsRecordData.GetTotalCostByYear(year);
+
+                decimal totalCost = (product_yearlyCost.TotalCost + comboMeal_yearlyCost.TotalCost);
+                decimal profit = report.TotalSales - totalCost;
+
+                LblYearlyProfit.Text = profit.ToString(_currencyFormat);
+                LblYearlyCost.Text = totalCost.ToString(_currencyFormat);
+
             }
             else
             {
                 this.LblYearlySaleReportAmount.Text = "0";
                 this.LblYearlySaleReportWhatYear.Text = "Not found!";
+                LblYearlyCost.Text = "0";
+                LblYearlyProfit.Text = "0";
             }
         }
 
@@ -140,15 +159,25 @@ namespace Main.Forms.SalesReport
 
             if (report != null)
             {
-                this.LblMonthlySaleReportAmount.Text = report.TotalSales.ToString("#,##0.##");
+                this.LblMonthlySaleReportAmount.Text = report.TotalSales.ToString(_currencyFormat);
                 this.LblMonthlySaleReportWhatFor.Text = this.Months[report.Mnth].ToUpper();
 
                 // profit and cost here
+                var product_monthlyCost = _saleTranProdIngInvDeductionsRecordData.GetTotalCostByYearAndMonth(year, month);
+                var comboMeal_monthlyCost = _saleTranComboMealIngInvDeductionsRecordData.GetTotalCostByYearAndMonth(year, month);
+
+                decimal totalCost = (product_monthlyCost.TotalCost + comboMeal_monthlyCost.TotalCost);
+                decimal profit = report.TotalSales - totalCost;
+
+                LblMonthlyProfit.Text = profit.ToString(_currencyFormat);
+                LblMonthlyCost.Text = totalCost.ToString(_currencyFormat);
             }
             else
             {
                 this.LblMonthlySaleReportAmount.Text = "0";
                 this.LblMonthlySaleReportWhatFor.Text = "Not found!";
+                LblMonthlyProfit.Text = "0";
+                LblMonthlyCost.Text = "0";
             }
         }
 
@@ -158,15 +187,25 @@ namespace Main.Forms.SalesReport
 
             if (report != null)
             {
-                this.LblWeeklySaleReportAmount.Text = report.TotalSales.ToString("#,##0.##");
+                this.LblWeeklySaleReportAmount.Text = report.TotalSales.ToString(_currencyFormat);
                 this.LblWeeklySaleReportWhatFor.Text = $"WK-{report.Wk}";
 
                 // profit and cost here
+                var product_weeklyCost = _saleTranProdIngInvDeductionsRecordData.GetTotalCostByYearAndWeek(year, week);
+                var comboMeal_weeklyCost = _saleTranComboMealIngInvDeductionsRecordData.GetTotalCostByYearAndWeek(year, week);
+
+                decimal totalCost = (product_weeklyCost.TotalCost + comboMeal_weeklyCost.TotalCost);
+                decimal profit = report.TotalSales - totalCost;
+
+                LblWeeklyProfit.Text = profit.ToString(_currencyFormat);
+                LblWeeklyCost.Text = totalCost.ToString(_currencyFormat);
             }
             else
             {
                 this.LblWeeklySaleReportAmount.Text = "0";
                 this.LblWeeklySaleReportWhatFor.Text = "Not found!";
+                LblWeeklyProfit.Text = "0";
+                LblWeeklyCost.Text = "0";
             }
         }
 
@@ -245,7 +284,6 @@ namespace Main.Forms.SalesReport
             bool isMonthly = RBtnFilterTrendByMonth.Checked;
             bool isWeekly = RBtnFilterTrendByWeek.Checked;
 
-
             cartesianChart1.Series = new SeriesCollection();
             cartesianChart1.AxisX.Clear();
             cartesianChart1.AxisY.Clear();
@@ -256,19 +294,92 @@ namespace Main.Forms.SalesReport
                 LabelFormatter = value => value.ToString("N")
             });
 
-
             var selectedYears = GetSelectedYears();
 
             if (isYearly)
             {
-                cartesianChart1.AxisX.Add(new Axis
+                DisplayChartAndLogForYearlySalesAndCostReport(selectedYears);
+            }
+
+            if (isMonthly)
+            {
+                DisplayChartAndLogForMonthlySalesAndCostReport(selectedYears);
+            }
+
+            if (isWeekly)
+            {
+                DisplayChartAndLogForWeeklySalesAndCostReport(selectedYears);
+            }
+        }
+
+
+
+        private void DisplayChartAndLogForYearlySalesAndCostReport(List<int> selectedYears)
+        {
+            cartesianChart1.AxisX.Add(new Axis
+            {
+                Title = "Yearly",
+                Labels = selectedYears.Select(x => x.ToString()).ToArray()
+            });
+
+            var salesReports = _saleTransactionData.GetYearlySalesReport(selectedYears.ToArray());
+            var costReportFromProducts = _saleTranProdIngInvDeductionsRecordData.GetYearlyCostReport(selectedYears.ToArray());
+            var costReportFromComboMeals = _saleTranComboMealIngInvDeductionsRecordData.GetYearlyCostReport(selectedYears.ToArray());
+
+            this.LVSalesReports.Items.Clear();
+            // for log
+            if (salesReports != null)
+            {
+
+                decimal totalRevenue = 0;
+                decimal totalCost = 0;
+                decimal totalProfit = 0;
+
+                foreach (var saleReport in salesReports)
                 {
-                    Title = "Yearly",
-                    Labels = selectedYears.Select(x => x.ToString()).ToArray()
-                });
+                    totalRevenue = saleReport.TotalSales;
 
-                var salesReports = _saleTransactionData.GetYearlySalesReport(selectedYears.ToArray());
+                    if (costReportFromProducts != null)
+                    {
+                        var yearCost = costReportFromProducts.Where(x => x.Yr == saleReport.Yr).FirstOrDefault();
 
+                        if (yearCost != null)
+                        {
+                            totalCost += yearCost.TotalCost;
+                        }
+                    }
+
+                    if (costReportFromComboMeals != null)
+                    {
+                        var yearCost = costReportFromComboMeals.Where(x => x.Yr == saleReport.Yr).FirstOrDefault();
+
+                        if (yearCost != null)
+                        {
+                            totalCost += yearCost.TotalCost;
+                        }
+                    }
+
+                    totalProfit = totalRevenue - totalCost;
+
+                    string[] row = new string[]
+                    {
+                            "Yearly",
+                            saleReport.Yr.ToString(),
+                            totalRevenue.ToString(_currencyFormat),
+                            totalCost.ToString(_currencyFormat),
+                            totalProfit.ToString(_currencyFormat)
+                    };
+
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = saleReport;
+
+                    this.LVSalesReports.Items.Add(listViewItem);
+                }
+            }
+
+            // for chart
+            if (salesReports != null)
+            {
                 List<string> weeks = salesReports.Select(x => x.Yr.ToString()).ToList();
                 List<decimal> values = salesReports.Select(x => x.TotalSales).ToList();
 
@@ -280,55 +391,37 @@ namespace Main.Forms.SalesReport
 
                 cartesianChart1.Series.Add(reportSeries);
             }
+        }
 
-            if (isMonthly)
+
+        private void DisplayChartAndLogForMonthlySalesAndCostReport(List<int> selectedYears)
+        {
+            this.LVSalesReports.Items.Clear();
+            var months = GetMonthsList();
+
+            cartesianChart1.AxisX.Add(new Axis
             {
-                var months = GetMonthsList();
+                Title = "Monthly",
+                Labels = months.ToArray()
+            });
 
-                cartesianChart1.AxisX.Add(new Axis
+            foreach (int year in selectedYears)
+            {
+                var values = this.GetMonthlySalesReport(year);
+                cartesianChart1.Series.Add(new ColumnSeries
                 {
-                    Title = "Monthly",
-                    Labels = months.ToArray()
+                    Title = year.ToString(),
+                    Values = new ChartValues<decimal>(values)
                 });
 
 
-                foreach(int year in selectedYears)
-                {
-                    var values = this.GetMonthlySalesReport(year);
-                    cartesianChart1.Series.Add(new ColumnSeries
-                    {
-                        Title = year.ToString(),
-                        Values = new ChartValues<decimal>(values)
-                    });
-                }
-            }
-
-            if (isWeekly)
-            {
-                var weeks = GetWeekList();
-                cartesianChart1.AxisX.Add(new Axis
-                {
-                    Title = "Weekly",
-                    Labels = weeks.Select(x => x.ToString()).ToArray()
-                });
-
-                foreach (int year in selectedYears)
-                {
-                    var values = this.GetWeeklySalesReport(year);
-                    cartesianChart1.Series.Add(new ColumnSeries
-                    {
-                        Title = year.ToString(),
-                        Values = new ChartValues<decimal>(values)
-                    });
-                }
+                this.DisplayMonthlySalesAndCostReportInLog(year);
             }
         }
 
         public List<decimal> GetMonthlySalesReport(int year)
         {
-            List<MonthSalesReportModel> monthSalesReports = new List<MonthSalesReportModel>();
-
-            monthSalesReports = _saleTransactionData.GetMonthlySalesReport(year);
+            List<MonthSalesReportModel> monthSalesReports = _saleTransactionData.GetMonthlySalesReport(year);
 
             List<decimal> values = new List<decimal>();
 
@@ -349,12 +442,121 @@ namespace Main.Forms.SalesReport
             return values;
         }
 
+        public void DisplayMonthlySalesAndCostReportInLog(int year)
+        {
+            List<MonthSalesReportModel> monthSalesReports = _saleTransactionData.GetMonthlySalesReport(year);
+
+            var monthlyCostReportFromProducts = _saleTranProdIngInvDeductionsRecordData.GetMonthlyCostReport(year);
+            var monthlyCostReportFromComboMeals = _saleTranComboMealIngInvDeductionsRecordData.GetMonthlyCostReport(year);
+
+            decimal totalRevenue = 0;
+            decimal totalCost = 0;
+            decimal totalProfit = 0;
+            foreach (var month in this.Months)
+            {
+                var monthlyCostFromProd = monthlyCostReportFromProducts.Where(x => x.Mnth == month.Key).FirstOrDefault();
+                var monthlyCostFromComboMeal = monthlyCostReportFromComboMeals.Where(x => x.Mnth == month.Key).FirstOrDefault();
+                var monthlySale = monthSalesReports.Where(x => x.Mnth == month.Key).FirstOrDefault();
+
+                totalCost = (monthlyCostFromProd != null ? monthlyCostFromProd.TotalCost : 0) + (monthlyCostFromComboMeal != null ? monthlyCostFromComboMeal.TotalCost : 0);
+
+                totalRevenue = (monthlySale != null ? monthlySale.TotalSales : 0);
+                totalProfit = totalRevenue - totalCost;
+
+                if (totalProfit < 0)
+                    totalProfit = 0;
+
+                string[] row = new string[]
+                    {
+                        "Monthly",
+                        $"{month.Value}/{year}",
+                        totalRevenue.ToString(_currencyFormat),
+                        totalCost.ToString(_currencyFormat),
+                        totalProfit.ToString(_currencyFormat)
+                    };
+
+                var listViewItem = new ListViewItem(row);
+                listViewItem.Tag = month.Key;
+
+                this.LVSalesReports.Items.Add(listViewItem);
+
+            }
+
+        }
+
+        private void DisplayChartAndLogForWeeklySalesAndCostReport(List<int> selectedYears)
+        {
+            this.LVSalesReports.Items.Clear();
+
+            var weeks = GetWeekList();
+            cartesianChart1.AxisX.Add(new Axis
+            {
+                Title = "Weekly",
+                Labels = weeks.Select(x => x.ToString()).ToArray()
+            });
+
+            foreach (int year in selectedYears)
+            {
+                DisplayWeeklySalesAndCostReportInLog(year);
+
+                var values = this.GetWeeklySalesReport(year);
+                cartesianChart1.Series.Add(new ColumnSeries
+                {
+                    Title = year.ToString(),
+                    Values = new ChartValues<decimal>(values)
+                });
+            }
+        }
+
+
+        public void DisplayWeeklySalesAndCostReportInLog (int year)
+        {
+            var salesReports = _saleTransactionData.GetWeeklySalesReportByYear(year);
+
+            var weeklyCostReportFromProducts = _saleTranProdIngInvDeductionsRecordData.GetWeeklyCostReportByYear(year);
+            var weeklyCostReportFromComboMeals = _saleTranComboMealIngInvDeductionsRecordData.GetWeeklyCostReportByYear(year);
+
+            var weeks = GetWeekList();
+
+            decimal totalRevenue = 0;
+            decimal totalCost = 0;
+            decimal totalProfit = 0;
+
+            foreach (var wk in weeks)
+            {
+                var weeklyCostFromProd = weeklyCostReportFromProducts.Where(x => x.Wk == wk).FirstOrDefault();
+                var weeklyCostFromComboMeal = weeklyCostReportFromComboMeals.Where(x => x.Wk == wk).FirstOrDefault();
+                var weeklySale = salesReports.Where(x => x.Wk == wk).FirstOrDefault();
+
+                totalCost = (weeklyCostFromProd != null ? weeklyCostFromProd.TotalCost : 0) + (weeklyCostFromComboMeal != null ? weeklyCostFromComboMeal.TotalCost : 0);
+
+                totalRevenue = (weeklySale != null ? weeklySale.TotalSales : 0);
+                totalProfit = totalRevenue - totalCost;
+
+                if (totalProfit < 0)
+                    totalProfit = 0;
+
+                string[] row = new string[]
+                    {
+                        "Weekly",
+                        $"W-{wk}-{year}",
+                        totalRevenue.ToString(_currencyFormat),
+                        totalCost.ToString(_currencyFormat),
+                        totalProfit.ToString(_currencyFormat)
+                    };
+
+                var listViewItem = new ListViewItem(row);
+                listViewItem.Tag = wk;
+
+                this.LVSalesReports.Items.Add(listViewItem);
+            }
+        }
+
 
         public List<decimal> GetWeeklySalesReport (int year)
         {
             var salesReports = _saleTransactionData.GetWeeklySalesReportByYear(year);
 
- 
             List<decimal> values = new List<decimal>();
 
             var weeks = GetWeekList();

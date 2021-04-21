@@ -68,21 +68,6 @@ namespace DataAccess.Data.POSManagement.Implementations
             return this.GetAll(query, new { TransStatus = (int)POSTransactionStatus });
         }
 
-        public List<SaleTransactionModel> GetSalesTransactionByStatus(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate)
-        {
-            endDate = endDate.AddDays(1);
-
-            string query = @"SELECT * FROM SalesTransactions
-                                WHERE isDeleted=false AND transStatus=@TransStatus ORDER BY id DESC";
-
-            return this.GetAll(query, new { 
-                TransStatus = (int)POSTransactionStatus,
-                StartDate = startDate.ToString("yyyy-MM-dd"),
-                EndDate = endDate.ToString("yyyy-MM-dd")
-            });
-        }
-
-
         public decimal GetDayTotalSales (StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate)
         {
             string query = @"SELECT SUM(totalAmount) as totalSales 
@@ -251,43 +236,6 @@ namespace DataAccess.Data.POSManagement.Implementations
             using (var conn = _dbConnFactory.CreateConnection())
             {
                 results = conn.Query<WeekSalesReportModel>(query, new { Year = year }).ToList();
-                conn.Close();
-            }
-
-            return results;
-        }
-
-        public List<WeekSalesReportModel> GetWeeklySalesReportByMonth(int month)
-        {
-            string query = @"SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
-                            FROM CashRegisterCashOutTransactions
-                            WHERE isDeleted=false AND MONTH(createdAt) = @Month
-                            GROUP BY WEEK(createdAt)";
-
-            var results = new List<WeekSalesReportModel>();
-
-            using (var conn = _dbConnFactory.CreateConnection())
-            {
-                results = conn.Query<WeekSalesReportModel>(query, new { Month = month }).ToList();
-                conn.Close();
-            }
-
-            return results;
-        }
-
-
-        public List<DaySalesReportModel> GetDailySalesReportByMonth (int month)
-        {
-            string query = @"SELECT SUM(totalSales) as TotalSales, DAY(createdAt) as dy
-                            FROM CashRegisterCashOutTransactions
-                            WHERE isDeleted=false AND MONTH(createdAt) = @Month
-                            GROUP BY DAY(createdAt)";
-
-            var results = new List<DaySalesReportModel>();
-
-            using (var conn = _dbConnFactory.CreateConnection())
-            {
-                results = conn.Query<DaySalesReportModel>(query, new { Month = month }).ToList();
                 conn.Close();
             }
 

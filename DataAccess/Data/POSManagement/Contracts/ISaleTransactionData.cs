@@ -16,7 +16,6 @@ namespace DataAccess.Data.POSManagement.Contracts
         List<SaleTransactionModel> GetAllByTransactionDateRange(DateTime startDate, DateTime endDate, StaticData.POSTransactionStatus POSTransactionStatus);
         List<SaleTransactionModel> GetSalesTransactionByStatusAndTransType(StaticData.POSTransactionStatus POSTransactionStatus, StaticData.POSTransactionType posTransactionType);
         List<SaleTransactionModel> GetSalesTransactionByStatus(StaticData.POSTransactionStatus POSTransactionStatus);
-        List<SaleTransactionModel> GetSalesTransactionByStatus(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate);
 
         decimal GetDayTotalSales(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate);
         bool MassSalesTransactionSalesCashout(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate);
@@ -32,9 +31,5 @@ namespace DataAccess.Data.POSManagement.Contracts
 
         WeekSalesReportModel GetWeeklySalesReportByYearAndWeek(int year, int week);
         List<WeekSalesReportModel> GetWeeklySalesReportByYear(int year);
-        List<WeekSalesReportModel> GetWeeklySalesReportByMonth(int month);
-
-        List<DaySalesReportModel> GetDailySalesReportByMonth(int month);
-
     }
 }

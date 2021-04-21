@@ -760,7 +760,8 @@ ADD COLUMN isCashOut BOOLEAN DEFAULT false;
 
 SELECT * FROM SalesTransactions;
 
-SELECT COUNT(id) as counter FROM SalesTransactions WHERE YEAR(createdAt) = 2021;
+SELECT COUNT(id) as counter FROM SalesTransactions 
+WHERE YEAR(createdAt) = 2021 AND transStatus=2;
 
 SELECT SUM(totalAmount) as totalSales FROM SalesTransactions WHERE isDeleted=false AND transStatus=@TransStatus AND createdAt=@TransDate;
 
@@ -785,8 +786,6 @@ CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
     FOREIGN KEY (salesTransId) REFERENCES SalesTransactions(id),
     FOREIGN KEY (productId) REFERENCES Products (id)
 )ENGINE=INNODB;
-
-
 
 SELECT *
 FROM SalesTransactionProducts AS STPrd
@@ -848,6 +847,11 @@ ADD COLUMN totalCost DECIMAL(9,2);
 
 SELECT * FROM SaleTranProdIngInvDeductionsRecords;
 
+SELECT SUM(totalCost) AS totalCost, YEAR(createdAt) as yr
+FROM SaleTranProdIngInvDeductionsRecords
+WHERE isDeleted=false AND YEAR(createdAt)=2021
+GROUP BY YEAR(createdAt);
+
 
 CREATE TABLE IF NOT EXISTS SaleTranComboMealIngInvDeductionsRecords(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -874,6 +878,9 @@ ADD COLUMN totalCost DECIMAL(9,2);
 
 SELECT * FROM SaleTranComboMealIngInvDeductionsRecords;
 
+SELECT SUM(totalCost) AS totalCost 
+FROM SaleTranComboMealIngInvDeductionsRecords
+WHERE isDeleted=false AND YEAR(createdAt)=2021;
 
 CREATE TABLE IF NOT EXISTS CashRegisterCashOutTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
