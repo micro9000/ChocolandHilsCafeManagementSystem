@@ -138,6 +138,7 @@
   <ItemGroup>
     <Folder Include="Forms\PayrollForms\PdfHtmlTemplates\" />
     <Folder Include="Forms\SalesReport\Controls\" />
+    <Folder Include="Forms\UserManagementForms\OtherForms\" />
   </ItemGroup>
 
   <ItemGroup>

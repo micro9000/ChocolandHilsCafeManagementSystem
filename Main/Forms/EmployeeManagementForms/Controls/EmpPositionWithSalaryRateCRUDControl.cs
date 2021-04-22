@@ -189,12 +189,24 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.NumUpDwnDailyRate.Value <= 0
                 )
             {
-                MessageBox.Show("Kindly input all details.", "Save branch", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Kindly input all details.", "Save position", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
             if (this.IsSaveNew == true)
             {
+                if (this.Positions != null)
+                {
+                    var existingPositionWithTheSameName = Positions.Where(x => x.Title.ToLower() == this.TbxPositionTitle.Text.ToLower()).FirstOrDefault();
+
+                    if (existingPositionWithTheSameName != null)
+                    {
+                        MessageBox.Show("Invalid position title, duplicate data", "Save position", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
+
                 this.PositionToAddUpdate = new EmployeePositionModel
                 {
                     Title = this.TbxPositionTitle.Text,
@@ -205,10 +217,30 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             }
             else
             {
-                this.PositionToAddUpdate.Title = this.TbxPositionTitle.Text;
-                this.PositionToAddUpdate.SalaryRate = this.NumUpDwnMonlyRate.Value;
-                this.PositionToAddUpdate.HalfMonthRate = this.NumUpDwnHalfMonthRate.Value;
-                this.PositionToAddUpdate.DailyRate = this.NumUpDwnDailyRate.Value;
+                if (this.PositionToAddUpdate != null)
+                {
+                    if (this.Positions != null)
+                    {
+                        var existingPositionWithTheSameName = Positions
+                                                        .Where(x => 
+                                                            x.Title.ToLower() == this.TbxPositionTitle.Text.ToLower() && 
+                                                            x.Id != this.PositionToAddUpdate.Id)
+                                                        .FirstOrDefault();
+
+                        if (existingPositionWithTheSameName != null)
+                        {
+                            MessageBox.Show("Invalid position title, duplicate data", "Save position", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                    }
+
+                    this.PositionToAddUpdate.Title = this.TbxPositionTitle.Text;
+                    this.PositionToAddUpdate.SalaryRate = this.NumUpDwnMonlyRate.Value;
+                    this.PositionToAddUpdate.HalfMonthRate = this.NumUpDwnHalfMonthRate.Value;
+                    this.PositionToAddUpdate.DailyRate = this.NumUpDwnDailyRate.Value;
+                }
+
+                
             }
 
             OnPositionSaved(EventArgs.Empty);

@@ -19,6 +19,13 @@ namespace DataAccess.Data.OtherDataManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
+        public BranchModel GetByTellNo(string TellNo)
+        {
+            string query = "SELECT * FROM Branches WHERE isDeleted = false AND tellNo = @TellNo";
+
+            return this.GetFirstOrDefault(query, new { TellNo = TellNo });
+        }
+
         public BranchModel GetByBranchName (string branchName)
         {
             string query = "SELECT * FROM Branches WHERE isDeleted = false AND branchName = @BranchName";

@@ -143,6 +143,17 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             if (this.CboxHolidayMonthAbbv.SelectedIndex > -1 && this.CBoxHolidayDayNum.SelectedIndex > -1)
             {
+                if (this.Holidays != null)
+                {
+                    var existingHoliday = this.Holidays.Where(x => x.Holiday.ToLower() == this.TbxHoliday.Text.ToLower()).FirstOrDefault();
+
+                    if (existingHoliday != null)
+                    {
+                        MessageBox.Show("Invalid holiday title, duplicate data", "Duplicate data", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 string selectedMonthAbbr = this.CboxHolidayMonthAbbv.GetItemText(this.CboxHolidayMonthAbbv.SelectedItem);
                  string selectedDayNum = this.CBoxHolidayDayNum.GetItemText(this.CBoxHolidayDayNum.SelectedItem);
 
@@ -154,8 +165,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                  OnHolidaySaved(EventArgs.Empty);
             }
-
-            
         }
 
         private void DGVHolidays_CellClick(object sender, DataGridViewCellEventArgs e)

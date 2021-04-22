@@ -12,5 +12,6 @@ namespace DataAccess.Data.OtherDataManagement.Contracts
     {
         List<BranchModel> GetAllNotDeleted();
         BranchModel GetByBranchName(string branchName);
+        BranchModel GetByTellNo(string TellNo);
     }
 }

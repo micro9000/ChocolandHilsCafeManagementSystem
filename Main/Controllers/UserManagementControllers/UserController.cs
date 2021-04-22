@@ -20,6 +20,7 @@ namespace Main.Controllers.UserManagementControllers
     {
         private readonly ILogger<LoginFrm> _logger;
         private readonly IMapper _mapper;
+        private readonly Sessions _sessions;
         private readonly Hashing _hashing;
         private readonly IRoleData _roleData;
         private readonly IUserData _userData;
@@ -28,6 +29,7 @@ namespace Main.Controllers.UserManagementControllers
 
         public UserController(ILogger<LoginFrm> logger,
                                 IMapper mapper,
+                                Sessions sessions,
                                 Hashing hashing,
                                 IRoleData roleData,
                                 IUserData userData,
@@ -36,6 +38,7 @@ namespace Main.Controllers.UserManagementControllers
         {
             _logger = logger;
             _mapper = mapper;
+            _sessions = sessions;
             _hashing = hashing;
             _roleData = roleData;
             _userData = userData;
@@ -211,8 +214,6 @@ namespace Main.Controllers.UserManagementControllers
                     return results;
                 }
 
-                var hashedPassword = _hashing.GetSHA512String(input.Password);
-
                 var userDetails = _userData.GetUserByUserName(input.UserName);
 
                 if (userDetails != null && isNew == true)
@@ -224,6 +225,15 @@ namespace Main.Controllers.UserManagementControllers
 
                 if (userDetails == null && isNew == true)
                 {
+                    if (string.IsNullOrWhiteSpace(input.Password))
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add("Enter password");
+                        return results;
+                    }
+
+                    var hashedPassword = _hashing.GetSHA512String(input.Password);
+
                     var newUser = new UserModel
                     {
                         UserName = input.UserName,
@@ -257,7 +267,13 @@ namespace Main.Controllers.UserManagementControllers
                 {
                     userDetails.FullName = input.FullName;
                     userDetails.UserName = input.UserName;
-                    userDetails.PasswordSha512 = hashedPassword;
+
+                    if (string.IsNullOrWhiteSpace(input.Password) == false)
+                    {
+                        var hashedPassword = _hashing.GetSHA512String(input.Password);
+                        userDetails.PasswordSha512 = hashedPassword;
+                    }
+
                     userDetails.IsActive = input.IsActive;
 
                     var userRole = _userRoleData.GetUserRole(userDetails.Id);

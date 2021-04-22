@@ -86,13 +86,13 @@ namespace Main
 
                 if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.normal)
                 {
-                    this.BtnEmployeeManagementMenuItem.Visible = false;
-                    this.BtnPayrollSystem.Visible = false;
-                    this.BtnInventorySystem.Visible = false;
-                    this.BtnSalesReportSystem.Visible = false;
-                    this.BtnPointOfSale.Visible = false;
-                    this.BtnUserMgnment.Visible = false;
-                    this.BtnOtherData.Visible = false;
+                    this.BtnEmployeeManagementMenuItem.Enabled = false;
+                    this.BtnPayrollSystem.Enabled = false;
+                    this.BtnInventorySystem.Enabled = false;
+                    this.BtnSalesReportSystem.Enabled = false;
+                    this.BtnPointOfSale.Enabled = false;
+                    this.BtnUserMgnment.Enabled = false;
+                    this.BtnOtherData.Enabled = false;
                 }
             }
 

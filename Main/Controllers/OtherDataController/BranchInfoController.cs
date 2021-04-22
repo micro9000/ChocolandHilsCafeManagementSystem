@@ -95,6 +95,15 @@ namespace Main.Controllers.OtherDataController
                         return results;
                     }
 
+                    var existingBranchWithTheTellNo = _branchData.GetByTellNo(input.TellNo);
+
+                    if (existingBranchWithTheTellNo != null)
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add("Existing branch with the same tell no. (should be different contact number per branch)");
+                        return results;
+                    }
+
                     long branchId = _branchData.Add(input);
                     if (branchId > 0)
                     {

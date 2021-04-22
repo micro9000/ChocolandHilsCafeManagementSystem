@@ -74,19 +74,18 @@ namespace Main.Forms.EmployeeManagementForms.OtherForms
                 {
                     long selectedPositionId = long.Parse(selectedPosition.Value.ToString());
 
-                    bool isUpdated = _employeeData.MoveEmployeesIntoOtherPosition(this.PositionIdToDelete, selectedPositionId);
-
-                    if (isUpdated == false)
+                    try
                     {
-                        this.IsCancelled = true;
-                        this.IsDone = false;
-                        MessageBox.Show("Unable to update employee's position, see system logs for possible errors and report this to developer.", "Update employee's position", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else
-                    {
+                        _employeeData.MoveEmployeesIntoOtherPosition(this.PositionIdToDelete, selectedPositionId);
                         this.IsCancelled = false;
                         this.IsDone = true;
                         this.Close();
+                    }
+                    catch(Exception ex)
+                    {
+                        this.IsCancelled = true;
+                        this.IsDone = false;
+                        throw new Exception(ex.Message);
                     }
                 }
             }

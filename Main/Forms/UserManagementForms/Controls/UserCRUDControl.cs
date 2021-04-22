@@ -218,6 +218,12 @@ namespace Main.Forms.UserManagementForms.Controls
 
         private void BtnSaveUser_Click(object sender, EventArgs e)
         {
+            if (this.RBtnAdminUser.Checked == false && this.RBtnNormalUser.Checked == false)
+            {
+                MessageBox.Show("Choose user permission", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             UserRole role = UserRole.normal;
 
             if (this.RBtnAdminUser.Checked)

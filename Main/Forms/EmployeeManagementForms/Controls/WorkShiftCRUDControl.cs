@@ -351,17 +351,46 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             if (this.IsSaveNew == true)
             {
+                if (this.EmployeeShifts != null)
+                {
+                    var existingEmpShift = this.EmployeeShifts.Where(x => x.Shift.ToLower() == employeeShift.Shift.ToLower()).FirstOrDefault();
+
+                    if (existingEmpShift != null)
+                    {
+                        MessageBox.Show("Invalid shift title, duplicate data", "Duplicate data", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+                }
+
                 this.EmployeeShiftToAddUpdate = employeeShift;
             }else
             {
-                this.EmployeeShiftToAddUpdate.Shift = employeeShift.Shift;
-                this.EmployeeShiftToAddUpdate.StartTime = employeeShift.StartTime;
-                this.EmployeeShiftToAddUpdate.EndTime = employeeShift.EndTime;
-                this.EmployeeShiftToAddUpdate.NumberOfHrs = employeeShift.NumberOfHrs;
-                this.EmployeeShiftToAddUpdate.BreakTime = employeeShift.BreakTime;
-                this.EmployeeShiftToAddUpdate.BreakTimeHrs = employeeShift.BreakTimeHrs;
-                this.EmployeeShiftToAddUpdate.EarlyTimeOut = employeeShift.EarlyTimeOut;
-                this.EmployeeShiftToAddUpdate.LateTimeIn = employeeShift.LateTimeIn;
+                if (this.EmployeeShiftToAddUpdate != null)
+                {
+                    if (this.EmployeeShifts != null)
+                    {
+                        var existingEmpShift = this.EmployeeShifts
+                                                    .Where(x => x.Shift.ToLower() == employeeShift.Shift.ToLower() &&
+                                                            x.Id == this.EmployeeShiftToAddUpdate.Id)
+                                                    .FirstOrDefault();
+
+                        if (existingEmpShift != null)
+                        {
+                            MessageBox.Show("Invalid shift title, duplicate data", "Duplicate data", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                    }
+
+                    this.EmployeeShiftToAddUpdate.Shift = employeeShift.Shift;
+                    this.EmployeeShiftToAddUpdate.StartTime = employeeShift.StartTime;
+                    this.EmployeeShiftToAddUpdate.EndTime = employeeShift.EndTime;
+                    this.EmployeeShiftToAddUpdate.NumberOfHrs = employeeShift.NumberOfHrs;
+                    this.EmployeeShiftToAddUpdate.BreakTime = employeeShift.BreakTime;
+                    this.EmployeeShiftToAddUpdate.BreakTimeHrs = employeeShift.BreakTimeHrs;
+                    this.EmployeeShiftToAddUpdate.EarlyTimeOut = employeeShift.EarlyTimeOut;
+                    this.EmployeeShiftToAddUpdate.LateTimeIn = employeeShift.LateTimeIn;
+                }
+                
             }
 
             OnEmployeeShiftSaved(EventArgs.Empty);
