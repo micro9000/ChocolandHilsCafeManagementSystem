@@ -1,6 +1,7 @@
 ﻿using DataAccess.Data.EmployeeManagement.Contracts;
 using DataAccess.Data.OtherDataManagement.Contracts;
 using DataAccess.Data.PayrollManagement.Contracts;
+using DataAccess.Data.POSManagement.Contracts;
 using EntitiesShared.PayrollManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Forms.PayrollForms.Controls;
@@ -39,6 +40,7 @@ namespace Main.Forms.PayrollForms
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
         private readonly IPayrollPDFReport _payrollPDFReport;
+        private readonly ICashRegisterCashOutTransactionData _cashRegisterCashOutTransactionData;
         private readonly PayrollSettings _payrollSettings;
 
         public FrmPayroll(ILogger<FrmPayroll> logger,
@@ -56,6 +58,7 @@ namespace Main.Forms.PayrollForms
                            DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                            IEmployeePayslipPDFReport employeePayslipPDFReport,
                            IPayrollPDFReport payrollPDFReport,
+                           ICashRegisterCashOutTransactionData cashRegisterCashOutTransactionData,
                            IOptions<PayrollSettings> payrollSettings)
         {
             InitializeComponent();
@@ -74,6 +77,7 @@ namespace Main.Forms.PayrollForms
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _employeePayslipPDFReport = employeePayslipPDFReport;
             _payrollPDFReport = payrollPDFReport;
+            _cashRegisterCashOutTransactionData = cashRegisterCashOutTransactionData;
             _payrollSettings = payrollSettings.Value;
         }
 
@@ -129,8 +133,9 @@ namespace Main.Forms.PayrollForms
             generatePayrollControlObj.Employees = _employeeController.GetAll().Data;
             generatePayrollControlObj.AttendanceHistory = _employeeAttendanceData.GetAllUnpaidAttendanceRecordByWorkDateRange(shiftStartDate, shiftEndDate);
             generatePayrollControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllUnpaidByDateRange(shiftStartDate.Year, shiftStartDate, shiftEndDate);
+            generatePayrollControlObj.CashRegisterTotalSales = _cashRegisterCashOutTransactionData.GetByDateRange(_payrollSettings.SaleAmoutForADayToGetSpecialBonus, shiftStartDate, shiftEndDate);
             generatePayrollControlObj.DisplayEmployeeWithAttendanceRecordAndSalary(generatePayrollControlObj.Employees);
-
+            generatePayrollControlObj.DisplayCashRegisterTotalSalesInDGV();
         }
 
         private void GenerateEmployeePayslip(object sender, EventArgs e)
@@ -231,6 +236,20 @@ namespace Main.Forms.PayrollForms
 
                                     empTotalBenefits += benefit.Amount;
                                 }
+                                // Sales bonus here
+
+                                foreach(var salesReport in empPayslipGen.SelectedSalesReport)
+                                {
+                                    _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                    {
+                                        PayslipId = payslipId,
+                                        EmployeeNumber = employeeNumber,
+                                        BenefitTitle = $"Special bonus from sales: {salesReport.CreatedAt.ToShortDateString()}",
+                                        Amount = _payrollSettings.EmployeeBonusFromSaleSpecialBonus
+                                    });
+
+                                    empTotalBenefits += _payrollSettings.EmployeeBonusFromSaleSpecialBonus;
+                                }
 
                                 empTotalIncome += empTotalBenefits;
 
@@ -247,8 +266,6 @@ namespace Main.Forms.PayrollForms
 
                                     empTotalDeductions += deduction.Amount;
                                 }
-
-                                // Sales bonus here
 
                                 empNetTakeHomePay = (empTotalIncome - empTotalDeductions);
 

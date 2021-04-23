@@ -12,5 +12,6 @@ namespace DataAccess.Data.POSManagement.Contracts
     {
         CashRegisterCashOutTransactionModel GetLastTransaction();
         List<CashRegisterCashOutTransactionModel> GetByDateRange(DateTime startDate, DateTime endDate);
+        List<CashRegisterCashOutTransactionModel> GetByDateRange(decimal totalSales, DateTime startDate, DateTime endDate);
     }
 }

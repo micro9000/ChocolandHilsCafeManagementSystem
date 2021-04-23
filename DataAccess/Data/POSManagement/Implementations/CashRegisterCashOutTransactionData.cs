@@ -35,5 +35,17 @@ namespace DataAccess.Data.POSManagement.Implementations
             return this.GetAll(query, new { StartDate = startDate, EndDate = endDate });
         }
 
+        public List<CashRegisterCashOutTransactionModel> GetByDateRange(decimal totalSales, DateTime startDate, DateTime endDate)
+        {
+            string query = @"SELECT * FROM CashRegisterCashOutTransactions 
+                            WHERE isDeleted=false AND createdAt BETWEEN @StartDate AND @EndDate AND totalSales >= @TotalSales
+                            ORDER BY id DESC";
+
+            return this.GetAll(query, new { 
+                StartDate = startDate, 
+                EndDate = endDate,
+                TotalSales = totalSales
+            });
+        }
     }
 }

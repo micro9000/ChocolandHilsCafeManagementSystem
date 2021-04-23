@@ -98,6 +98,41 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return results;
         }
 
+        public List<EmployeeAttendanceModel> GetAllUnpaidAttendanceRecordByWorkDateRange(string employeeNumber, DateTime startDate, DateTime endDate)
+        {
+            string query = @"SELECT * 
+                                FROM EmployeeAttendance AS EA
+                                JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
+                                JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
+                                WHERE EA.employeeNumber=@EmployeeNumber AND EA.workDate BETWEEN @StartDate AND @EndDate AND EA.isPaid=false
+                                ORDER BY EA.id DESC";
+
+            List<EmployeeAttendanceModel> results = new List<EmployeeAttendanceModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeAttendanceModel, EmployeeShiftModel, EmployeeModel, EmployeeAttendanceModel>(query,
+                        (EA, ES, E) => {
+
+                            EA.Shift = ES;
+                            EA.Employee = E;
+
+                            return EA;
+                        },
+                        new
+                        {
+                            EmployeeNumber = employeeNumber,
+                            StartDate = startDate.ToString("yyyy-MM-dd"),
+                            EndDate = endDate.ToString("yyyy-MM-dd")
+                        }).ToList();
+                conn.Close();
+            }
+
+            this.ProvideShiftDays(results);
+
+            return results;
+        }
+
         public List<EmployeeAttendanceModel> GetAllAttendanceRecordByWorkDateRange(DateTime startDate, DateTime endDate)
         {
             string query = @"SELECT * 

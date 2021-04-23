@@ -2,6 +2,7 @@
 using EntitiesShared.OtherDataManagement;
 using EntitiesShared.PayrollManagement;
 using EntitiesShared.PayrollManagement.Models;
+using EntitiesShared.POSManagement;
 using Shared.Helpers;
 using System;
 using System.Collections.Generic;
@@ -103,6 +104,17 @@ namespace Main.Forms.PayrollForms.Controls
             set { deductions = value; }
         }
 
+
+        private List<CashRegisterCashOutTransactionModel> cashRegisterTotalSales;
+
+        public List<CashRegisterCashOutTransactionModel> CashRegisterTotalSales
+        {
+            get { return cashRegisterTotalSales; }
+            set { cashRegisterTotalSales = value; }
+        }
+
+
+
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
 
         public GeneratePayrollControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter)
@@ -164,6 +176,19 @@ namespace Main.Forms.PayrollForms.Controls
             this.DGVDeductionList.ReadOnly = false;
             this.DGVDeductionList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DGVDeductionList.ColumnHeadersHeight = 30;
+
+            this.DGVSalesRecords.BackgroundColor = Color.White;
+            this.DGVSalesRecords.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVSalesRecords.RowHeadersVisible = false;
+            this.DGVSalesRecords.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVSalesRecords.AllowUserToResizeRows = false;
+            this.DGVSalesRecords.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.DGVSalesRecords.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+            this.DGVSalesRecords.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVSalesRecords.MultiSelect = false;
+            this.DGVSalesRecords.ReadOnly = false;
+            this.DGVSalesRecords.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVSalesRecords.ColumnHeadersHeight = 30;
 
             this.DGVEmployeeListForOverview.BackgroundColor = Color.White;
             this.DGVEmployeeListForOverview.DefaultCellStyle.Font = new Font("Century Gothic", 12);
@@ -436,6 +461,46 @@ namespace Main.Forms.PayrollForms.Controls
         }
 
 
+        public void DisplayCashRegisterTotalSalesInDGV()
+        {
+            this.DGVSalesRecords.Rows.Clear();
+            if (this.CashRegisterTotalSales != null)
+            {
+                this.DGVSalesRecords.ColumnCount = 3;
+
+                this.DGVSalesRecords.Columns[0].Name = "cashRegisterTransId";
+                this.DGVSalesRecords.Columns[0].Visible = false;
+
+                this.DGVSalesRecords.Columns[1].Name = "WorkDate";
+                this.DGVSalesRecords.Columns[1].HeaderText = "Date";
+
+                this.DGVSalesRecords.Columns[2].Name = "TotalSales";
+                this.DGVSalesRecords.Columns[2].HeaderText = "Total sales";
+
+                DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
+                selectChbxToSchedule.HeaderText = "Select";
+                selectChbxToSchedule.Name = "selectSalesRecordCkbox";
+                selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                this.DGVSalesRecords.Columns.Add(selectChbxToSchedule);
+
+                foreach (var cashRegisterTrans in this.CashRegisterTotalSales)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(DGVSalesRecords);
+
+                    row.Cells[0].Value = cashRegisterTrans.Id;
+                    row.Cells[1].Value = cashRegisterTrans.CreatedAt.ToShortDateString();
+                    row.Cells[2].Value = cashRegisterTrans.TotalSales.ToString("#,##0.##");
+
+                    row.Tag = cashRegisterTrans;
+
+                    DGVSalesRecords.Rows.Add(row);
+                }
+
+            }
+        }
+
+
         private void BtnSelectAllGovtAgencies_Click(object sender, EventArgs e)
         {
             foreach (DataGridViewRow row in this.DGVGovtAgencies.Rows)
@@ -457,6 +522,14 @@ namespace Main.Forms.PayrollForms.Controls
             foreach (DataGridViewRow row in this.DGVDeductionList.Rows)
             {
                 row.Cells["selectDeductionCkbox"].Value = (bool)true;
+            }
+        }
+
+        private void BtnSelectAllCashRegisterTrans_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.DGVSalesRecords.Rows)
+            {
+                row.Cells["selectSalesRecordCkbox"].Value = (bool)true;
             }
         }
 
@@ -558,6 +631,29 @@ namespace Main.Forms.PayrollForms.Controls
             }
 
             return selectedEmpDeductions;
+        }
+
+        public List<CashRegisterCashOutTransactionModel> GetSelectedSalesRecordToGeneratePayslip()
+        {
+            List<CashRegisterCashOutTransactionModel> selectedSalesRecords = new List<CashRegisterCashOutTransactionModel>();
+
+            foreach (DataGridViewRow row in this.DGVSalesRecords.Rows)
+            {
+                bool isSelected = Convert.ToBoolean(row.Cells["selectSalesRecordCkbox"].Value);
+                if (isSelected)
+                {
+                    var saleRecord = (CashRegisterCashOutTransactionModel)row.Tag;
+                    var saleRecordInList = this.CashRegisterTotalSales.Where(x => x.Id == saleRecord.Id).FirstOrDefault();
+
+                    if (saleRecordInList != null)
+                    {
+                        var saleRecordTemp = JsonSerializer.Deserialize<CashRegisterCashOutTransactionModel>(JsonSerializer.Serialize(saleRecordInList));
+                        selectedSalesRecords.Add(saleRecordTemp);
+                    }
+                }
+            }
+
+            return selectedSalesRecords;
         }
 
         public void ClearDGVEmployeeListForOverview()
@@ -666,6 +762,7 @@ namespace Main.Forms.PayrollForms.Controls
                     var SelectedGovtAgenciesForPayrollGeneration = this.GetSelectedGovtAgenciesToGeneratePayslip();
                     var SelectedBenefitsForPayrollGeneration = this.GetSelectedEmpBenefitsToGeneratePayslip();
                     var SelectedDeductionsForPayrollGeneration = this.GetSelectedEmpDeductionsToGeneratePayslip();
+                    var selectedSaleRecords = this.GetSelectedSalesRecordToGeneratePayslip();
 
                     EmployeePayslipGenerations = new List<EmployeePayslipGeneration>();
 
@@ -682,7 +779,8 @@ namespace Main.Forms.PayrollForms.Controls
                             EmployeeLeaves = this.EmployeeLeaveHistory != null ? this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
                             SelectedGovtAgencies = SelectedGovtAgenciesForPayrollGeneration,
                             SelectedBenefits = SelectedBenefitsForPayrollGeneration,
-                            SelectedDeductions = SelectedDeductionsForPayrollGeneration
+                            SelectedDeductions = SelectedDeductionsForPayrollGeneration,
+                            SelectedSalesReport = selectedSaleRecords
                         });
                     }
 
@@ -767,5 +865,6 @@ namespace Main.Forms.PayrollForms.Controls
         {
             OnGeneratePayslipPDF(EventArgs.Empty);
         }
+
     }
 }

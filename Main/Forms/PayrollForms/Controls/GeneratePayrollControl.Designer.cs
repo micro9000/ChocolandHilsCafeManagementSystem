@@ -65,7 +65,7 @@ namespace Main.Forms.PayrollForms.Controls
             this.BtnSelectAllDeductions = new System.Windows.Forms.Button();
             this.DGVDeductionList = new System.Windows.Forms.DataGridView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.button8 = new System.Windows.Forms.Button();
+            this.BtnSelectAllCashRegisterTrans = new System.Windows.Forms.Button();
             this.DGVSalesRecords = new System.Windows.Forms.DataGridView();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.BtnCancelSelectedEmployeePayslip = new System.Windows.Forms.Button();
@@ -506,7 +506,7 @@ namespace Main.Forms.PayrollForms.Controls
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.button8);
+            this.tabPage5.Controls.Add(this.BtnSelectAllCashRegisterTrans);
             this.tabPage5.Controls.Add(this.DGVSalesRecords);
             this.tabPage5.Location = new System.Drawing.Point(4, 30);
             this.tabPage5.Name = "tabPage5";
@@ -515,19 +515,20 @@ namespace Main.Forms.PayrollForms.Controls
             this.tabPage5.Text = "Sales Bonus";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // BtnSelectAllCashRegisterTrans
             // 
-            this.button8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button8.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button8.Location = new System.Drawing.Point(699, 20);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(87, 24);
-            this.button8.TabIndex = 61;
-            this.button8.Text = "Select all";
-            this.button8.UseVisualStyleBackColor = false;
+            this.BtnSelectAllCashRegisterTrans.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnSelectAllCashRegisterTrans.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSelectAllCashRegisterTrans.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnSelectAllCashRegisterTrans.ForeColor = System.Drawing.Color.White;
+            this.BtnSelectAllCashRegisterTrans.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSelectAllCashRegisterTrans.Location = new System.Drawing.Point(699, 20);
+            this.BtnSelectAllCashRegisterTrans.Name = "BtnSelectAllCashRegisterTrans";
+            this.BtnSelectAllCashRegisterTrans.Size = new System.Drawing.Size(87, 24);
+            this.BtnSelectAllCashRegisterTrans.TabIndex = 61;
+            this.BtnSelectAllCashRegisterTrans.Text = "Select all";
+            this.BtnSelectAllCashRegisterTrans.UseVisualStyleBackColor = false;
+            this.BtnSelectAllCashRegisterTrans.Click += new System.EventHandler(this.BtnSelectAllCashRegisterTrans_Click);
             // 
             // DGVSalesRecords
             // 
@@ -698,7 +699,7 @@ namespace Main.Forms.PayrollForms.Controls
         private System.Windows.Forms.DataGridView DGVBenefitsList;
         private System.Windows.Forms.Button BtnSelectAllDeductions;
         private System.Windows.Forms.DataGridView DGVDeductionList;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button BtnSelectAllCashRegisterTrans;
         private System.Windows.Forms.DataGridView DGVSalesRecords;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.Button BtnGenerateEmployeePayslip;

@@ -13,5 +13,9 @@ namespace Shared
         public int SecondPayDayOfTheMonth { get; set; }
 
         public string GeneratedPDFLoc { get; set; }
+
+        public decimal SaleAmoutForADayToGetSpecialBonus { get; set; }
+
+        public decimal EmployeeBonusFromSaleSpecialBonus { get; set; }
     }
 }

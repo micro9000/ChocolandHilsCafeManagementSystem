@@ -1,5 +1,6 @@
 ﻿using EntitiesShared.EmployeeManagement;
 using EntitiesShared.OtherDataManagement;
+using EntitiesShared.POSManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +75,16 @@ namespace EntitiesShared.PayrollManagement.Models
             get { return selectedDeductions; }
             set { selectedDeductions = value; }
         }
+
+
+        private List<CashRegisterCashOutTransactionModel> selectedSalesReport;
+
+        public List<CashRegisterCashOutTransactionModel> SelectedSalesReport
+        {
+            get { return selectedSalesReport; }
+            set { selectedSalesReport = value; }
+        }
+
 
     }
 }

@@ -58,9 +58,6 @@ SELECT * FROM EmployeeShifts;
 INSERT INTO EmployeeShifts (shift, startTime, endTime)
 VALUES ("ASDF", "08:30:00", "17:30:00");
 
-SELECT TIME_FORMAT(startTime, "%H") as startDateHrs, TIME_FORMAT(startTime, "%i") as startDateMins, 
-	TIME_FORMAT(endTime, "%H") as endDateHrs, TIME_FORMAT(endTime, "%i") as endDateMins
-FROM EmployeeShifts;
 
 select * from EmployeeShifts;
 SELECT * FROM EmployeeSalaryRate;
@@ -230,39 +227,8 @@ drop table EmployeeSalaryRate;
 --     isDeleted BOOLEAN DEFAULT False
 -- )ENGINE=INNODB;
 
-
-
 SELECT * FROM EmployeeSalaryRate;
 
-SELECT * FROM EmployeeSalaryRate
-WHERE isDeleted=false AND employeeNumber='20190001'
-ORDER BY id DESC LIMIT 1;
-
--- CREATE TABLE IF NOT EXISTS EmployeeShiftSchedules(
--- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---     shiftId BIGINT NOT NULL,
---     employeeNumber CHAR(8),
---     startSchedDate DATE,
---     endSchedDate DATE,
---     isDone BOOLEAN DEFAULT False,
---     createdAt DATETIME DEFAULT NOW(),
---     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
---     deletedAt DATETIME,
---     isDeleted BOOLEAN DEFAULT False,
---     FOREIGN KEY(shiftId) REFERENCES EmployeeShifts(id)
--- )ENGINE=INNODB;
-
--- SELECT * FROM EmployeeShiftSchedules;
-
--- select * from EmployeeShiftSchedules
--- where isDeleted=false and isDone=false and employeeNumber='20190001' and 
--- startSchedDate <= '2021-01-01' and endSchedDate >= '2024-03-03';
-
--- select * from EmployeeShiftSchedules
--- where isDeleted=false and isDone=false and employeeNumber=@EmployeeNumber and 
--- startSchedDate <= @SchedDate and endSchedDate >= @SchedDate
-
--- SELECT DATE_ADD("2017-06-15", INTERVAL 10 HOUR); 
 
 CREATE TABLE IF NOT EXISTS EmployeeLeaves(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -287,11 +253,6 @@ ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 
 SELECT * FROM EmployeeLeaves;
 
-SELECT * 
-FROM EmployeeLeaves
-WHERE startDate BETWEEN '2021-03-15' AND '2021-03-30'
-and endDate BETWEEN '2021-03-15' AND '2021-03-30';
-
 CREATE TABLE IF NOT EXISTS WorkforceSchedules(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
@@ -303,8 +264,6 @@ CREATE TABLE IF NOT EXISTS WorkforceSchedules(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
-SELECT * FROM WorkforceSchedules 
-WHERE employeeNumber='20190001' AND workDate='2021-03-18';
 
 CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -342,31 +301,19 @@ ADD COLUMN isPaid BOOLEAN DEFAULT false;
 ALTER TABLE EmployeeAttendance
 ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 
-SELECT * FROM EmployeeAttendance where workDate='2021-03-13';
 
-SELECT * FROM WorkforceSchedules 
-WHERE employeeNumber='20190001' AND isDeleted=false AND workDate BETWEEN '2021-03-17' AND '2021-04-08';
-
-SELECT * FROM EmployeeAttendance where employeeNumber='20190001';
-SELECT * FROM EmployeeLeaves;
+SELECT * FROM EmployeeAttendance WHERE employeeNumber='20190001' AND workDate BETWEEN '2021-04-16' AND '2021-04-30';
 
 SELECT * 
 FROM EmployeeAttendance AS EA
 JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
 JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
-WHERE EA.employeeNumber='20190001' AND EA.workDate BETWEEN '2021-01-01' AND '2021-04-09'
+WHERE EA.employeeNumber='20190001' AND EA.workDate BETWEEN '2021-04-16' AND '2021-04-30' AND EA.isPaid=false
 ORDER BY EA.id DESC;
 
-SELECT * FROM EmployeeShifts;
+SELECT * FROM EmployeePayslips WHERE isDeleted=false AND isCancel=false AND payDate='2021-04-23';
 
-SELECT * FROM EmployeeLeaves;
-
-SELECT * 
-FROM EmployeeAttendance AS EA
-JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
-JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
-WHERE EA.workDate BETWEEN '2021-03-13' AND '2021-03-23'
-ORDER BY EA.id DESC;
+UPDATE EmployeePayslips SET isDeleted=true WHERE id> 0;
 
 -- possible enhancement:
 -- add employee type that will use to add additional benefits
@@ -758,19 +705,6 @@ ADD COLUMN discountPercent DECIMAL;
 ALTER TABLE SalesTransactions
 ADD COLUMN isCashOut BOOLEAN DEFAULT false;
 
-SELECT * FROM SalesTransactions;
-
-SELECT COUNT(id) as counter FROM SalesTransactions 
-WHERE YEAR(createdAt) = 2021 AND transStatus=2;
-
-SELECT SUM(totalAmount) as totalSales FROM SalesTransactions WHERE isDeleted=false AND transStatus=@TransStatus AND createdAt=@TransDate;
-
-
-
-SELECT * FROM SalesTransactions
-WHERE isDeleted=false AND transStatus=1;
-
-SELECT * FROM SalesTransactions WHERE DATE(createdAt)='2021-04-18' AND transStatus=2;
 
 CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -786,11 +720,6 @@ CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
     FOREIGN KEY (salesTransId) REFERENCES SalesTransactions(id),
     FOREIGN KEY (productId) REFERENCES Products (id)
 )ENGINE=INNODB;
-
-SELECT *
-FROM SalesTransactionProducts AS STPrd
-JOIN Products AS Prd ON STPrd.productId=Prd.id
-WHERE STPrd.isDeleted=false AND STPrd.salesTransId=@SaleTransId;
 
 DELETE FROM SalesTransactionProducts WHERE id> 0;
 
@@ -813,11 +742,6 @@ CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
 
 DELETE FROM SalesTransactionComboMeals where id > 0;
 
-
-SELECT *
-FROM SalesTransactionComboMeals AS STComMl
-JOIN ComboMeals AS ComMl ON STComMl.comboMealId = ComMl.id
-WHERE STComMl.isDeleted=false AND STComMl.salesTransId=1;
 
 -- Sale Transaction's Product's Ingredient's Inventory deduction history :D
 -- we just need to store the ingredients we used in our product and 
@@ -847,12 +771,6 @@ ADD COLUMN totalCost DECIMAL(9,2);
 
 SELECT * FROM SaleTranProdIngInvDeductionsRecords;
 
-SELECT SUM(totalCost) AS totalCost, YEAR(createdAt) as yr
-FROM SaleTranProdIngInvDeductionsRecords
-WHERE isDeleted=false AND YEAR(createdAt)=2021
-GROUP BY YEAR(createdAt);
-
-
 CREATE TABLE IF NOT EXISTS SaleTranComboMealIngInvDeductionsRecords(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	saleTransComboMealId BIGINT NOT NULL,
@@ -878,10 +796,6 @@ ADD COLUMN totalCost DECIMAL(9,2);
 
 SELECT * FROM SaleTranComboMealIngInvDeductionsRecords;
 
-SELECT SUM(totalCost) AS totalCost 
-FROM SaleTranComboMealIngInvDeductionsRecords
-WHERE isDeleted=false AND YEAR(createdAt)=2021;
-
 CREATE TABLE IF NOT EXISTS CashRegisterCashOutTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     totalSales DECIMAL(9,2),
@@ -896,56 +810,3 @@ CREATE TABLE IF NOT EXISTS CashRegisterCashOutTransactions(
 
 SELECT * FROM CashRegisterCashOutTransactions;
 SELECT * FROM CashRegisterCashOutTransactions WHERE isDeleted=false ORDER By id DESC LIMIT 1;
-
--- yearly report
-SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false
-GROUP BY YEAR(createdAt);
-
-SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false AND YEAR(createdAt) BETWEEN 2020 AND 2021
-GROUP BY YEAR(createdAt);
-
--- single year
-SELECT SUM(totalSales) as totalSales, YEAR(createdAt) as yr
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false AND YEAR(createdAt) = 2021
-GROUP BY YEAR(createdAt);
-
--- monthly report
-SELECT SUM(totalSales) as TotalSales, MONTH(createdAt) as Mnth
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false AND YEAR(createdAt) = 2021
-GROUP BY MONTH(createdAt);
-
--- single month report
-SELECT SUM(totalSales) as TotalSales, MONTH(createdAt) as Mnth
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false AND YEAR(createdAt) = 2021 AND MONTH(createdAt)=4
-GROUP BY MONTH(createdAt);
-
--- weekly report, filter by year
-SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false AND YEAR(createdAt) = 2021
-GROUP BY WEEK(createdAt);
-
--- weekly report, filter by month
-SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false AND MONTH(createdAt) = 4
-GROUP BY WEEK(createdAt);
-
--- single weekly report, filter by month
-SELECT SUM(totalSales) as TotalSales, WEEK(createdAt) as wk
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false AND MONTH(createdAt) = 4 AND YEAR(createdAt)=2021
-GROUP BY WEEK(createdAt);
-
--- daily
-SELECT SUM(totalSales) as TotalSales, DAY(createdAt) as dy
-FROM CashRegisterCashOutTransactions
-WHERE isDeleted=false AND MONTH(createdAt) = 4
-GROUP BY DAY(createdAt);

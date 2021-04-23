@@ -22,6 +22,8 @@ using PDFReportGenerators;
 using WkHtmlToPdfDotNet.Contracts;
 using WkHtmlToPdfDotNet;
 using Topshelf;
+using DataAccess.Data.POSManagement.Contracts;
+using DataAccess.Data.POSManagement.Implementations;
 
 namespace PayrollGenerator
 {
@@ -89,6 +91,8 @@ namespace PayrollGenerator
                     services.Configure<DBConnectionSettings>(ConfBuilder.GetSection(nameof(DBConnectionSettings)));
                     services.Configure<HangfireConfig>(ConfBuilder.GetSection(nameof(HangfireConfig)));
                     services.AddTransient<IDbConnectionFactory, MySQLConnection>(); // database settings, including connection string
+                    services.AddTransient<IBranchData, BranchData>();
+                    services.AddTransient<IEmployeePositionData, EmployeePositionData>();
                     services.AddTransient<IEmployeeAttendanceData, EmployeeAttendanceData>();
                     services.AddTransient<IEmployeeBenefitData, EmployeeBenefitData>();
                     services.AddTransient<IEmployeeData, EmployeeData>();
@@ -105,6 +109,7 @@ namespace PayrollGenerator
                     services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
                     services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
                     services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();
+                    services.AddTransient<ICashRegisterCashOutTransactionData, CashRegisterCashOutTransactionData>();
                     //services.AddTransient<IAttendancePDFReport, AttendancePDFReport>();
                 })
                 .UseSerilog()
@@ -147,6 +152,7 @@ namespace PayrollGenerator
             var payslipGenerator = ActivatorUtilities.CreateInstance<PayslipGenerator>(host.Services);
 
             RecurringJob.AddOrUpdate(() => payslipGenerator.GeneratePayslip(), Cron.Daily);
+            //BackgroundJob.Enqueue(() => payslipGenerator.GeneratePayslip());
 
             HostFactory.Run(configure =>
             {

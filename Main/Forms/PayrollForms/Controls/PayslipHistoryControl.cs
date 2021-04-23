@@ -47,6 +47,7 @@ namespace Main.Forms.PayrollForms.Controls
 
         public void DisplayPayslipPaydateList()
         {
+            this.CBoxPayslipDates.Items.Clear();
             // Work shifts load in combo box
             if (this.PayslipDateList != null)
             {
