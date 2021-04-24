@@ -384,6 +384,8 @@ namespace Main.Forms.POSManagementForms
             List<SaleTransactionProductModel> products = _pOSState.CurrentSaleTransactionProducts;
             List<SaleTransactionComboMealModel> comboMeals = _pOSState.CurrentSaleTransactionComboMeals;
 
+            this.pOSControllerControl.DisplayProductsInReceiptPreview(products, comboMeals);
+
             this.DGVCartItems.Rows.Clear();
             this.DGVCartItems.ColumnCount = 6;
 

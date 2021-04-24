@@ -51,6 +51,26 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TabControlMain.SelectedIndex = this.TabControlMain.TabPages.IndexOf(TabPageCheckout);
         }
 
+
+        public void DisplayProductsInReceiptPreview(List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals)
+        {
+            RTboxReceipt.Text = "";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.Append("------------------------------------------------\n");
+            stringBuilder.Append("----         Chocoland Hills Cafe             ----\n");
+            stringBuilder.Append("------------------------------------------------\n\n");
+            stringBuilder.Append("QTY       ITEM                                AMT\n");
+
+            foreach (var prod in products)
+            {
+                stringBuilder.Append($"{prod.Qty}       {prod.Product.ProdName}                                     {prod.totalAmount}\n");
+            }
+
+            RTboxReceipt.Text = stringBuilder.ToString();
+        }
+
+
         private void DisplayCurrentSaleTransaction()
         {
             this.ClearCheckOutForm();
@@ -62,6 +82,8 @@ namespace Main.Forms.POSManagementForms.Controls
                 this.TboxTableNumber.Text = _pOSState.CurrentSaleTransaction.TableNumber.ToString();
 
                 this.LblSubTotal.Text = _pOSState.ToStringSubTotal;
+
+                this.DisplayProductsInReceiptPreview(_pOSState.CurrentSaleTransactionProducts, _pOSState.CurrentSaleTransactionComboMeals);
             }
 
             DisplayCurrentSaleTransactionSubTotal();
@@ -300,6 +322,8 @@ namespace Main.Forms.POSManagementForms.Controls
 
                     if (isCheckoutIsSuccessful)
                     {
+                        // print receipt here
+
                         _pOSState.Transaction = POSStateTransaction.Existing;
                         _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
                         _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();

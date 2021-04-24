@@ -55,7 +55,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.panel2 = new System.Windows.Forms.Panel();
             this.LblSubTotal = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.RTboxReceipt = new System.Windows.Forms.RichTextBox();
             this.TabControlMain.SuspendLayout();
             this.TabPageControls.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -363,7 +363,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.richTextBox1);
+            this.splitContainer2.Panel2.Controls.Add(this.RTboxReceipt);
             this.splitContainer2.Size = new System.Drawing.Size(276, 308);
             this.splitContainer2.SplitterDistance = 53;
             this.splitContainer2.TabIndex = 1;
@@ -399,14 +399,14 @@ namespace Main.Forms.POSManagementForms.Controls
             this.label5.TabIndex = 0;
             this.label5.Text = "Sub Total:";
             // 
-            // richTextBox1
+            // RTboxReceipt
             // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(276, 251);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.RTboxReceipt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RTboxReceipt.Location = new System.Drawing.Point(0, 0);
+            this.RTboxReceipt.Name = "RTboxReceipt";
+            this.RTboxReceipt.Size = new System.Drawing.Size(276, 251);
+            this.RTboxReceipt.TabIndex = 0;
+            this.RTboxReceipt.Text = "";
             // 
             // POSControllerControl
             // 
@@ -467,6 +467,6 @@ namespace Main.Forms.POSManagementForms.Controls
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label LblSubTotal;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox RTboxReceipt;
     }
 }

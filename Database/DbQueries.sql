@@ -1,8 +1,9 @@
 CREATE DATABASE ChocolandHilsCafeDb;
 USE ChocolandHilsCafeDb;
 
-CREATE DATABASE ChocolandHilsCafeDb2;
-USE ChocolandHilsCafeDb2;
+CREATE DATABASE CHCafeDb_HangfireStorage;
+USE CHCafeDb_HangfireStorage;
+
 
 -- https://www.khanacademy.org/math/cc-third-grade-math/imp-measurement-and-data/imp-mass/v/intuition-for-grams#:~:text=.%20...%E2%80%9D-,To%20convert%20grams%20to%20kilograms%2C%20divide%20by%201%2C000.,30%2C000%20grams%20is%2030%20kilograms.
 
