@@ -65,7 +65,7 @@ namespace Main.Forms.POSManagementForms
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.TabPageSalesHistory = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this.LblTotalSales = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -84,7 +84,22 @@ namespace Main.Forms.POSManagementForms
             this.Total = new System.Windows.Forms.ColumnHeader();
             this.Status = new System.Windows.Forms.ColumnHeader();
             this.CashierName = new System.Windows.Forms.ColumnHeader();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.TabProductOrderQty = new System.Windows.Forms.TabPage();
+            this.LVProductAndComboMealOrders = new System.Windows.Forms.ListView();
+            this.columnHeader13 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader14 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader15 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader16 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader17 = new System.Windows.Forms.ColumnHeader();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.BtnFilterProductOrderReport = new System.Windows.Forms.Button();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.DPicEndDateFilterProductOrdersReport = new System.Windows.Forms.DateTimePicker();
+            this.DPicStartDateFilterProductOrdersReport = new System.Windows.Forms.DateTimePicker();
+            this.TabPageIngredientsBreakdown = new System.Windows.Forms.TabPage();
+            this.TabPageCashRegister = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.DGVCashRegisterTransactions = new System.Windows.Forms.DataGridView();
@@ -111,7 +126,17 @@ namespace Main.Forms.POSManagementForms
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.LVIngredientBreakdown = new System.Windows.Forms.ListView();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.BtnFilterIngredientBreakdownReport = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.DPicEndDateIngBreakdownReport = new System.Windows.Forms.DateTimePicker();
+            this.DPicStartDateIngBreakdownReport = new System.Windows.Forms.DateTimePicker();
+            this.Category = new System.Windows.Forms.ColumnHeader();
+            this.Ingredient = new System.Windows.Forms.ColumnHeader();
+            this.RemainingQtyValue = new System.Windows.Forms.ColumnHeader();
+            this.ConsumeQtyValue = new System.Windows.Forms.ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -139,10 +164,13 @@ namespace Main.Forms.POSManagementForms
             this.TabPageTableStatus.SuspendLayout();
             this.PanelDineInOrdersTableStatus.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.TabPageSalesHistory.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPage4.SuspendLayout();
+            this.TabProductOrderQty.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.TabPageIngredientsBreakdown.SuspendLayout();
+            this.TabPageCashRegister.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVCashRegisterTransactions)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -158,6 +186,7 @@ namespace Main.Forms.POSManagementForms
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -492,8 +521,10 @@ namespace Main.Forms.POSManagementForms
             // 
             this.POSMainTabControl.Controls.Add(this.TabPageStore);
             this.POSMainTabControl.Controls.Add(this.TabPageTableStatus);
-            this.POSMainTabControl.Controls.Add(this.tabPage1);
-            this.POSMainTabControl.Controls.Add(this.tabPage4);
+            this.POSMainTabControl.Controls.Add(this.TabPageSalesHistory);
+            this.POSMainTabControl.Controls.Add(this.TabProductOrderQty);
+            this.POSMainTabControl.Controls.Add(this.TabPageIngredientsBreakdown);
+            this.POSMainTabControl.Controls.Add(this.TabPageCashRegister);
             this.POSMainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.POSMainTabControl.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.POSMainTabControl.Location = new System.Drawing.Point(0, 0);
@@ -580,17 +611,17 @@ namespace Main.Forms.POSManagementForms
             this.label4.TabIndex = 2;
             this.label4.Text = "AVAILABLE";
             // 
-            // tabPage1
+            // TabPageSalesHistory
             // 
-            this.tabPage1.Controls.Add(this.panel3);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.LVTransactionHistory);
-            this.tabPage1.Location = new System.Drawing.Point(4, 30);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(1213, 638);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Sales History";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.TabPageSalesHistory.Controls.Add(this.panel3);
+            this.TabPageSalesHistory.Controls.Add(this.groupBox1);
+            this.TabPageSalesHistory.Controls.Add(this.LVTransactionHistory);
+            this.TabPageSalesHistory.Location = new System.Drawing.Point(4, 30);
+            this.TabPageSalesHistory.Name = "TabPageSalesHistory";
+            this.TabPageSalesHistory.Size = new System.Drawing.Size(1213, 638);
+            this.TabPageSalesHistory.TabIndex = 2;
+            this.TabPageSalesHistory.Text = "Sales History";
+            this.TabPageSalesHistory.UseVisualStyleBackColor = true;
             // 
             // panel3
             // 
@@ -676,7 +707,7 @@ namespace Main.Forms.POSManagementForms
             this.DPickerEndDateForSalesHistory.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.DPickerEndDateForSalesHistory.Location = new System.Drawing.Point(94, 64);
             this.DPickerEndDateForSalesHistory.Name = "DPickerEndDateForSalesHistory";
-            this.DPickerEndDateForSalesHistory.Size = new System.Drawing.Size(128, 29);
+            this.DPickerEndDateForSalesHistory.Size = new System.Drawing.Size(151, 29);
             this.DPickerEndDateForSalesHistory.TabIndex = 1;
             // 
             // DPickerStartDateForSalesHistory
@@ -684,7 +715,7 @@ namespace Main.Forms.POSManagementForms
             this.DPickerStartDateForSalesHistory.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.DPickerStartDateForSalesHistory.Location = new System.Drawing.Point(94, 28);
             this.DPickerStartDateForSalesHistory.Name = "DPickerStartDateForSalesHistory";
-            this.DPickerStartDateForSalesHistory.Size = new System.Drawing.Size(128, 29);
+            this.DPickerStartDateForSalesHistory.Size = new System.Drawing.Size(151, 29);
             this.DPickerStartDateForSalesHistory.TabIndex = 0;
             // 
             // LVTransactionHistory
@@ -752,16 +783,154 @@ namespace Main.Forms.POSManagementForms
             this.CashierName.Text = "Cashier";
             this.CashierName.Width = 200;
             // 
-            // tabPage4
+            // columnHeader3
             // 
-            this.tabPage4.Controls.Add(this.panel4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 30);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1213, 638);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Cash Register";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.columnHeader3.Text = "Date";
+            this.columnHeader3.Width = 120;
+            // 
+            // TabProductOrderQty
+            // 
+            this.TabProductOrderQty.Controls.Add(this.LVProductAndComboMealOrders);
+            this.TabProductOrderQty.Controls.Add(this.groupBox4);
+            this.TabProductOrderQty.Location = new System.Drawing.Point(4, 30);
+            this.TabProductOrderQty.Name = "TabProductOrderQty";
+            this.TabProductOrderQty.Padding = new System.Windows.Forms.Padding(3);
+            this.TabProductOrderQty.Size = new System.Drawing.Size(1213, 638);
+            this.TabProductOrderQty.TabIndex = 4;
+            this.TabProductOrderQty.Text = "Product Order Qty";
+            this.TabProductOrderQty.UseVisualStyleBackColor = true;
+            // 
+            // LVProductAndComboMealOrders
+            // 
+            this.LVProductAndComboMealOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LVProductAndComboMealOrders.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader13,
+            this.columnHeader14,
+            this.columnHeader15,
+            this.columnHeader16,
+            this.columnHeader17});
+            this.LVProductAndComboMealOrders.FullRowSelect = true;
+            this.LVProductAndComboMealOrders.GridLines = true;
+            this.LVProductAndComboMealOrders.HideSelection = false;
+            this.LVProductAndComboMealOrders.Location = new System.Drawing.Point(8, 125);
+            this.LVProductAndComboMealOrders.Name = "LVProductAndComboMealOrders";
+            this.LVProductAndComboMealOrders.Size = new System.Drawing.Size(1197, 505);
+            this.LVProductAndComboMealOrders.TabIndex = 3;
+            this.LVProductAndComboMealOrders.UseCompatibleStateImageBehavior = false;
+            this.LVProductAndComboMealOrders.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "Category";
+            this.columnHeader13.Width = 120;
+            // 
+            // columnHeader14
+            // 
+            this.columnHeader14.Text = "Product";
+            this.columnHeader14.Width = 150;
+            // 
+            // columnHeader15
+            // 
+            this.columnHeader15.Text = "Price";
+            this.columnHeader15.Width = 100;
+            // 
+            // columnHeader16
+            // 
+            this.columnHeader16.Text = "Orders";
+            this.columnHeader16.Width = 100;
+            // 
+            // columnHeader17
+            // 
+            this.columnHeader17.Text = "Total";
+            this.columnHeader17.Width = 100;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.BtnFilterProductOrderReport);
+            this.groupBox4.Controls.Add(this.label21);
+            this.groupBox4.Controls.Add(this.label22);
+            this.groupBox4.Controls.Add(this.DPicEndDateFilterProductOrdersReport);
+            this.groupBox4.Controls.Add(this.DPicStartDateFilterProductOrdersReport);
+            this.groupBox4.Location = new System.Drawing.Point(8, 9);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(358, 116);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Filter";
+            // 
+            // BtnFilterProductOrderReport
+            // 
+            this.BtnFilterProductOrderReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnFilterProductOrderReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnFilterProductOrderReport.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnFilterProductOrderReport.ForeColor = System.Drawing.Color.White;
+            this.BtnFilterProductOrderReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnFilterProductOrderReport.Location = new System.Drawing.Point(251, 55);
+            this.BtnFilterProductOrderReport.Name = "BtnFilterProductOrderReport";
+            this.BtnFilterProductOrderReport.Size = new System.Drawing.Size(81, 38);
+            this.BtnFilterProductOrderReport.TabIndex = 63;
+            this.BtnFilterProductOrderReport.Text = "Filter";
+            this.BtnFilterProductOrderReport.UseVisualStyleBackColor = false;
+            this.BtnFilterProductOrderReport.Click += new System.EventHandler(this.BtnFilterProductOrderReport_Click);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(21, 70);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(37, 21);
+            this.label21.TabIndex = 3;
+            this.label21.Text = "End";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(21, 35);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(45, 21);
+            this.label22.TabIndex = 2;
+            this.label22.Text = "Start";
+            // 
+            // DPicEndDateFilterProductOrdersReport
+            // 
+            this.DPicEndDateFilterProductOrdersReport.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicEndDateFilterProductOrdersReport.Location = new System.Drawing.Point(94, 64);
+            this.DPicEndDateFilterProductOrdersReport.Name = "DPicEndDateFilterProductOrdersReport";
+            this.DPicEndDateFilterProductOrdersReport.Size = new System.Drawing.Size(151, 29);
+            this.DPicEndDateFilterProductOrdersReport.TabIndex = 1;
+            // 
+            // DPicStartDateFilterProductOrdersReport
+            // 
+            this.DPicStartDateFilterProductOrdersReport.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicStartDateFilterProductOrdersReport.Location = new System.Drawing.Point(94, 28);
+            this.DPicStartDateFilterProductOrdersReport.Name = "DPicStartDateFilterProductOrdersReport";
+            this.DPicStartDateFilterProductOrdersReport.Size = new System.Drawing.Size(151, 29);
+            this.DPicStartDateFilterProductOrdersReport.TabIndex = 0;
+            // 
+            // TabPageIngredientsBreakdown
+            // 
+            this.TabPageIngredientsBreakdown.Controls.Add(this.LVIngredientBreakdown);
+            this.TabPageIngredientsBreakdown.Controls.Add(this.groupBox5);
+            this.TabPageIngredientsBreakdown.Location = new System.Drawing.Point(4, 30);
+            this.TabPageIngredientsBreakdown.Name = "TabPageIngredientsBreakdown";
+            this.TabPageIngredientsBreakdown.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageIngredientsBreakdown.Size = new System.Drawing.Size(1213, 638);
+            this.TabPageIngredientsBreakdown.TabIndex = 5;
+            this.TabPageIngredientsBreakdown.Text = "Ingredients Breakdown";
+            this.TabPageIngredientsBreakdown.UseVisualStyleBackColor = true;
+            // 
+            // TabPageCashRegister
+            // 
+            this.TabPageCashRegister.Controls.Add(this.panel4);
+            this.TabPageCashRegister.Location = new System.Drawing.Point(4, 30);
+            this.TabPageCashRegister.Name = "TabPageCashRegister";
+            this.TabPageCashRegister.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageCashRegister.Size = new System.Drawing.Size(1213, 638);
+            this.TabPageCashRegister.TabIndex = 3;
+            this.TabPageCashRegister.Text = "Cash Register";
+            this.TabPageCashRegister.UseVisualStyleBackColor = true;
             // 
             // panel4
             // 
@@ -1055,10 +1224,108 @@ namespace Main.Forms.POSManagementForms
             this.numericUpDown6.Size = new System.Drawing.Size(217, 23);
             this.numericUpDown6.TabIndex = 0;
             // 
-            // columnHeader3
+            // LVIngredientBreakdown
             // 
-            this.columnHeader3.Text = "Date";
-            this.columnHeader3.Width = 120;
+            this.LVIngredientBreakdown.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LVIngredientBreakdown.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Category,
+            this.Ingredient,
+            this.RemainingQtyValue,
+            this.ConsumeQtyValue});
+            this.LVIngredientBreakdown.FullRowSelect = true;
+            this.LVIngredientBreakdown.GridLines = true;
+            this.LVIngredientBreakdown.HideSelection = false;
+            this.LVIngredientBreakdown.Location = new System.Drawing.Point(8, 125);
+            this.LVIngredientBreakdown.Name = "LVIngredientBreakdown";
+            this.LVIngredientBreakdown.Size = new System.Drawing.Size(1197, 505);
+            this.LVIngredientBreakdown.TabIndex = 5;
+            this.LVIngredientBreakdown.UseCompatibleStateImageBehavior = false;
+            this.LVIngredientBreakdown.View = System.Windows.Forms.View.Details;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.BtnFilterIngredientBreakdownReport);
+            this.groupBox5.Controls.Add(this.label23);
+            this.groupBox5.Controls.Add(this.label24);
+            this.groupBox5.Controls.Add(this.DPicEndDateIngBreakdownReport);
+            this.groupBox5.Controls.Add(this.DPicStartDateIngBreakdownReport);
+            this.groupBox5.Location = new System.Drawing.Point(8, 9);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(358, 116);
+            this.groupBox5.TabIndex = 4;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Filter";
+            // 
+            // BtnFilterIngredientBreakdownReport
+            // 
+            this.BtnFilterIngredientBreakdownReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnFilterIngredientBreakdownReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnFilterIngredientBreakdownReport.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnFilterIngredientBreakdownReport.ForeColor = System.Drawing.Color.White;
+            this.BtnFilterIngredientBreakdownReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnFilterIngredientBreakdownReport.Location = new System.Drawing.Point(251, 55);
+            this.BtnFilterIngredientBreakdownReport.Name = "BtnFilterIngredientBreakdownReport";
+            this.BtnFilterIngredientBreakdownReport.Size = new System.Drawing.Size(81, 38);
+            this.BtnFilterIngredientBreakdownReport.TabIndex = 63;
+            this.BtnFilterIngredientBreakdownReport.Text = "Filter";
+            this.BtnFilterIngredientBreakdownReport.UseVisualStyleBackColor = false;
+            this.BtnFilterIngredientBreakdownReport.Click += new System.EventHandler(this.BtnFilterIngredientBreakdownReport_Click);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(21, 70);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(37, 21);
+            this.label23.TabIndex = 3;
+            this.label23.Text = "End";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(21, 35);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(45, 21);
+            this.label24.TabIndex = 2;
+            this.label24.Text = "Start";
+            // 
+            // DPicEndDateIngBreakdownReport
+            // 
+            this.DPicEndDateIngBreakdownReport.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicEndDateIngBreakdownReport.Location = new System.Drawing.Point(94, 64);
+            this.DPicEndDateIngBreakdownReport.Name = "DPicEndDateIngBreakdownReport";
+            this.DPicEndDateIngBreakdownReport.Size = new System.Drawing.Size(151, 29);
+            this.DPicEndDateIngBreakdownReport.TabIndex = 1;
+            // 
+            // DPicStartDateIngBreakdownReport
+            // 
+            this.DPicStartDateIngBreakdownReport.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicStartDateIngBreakdownReport.Location = new System.Drawing.Point(94, 28);
+            this.DPicStartDateIngBreakdownReport.Name = "DPicStartDateIngBreakdownReport";
+            this.DPicStartDateIngBreakdownReport.Size = new System.Drawing.Size(151, 29);
+            this.DPicStartDateIngBreakdownReport.TabIndex = 0;
+            // 
+            // Category
+            // 
+            this.Category.Text = "Category";
+            this.Category.Width = 150;
+            // 
+            // Ingredient
+            // 
+            this.Ingredient.Text = "Ingredient";
+            this.Ingredient.Width = 150;
+            // 
+            // RemainingQtyValue
+            // 
+            this.RemainingQtyValue.Text = "Remaining";
+            this.RemainingQtyValue.Width = 120;
+            // 
+            // ConsumeQtyValue
+            // 
+            this.ConsumeQtyValue.Text = "Consume";
+            this.ConsumeQtyValue.Width = 120;
             // 
             // FrmMainPOSTerminal
             // 
@@ -1100,12 +1367,16 @@ namespace Main.Forms.POSManagementForms
             this.PanelDineInOrdersTableStatus.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
+            this.TabPageSalesHistory.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
+            this.TabProductOrderQty.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.TabPageIngredientsBreakdown.ResumeLayout(false);
+            this.TabPageCashRegister.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVCashRegisterTransactions)).EndInit();
@@ -1124,6 +1395,8 @@ namespace Main.Forms.POSManagementForms
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1147,7 +1420,7 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.TabControl POSMainTabControl;
         private System.Windows.Forms.TabPage TabPageStore;
         private System.Windows.Forms.TabPage TabPageTableStatus;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage TabPageSalesHistory;
         private System.Windows.Forms.Panel PanelDineInOrdersTableStatus;
         private System.Windows.Forms.TabControl TabControlProductsAndComboMeals;
         private System.Windows.Forms.TabPage tabPage2;
@@ -1171,7 +1444,7 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.Panel PanelPOSController;
         private System.Windows.Forms.SplitContainer POSControllerSplitContainer;
         private System.Windows.Forms.ListView LVTransactionHistory;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage TabPageCashRegister;
         private System.Windows.Forms.ColumnHeader TicketNumber;
         private System.Windows.Forms.ColumnHeader CustomerName;
         private System.Windows.Forms.ColumnHeader SubTotal;
@@ -1213,5 +1486,30 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.DataGridView DGVCashRegisterTransactions;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.TabPage TabProductOrderQty;
+        private System.Windows.Forms.TabPage TabPageIngredientsBreakdown;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button BtnFilterProductOrderReport;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.DateTimePicker DPicEndDateFilterProductOrdersReport;
+        private System.Windows.Forms.DateTimePicker DPicStartDateFilterProductOrdersReport;
+        private System.Windows.Forms.ListView LVProductAndComboMealOrders;
+        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
+        private System.Windows.Forms.ColumnHeader columnHeader15;
+        private System.Windows.Forms.ColumnHeader columnHeader16;
+        private System.Windows.Forms.ColumnHeader columnHeader17;
+        private System.Windows.Forms.ListView LVIngredientBreakdown;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button BtnFilterIngredientBreakdownReport;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.DateTimePicker DPicEndDateIngBreakdownReport;
+        private System.Windows.Forms.DateTimePicker DPicStartDateIngBreakdownReport;
+        private System.Windows.Forms.ColumnHeader Category;
+        private System.Windows.Forms.ColumnHeader Ingredient;
+        private System.Windows.Forms.ColumnHeader RemainingQtyValue;
+        private System.Windows.Forms.ColumnHeader ConsumeQtyValue;
     }
 }

@@ -86,6 +86,17 @@ namespace Main.Controllers.POSControllers
         }
 
 
+        public IEnumerable<ProductOrdersReport> GetProductOrdersReportByDateRangeAndTransStatus(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate)
+        {
+            return _saleTransactionProductData.GetProductOrdersReport(POSTransactionStatus, startDate, endDate);
+        }
+
+        public IEnumerable<ComboMealOrdersReport> GetComboMealOrdersReportByDateRangeAndTransStatus(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate)
+        {
+            return _saleTransactionComboMealData.GetComboMealOrdersReport(POSTransactionStatus, startDate, endDate);
+        }
+
+
         public IEnumerable<SaleTransactionProductModel> GetSaleTranProducts (long saleTransactionId)
         {
             return _saleTransactionProductData.GetAllBySaleTransId(saleTransactionId);

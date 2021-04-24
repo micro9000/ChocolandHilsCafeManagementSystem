@@ -1,5 +1,7 @@
 ﻿using DapperGenericDataManager;
+using EntitiesShared;
 using EntitiesShared.InventoryManagement;
+using EntitiesShared.InventoryManagement.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +16,7 @@ namespace DataAccess.Data.InventoryManagement.Contracts
         bool MassUpdateIngredientsCategory(long previousCategoryId, long newCategoryId);
         List<IngredientModel> GetAllByCategory(long categoryId);
         List<IngredientModel> GetAllNotDeleted();
+
+        IEnumerable<IngredientBreakDownForSalesReportModel> GetBreakDownForSalesReport(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate);
     }
 }

@@ -34,7 +34,6 @@ namespace Main.Forms.SalesReport
             this.splitContainerHeaderReports = new System.Windows.Forms.SplitContainer();
             this.splitContainerHeaderReportsLeft = new System.Windows.Forms.SplitContainer();
             this.panelNumberOfSales = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.LblNumberOfTransactionsWhatFor = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -74,6 +73,10 @@ namespace Main.Forms.SalesReport
             this.panelTransactions = new System.Windows.Forms.Panel();
             this.LVSalesReports = new System.Windows.Forms.ListView();
             this.ReportType = new System.Windows.Forms.ColumnHeader();
+            this.ReportDate = new System.Windows.Forms.ColumnHeader();
+            this.TotalRevenue = new System.Windows.Forms.ColumnHeader();
+            this.TotalCost = new System.Windows.Forms.ColumnHeader();
+            this.TotalProfit = new System.Windows.Forms.ColumnHeader();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label36 = new System.Windows.Forms.Label();
             this.splitContainerCharts = new System.Windows.Forms.SplitContainer();
@@ -87,10 +90,6 @@ namespace Main.Forms.SalesReport
             this.RBtnFilterTrendByMonth = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label33 = new System.Windows.Forms.Label();
-            this.ReportDate = new System.Windows.Forms.ColumnHeader();
-            this.TotalRevenue = new System.Windows.Forms.ColumnHeader();
-            this.TotalCost = new System.Windows.Forms.ColumnHeader();
-            this.TotalProfit = new System.Windows.Forms.ColumnHeader();
             this.panelReportHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerHeaderReports)).BeginInit();
             this.splitContainerHeaderReports.Panel1.SuspendLayout();
@@ -189,7 +188,6 @@ namespace Main.Forms.SalesReport
             // panelNumberOfSales
             // 
             this.panelNumberOfSales.BackColor = System.Drawing.Color.White;
-            this.panelNumberOfSales.Controls.Add(this.button1);
             this.panelNumberOfSales.Controls.Add(this.pictureBox4);
             this.panelNumberOfSales.Controls.Add(this.LblNumberOfTransactionsWhatFor);
             this.panelNumberOfSales.Controls.Add(this.label12);
@@ -199,22 +197,6 @@ namespace Main.Forms.SalesReport
             this.panelNumberOfSales.Name = "panelNumberOfSales";
             this.panelNumberOfSales.Size = new System.Drawing.Size(237, 216);
             this.panelNumberOfSales.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = global::Main.Properties.Resources.reset_white_24;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(16, 172);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(102, 32);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "Refresh";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.UseVisualStyleBackColor = false;
             // 
             // pictureBox4
             // 
@@ -656,6 +638,26 @@ namespace Main.Forms.SalesReport
             this.ReportType.Text = "Report Type";
             this.ReportType.Width = 120;
             // 
+            // ReportDate
+            // 
+            this.ReportDate.Text = "Report Date";
+            this.ReportDate.Width = 120;
+            // 
+            // TotalRevenue
+            // 
+            this.TotalRevenue.Text = "Revenue";
+            this.TotalRevenue.Width = 120;
+            // 
+            // TotalCost
+            // 
+            this.TotalCost.Text = "Cost";
+            this.TotalCost.Width = 120;
+            // 
+            // TotalProfit
+            // 
+            this.TotalProfit.Text = "Profit";
+            this.TotalProfit.Width = 120;
+            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
@@ -814,26 +816,6 @@ namespace Main.Forms.SalesReport
             this.label33.TabIndex = 6;
             this.label33.Text = "FILTER";
             // 
-            // ReportDate
-            // 
-            this.ReportDate.Text = "Report Date";
-            this.ReportDate.Width = 120;
-            // 
-            // TotalRevenue
-            // 
-            this.TotalRevenue.Text = "Revenue";
-            this.TotalRevenue.Width = 120;
-            // 
-            // TotalCost
-            // 
-            this.TotalCost.Text = "Cost";
-            this.TotalCost.Width = 120;
-            // 
-            // TotalProfit
-            // 
-            this.TotalProfit.Text = "Profit";
-            this.TotalProfit.Width = 120;
-            // 
             // FrmSalesReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -940,7 +922,6 @@ namespace Main.Forms.SalesReport
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.ListView LVSaleReports;
         private System.Windows.Forms.ColumnHeader ReportDate;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label LblMonthlyCost;
         private System.Windows.Forms.Label LblMonthlyProfit;

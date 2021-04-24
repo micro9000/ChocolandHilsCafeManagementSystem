@@ -82,7 +82,7 @@ namespace DataAccess.Data.InventoryManagement.Implementations
         {
             string query = @"SELECT COUNT(*) as count
                             FROM IngredientInventory
-                            WHERE expirationDate BETWEEN @StartDate AND @EndDate OR expirationDate <= @StartDate;";
+                            WHERE isDeleted=false AND isSoldOut=false AND expirationDate BETWEEN @StartDate AND @EndDate OR expirationDate <= @StartDate;";
 
             return this.GetValue<int>(query, new { StartDate = startDate, EndDate = endDate });
         }

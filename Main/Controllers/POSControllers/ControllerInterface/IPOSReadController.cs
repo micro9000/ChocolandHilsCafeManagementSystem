@@ -19,6 +19,10 @@ namespace Main.Controllers.POSControllers.ControllerInterface
         List<SaleTransactionModel> GetActiveDineInSalesTransactions();
         List<TableStatusModel> GetTableStatus();
 
+        IEnumerable<ProductOrdersReport> GetProductOrdersReportByDateRangeAndTransStatus(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate);
+        IEnumerable<ComboMealOrdersReport> GetComboMealOrdersReportByDateRangeAndTransStatus(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate);
+
+
         IEnumerable<SaleTransactionProductModel> GetSaleTranProducts(long saleTransactionId);
         IEnumerable<SaleTransactionComboMealModel> GetSaleTranComboMeals(long saleTransactionId);
 

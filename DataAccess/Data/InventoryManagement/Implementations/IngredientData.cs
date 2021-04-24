@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using EntitiesShared.InventoryManagement.Models;
+using EntitiesShared;
 
 namespace DataAccess.Data.InventoryManagement.Implementations
 {
@@ -96,5 +98,41 @@ namespace DataAccess.Data.InventoryManagement.Implementations
 
             return ingredients;
         }
+
+        public IEnumerable<IngredientBreakDownForSalesReportModel> GetBreakDownForSalesReport(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate)
+        {
+            endDate = endDate.AddDays(1);
+            string query = @"SELECT ING.id, ING.ingName, ING.uom, INGCAT.category, SUM(ProdIngDeduction.deductedQtyValue) AS TotalDeductedQtyValue
+                                FROM SaleTranProdIngInvDeductionsRecords as ProdIngDeduction
+                                JOIN SalesTransactionProducts AS STProd ON STProd.id = ProdIngDeduction.saleTransProductId
+                                JOIN SalesTransactions AS ST ON ST.id = STProd.salesTransId
+                                JOIN Ingredients AS ING ON ING.id = ProdIngDeduction.ingredientId
+                                JOIN IngredientCategories AS INGCAT ON INGCAT.id = ING.categoryId
+                                WHERE STProd.isDeleted=false AND ST.isDeleted=false AND ST.transStatus = @TransStatus AND ST.createdAt BETWEEN @StartDate AND @EndDate
+                                GROUP BY ProdIngDeduction.ingredientId";
+
+            IEnumerable<IngredientBreakDownForSalesReportModel> results;
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<IngredientBreakDownForSalesReportModel>(query,
+                    new
+                    {
+                        StartDate = startDate.ToString("yyyy-MM-dd"),
+                        EndDate = endDate.ToString("yyyy-MM-dd"),
+                        TransStatus = (int)POSTransactionStatus
+                    });
+
+                conn.Close();
+            }
+
+            foreach (var ing in results)
+            {
+                ing.RemainingQtyValue = _ingredientInventoryData.GetRemainingQtyValueByIngredient(ing.Id);
+            }
+
+            return results;
+        }
+
     }
 }

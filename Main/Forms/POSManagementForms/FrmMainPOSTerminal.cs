@@ -1,12 +1,14 @@
 ﻿using DataAccess.Data.InventoryManagement.Contracts;
 using EntitiesShared;
 using EntitiesShared.InventoryManagement;
+using EntitiesShared.InventoryManagement.Models;
 using EntitiesShared.POSManagement;
 using EntitiesShared.POSManagement.CustomModels;
 using Main.Controllers.POSControllers.ControllerInterface;
 using Main.Forms.POSManagementForms.Controls;
 using Microsoft.Extensions.Options;
 using Shared;
+using Shared.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,7 +31,9 @@ namespace Main.Forms.POSManagementForms
         private readonly IProductCategoryData _productCategoryData;
         private readonly IPOSCommandController _iPOSCommandController;
         private readonly IPOSReadController _pOSReadController;
+        private readonly IIngredientData _ingredientData;
         private readonly POSState _pOSState;
+        private readonly UOMConverter _uOMConverter;
         private readonly OtherSettings _otherSettings;
 
         public FrmMainPOSTerminal(IProductData productData,
@@ -37,7 +41,9 @@ namespace Main.Forms.POSManagementForms
                                 IProductCategoryData productCategoryData,
                                 IPOSCommandController iPOSCommandController,
                                 IPOSReadController pOSReadController,
+                                IIngredientData ingredientData,
                                 POSState pOSState,
+                                UOMConverter uOMConverter,
                                 IOptions<OtherSettings> otherSettings)
         {
             InitializeComponent();
@@ -46,7 +52,9 @@ namespace Main.Forms.POSManagementForms
             _productCategoryData = productCategoryData;
             _iPOSCommandController = iPOSCommandController;
             _pOSReadController = pOSReadController;
+            _ingredientData = ingredientData;
             _pOSState = pOSState;
+            _uOMConverter = uOMConverter;
             _otherSettings = otherSettings.Value;
         }
 
@@ -503,6 +511,23 @@ namespace Main.Forms.POSManagementForms
 
             if (POSMainTabControl.SelectedTab == POSMainTabControl.TabPages[3])
             {
+                DateTime dateTimeNow = DateTime.Now;
+                var productOrdersReport = _pOSReadController.GetProductOrdersReportByDateRangeAndTransStatus(StaticData.POSTransactionStatus.Paid, dateTimeNow, dateTimeNow);
+                var comboMealOrdersReport = _pOSReadController.GetComboMealOrdersReportByDateRangeAndTransStatus(StaticData.POSTransactionStatus.Paid, dateTimeNow, dateTimeNow);
+
+                this.DisplayProductsAndComboMealsOrdersReport(productOrdersReport, comboMealOrdersReport);
+            }
+
+            if (POSMainTabControl.SelectedTab == POSMainTabControl.TabPages[4])
+            {
+                DateTime dateTimeNow = DateTime.Now;
+                var ingredientBreakDownForSales = _ingredientData.GetBreakDownForSalesReport(StaticData.POSTransactionStatus.Paid, dateTimeNow, dateTimeNow);
+
+                this.DisplayIngredientBreakdown(ingredientBreakDownForSales);
+            }
+
+            if (POSMainTabControl.SelectedTab == POSMainTabControl.TabPages[5])
+            {
                 GetCashRegisterRemainingCashOnPrevDayAndTotalSales();
                 DisplayOneMonthCashRegisterTransactions();
             }
@@ -733,6 +758,125 @@ namespace Main.Forms.POSManagementForms
         }
 
 
+        private void BtnFilterProductOrderReport_Click(object sender, EventArgs e)
+        {
+            DateTime startDate = this.DPicStartDateFilterProductOrdersReport.Value;
+            DateTime endDate = this.DPicEndDateFilterProductOrdersReport.Value;
+
+            var productOrdersReport = _pOSReadController.GetProductOrdersReportByDateRangeAndTransStatus(StaticData.POSTransactionStatus.Paid, startDate, endDate);
+            var comboMealOrdersReport = _pOSReadController.GetComboMealOrdersReportByDateRangeAndTransStatus(StaticData.POSTransactionStatus.Paid, startDate, endDate);
+
+            this.DisplayProductsAndComboMealsOrdersReport(productOrdersReport, comboMealOrdersReport);
+        }
+
+        private void DisplayProductsAndComboMealsOrdersReport(IEnumerable<ProductOrdersReport>  productOrders, IEnumerable<ComboMealOrdersReport> comboMealOrders)
+        {
+            this.LVProductAndComboMealOrders.Items.Clear();
+
+            if (productOrders != null)
+            {
+                foreach (var report in productOrders)
+                {
+                    var row = new string[]
+                    {
+                        report.ProdCategory,
+                        report.ProdName,
+                        report.ProductCurrentPrice.ToString("#,##0.##"),
+                        report.Qty.ToString(),
+                        report.TotalSales.ToString("#,##0.##")
+                    };
+
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = report;
+
+                    this.LVProductAndComboMealOrders.Items.Add(listViewItem);
+                }
+            }
+
+            if (comboMealOrders != null)
+            {
+                foreach (var report in comboMealOrders)
+                {
+                    var row = new string[]
+                    {
+                        "Combo Meal",
+                        report.Title,
+                        report.ComboMealCurrentPrice.ToString("#,##0.##"),
+                        report.Qty.ToString(),
+                        report.TotalSales.ToString("#,##0.##")
+                    };
+
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = report;
+
+                    this.LVProductAndComboMealOrders.Items.Add(listViewItem);
+                }
+            }
+        }
+
+
+        public string GetUOMFormatted(StaticData.UOM uom, decimal qtyValue)
+        {
+            string uomFormatted = "";
+
+            switch (uom)
+            {
+                case StaticData.UOM.kg:
+                    uomFormatted = _uOMConverter.gram_to_kg_format(qtyValue);
+                    break;
+
+                case StaticData.UOM.L:
+                    uomFormatted = _uOMConverter.ml_to_L_format(qtyValue);
+                    break;
+
+                case StaticData.UOM.pcs:
+                    uomFormatted = _uOMConverter.pc_format(qtyValue);
+                    break;
+                default:
+                    uomFormatted = "0";
+                    break;
+            }
+
+            return uomFormatted;
+        }
+
+
+        private void BtnFilterIngredientBreakdownReport_Click(object sender, EventArgs e)
+        {
+            DateTime startDate = this.DPicStartDateIngBreakdownReport.Value;
+            DateTime endDate = this.DPicEndDateIngBreakdownReport.Value;
+
+            var ingredientBreakDownForSales = _ingredientData.GetBreakDownForSalesReport(StaticData.POSTransactionStatus.Paid, startDate, endDate);
+
+            this.DisplayIngredientBreakdown(ingredientBreakDownForSales);
+        }
+
+        public void DisplayIngredientBreakdown(IEnumerable<IngredientBreakDownForSalesReportModel> ingredientBreakDownForSalesReports)
+        {
+            this.LVIngredientBreakdown.Items.Clear();
+
+            if (ingredientBreakDownForSalesReports != null)
+            {
+                foreach(var report in ingredientBreakDownForSalesReports)
+                {
+                    var row = new string[]
+                    {
+                        report.Category,
+                        report.IngName,
+                        this.GetUOMFormatted(report.UOM, report.RemainingQtyValue),
+                        this.GetUOMFormatted(report.UOM, report.TotalDeductedQtyValue)
+                    };
+
+                    var listViewItem = new ListViewItem(row);
+                    listViewItem.Tag = report;
+
+                    this.LVIngredientBreakdown.Items.Add(listViewItem);
+                }
+            }
+        }
+
+
+
         public void GetCashRegisterRemainingCashOnPrevDayAndTotalSales()
         {
             var cashRegisterLastTrans = _pOSReadController.GetCashRegisterLastTransaction();
@@ -914,6 +1058,9 @@ namespace Main.Forms.POSManagementForms
                 }
             }
         }
+
+
+
 
         //public void GetAndDisplayCashRegisterTrans(long transId)
         //{

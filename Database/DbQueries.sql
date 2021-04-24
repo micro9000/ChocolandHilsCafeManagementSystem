@@ -706,6 +706,7 @@ ADD COLUMN discountPercent DECIMAL;
 ALTER TABLE SalesTransactions
 ADD COLUMN isCashOut BOOLEAN DEFAULT false;
 
+SELECT * FROM SalesTransactions;
 
 CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -726,6 +727,14 @@ DELETE FROM SalesTransactionProducts WHERE id> 0;
 
 select * from SalesTransactionProducts;
 
+SELECT Prd.prodName, PrdCat.prodCategory, SUM(STPrd.totalAmount) AS totalSales, COUNT(STPrd.qty) as qty, STPrd.productCurrentPrice
+FROM SalesTransactionProducts AS STPrd
+JOIN SalesTransactions AS ST ON ST.id = STPrd.salesTransId
+JOIN Products AS Prd ON Prd.id=STPrd.productId
+JOIN ProductCategories AS PrdCat ON PrdCat.id = Prd.categoryId
+WHERE STPrd.isDeleted=false AND ST.isDeleted=false AND ST.transStatus = 2 AND ST.createdAt BETWEEN '2021-04-01' AND '2021-04-25'
+GROUP BY STPrd.productId, STPrd.productCurrentPrice;
+
 CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     salesTransId BIGINT NOT NULL,
@@ -741,8 +750,14 @@ CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
     FOREIGN KEY (comboMealId) REFERENCES ComboMeals (id)
 )ENGINE=INNODB;
 
-DELETE FROM SalesTransactionComboMeals where id > 0;
+SELECT CMeals.title, SUM(STCMeals.totalAmount) As totalSales, COUNT(STCMeals.qty) AS qty, STCMeals.comboMealCurrentPrice
+FROM SalesTransactionComboMeals AS STCMeals
+JOIN ComboMeals AS CMeals ON CMeals.id = STCMeals.comboMealId
+JOIN SalesTransactions AS ST ON ST.id = STCMeals.salesTransId
+WHERE STCMeals.isDeleted=false AND ST.isDeleted=false AND ST.transStatus = 2 AND ST.createdAt BETWEEN '2021-04-01' AND '2021-04-25'
+ORDER BY STCMeals.comboMealId AND STCMeals.comboMealCurrentPrice;
 
+SELECT * FROM SalesTransactionComboMeals;
 
 -- Sale Transaction's Product's Ingredient's Inventory deduction history :D
 -- we just need to store the ingredients we used in our product and 
@@ -769,6 +784,14 @@ CREATE TABLE IF NOT EXISTS SaleTranProdIngInvDeductionsRecords(
 ALTER TABLE SaleTranProdIngInvDeductionsRecords
 ADD COLUMN totalCost DECIMAL(9,2);
 
+SELECT ING.ingName, ING.uom, INGCAT.category, SUM(ProdIngDeduction.deductedQtyValue) AS TotalDeductedQtyValue
+FROM SaleTranProdIngInvDeductionsRecords as ProdIngDeduction
+JOIN SalesTransactionProducts AS STProd ON STProd.id = ProdIngDeduction.saleTransProductId
+JOIN SalesTransactions AS ST ON ST.id = STProd.salesTransId
+JOIN Ingredients AS ING ON ING.id = ProdIngDeduction.ingredientId
+JOIN IngredientCategories AS INGCAT ON INGCAT.id = ING.categoryId
+WHERE STProd.isDeleted=false AND ST.isDeleted=false AND ST.transStatus = 2 AND ST.createdAt BETWEEN '2021-04-01' AND '2021-04-25'
+GROUP BY ProdIngDeduction.ingredientId;
 
 SELECT * FROM SaleTranProdIngInvDeductionsRecords;
 
