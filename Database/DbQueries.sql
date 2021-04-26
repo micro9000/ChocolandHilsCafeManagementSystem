@@ -564,6 +564,11 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
+SELECT *
+FROM Ingredients AS ING
+JOIN IngredientInventory AS INGINV ON ING.id = INGINV.ingredientId
+WHERE ING.isDeleted=false AND INGINV.isDeleted=false AND INGINV.isSoldOut=false;
+
 
 SELECT * FROM IngredientInventory
 ORDER BY expirationDate DESC;
@@ -784,7 +789,7 @@ CREATE TABLE IF NOT EXISTS SaleTranProdIngInvDeductionsRecords(
 ALTER TABLE SaleTranProdIngInvDeductionsRecords
 ADD COLUMN totalCost DECIMAL(9,2);
 
-SELECT ING.ingName, ING.uom, INGCAT.category, SUM(ProdIngDeduction.deductedQtyValue) AS TotalDeductedQtyValue
+SELECT ING.id, ING.ingName, ING.uom, INGCAT.category, ING.categoryId, SUM(ProdIngDeduction.deductedQtyValue) AS TotalDeductedQtyValue
 FROM SaleTranProdIngInvDeductionsRecords as ProdIngDeduction
 JOIN SalesTransactionProducts AS STProd ON STProd.id = ProdIngDeduction.saleTransProductId
 JOIN SalesTransactions AS ST ON ST.id = STProd.salesTransId

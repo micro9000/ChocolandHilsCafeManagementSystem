@@ -99,6 +99,34 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return ingredients;
         }
 
+
+        public List<IngredientModel> GetAllNotDeletedWithInventory()
+        {
+            string query = @"SELECT * 
+                            FROM Ingredients AS ING
+                            JOIN IngredientCategories AS CAT ON CAT.id = ING.categoryId
+                            JOIN IngredientInventory AS INGINV ON ING.id = INGINV.ingredientId
+                            WHERE ING.isDeleted = false AND INGINV.isDeleted = false AND INGINV.isSoldOut = false";
+
+            List<IngredientModel> results = new();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<IngredientModel, IngredientCategoryModel, IngredientInventoryModel, IngredientModel>(query, 
+                    (ING, CAT, INGINV) =>
+                    {
+                        ING.Category = CAT;
+                        ING.Inventory = INGINV;
+
+                        return ING;
+                    }).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
+
+
         public IEnumerable<IngredientBreakDownForSalesReportModel> GetBreakDownForSalesReport(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate)
         {
             endDate = endDate.AddDays(1);

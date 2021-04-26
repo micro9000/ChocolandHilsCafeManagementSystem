@@ -87,5 +87,8 @@ namespace DataAccess.Data.InventoryManagement.Implementations
             return this.GetValue<int>(query, new { StartDate = startDate, EndDate = endDate });
         }
 
+
+
+
     }
 }

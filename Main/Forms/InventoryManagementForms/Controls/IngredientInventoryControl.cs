@@ -1427,6 +1427,20 @@ namespace Main.Forms.InventoryManagementForms.Controls
             DisplayProductIngredientsToCalculateInDGV();
         }
 
+        private void tabPage5_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        public event EventHandler GenerateInventoryIngredientReport;
+        protected virtual void OnGenerateInventoryIngredientReport(EventArgs e)
+        {
+            GenerateInventoryIngredientReport?.Invoke(this, e);
+        }
+
+        private void BtnGetPdfReport_Click(object sender, EventArgs e)
+        {
+            OnGenerateInventoryIngredientReport(EventArgs.Empty);
+        }
     }
 }

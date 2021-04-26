@@ -127,6 +127,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.DGVProductsToCalculateIngredients = new System.Windows.Forms.DataGridView();
+            this.BtnGetPdfReport = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabIngCategories.SuspendLayout();
@@ -326,6 +327,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.BtnGetPdfReport);
             this.tabPage5.Controls.Add(this.label3);
             this.tabPage5.Controls.Add(this.CboxIngredientsCategories);
             this.tabPage5.Controls.Add(this.label4);
@@ -341,6 +343,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "Details";
             this.tabPage5.UseVisualStyleBackColor = true;
+            this.tabPage5.Click += new System.EventHandler(this.tabPage5_Click);
             // 
             // label3
             // 
@@ -1300,6 +1303,21 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVProductsToCalculateIngredients.Size = new System.Drawing.Size(775, 524);
             this.DGVProductsToCalculateIngredients.TabIndex = 2;
             // 
+            // BtnGetPdfReport
+            // 
+            this.BtnGetPdfReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnGetPdfReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnGetPdfReport.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnGetPdfReport.ForeColor = System.Drawing.Color.White;
+            this.BtnGetPdfReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnGetPdfReport.Location = new System.Drawing.Point(171, 429);
+            this.BtnGetPdfReport.Name = "BtnGetPdfReport";
+            this.BtnGetPdfReport.Size = new System.Drawing.Size(159, 47);
+            this.BtnGetPdfReport.TabIndex = 10;
+            this.BtnGetPdfReport.Text = "Generate PDF report";
+            this.BtnGetPdfReport.UseVisualStyleBackColor = false;
+            this.BtnGetPdfReport.Click += new System.EventHandler(this.BtnGetPdfReport_Click);
+            // 
             // IngredientInventoryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1461,5 +1479,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Button BtnClearCalculatorTab;
         private System.Windows.Forms.Button BtnCalculateIngredientProductCanMake;
+        private System.Windows.Forms.Button BtnGetPdfReport;
     }
 }

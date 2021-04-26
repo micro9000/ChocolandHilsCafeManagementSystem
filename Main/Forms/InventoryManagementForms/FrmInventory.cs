@@ -12,6 +12,7 @@ using Main.Controllers.InventoryControllers;
 using Main.Controllers.InventoryControllers.ControllerInterface;
 using Main.Forms.InventoryManagementForms.Controls;
 using Microsoft.Extensions.Options;
+using PDFReportGenerators;
 using Shared;
 using Shared.Helpers;
 
@@ -37,6 +38,7 @@ namespace Main.Forms.InventoryManagementForms
         private readonly IIngredientInventoryManager _ingredientInventoryManager;
         private readonly IComboMealController _comboMealController;
         private readonly IComboMealData _comboMealData;
+        private readonly IIngredientsInventoryPDFReport _ingredientsInventoryPDFReport;
 
         public FrmInventory(UOMConverter uOMConverter,
                             IOptions<OtherSettings> otherSettingsOptions,
@@ -56,7 +58,8 @@ namespace Main.Forms.InventoryManagementForms
                             IProductController productController,
                             IIngredientInventoryManager ingredientInventoryManager,
                             IComboMealController comboMealController,
-                            IComboMealData comboMealData)
+                            IComboMealData comboMealData,
+                            IIngredientsInventoryPDFReport ingredientsInventoryPDFReport)
         {
             InitializeComponent();
             _uOMConverter = uOMConverter;
@@ -77,6 +80,7 @@ namespace Main.Forms.InventoryManagementForms
             _ingredientInventoryManager = ingredientInventoryManager;
             _comboMealController = comboMealController;
             _comboMealData = comboMealData;
+            _ingredientsInventoryPDFReport = ingredientsInventoryPDFReport;
         }
 
 
@@ -120,6 +124,7 @@ namespace Main.Forms.InventoryManagementForms
 
             inventoryControlObj.IngredientGetInventories += HandleIngredientGetInventories;
             inventoryControlObj.IngredientInventorySave += HandleIngredientInventorySave;
+            inventoryControlObj.GenerateInventoryIngredientReport += HandleGenerateInventoryIngredientReport;
             inventoryControlObj.IngredientInventoryDelete += HandleIngredientInventoryDelete;
             inventoryControlObj.FilterTransactionHistory += HandleFilterTransactionHistory;
             inventoryControlObj.IncreaseInventoryQtyValueSave += HandleSaveInventoryIncreaseQtyValue;
@@ -296,6 +301,15 @@ namespace Main.Forms.InventoryManagementForms
                     MessageBox.Show(resultMessages, "Delete category", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+
+
+        public void HandleGenerateInventoryIngredientReport(object sender, EventArgs e)
+        {
+            var inventoryReport = _ingredientData.GetAllNotDeletedWithInventory();
+
+            _ingredientsInventoryPDFReport.GenerateIngredientInventoryReport(inventoryReport);
+            MessageBox.Show($"Kindly check the generated pdf to {_otherSettings.InventoryPDFReportLoc}.", "Generated PDF", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
 

@@ -16,6 +16,7 @@ namespace DataAccess.Data.InventoryManagement.Contracts
         bool MassUpdateIngredientsCategory(long previousCategoryId, long newCategoryId);
         List<IngredientModel> GetAllByCategory(long categoryId);
         List<IngredientModel> GetAllNotDeleted();
+        List<IngredientModel> GetAllNotDeletedWithInventory();
 
         IEnumerable<IngredientBreakDownForSalesReportModel> GetBreakDownForSalesReport(StaticData.POSTransactionStatus POSTransactionStatus, DateTime startDate, DateTime endDate);
     }

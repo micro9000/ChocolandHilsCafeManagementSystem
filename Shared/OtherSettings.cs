@@ -19,5 +19,7 @@ namespace Shared
         public string ComboMealImgsFileDirName { get; set; }
 
         public int POSNumberOfTable { get; set; }
+
+        public string InventoryPDFReportLoc { get; set; }
     }
 }

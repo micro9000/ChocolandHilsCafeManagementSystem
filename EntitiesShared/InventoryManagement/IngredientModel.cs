@@ -33,5 +33,16 @@ namespace EntitiesShared.InventoryManagement
         {
             get;set;
         }
+
+
+        private IngredientInventoryModel _inventory;
+        [Write(false)]
+        [Computed]
+        public IngredientInventoryModel Inventory
+        {
+            get { return _inventory; }
+            set { _inventory = value; }
+        }
+
     }
 }
