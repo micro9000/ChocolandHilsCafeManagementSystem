@@ -35,6 +35,7 @@ namespace Main.Forms.OtherDataForms.OtherForms
             this.BtnCancelUpdateBranch = new System.Windows.Forms.Button();
             this.BtnSubmitNewBranch = new System.Windows.Forms.Button();
             this.CBoxBranches = new System.Windows.Forms.ComboBox();
+            this.BtnForceDelete = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,12 +112,28 @@ namespace Main.Forms.OtherDataForms.OtherForms
             this.CBoxBranches.Size = new System.Drawing.Size(477, 38);
             this.CBoxBranches.TabIndex = 15;
             // 
+            // BtnForceDelete
+            // 
+            this.BtnForceDelete.BackColor = System.Drawing.Color.DarkRed;
+            this.BtnForceDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnForceDelete.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnForceDelete.ForeColor = System.Drawing.Color.White;
+            this.BtnForceDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnForceDelete.Location = new System.Drawing.Point(26, 166);
+            this.BtnForceDelete.Name = "BtnForceDelete";
+            this.BtnForceDelete.Size = new System.Drawing.Size(128, 47);
+            this.BtnForceDelete.TabIndex = 18;
+            this.BtnForceDelete.Text = "Delete Anyway";
+            this.BtnForceDelete.UseVisualStyleBackColor = false;
+            this.BtnForceDelete.Click += new System.EventHandler(this.BtnForceDelete_Click);
+            // 
             // FrmReassignEmployeesToNewBranch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(173)))));
             this.ClientSize = new System.Drawing.Size(526, 225);
+            this.Controls.Add(this.BtnForceDelete);
             this.Controls.Add(this.BtnCancelUpdateBranch);
             this.Controls.Add(this.BtnSubmitNewBranch);
             this.Controls.Add(this.CBoxBranches);
@@ -139,5 +156,6 @@ namespace Main.Forms.OtherDataForms.OtherForms
         private System.Windows.Forms.Button BtnCancelUpdateBranch;
         private System.Windows.Forms.Button BtnSubmitNewBranch;
         private System.Windows.Forms.ComboBox CBoxBranches;
+        private System.Windows.Forms.Button BtnForceDelete;
     }
 }

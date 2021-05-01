@@ -4,6 +4,7 @@ using EntitiesShared.InventoryManagement;
 using EntitiesShared.InventoryManagement.Models;
 using EntitiesShared.POSManagement;
 using EntitiesShared.POSManagement.CustomModels;
+using Main.Controllers.InventoryControllers;
 using Main.Controllers.POSControllers.ControllerInterface;
 using Main.Forms.POSManagementForms.Controls;
 using Microsoft.Extensions.Options;
@@ -34,6 +35,8 @@ namespace Main.Forms.POSManagementForms
         private readonly IIngredientData _ingredientData;
         private readonly POSState _pOSState;
         private readonly UOMConverter _uOMConverter;
+        private readonly IIngredientInventoryManager _ingredientInventoryManager;
+        private readonly IProductIngredientData _productIngredientData;
         private readonly OtherSettings _otherSettings;
 
         public FrmMainPOSTerminal(IProductData productData,
@@ -44,7 +47,9 @@ namespace Main.Forms.POSManagementForms
                                 IIngredientData ingredientData,
                                 POSState pOSState,
                                 UOMConverter uOMConverter,
-                                IOptions<OtherSettings> otherSettings)
+                                IOptions<OtherSettings> otherSettings,
+                                IIngredientInventoryManager ingredientInventoryManager,
+                                IProductIngredientData productIngredientData)
         {
             InitializeComponent();
             _productData = productData;
@@ -55,6 +60,8 @@ namespace Main.Forms.POSManagementForms
             _ingredientData = ingredientData;
             _pOSState = pOSState;
             _uOMConverter = uOMConverter;
+            _ingredientInventoryManager = ingredientInventoryManager;
+            _productIngredientData = productIngredientData;
             _otherSettings = otherSettings.Value;
         }
 
@@ -184,14 +191,28 @@ namespace Main.Forms.POSManagementForms
 
             if (productItemControl != null && productItemControl.Product != null)
             {
-                FrmEnterProductQuantity frmEnterProductQuantity = new(productItemControl.Product, _otherSettings);
+                var existingProdInCart = _pOSState.CurrentSaleTransactionProducts
+                                                    .Where(x => x.ProductId == productItemControl.Product.Id)
+                                                    .FirstOrDefault();
+
+                int existingQty = existingProdInCart != null ? existingProdInCart.Qty : 1;
+
+                var productIngredients = _productIngredientData.GetAllByProduct(productItemControl.Product.Id);
+
+                FrmEnterProductQuantity frmEnterProductQuantity = new(productItemControl.Product, 
+                                                                    _otherSettings, 
+                                                                    _ingredientInventoryManager,
+                                                                    productIngredients, existingQty);
+
                 frmEnterProductQuantity.ShowDialog();
 
                 if (frmEnterProductQuantity.IsCancelled == false && frmEnterProductQuantity.Product != null)
                 {
-                    var existingProdInCart = _pOSState.CurrentSaleTransactionProducts
-                                                        .Where(x => x.ProductId == frmEnterProductQuantity.Product.Id)
-                                                        .FirstOrDefault();
+                    if (frmEnterProductQuantity.Quantity <= 0)
+                    {
+                        return;
+                    }
+
 
                     if (existingProdInCart == null)
                     {
@@ -208,7 +229,7 @@ namespace Main.Forms.POSManagementForms
                     }
                     else
                     {
-                        existingProdInCart.Qty += frmEnterProductQuantity.Quantity;
+                        existingProdInCart.Qty = frmEnterProductQuantity.Quantity;
                         existingProdInCart.totalAmount = (existingProdInCart.Qty * existingProdInCart.productCurrentPrice);
                     }
 
@@ -391,8 +412,6 @@ namespace Main.Forms.POSManagementForms
 
             List<SaleTransactionProductModel> products = _pOSState.CurrentSaleTransactionProducts;
             List<SaleTransactionComboMealModel> comboMeals = _pOSState.CurrentSaleTransactionComboMeals;
-
-            this.pOSControllerControl.DisplayProductsInReceiptPreview(products, comboMeals);
 
             this.DGVCartItems.Rows.Clear();
             this.DGVCartItems.ColumnCount = 6;

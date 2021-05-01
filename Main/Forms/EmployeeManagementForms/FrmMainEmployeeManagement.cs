@@ -158,7 +158,7 @@ namespace Main.Forms.EmployeeManagementForms
 
         #region Add/Update employee user control related methods and event handlers
 
-        private void DisplayAddUpdateEmployeeUserControl()
+        private void DisplayAddUpdateEmployeeUserControl(string defaultEmployeeNum = "")
         {
             this.panelContainer.Controls.Clear();
 
@@ -185,6 +185,15 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.MarkEmployeeAsDeleted += HandleMarkEmployeeAsDeleted;
 
             this.panelContainer.Controls.Add(controlToDisplay);
+
+            if (string.IsNullOrEmpty(defaultEmployeeNum) == false)
+            {
+                controlToDisplay.UpdateEmployeeDetails();
+                controlToDisplay.TbxEmployeeNumber.Text = defaultEmployeeNum;
+                controlToDisplay.EmployeeNumber = defaultEmployeeNum;
+                //controlToDisplay.EmployeeNumber = defaultEmployeeNum;
+            }
+
         }
 
         private void HandleEmployeeSaved(object sender, EventArgs e)
@@ -399,36 +408,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             EmployeeListControl employeeListControlObj = (EmployeeListControl)sender;
             var selectedEmployeeNumber = employeeListControlObj.SelectedEmployeeNumber;
-            
-            this.panelContainer.Controls.Clear();
-
-            var employeeDetailsCRUDControl = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter, _otherSettings, _payrollSettings, _attendancePDFReport);
-
-            employeeDetailsCRUDControl.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
-            employeeDetailsCRUDControl.WorkShifts = _workShiftController.GetAll().Data;
-            employeeDetailsCRUDControl.Branches = _branchData.GetAllNotDeleted();
-            employeeDetailsCRUDControl.Positions = _employeePositionData.GetAllNotDeleted();
-
-            // event added
-            employeeDetailsCRUDControl.EmployeeSaved += this.HandleEmployeeSaved;
-            employeeDetailsCRUDControl.PropertyChanged += this.OnEmployeeNumberEnter; // automatically executed once we assign the employee number below
-            employeeDetailsCRUDControl.WorkShiftSelected += HandleSelectedWorkShiftToGetOtherInfo;
-            employeeDetailsCRUDControl.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
-            employeeDetailsCRUDControl.UndoMarkEmployeeAsResigned += HandleUndoMarkEmployeeAsResigned;
-            employeeDetailsCRUDControl.MarkEmployeeAsResigned += HandleMarkEmployeeAsResigned;
-            employeeDetailsCRUDControl.MarkEmployeeAsDeleted += HandleMarkEmployeeAsDeleted;
-
-            employeeDetailsCRUDControl.Location = new Point(this.ClientSize.Width / 2 - employeeDetailsCRUDControl.Size.Width / 2, this.ClientSize.Height / 2 - employeeDetailsCRUDControl.Size.Height / 2);
-            employeeDetailsCRUDControl.Anchor = AnchorStyles.None;
-            employeeDetailsCRUDControl.UpdateEmployeeDetails();
-            employeeDetailsCRUDControl.LoadOtherComboBoxData(); // Load combobox data, in order to select on displaying employee details
-
-            employeeDetailsCRUDControl.TbxEmployeeNumber.Text = selectedEmployeeNumber;
-            employeeDetailsCRUDControl.EmployeeNumber = selectedEmployeeNumber; // <---- here, once this code executed, the PropertyChanged += this.OnEmployeeNumberEnter; will execute
-
-            this.panelContainer.Controls.Add(employeeDetailsCRUDControl); 
-
-            // TODO: Use this method to display all information related to the employee
+            DisplayAddUpdateEmployeeUserControl(selectedEmployeeNumber);
         }
 
         // when search string key up == enter

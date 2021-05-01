@@ -33,10 +33,7 @@ namespace Main.Forms.POSManagementForms
             this.LeftSideSplitInnerContainer = new System.Windows.Forms.SplitContainer();
             this.DGVCartItems = new System.Windows.Forms.DataGridView();
             this.TopPanelInSplitContainerPanel1 = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.TabControlProductsAndComboMeals = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.RightSideSplitInnerContainer = new System.Windows.Forms.SplitContainer();
@@ -99,6 +96,17 @@ namespace Main.Forms.POSManagementForms
             this.DPicEndDateFilterProductOrdersReport = new System.Windows.Forms.DateTimePicker();
             this.DPicStartDateFilterProductOrdersReport = new System.Windows.Forms.DateTimePicker();
             this.TabPageIngredientsBreakdown = new System.Windows.Forms.TabPage();
+            this.LVIngredientBreakdown = new System.Windows.Forms.ListView();
+            this.Category = new System.Windows.Forms.ColumnHeader();
+            this.Ingredient = new System.Windows.Forms.ColumnHeader();
+            this.RemainingQtyValue = new System.Windows.Forms.ColumnHeader();
+            this.ConsumeQtyValue = new System.Windows.Forms.ColumnHeader();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.BtnFilterIngredientBreakdownReport = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.DPicEndDateIngBreakdownReport = new System.Windows.Forms.DateTimePicker();
+            this.DPicStartDateIngBreakdownReport = new System.Windows.Forms.DateTimePicker();
             this.TabPageCashRegister = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
@@ -126,17 +134,6 @@ namespace Main.Forms.POSManagementForms
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
-            this.LVIngredientBreakdown = new System.Windows.Forms.ListView();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.BtnFilterIngredientBreakdownReport = new System.Windows.Forms.Button();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.DPicEndDateIngBreakdownReport = new System.Windows.Forms.DateTimePicker();
-            this.DPicStartDateIngBreakdownReport = new System.Windows.Forms.DateTimePicker();
-            this.Category = new System.Windows.Forms.ColumnHeader();
-            this.Ingredient = new System.Windows.Forms.ColumnHeader();
-            this.RemainingQtyValue = new System.Windows.Forms.ColumnHeader();
-            this.ConsumeQtyValue = new System.Windows.Forms.ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -170,6 +167,7 @@ namespace Main.Forms.POSManagementForms
             this.TabProductOrderQty.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.TabPageIngredientsBreakdown.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.TabPageCashRegister.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVCashRegisterTransactions)).BeginInit();
@@ -186,7 +184,6 @@ namespace Main.Forms.POSManagementForms
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -239,53 +236,22 @@ namespace Main.Forms.POSManagementForms
             // 
             // TopPanelInSplitContainerPanel1
             // 
-            this.TopPanelInSplitContainerPanel1.Controls.Add(this.label10);
             this.TopPanelInSplitContainerPanel1.Controls.Add(this.label9);
-            this.TopPanelInSplitContainerPanel1.Controls.Add(this.textBox7);
-            this.TopPanelInSplitContainerPanel1.Controls.Add(this.label1);
             this.TopPanelInSplitContainerPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.TopPanelInSplitContainerPanel1.Location = new System.Drawing.Point(0, 0);
             this.TopPanelInSplitContainerPanel1.Name = "TopPanelInSplitContainerPanel1";
             this.TopPanelInSplitContainerPanel1.Size = new System.Drawing.Size(603, 54);
             this.TopPanelInSplitContainerPanel1.TabIndex = 0;
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label10.Location = new System.Drawing.Point(473, 17);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(19, 21);
-            this.label10.TabIndex = 5;
-            this.label10.Text = "0";
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label9.Location = new System.Drawing.Point(412, 17);
+            this.label9.Location = new System.Drawing.Point(15, 17);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(55, 21);
             this.label9.TabIndex = 4;
             this.label9.Text = "Items:";
-            // 
-            // textBox7
-            // 
-            this.textBox7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox7.Location = new System.Drawing.Point(159, 12);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(234, 29);
-            this.textBox7.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(16, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(137, 21);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Search item code";
             // 
             // TabControlProductsAndComboMeals
             // 
@@ -921,6 +887,109 @@ namespace Main.Forms.POSManagementForms
             this.TabPageIngredientsBreakdown.Text = "Ingredients Breakdown";
             this.TabPageIngredientsBreakdown.UseVisualStyleBackColor = true;
             // 
+            // LVIngredientBreakdown
+            // 
+            this.LVIngredientBreakdown.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LVIngredientBreakdown.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Category,
+            this.Ingredient,
+            this.RemainingQtyValue,
+            this.ConsumeQtyValue});
+            this.LVIngredientBreakdown.FullRowSelect = true;
+            this.LVIngredientBreakdown.GridLines = true;
+            this.LVIngredientBreakdown.HideSelection = false;
+            this.LVIngredientBreakdown.Location = new System.Drawing.Point(8, 125);
+            this.LVIngredientBreakdown.Name = "LVIngredientBreakdown";
+            this.LVIngredientBreakdown.Size = new System.Drawing.Size(1197, 505);
+            this.LVIngredientBreakdown.TabIndex = 5;
+            this.LVIngredientBreakdown.UseCompatibleStateImageBehavior = false;
+            this.LVIngredientBreakdown.View = System.Windows.Forms.View.Details;
+            // 
+            // Category
+            // 
+            this.Category.Text = "Category";
+            this.Category.Width = 150;
+            // 
+            // Ingredient
+            // 
+            this.Ingredient.Text = "Ingredient";
+            this.Ingredient.Width = 150;
+            // 
+            // RemainingQtyValue
+            // 
+            this.RemainingQtyValue.Text = "Remaining";
+            this.RemainingQtyValue.Width = 120;
+            // 
+            // ConsumeQtyValue
+            // 
+            this.ConsumeQtyValue.Text = "Consume";
+            this.ConsumeQtyValue.Width = 120;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.BtnFilterIngredientBreakdownReport);
+            this.groupBox5.Controls.Add(this.label23);
+            this.groupBox5.Controls.Add(this.label24);
+            this.groupBox5.Controls.Add(this.DPicEndDateIngBreakdownReport);
+            this.groupBox5.Controls.Add(this.DPicStartDateIngBreakdownReport);
+            this.groupBox5.Location = new System.Drawing.Point(8, 9);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(358, 116);
+            this.groupBox5.TabIndex = 4;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Filter";
+            // 
+            // BtnFilterIngredientBreakdownReport
+            // 
+            this.BtnFilterIngredientBreakdownReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnFilterIngredientBreakdownReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnFilterIngredientBreakdownReport.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.BtnFilterIngredientBreakdownReport.ForeColor = System.Drawing.Color.White;
+            this.BtnFilterIngredientBreakdownReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnFilterIngredientBreakdownReport.Location = new System.Drawing.Point(251, 55);
+            this.BtnFilterIngredientBreakdownReport.Name = "BtnFilterIngredientBreakdownReport";
+            this.BtnFilterIngredientBreakdownReport.Size = new System.Drawing.Size(81, 38);
+            this.BtnFilterIngredientBreakdownReport.TabIndex = 63;
+            this.BtnFilterIngredientBreakdownReport.Text = "Filter";
+            this.BtnFilterIngredientBreakdownReport.UseVisualStyleBackColor = false;
+            this.BtnFilterIngredientBreakdownReport.Click += new System.EventHandler(this.BtnFilterIngredientBreakdownReport_Click);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(21, 70);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(37, 21);
+            this.label23.TabIndex = 3;
+            this.label23.Text = "End";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(21, 35);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(45, 21);
+            this.label24.TabIndex = 2;
+            this.label24.Text = "Start";
+            // 
+            // DPicEndDateIngBreakdownReport
+            // 
+            this.DPicEndDateIngBreakdownReport.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicEndDateIngBreakdownReport.Location = new System.Drawing.Point(94, 64);
+            this.DPicEndDateIngBreakdownReport.Name = "DPicEndDateIngBreakdownReport";
+            this.DPicEndDateIngBreakdownReport.Size = new System.Drawing.Size(151, 29);
+            this.DPicEndDateIngBreakdownReport.TabIndex = 1;
+            // 
+            // DPicStartDateIngBreakdownReport
+            // 
+            this.DPicStartDateIngBreakdownReport.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicStartDateIngBreakdownReport.Location = new System.Drawing.Point(94, 28);
+            this.DPicStartDateIngBreakdownReport.Name = "DPicStartDateIngBreakdownReport";
+            this.DPicStartDateIngBreakdownReport.Size = new System.Drawing.Size(151, 29);
+            this.DPicStartDateIngBreakdownReport.TabIndex = 0;
+            // 
             // TabPageCashRegister
             // 
             this.TabPageCashRegister.Controls.Add(this.panel4);
@@ -1224,109 +1293,6 @@ namespace Main.Forms.POSManagementForms
             this.numericUpDown6.Size = new System.Drawing.Size(217, 23);
             this.numericUpDown6.TabIndex = 0;
             // 
-            // LVIngredientBreakdown
-            // 
-            this.LVIngredientBreakdown.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LVIngredientBreakdown.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Category,
-            this.Ingredient,
-            this.RemainingQtyValue,
-            this.ConsumeQtyValue});
-            this.LVIngredientBreakdown.FullRowSelect = true;
-            this.LVIngredientBreakdown.GridLines = true;
-            this.LVIngredientBreakdown.HideSelection = false;
-            this.LVIngredientBreakdown.Location = new System.Drawing.Point(8, 125);
-            this.LVIngredientBreakdown.Name = "LVIngredientBreakdown";
-            this.LVIngredientBreakdown.Size = new System.Drawing.Size(1197, 505);
-            this.LVIngredientBreakdown.TabIndex = 5;
-            this.LVIngredientBreakdown.UseCompatibleStateImageBehavior = false;
-            this.LVIngredientBreakdown.View = System.Windows.Forms.View.Details;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.BtnFilterIngredientBreakdownReport);
-            this.groupBox5.Controls.Add(this.label23);
-            this.groupBox5.Controls.Add(this.label24);
-            this.groupBox5.Controls.Add(this.DPicEndDateIngBreakdownReport);
-            this.groupBox5.Controls.Add(this.DPicStartDateIngBreakdownReport);
-            this.groupBox5.Location = new System.Drawing.Point(8, 9);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(358, 116);
-            this.groupBox5.TabIndex = 4;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Filter";
-            // 
-            // BtnFilterIngredientBreakdownReport
-            // 
-            this.BtnFilterIngredientBreakdownReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnFilterIngredientBreakdownReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnFilterIngredientBreakdownReport.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.BtnFilterIngredientBreakdownReport.ForeColor = System.Drawing.Color.White;
-            this.BtnFilterIngredientBreakdownReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnFilterIngredientBreakdownReport.Location = new System.Drawing.Point(251, 55);
-            this.BtnFilterIngredientBreakdownReport.Name = "BtnFilterIngredientBreakdownReport";
-            this.BtnFilterIngredientBreakdownReport.Size = new System.Drawing.Size(81, 38);
-            this.BtnFilterIngredientBreakdownReport.TabIndex = 63;
-            this.BtnFilterIngredientBreakdownReport.Text = "Filter";
-            this.BtnFilterIngredientBreakdownReport.UseVisualStyleBackColor = false;
-            this.BtnFilterIngredientBreakdownReport.Click += new System.EventHandler(this.BtnFilterIngredientBreakdownReport_Click);
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(21, 70);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(37, 21);
-            this.label23.TabIndex = 3;
-            this.label23.Text = "End";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(21, 35);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(45, 21);
-            this.label24.TabIndex = 2;
-            this.label24.Text = "Start";
-            // 
-            // DPicEndDateIngBreakdownReport
-            // 
-            this.DPicEndDateIngBreakdownReport.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DPicEndDateIngBreakdownReport.Location = new System.Drawing.Point(94, 64);
-            this.DPicEndDateIngBreakdownReport.Name = "DPicEndDateIngBreakdownReport";
-            this.DPicEndDateIngBreakdownReport.Size = new System.Drawing.Size(151, 29);
-            this.DPicEndDateIngBreakdownReport.TabIndex = 1;
-            // 
-            // DPicStartDateIngBreakdownReport
-            // 
-            this.DPicStartDateIngBreakdownReport.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DPicStartDateIngBreakdownReport.Location = new System.Drawing.Point(94, 28);
-            this.DPicStartDateIngBreakdownReport.Name = "DPicStartDateIngBreakdownReport";
-            this.DPicStartDateIngBreakdownReport.Size = new System.Drawing.Size(151, 29);
-            this.DPicStartDateIngBreakdownReport.TabIndex = 0;
-            // 
-            // Category
-            // 
-            this.Category.Text = "Category";
-            this.Category.Width = 150;
-            // 
-            // Ingredient
-            // 
-            this.Ingredient.Text = "Ingredient";
-            this.Ingredient.Width = 150;
-            // 
-            // RemainingQtyValue
-            // 
-            this.RemainingQtyValue.Text = "Remaining";
-            this.RemainingQtyValue.Width = 120;
-            // 
-            // ConsumeQtyValue
-            // 
-            this.ConsumeQtyValue.Text = "Consume";
-            this.ConsumeQtyValue.Width = 120;
-            // 
             // FrmMainPOSTerminal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1376,6 +1342,8 @@ namespace Main.Forms.POSManagementForms
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.TabPageIngredientsBreakdown.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.TabPageCashRegister.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -1395,8 +1363,6 @@ namespace Main.Forms.POSManagementForms
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1412,10 +1378,7 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.DataGridView DGVCartItems;
         private System.Windows.Forms.FlowLayoutPanel FLPanelProductList;
         private System.Windows.Forms.FlowLayoutPanel FLPanelProductCategories;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TbxSearchProducts;
         private System.Windows.Forms.TabControl POSMainTabControl;
         private System.Windows.Forms.TabPage TabPageStore;

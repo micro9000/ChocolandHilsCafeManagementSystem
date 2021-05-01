@@ -33,8 +33,6 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TabPageControls = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.BtnNewTransaction = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.TabPageActiveDineInTransactions = new System.Windows.Forms.TabPage();
             this.DGVActiveDineInTransactions = new System.Windows.Forms.DataGridView();
             this.TabPageCheckout = new System.Windows.Forms.TabPage();
@@ -51,11 +49,11 @@ namespace Main.Forms.POSManagementForms.Controls
             this.label3 = new System.Windows.Forms.Label();
             this.TboxTableNumber = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
             this.LblSubTotal = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.RTboxReceipt = new System.Windows.Forms.RichTextBox();
+            this.LblNumberOfItems = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.TabControlMain.SuspendLayout();
             this.TabPageControls.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -67,10 +65,6 @@ namespace Main.Forms.POSManagementForms.Controls
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -101,8 +95,6 @@ namespace Main.Forms.POSManagementForms.Controls
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.BtnNewTransaction);
-            this.flowLayoutPanel1.Controls.Add(this.button1);
-            this.flowLayoutPanel1.Controls.Add(this.button2);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -123,34 +115,6 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnNewTransaction.Text = "NEW";
             this.BtnNewTransaction.UseVisualStyleBackColor = false;
             this.BtnNewTransaction.Click += new System.EventHandler(this.BtnNewTransaction_Click);
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.Location = new System.Drawing.Point(120, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 38);
-            this.button1.TabIndex = 66;
-            this.button1.Text = "RETURN";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(237, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(111, 38);
-            this.button2.TabIndex = 67;
-            this.button2.Text = "VOID";
-            this.button2.UseVisualStyleBackColor = false;
             // 
             // TabPageActiveDineInTransactions
             // 
@@ -341,7 +305,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Panel1.Controls.Add(this.panel2);
             // 
             // splitContainer1.Panel2
             // 
@@ -350,41 +314,25 @@ namespace Main.Forms.POSManagementForms.Controls
             this.splitContainer1.SplitterDistance = 276;
             this.splitContainer1.TabIndex = 13;
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.panel2);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.RTboxReceipt);
-            this.splitContainer2.Size = new System.Drawing.Size(276, 308);
-            this.splitContainer2.SplitterDistance = 53;
-            this.splitContainer2.TabIndex = 1;
-            // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.DimGray;
+            this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.LblNumberOfItems);
+            this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.LblSubTotal);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(276, 53);
+            this.panel2.Size = new System.Drawing.Size(276, 308);
             this.panel2.TabIndex = 0;
             // 
             // LblSubTotal
             // 
-            this.LblSubTotal.ForeColor = System.Drawing.Color.PaleGreen;
-            this.LblSubTotal.Location = new System.Drawing.Point(125, 16);
+            this.LblSubTotal.ForeColor = System.Drawing.Color.Red;
+            this.LblSubTotal.Location = new System.Drawing.Point(18, 87);
             this.LblSubTotal.Name = "LblSubTotal";
             this.LblSubTotal.Size = new System.Drawing.Size(136, 25);
             this.LblSubTotal.TabIndex = 1;
@@ -393,20 +341,29 @@ namespace Main.Forms.POSManagementForms.Controls
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 16);
+            this.label5.Location = new System.Drawing.Point(18, 48);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(95, 25);
             this.label5.TabIndex = 0;
             this.label5.Text = "Sub Total:";
             // 
-            // RTboxReceipt
+            // LblNumberOfItems
             // 
-            this.RTboxReceipt.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RTboxReceipt.Location = new System.Drawing.Point(0, 0);
-            this.RTboxReceipt.Name = "RTboxReceipt";
-            this.RTboxReceipt.Size = new System.Drawing.Size(276, 251);
-            this.RTboxReceipt.TabIndex = 0;
-            this.RTboxReceipt.Text = "";
+            this.LblNumberOfItems.ForeColor = System.Drawing.Color.Red;
+            this.LblNumberOfItems.Location = new System.Drawing.Point(18, 178);
+            this.LblNumberOfItems.Name = "LblNumberOfItems";
+            this.LblNumberOfItems.Size = new System.Drawing.Size(136, 25);
+            this.LblNumberOfItems.TabIndex = 3;
+            this.LblNumberOfItems.Text = "0";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(18, 139);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(162, 25);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Number Of Items";
             // 
             // POSControllerControl
             // 
@@ -430,10 +387,6 @@ namespace Main.Forms.POSManagementForms.Controls
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -446,8 +399,6 @@ namespace Main.Forms.POSManagementForms.Controls
         private System.Windows.Forms.TabPage TabPageActiveDineInTransactions;
         private System.Windows.Forms.Button BtnNewTransaction;
         private System.Windows.Forms.DataGridView DGVActiveDineInTransactions;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage TabPageCheckout;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
@@ -463,10 +414,10 @@ namespace Main.Forms.POSManagementForms.Controls
         private System.Windows.Forms.Button BtnSave;
         private System.Windows.Forms.Button BtnCancelCurrentTransaction;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label LblSubTotal;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.RichTextBox RTboxReceipt;
+        private System.Windows.Forms.Label LblNumberOfItems;
+        private System.Windows.Forms.Label label6;
     }
 }

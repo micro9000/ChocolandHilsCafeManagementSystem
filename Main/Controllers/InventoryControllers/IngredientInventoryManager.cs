@@ -3,6 +3,7 @@ using DataAccess.Data.InventoryManagement.Contracts;
 using EntitiesShared;
 using EntitiesShared.InventoryManagement.Models;
 using Microsoft.Extensions.Logging;
+using Shared.CustomExceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -170,6 +171,27 @@ namespace Main.Controllers.InventoryControllers
             return actualQtyValue;
         }
 
+
+        public Tuple<StaticData.UOM, decimal> GetProperQtyValAndUOM(StaticData.UOM uom, decimal qtyValue)
+        {
+            if (uom == StaticData.UOM.ml && qtyValue >= 1000)
+            {
+                return new Tuple<StaticData.UOM, decimal>(StaticData.UOM.L, qtyValue / 1000);
+            }
+
+            if (uom == StaticData.UOM.g && qtyValue >= 1000)
+            {
+                return new Tuple<StaticData.UOM, decimal>(StaticData.UOM.kg, qtyValue / 1000);
+            }
+
+            if (uom == StaticData.UOM.pc && qtyValue > 1)
+            {
+                return new Tuple<StaticData.UOM, decimal>(StaticData.UOM.pcs, qtyValue);
+            }
+
+            return new Tuple<StaticData.UOM, decimal>(uom, qtyValue);
+        }
+
         // Since Ingredient can have multiple inventory 
         // we need to identify what inventories we will deduct the required Qty value of Product's ingredient based on Product's ingredient Unit of measurement
         public List<ProductIngredientInventoryDeduction> GetWhereInventoryThisProductIngredientToDeduct(long ingredientId, decimal prodIngredientRequireQtyValue, StaticData.UOM prodIngredientRequireUOM)
@@ -241,10 +263,28 @@ namespace Main.Controllers.InventoryControllers
 
             if (remainingProdIngredientQtyValue > 0)
             {
-                throw new Exception($"Not enough ingredient inventory for {ingredeintDetails.IngName}");
+                throw new IngredientInventoryException($"Not enough ingredient inventory for {ingredeintDetails.IngName}");
             }
 
             return productIngredientInventoryDeductionFromList;
+        }
+
+
+        public string CheckIfEnoughInventory(long ingredientId, decimal prodIngredientRequireQtyValue, StaticData.UOM prodIngredientRequireUOM)
+        {
+            try
+            {
+                var productIngredientInventoryDeductionFromList = GetWhereInventoryThisProductIngredientToDeduct(ingredientId, prodIngredientRequireQtyValue, prodIngredientRequireUOM);
+                return "";
+            }
+            catch(IngredientInventoryException ex)
+            {
+                return ex.Message;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
 

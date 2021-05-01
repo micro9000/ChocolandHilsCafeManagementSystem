@@ -1026,7 +1026,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
         {
             if (ingredientInventory != null && this.SelectedIngredient != null)
             {
-                this.NumUDQtyValForIngInventory.Value = this.GetUOMToBigUOM(this.SelectedIngredient.UOM, ingredientInventory.RemainingQtyValue);
+                decimal convertedQtyValue = this.GetUOMToBigUOM(this.SelectedIngredient.UOM, ingredientInventory.RemainingQtyValue); ;
+                this.NumUDQtyValForIngInventory.Value = convertedQtyValue < 0 ? 0 : convertedQtyValue;
                 this.NumUDUnitCostForIngInventory.Value = ingredientInventory.UnitCost;
                 this.DPickerExpirationDateForIngInventory.Value = ingredientInventory.ExpirationDate;
             }

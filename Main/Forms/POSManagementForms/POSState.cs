@@ -62,6 +62,12 @@ namespace Main.Forms.POSManagementForms
             set { _currentSaleTransactionComboMeals = value; }
         }
 
+        public int NumberOfItems { 
+            get {
+                return this.CurrentSaleTransactionProducts.Count + this.CurrentSaleTransactionComboMeals.Count;
+            } 
+        }
+
         public decimal SubTotal
         {
             get
