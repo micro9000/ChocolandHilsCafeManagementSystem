@@ -1,13 +1,7 @@
 CREATE DATABASE PLST_HangfireStorage;
 
 show variables like 'binlog_format';
-
 SET GLOBAL binlog_format = 'ROW';
-
-
-DROP DATABASE PLST_HangfireStorage;
-use PLST_HangfireStorage;
-DROP TABLE hangfirejobstate;
 
 -- ----------------------------
 -- Table structure for `Job`

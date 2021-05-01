@@ -172,6 +172,9 @@ namespace Main.Forms.InventoryManagementForms
                     inventoryControlObj.ResetForm();
                     inventoryControlObj.IngredientCategories = _ingredientCategoryData.GetAllNotDeleted();
                     inventoryControlObj.DisplayIngredientCategoriesInDGV();
+
+                    inventoryControlObj.SelectIngredientCategoryForSaveForm(saveResults.Data.Id);
+                    inventoryControlObj.MoveToIngredientListTab();
                 }
                 else
                 {
@@ -260,6 +263,11 @@ namespace Main.Forms.InventoryManagementForms
                     inventoryControlObj.ResetIngredientForm();
                     inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
                     inventoryControlObj.DisplayIngredientInDGV();
+
+                    if (saveResults.Data != null)
+                    {
+                        inventoryControlObj.SelectIngredietAndDisplayInventories(saveResults.Data.Id);
+                    }
                 }
                 else
                 {

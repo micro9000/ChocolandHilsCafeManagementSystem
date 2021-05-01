@@ -188,10 +188,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
                         return;
                     }
 
-
                     this.CategoryToAddUpdate.Category = this.TbxCategory.Text;
                 }
-
             }
 
             OnIngredientCategorySaved(EventArgs.Empty);
@@ -551,6 +549,15 @@ namespace Main.Forms.InventoryManagementForms.Controls
             set { selectedIngredient = value; }
         }
 
+        public void SelectIngredietAndDisplayInventories(long ingredientId)
+        {
+            SelectedIngredient = this.Ingredients.Where(x => x.Id == ingredientId).FirstOrDefault();
+            SelectedIngredientId = ingredientId;
+
+            OnIngredientGetInventories(EventArgs.Empty);
+
+            MoveToInventoryTabAndDisplayIngredientInventories();
+        }
 
         private void DGVIngredientList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -560,12 +567,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 if (DGVIngredientList.CurrentRow != null)
                 {
                     long ingredientId = long.Parse(DGVIngredientList.CurrentRow.Cells[0].Value.ToString());
-                    SelectedIngredient = this.Ingredients.Where(x => x.Id == ingredientId).FirstOrDefault();
-                    SelectedIngredientId = ingredientId;
-
-                    OnIngredientGetInventories(EventArgs.Empty);
-
-                    MoveToInventoryTabAndDisplayIngredientInventories();
+                    SelectIngredietAndDisplayInventories(ingredientId);
                 }
             }
 
@@ -607,6 +609,19 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
         }
 
+        public void SelectIngredientCategoryForSaveForm(long categoryId)
+        {
+            for (int i = 0; i < this.CboxIngredientsCategories.Items.Count; i++)
+            {
+                var item = this.CboxIngredientsCategories.Items[i] as ComboboxItem;
+                if (long.Parse(item.Value.ToString()) == categoryId)
+                {
+                    this.CboxIngredientsCategories.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
+
         public void DisplaySelectedIngredientInForm(long ingredientId)
         {
             if(this.Ingredients != null)
@@ -620,17 +635,19 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                     this.TboxIngredientName.Text = ingredientDetails.IngName;
 
-                    for (int i = 0; i < this.CboxIngredientsCategories.Items.Count; i++)
-                    {
-                        var item = this.CboxIngredientsCategories.Items[i] as ComboboxItem;
-                        if (long.Parse(item.Value.ToString()) == ingredientDetails.CategoryId)
-                        {
-                            this.CboxIngredientsCategories.SelectedIndex = i;
-                            break;
-                        }
-                    }
+                    SelectIngredientCategoryForSaveForm(ingredientDetails.CategoryId);
 
-                    for(int i=0; i< this.CBoxUnitOfMeasurements.Items.Count; i++)
+                    //for (int i = 0; i < this.CboxIngredientsCategories.Items.Count; i++)
+                    //{
+                    //    var item = this.CboxIngredientsCategories.Items[i] as ComboboxItem;
+                    //    if (long.Parse(item.Value.ToString()) == ingredientDetails.CategoryId)
+                    //    {
+                    //        this.CboxIngredientsCategories.SelectedIndex = i;
+                    //        break;
+                    //    }
+                    //}
+
+                    for (int i=0; i< this.CBoxUnitOfMeasurements.Items.Count; i++)
                     {
                         var item = this.CBoxUnitOfMeasurements.Items[i] as ComboboxItem;
                         if ((StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), item.Value.ToString()) == ingredientDetails.UOM)
@@ -704,6 +721,11 @@ namespace Main.Forms.InventoryManagementForms.Controls
         {
             get { return selectedIngredientInventories; }
             set { selectedIngredientInventories = value; }
+        }
+
+        public void MoveToIngredientListTab()
+        {
+            this.MainTabControl.SelectedIndex = this.MainTabControl.TabPages.IndexOf(MainTabIngredientList);
         }
 
         public void MoveToInventoryTabAndDisplayIngredientInventories()
