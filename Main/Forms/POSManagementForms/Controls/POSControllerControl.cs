@@ -57,7 +57,19 @@ namespace Main.Forms.POSManagementForms.Controls
             this.ClearCheckOutForm();
             if (_pOSState.CurrentSaleTransaction != null)
             {
-                this.TboxNumberOfItems.Text = "";
+                if (_pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.DineIn)
+                {
+                    this.LblTransactionType.Text = "Dine-in";
+                    this.LblTransactionType.BackColor = Color.Blue;
+                    this.LblTransactionType.ForeColor = Color.White;
+                }
+
+                if (_pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.TakeOut)
+                {
+                    this.LblTransactionType.Text = "Take-out";
+                    this.LblTransactionType.BackColor = Color.Yellow;
+                }
+
                 this.TboxTicketNumber.Text = _pOSState.CurrentSaleTransaction.TicketNumber;
                 this.TboxCustomerName.Text = _pOSState.CurrentSaleTransaction.CustomerName;
                 this.TboxTableNumber.Text = _pOSState.CurrentSaleTransaction.TableNumber.ToString();
@@ -81,7 +93,9 @@ namespace Main.Forms.POSManagementForms.Controls
 
         private void ClearCheckOutForm()
         {
-            this.TboxNumberOfItems.Text = "";
+            this.LblTransactionType.Text = "Transaction type";
+            this.LblTransactionType.BackColor = Color.Transparent;
+            this.LblTransactionType.ForeColor = Color.Black;
             this.TboxTicketNumber.Text = "";
             this.TboxCustomerName.Text = "";
             this.TboxTableNumber.Text = "";

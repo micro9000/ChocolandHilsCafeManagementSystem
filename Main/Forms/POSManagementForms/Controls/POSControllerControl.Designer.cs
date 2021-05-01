@@ -33,34 +33,38 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TabPageControls = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.BtnNewTransaction = new System.Windows.Forms.Button();
+            this.TabPageActiveTransactionsByTable = new System.Windows.Forms.TabPage();
+            this.flowLayoutActiveTransactions = new System.Windows.Forms.FlowLayoutPanel();
             this.TabPageActiveDineInTransactions = new System.Windows.Forms.TabPage();
             this.DGVActiveDineInTransactions = new System.Windows.Forms.DataGridView();
             this.TabPageCheckout = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.LblTransactionType = new System.Windows.Forms.Label();
             this.BtnCancelCurrentTransaction = new System.Windows.Forms.Button();
             this.BtnSave = new System.Windows.Forms.Button();
             this.BtnCheckout = new System.Windows.Forms.Button();
-            this.TboxNumberOfItems = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.TboxTicketNumber = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.TboxCustomerName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TboxTableNumber = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.LblSubTotal = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.LblNumberOfItems = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.LblSubTotal = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.TabControlMain.SuspendLayout();
             this.TabPageControls.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
+            this.TabPageActiveTransactionsByTable.SuspendLayout();
             this.TabPageActiveDineInTransactions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVActiveDineInTransactions)).BeginInit();
             this.TabPageCheckout.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -71,6 +75,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // TabControlMain
             // 
             this.TabControlMain.Controls.Add(this.TabPageControls);
+            this.TabControlMain.Controls.Add(this.TabPageActiveTransactionsByTable);
             this.TabControlMain.Controls.Add(this.TabPageActiveDineInTransactions);
             this.TabControlMain.Controls.Add(this.TabPageCheckout);
             this.TabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -116,6 +121,25 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnNewTransaction.UseVisualStyleBackColor = false;
             this.BtnNewTransaction.Click += new System.EventHandler(this.BtnNewTransaction_Click);
             // 
+            // TabPageActiveTransactionsByTable
+            // 
+            this.TabPageActiveTransactionsByTable.Controls.Add(this.flowLayoutActiveTransactions);
+            this.TabPageActiveTransactionsByTable.Location = new System.Drawing.Point(4, 30);
+            this.TabPageActiveTransactionsByTable.Name = "TabPageActiveTransactionsByTable";
+            this.TabPageActiveTransactionsByTable.Padding = new System.Windows.Forms.Padding(3);
+            this.TabPageActiveTransactionsByTable.Size = new System.Drawing.Size(540, 274);
+            this.TabPageActiveTransactionsByTable.TabIndex = 3;
+            this.TabPageActiveTransactionsByTable.Text = "Transactions";
+            this.TabPageActiveTransactionsByTable.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutActiveTransactions
+            // 
+            this.flowLayoutActiveTransactions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutActiveTransactions.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutActiveTransactions.Name = "flowLayoutActiveTransactions";
+            this.flowLayoutActiveTransactions.Size = new System.Drawing.Size(534, 268);
+            this.flowLayoutActiveTransactions.TabIndex = 0;
+            // 
             // TabPageActiveDineInTransactions
             // 
             this.TabPageActiveDineInTransactions.Controls.Add(this.DGVActiveDineInTransactions);
@@ -157,21 +181,39 @@ namespace Main.Forms.POSManagementForms.Controls
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.BtnCancelCurrentTransaction);
             this.panel1.Controls.Add(this.BtnSave);
             this.panel1.Controls.Add(this.BtnCheckout);
-            this.panel1.Controls.Add(this.TboxNumberOfItems);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.TboxTicketNumber);
-            this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.TboxCustomerName);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.TboxTableNumber);
-            this.panel1.Location = new System.Drawing.Point(14, 14);
+            this.panel1.Location = new System.Drawing.Point(14, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(429, 232);
+            this.panel1.Size = new System.Drawing.Size(429, 268);
             this.panel1.TabIndex = 72;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.LblTransactionType);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(429, 41);
+            this.panel3.TabIndex = 73;
+            // 
+            // LblTransactionType
+            // 
+            this.LblTransactionType.AutoSize = true;
+            this.LblTransactionType.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LblTransactionType.Location = new System.Drawing.Point(11, 10);
+            this.LblTransactionType.Name = "LblTransactionType";
+            this.LblTransactionType.Size = new System.Drawing.Size(159, 25);
+            this.LblTransactionType.TabIndex = 0;
+            this.LblTransactionType.Text = "Transaction type";
             // 
             // BtnCancelCurrentTransaction
             // 
@@ -182,7 +224,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnCancelCurrentTransaction.ForeColor = System.Drawing.Color.White;
             this.BtnCancelCurrentTransaction.Image = global::Main.Properties.Resources.icons8_cancel_30;
             this.BtnCancelCurrentTransaction.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelCurrentTransaction.Location = new System.Drawing.Point(14, 163);
+            this.BtnCancelCurrentTransaction.Location = new System.Drawing.Point(30, 174);
             this.BtnCancelCurrentTransaction.Name = "BtnCancelCurrentTransaction";
             this.BtnCancelCurrentTransaction.Size = new System.Drawing.Size(108, 45);
             this.BtnCancelCurrentTransaction.TabIndex = 71;
@@ -200,7 +242,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnSave.ForeColor = System.Drawing.Color.White;
             this.BtnSave.Image = global::Main.Properties.Resources.save_white_26;
             this.BtnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSave.Location = new System.Drawing.Point(152, 163);
+            this.BtnSave.Location = new System.Drawing.Point(168, 174);
             this.BtnSave.Name = "BtnSave";
             this.BtnSave.Size = new System.Drawing.Size(87, 45);
             this.BtnSave.TabIndex = 70;
@@ -218,7 +260,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnCheckout.ForeColor = System.Drawing.Color.White;
             this.BtnCheckout.Image = global::Main.Properties.Resources.checkout_white_30;
             this.BtnCheckout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCheckout.Location = new System.Drawing.Point(266, 163);
+            this.BtnCheckout.Location = new System.Drawing.Point(282, 174);
             this.BtnCheckout.Name = "BtnCheckout";
             this.BtnCheckout.Size = new System.Drawing.Size(122, 45);
             this.BtnCheckout.TabIndex = 69;
@@ -227,18 +269,10 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnCheckout.UseVisualStyleBackColor = false;
             this.BtnCheckout.Click += new System.EventHandler(this.BtnCheckout_Click);
             // 
-            // TboxNumberOfItems
-            // 
-            this.TboxNumberOfItems.Enabled = false;
-            this.TboxNumberOfItems.Location = new System.Drawing.Point(110, 15);
-            this.TboxNumberOfItems.Name = "TboxNumberOfItems";
-            this.TboxNumberOfItems.Size = new System.Drawing.Size(244, 27);
-            this.TboxNumberOfItems.TabIndex = 68;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 53);
+            this.label1.Location = new System.Drawing.Point(35, 63);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 20);
             this.label1.TabIndex = 0;
@@ -247,24 +281,15 @@ namespace Main.Forms.POSManagementForms.Controls
             // TboxTicketNumber
             // 
             this.TboxTicketNumber.Enabled = false;
-            this.TboxTicketNumber.Location = new System.Drawing.Point(110, 52);
+            this.TboxTicketNumber.Location = new System.Drawing.Point(119, 62);
             this.TboxTicketNumber.Name = "TboxTicketNumber";
             this.TboxTicketNumber.Size = new System.Drawing.Size(244, 27);
             this.TboxTicketNumber.TabIndex = 1;
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(26, 22);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(45, 20);
-            this.label8.TabIndex = 67;
-            this.label8.Text = "Items";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 91);
+            this.label2.Location = new System.Drawing.Point(35, 101);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 20);
             this.label2.TabIndex = 2;
@@ -273,7 +298,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // TboxCustomerName
             // 
             this.TboxCustomerName.Enabled = false;
-            this.TboxCustomerName.Location = new System.Drawing.Point(110, 87);
+            this.TboxCustomerName.Location = new System.Drawing.Point(119, 97);
             this.TboxCustomerName.Name = "TboxCustomerName";
             this.TboxCustomerName.Size = new System.Drawing.Size(244, 27);
             this.TboxCustomerName.TabIndex = 3;
@@ -281,7 +306,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 125);
+            this.label3.Location = new System.Drawing.Point(35, 135);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 20);
             this.label3.TabIndex = 4;
@@ -290,7 +315,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // TboxTableNumber
             // 
             this.TboxTableNumber.Enabled = false;
-            this.TboxTableNumber.Location = new System.Drawing.Point(110, 121);
+            this.TboxTableNumber.Location = new System.Drawing.Point(119, 131);
             this.TboxTableNumber.Name = "TboxTableNumber";
             this.TboxTableNumber.Size = new System.Drawing.Size(244, 27);
             this.TboxTableNumber.TabIndex = 5;
@@ -329,24 +354,6 @@ namespace Main.Forms.POSManagementForms.Controls
             this.panel2.Size = new System.Drawing.Size(276, 308);
             this.panel2.TabIndex = 0;
             // 
-            // LblSubTotal
-            // 
-            this.LblSubTotal.ForeColor = System.Drawing.Color.Red;
-            this.LblSubTotal.Location = new System.Drawing.Point(18, 87);
-            this.LblSubTotal.Name = "LblSubTotal";
-            this.LblSubTotal.Size = new System.Drawing.Size(136, 25);
-            this.LblSubTotal.TabIndex = 1;
-            this.LblSubTotal.Text = "0";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(18, 48);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(95, 25);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Sub Total:";
-            // 
             // LblNumberOfItems
             // 
             this.LblNumberOfItems.ForeColor = System.Drawing.Color.Red;
@@ -365,6 +372,24 @@ namespace Main.Forms.POSManagementForms.Controls
             this.label6.TabIndex = 2;
             this.label6.Text = "Number Of Items";
             // 
+            // LblSubTotal
+            // 
+            this.LblSubTotal.ForeColor = System.Drawing.Color.Red;
+            this.LblSubTotal.Location = new System.Drawing.Point(18, 87);
+            this.LblSubTotal.Name = "LblSubTotal";
+            this.LblSubTotal.Size = new System.Drawing.Size(136, 25);
+            this.LblSubTotal.TabIndex = 1;
+            this.LblSubTotal.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(18, 48);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(95, 25);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Sub Total:";
+            // 
             // POSControllerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
@@ -378,11 +403,14 @@ namespace Main.Forms.POSManagementForms.Controls
             this.TabControlMain.ResumeLayout(false);
             this.TabPageControls.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.TabPageActiveTransactionsByTable.ResumeLayout(false);
             this.TabPageActiveDineInTransactions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVActiveDineInTransactions)).EndInit();
             this.TabPageCheckout.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -403,10 +431,8 @@ namespace Main.Forms.POSManagementForms.Controls
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button BtnCheckout;
-        private System.Windows.Forms.TextBox TboxNumberOfItems;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TboxTicketNumber;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TboxCustomerName;
         private System.Windows.Forms.Label label3;
@@ -419,5 +445,9 @@ namespace Main.Forms.POSManagementForms.Controls
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label LblNumberOfItems;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TabPage TabPageActiveTransactionsByTable;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutActiveTransactions;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label LblTransactionType;
     }
 }
