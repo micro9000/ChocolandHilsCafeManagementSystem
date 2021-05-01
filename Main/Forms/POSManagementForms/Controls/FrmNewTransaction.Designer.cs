@@ -91,7 +91,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.label11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.label11.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label11.ForeColor = System.Drawing.Color.Black;
-            this.label11.Location = new System.Drawing.Point(23, 142);
+            this.label11.Location = new System.Drawing.Point(23, 158);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(119, 21);
             this.label11.TabIndex = 11;
@@ -132,9 +132,9 @@ namespace Main.Forms.POSManagementForms.Controls
             this.BtnSelectTable.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.BtnSelectTable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BtnSelectTable.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnSelectTable.Location = new System.Drawing.Point(23, 176);
+            this.BtnSelectTable.Location = new System.Drawing.Point(23, 182);
             this.BtnSelectTable.Name = "BtnSelectTable";
-            this.BtnSelectTable.Size = new System.Drawing.Size(131, 30);
+            this.BtnSelectTable.Size = new System.Drawing.Size(84, 30);
             this.BtnSelectTable.TabIndex = 66;
             this.BtnSelectTable.Text = "Select Table";
             this.BtnSelectTable.UseVisualStyleBackColor = false;
@@ -144,7 +144,7 @@ namespace Main.Forms.POSManagementForms.Controls
             // 
             this.LblTableNumber.AutoSize = true;
             this.LblTableNumber.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LblTableNumber.Location = new System.Drawing.Point(144, 142);
+            this.LblTableNumber.Location = new System.Drawing.Point(150, 158);
             this.LblTableNumber.Name = "LblTableNumber";
             this.LblTableNumber.Size = new System.Drawing.Size(25, 21);
             this.LblTableNumber.TabIndex = 67;
@@ -155,7 +155,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(112)))), ((int)(((byte)(71)))));
-            this.ClientSize = new System.Drawing.Size(313, 312);
+            this.ClientSize = new System.Drawing.Size(303, 312);
             this.Controls.Add(this.LblTableNumber);
             this.Controls.Add(this.BtnSelectTable);
             this.Controls.Add(this.BtnCancelCreateNewTrans);

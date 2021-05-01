@@ -152,6 +152,14 @@ namespace Main.Controllers.POSControllers
 
             try
             {
+                var activeTakeOutTrans = _salesTransactionData
+                                            .GetSalesTransactionByStatusAndTransType(StaticData.POSTransactionStatus.OnGoing, 
+                                            StaticData.POSTransactionType.TakeOut); // will return the list in DESC ORDER
+
+                var lastTakeOutTransaction = activeTakeOutTrans != null ? activeTakeOutTrans.FirstOrDefault() : null; // so it's okay to get the first item
+                int newTakeOutNumber = lastTakeOutTransaction == null ? 1 : lastTakeOutTransaction.TakeOutNumber + 1;
+
+
                 newSalesTransaction.TicketNumber = GetTicketNumber();
                 newSalesTransaction.CurrentUser = _sessions.CurrentLoggedInUser.FullName;
                 newSalesTransaction.TransStatus = StaticData.POSTransactionStatus.OnGoing;
@@ -169,8 +177,9 @@ namespace Main.Controllers.POSControllers
                         results.IsSuccess = false;
                         return results;
                     }
-                }
 
+                    newSalesTransaction.TakeOutNumber = 0;
+                }
 
                 if (newSalesTransaction.TransactionType == StaticData.POSTransactionType.TakeOut)
                 {
@@ -185,8 +194,9 @@ namespace Main.Controllers.POSControllers
                         results.IsSuccess = false;
                         return results;
                     }
-                }
 
+                    newSalesTransaction.TakeOutNumber = newTakeOutNumber;
+                }
 
                 long newSalesTransId = _salesTransactionData.Add(newSalesTransaction);
 

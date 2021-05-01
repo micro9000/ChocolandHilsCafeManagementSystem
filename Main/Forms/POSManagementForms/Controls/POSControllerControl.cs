@@ -60,23 +60,29 @@ namespace Main.Forms.POSManagementForms.Controls
             this.ClearCheckOutForm();
             if (_pOSState.CurrentSaleTransaction != null)
             {
+
+                string tableOrOrderNum = "";
+
                 if (_pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.DineIn)
                 {
-                    this.LblTransactionType.Text = "Dine-in";
+                    this.LblTransactionType.Text = $"Dine-in -> {_pOSState.CurrentSaleTransaction.TableNumberStr}";
                     this.LblTransactionType.BackColor = Color.Blue;
                     this.LblTransactionType.ForeColor = Color.White;
                     this.BtnSelectTable.Enabled = true;
+                    tableOrOrderNum = _pOSState.CurrentSaleTransaction.TableNumberStr;
                 }
 
                 if (_pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.TakeOut)
                 {
-                    this.LblTransactionType.Text = "Take-out";
+                    this.LblTransactionType.Text = $"Take-out -> {_pOSState.CurrentSaleTransaction.TakeOutNumberStr}";
                     this.LblTransactionType.BackColor = Color.Yellow;
+                    tableOrOrderNum = _pOSState.CurrentSaleTransaction.TakeOutNumberStr;
                 }
 
                 this.TboxTicketNumber.Text = _pOSState.CurrentSaleTransaction.TicketNumber;
                 this.TboxCustomerName.Text = _pOSState.CurrentSaleTransaction.CustomerName;
-                this.LblCurrentTransTable.Text = $"T-{_pOSState.CurrentSaleTransaction.TableNumber}";
+
+                this.LblCurrentTransTable.Text = tableOrOrderNum;
                 this.CurrentTransactionTableNumber = _pOSState.CurrentSaleTransaction.TableNumber;
 
                 //this.LblSubTotal.Text = _pOSState.ToStringSubTotal;
@@ -182,7 +188,7 @@ namespace Main.Forms.POSManagementForms.Controls
                 this.DGVActiveDineInTransactions.Columns[2].HeaderText = "Customer";
 
                 this.DGVActiveDineInTransactions.Columns[3].Name = "TableNumber";
-                this.DGVActiveDineInTransactions.Columns[3].HeaderText = "Table";
+                this.DGVActiveDineInTransactions.Columns[3].HeaderText = "Table/Order #";
 
                 this.DGVActiveDineInTransactions.Columns[4].Name = "TransactionType";
                 this.DGVActiveDineInTransactions.Columns[4].HeaderText = "Type";
@@ -200,7 +206,7 @@ namespace Main.Forms.POSManagementForms.Controls
                     row.Cells[0].Value = tran.Id;
                     row.Cells[1].Value = tran.TicketNumber;
                     row.Cells[2].Value = tran.CustomerName;
-                    row.Cells[3].Value = $"T-{tran.TableNumber}";
+                    row.Cells[3].Value = tran.TransactionType == StaticData.POSTransactionType.DineIn ? tran.TableNumberStr : tran.TakeOutNumberStr;
                     row.Cells[4].Value = tran.TransactionType == StaticData.POSTransactionType.DineIn ? "IN" : "OUT";
 
                     DGVActiveDineInTransactions.Rows.Add(row);
@@ -358,13 +364,16 @@ namespace Main.Forms.POSManagementForms.Controls
 
         private void BtnSelectTable_Click(object sender, EventArgs e)
         {
-            FrmSelectAvailableTable frmSelectAvailableTable = new FrmSelectAvailableTable(_pOSReadController);
-            frmSelectAvailableTable.ShowDialog();
-
-            if (frmSelectAvailableTable.SelectedTableNumber > 0)
+            if (_pOSState.CurrentSaleTransaction != null && _pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.DineIn)
             {
-                this.CurrentTransactionTableNumber = frmSelectAvailableTable.SelectedTableNumber;
-                this.LblCurrentTransTable.Text = $"T-{this.CurrentTransactionTableNumber}";
+                FrmSelectAvailableTable frmSelectAvailableTable = new FrmSelectAvailableTable(_pOSReadController);
+                frmSelectAvailableTable.ShowDialog();
+
+                if (frmSelectAvailableTable.SelectedTableNumber > 0)
+                {
+                    this.CurrentTransactionTableNumber = frmSelectAvailableTable.SelectedTableNumber;
+                    this.LblCurrentTransTable.Text = $"T-{this.CurrentTransactionTableNumber}";
+                }
             }
         }
     }

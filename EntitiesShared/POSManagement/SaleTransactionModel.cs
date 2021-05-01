@@ -15,6 +15,17 @@ namespace EntitiesShared.POSManagement
 
         public string TicketNumber { get;set; }
 
+        public int TakeOutNumber { get; set; }
+
+        [Write(false)]
+        [Computed]
+        public string TakeOutNumberStr {
+            get
+            {
+                return this.TakeOutNumber.ToString().PadLeft(4, '0');
+            }
+        }
+
         public string CurrentUser { get; set; }
 
         public string CustomerName { get; set; }
@@ -36,6 +47,16 @@ namespace EntitiesShared.POSManagement
         public decimal CustomerDueAmount { get; set; }
 
         public int TableNumber { get; set; }
+
+        [Write(false)]
+        [Computed]
+        public string TableNumberStr
+        {
+            get
+            {
+                return $"T-{this.TableNumber}";
+            }
+        }
 
         public StaticData.POSTransactionStatus TransStatus { get; set; }
 

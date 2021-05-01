@@ -724,6 +724,8 @@ ALTER TABLE SalesTransactions
 ADD COLUMN discountPercent DECIMAL;
 ALTER TABLE SalesTransactions
 ADD COLUMN isCashOut BOOLEAN DEFAULT false;
+ALTER TABLE SalesTransactions
+ADD COLUMN TakeOutNumber INT;
 
 SELECT * FROM SalesTransactions 
 WHERE isDeleted=false AND transStatus=1 AND tableNumber >= 1;
