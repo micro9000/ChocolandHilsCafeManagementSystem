@@ -91,5 +91,12 @@ namespace Main.Forms.EmployeeManagementForms.OtherForms
                 }
             }
         }
+
+        private void BtnForceDelete_Click(object sender, EventArgs e)
+        {
+            this.IsCancelled = false;
+            this.IsDone = true;
+            this.Close();
+        }
     }
 }

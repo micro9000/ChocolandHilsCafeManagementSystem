@@ -30,6 +30,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             SetDGVIngredientListFontAndColors();
             SetDGVIngredientInventoriesFontAndColors();
             SetDGVInventoryTransactionHistoryFontAndColors();
+            SetDGVInventoryTransactionHistoryAllFontAndColors();
             SetDGVInventoryNearOnExpirationDateFontAndColors();
             SetDGVProductsToCalculateIngredientsFontAndColors();
 
@@ -42,6 +43,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.PropertyIsNewIngredientInventoryChanged += OnIsNewIngredientInventoryUpdate;
 
             this.MainTabControl.SelectedIndex = this.MainTabControl.TabPages.IndexOf(MainTabIngredientList);
+
+            this.DisplayInventoryTransactionHistoryAll(this.IngredientInventoryTransactionAll);
         }
 
         #region Ingredient categories
@@ -976,7 +979,9 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     InitialQtyValue = newQtyValue,
                     RemainingQtyValue = newQtyValue,
                     UnitCost = unitCost,
-                    ExpirationDate = expDate
+                    ExpirationDate = expDate,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
                 };
             }
             else
@@ -987,6 +992,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
                     this.IngredientInventoryToAddUpdate.RemainingQtyValue = newQtyValue;
                     this.IngredientInventoryToAddUpdate.UnitCost = unitCost;
                     this.IngredientInventoryToAddUpdate.ExpirationDate = expDate;
+                    this.IngredientInventoryToAddUpdate.UpdatedAt = DateTime.Now;
                 }
             }
 
@@ -1186,7 +1192,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
                     row.Cells[0].Value = item.Id;
                     row.Cells[1].Value = item.TransType.ToString();
-                    row.Cells[2].Value = this.GetUOMFormatted(this.SelectedIngredient.UOM, item.QtyVal);
+                    row.Cells[2].Value = this.GetUOMFormatted(item.Ingredient.UOM, item.QtyVal);
                     row.Cells[3].Value = item.UnitCost;
                     row.Cells[4].Value = item.ExpirationDate.ToShortDateString();
                     row.Cells[5].Value = item.User.FullName;
@@ -1450,11 +1456,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
             DisplayProductIngredientsToCalculateInDGV();
         }
 
-        private void tabPage5_Click(object sender, EventArgs e)
-        {
-
-        }
-
         public event EventHandler GenerateInventoryIngredientReport;
         protected virtual void OnGenerateInventoryIngredientReport(EventArgs e)
         {
@@ -1465,5 +1466,122 @@ namespace Main.Forms.InventoryManagementForms.Controls
         {
             OnGenerateInventoryIngredientReport(EventArgs.Empty);
         }
+
+
+
+        private void SetDGVInventoryTransactionHistoryAllFontAndColors()
+        {
+            this.DGVInventoryTransactionHistoryAll.BackgroundColor = Color.White;
+            this.DGVInventoryTransactionHistoryAll.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVInventoryTransactionHistoryAll.RowHeadersVisible = false;
+            this.DGVInventoryTransactionHistoryAll.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVInventoryTransactionHistoryAll.AllowUserToResizeRows = false;
+            this.DGVInventoryTransactionHistoryAll.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVInventoryTransactionHistoryAll.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVInventoryTransactionHistoryAll.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVInventoryTransactionHistoryAll.MultiSelect = false;
+
+            this.DGVInventoryTransactionHistoryAll.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVInventoryTransactionHistoryAll.ColumnHeadersHeight = 30;
+        }
+
+
+        private List<IngInventoryTransactionModel> _ingInventoryTransactionsAll;
+
+        public List<IngInventoryTransactionModel> IngredientInventoryTransactionAll
+        {
+            get { return _ingInventoryTransactionsAll; }
+            set { _ingInventoryTransactionsAll = value; }
+        }
+
+
+        public void DisplayInventoryTransactionHistoryAll(List<IngInventoryTransactionModel> transactions)
+        {
+            this.DGVInventoryTransactionHistoryAll.Rows.Clear();
+            if (transactions != null)
+            {
+                this.DGVInventoryTransactionHistoryAll.ColumnCount = 8;
+
+                this.DGVInventoryTransactionHistoryAll.Columns[0].Name = "IngInventoryTransId";
+                this.DGVInventoryTransactionHistoryAll.Columns[0].Visible = false;
+
+                this.DGVInventoryTransactionHistoryAll.Columns[1].Name = "Ingredient";
+                this.DGVInventoryTransactionHistoryAll.Columns[1].HeaderText = "Ingredient";
+
+                this.DGVInventoryTransactionHistoryAll.Columns[2].Name = "InventoryTransactionType";
+                this.DGVInventoryTransactionHistoryAll.Columns[2].HeaderText = "Transaction Type";
+
+                this.DGVInventoryTransactionHistoryAll.Columns[3].Name = "InventoryTransQtyValue";
+                this.DGVInventoryTransactionHistoryAll.Columns[3].HeaderText = "Qty Value";
+
+                this.DGVInventoryTransactionHistoryAll.Columns[4].Name = "InventoryTransUnitCost";
+                this.DGVInventoryTransactionHistoryAll.Columns[4].HeaderText = "Unit Cost";
+
+                this.DGVInventoryTransactionHistoryAll.Columns[5].Name = "InventoryTransExpirationDate";
+                this.DGVInventoryTransactionHistoryAll.Columns[5].HeaderText = "Expiration Date";
+
+                this.DGVInventoryTransactionHistoryAll.Columns[6].Name = "InventoryTransUser";
+                this.DGVInventoryTransactionHistoryAll.Columns[6].HeaderText = "User";
+
+                this.DGVInventoryTransactionHistoryAll.Columns[7].Name = "InventoryTransDate";
+                this.DGVInventoryTransactionHistoryAll.Columns[7].HeaderText = "Date";
+
+                foreach (var item in transactions)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVInventoryTransactionHistoryAll);
+
+                    row.Cells[0].Value = item.Id;
+                    row.Cells[1].Value = item.Ingredient.IngName;
+                    row.Cells[2].Value = item.TransType.ToString();
+                    row.Cells[3].Value = this.GetUOMFormatted(item.Ingredient.UOM, item.QtyVal);
+                    row.Cells[4].Value = item.UnitCost;
+                    row.Cells[5].Value = item.ExpirationDate.ToShortDateString();
+                    row.Cells[6].Value = item.User.FullName;
+                    row.Cells[7].Value = item.CreatedAt.ToShortDateString();
+
+                    this.DGVInventoryTransactionHistoryAll.Rows.Add(row);
+                }
+            }
+        }
+
+        private void DGVInventoryTransactionHistoryAll_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1)
+            {
+                if (DGVInventoryTransactionHistoryAll.CurrentRow != null && this.IngredientInventoryTransactionAll != null)
+                {
+                    long selectedTransactionId = long.Parse(DGVInventoryTransactionHistoryAll.CurrentRow.Cells[0].Value.ToString());
+
+                    var transactionDetails = this.IngredientInventoryTransactionAll.Where(x => x.Id == selectedTransactionId).FirstOrDefault();
+
+                    if (transactionDetails != null)
+                    {
+                        this.TboxTransactionHistoryRemarksAll.Text = transactionDetails.Remarks;
+                    }
+                }
+            }
+        }
+
+
+        public DateTime FilterTransactionAllStartDate { get; set; }
+        public DateTime FilterTransactionAllEndDate { get; set; }
+
+        public event EventHandler FilterTransactionAllHistory;
+        protected virtual void OnFilterTransactionAllHistory(EventArgs e)
+        {
+            FilterTransactionAllHistory?.Invoke(this, e);
+        }
+
+        private void BtnFilterAllTransaction_Click(object sender, EventArgs e)
+        {
+            FilterTransactionAllStartDate = DPicFilterInventoryTransAllStartDate.Value;
+            FilterTransactionAllEndDate = DPicFilterInventoryTransAllEndDate.Value;
+            OnFilterTransactionAllHistory(EventArgs.Empty);
+        }
+
     }
 }

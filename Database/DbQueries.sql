@@ -1,9 +1,6 @@
 CREATE DATABASE ChocolandHilsCafeDb;
 USE ChocolandHilsCafeDb;
 
-CREATE DATABASE CHCafeDb_HangfireStorage;
-USE CHCafeDb_HangfireStorage;
-
 
 -- https://www.khanacademy.org/math/cc-third-grade-math/imp-measurement-and-data/imp-mass/v/intuition-for-grams#:~:text=.%20...%E2%80%9D-,To%20convert%20grams%20to%20kilograms%2C%20divide%20by%201%2C000.,30%2C000%20grams%20is%2030%20kilograms.
 
@@ -596,6 +593,11 @@ CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
 
 SELECT * FROM IngInventoryTransactions;
 SELECT * FROM Users;
+
+SELECT * FROM IngInventoryTransactions AS Trans
+JOIN Ingredients AS Ing ON Ing.id = Trans.ingredientId
+JOIN Users AS U ON U.id=Trans.userId
+WHERE isDeleted=false AND createdAt BETWEEN '' AND '';
 
 CREATE TABLE IF NOT EXISTS ProductCategories(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

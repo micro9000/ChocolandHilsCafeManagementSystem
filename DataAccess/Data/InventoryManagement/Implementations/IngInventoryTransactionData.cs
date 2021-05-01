@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
+using EntitiesShared.UserManagement;
 
 namespace DataAccess.Data.InventoryManagement.Implementations
 {
@@ -24,22 +26,63 @@ namespace DataAccess.Data.InventoryManagement.Implementations
 
         public List<IngInventoryTransactionModel> GetAllByIngredientAndDateRange(long ingredientId, DateTime startDate, DateTime endDate)
         {
-            string query = @"SELECT * FROM IngInventoryTransactions 
-                            WHERE isDeleted=false AND ingredientId=@IngredientId AND createdAt BETWEEN @StartDate AND @EndDate
-                            ORDER BY id DESC";
-            
-            var transactions = this.GetAll(query, new { 
-                IngredientId = ingredientId,
-                StartDate = startDate,
-                EndDate = endDate
-            });
+            string query = @"SELECT * FROM IngInventoryTransactions AS Trans
+                            JOIN Ingredients AS Ing ON Ing.id = Trans.ingredientId
+                            JOIN Users AS U ON U.id=Trans.userId
+                            WHERE Trans.ingredientId=@IngredientId AND Trans.isDeleted=false AND Trans.createdAt BETWEEN @StartDate AND @EndDate
+                            ORDER BY Trans.id DESC";
 
-            if (transactions != null)
+            var transactions = new List<IngInventoryTransactionModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
             {
-                foreach(var item in transactions)
-                {
-                    item.User = _userData.Get(item.UserId);
-                }
+                transactions = conn.Query<IngInventoryTransactionModel, IngredientModel, UserModel, IngInventoryTransactionModel>(query,
+                    (Trans, Ing, U) => {
+
+                        Trans.Ingredient = Ing;
+                        Trans.User = U;
+
+                        return Trans;
+                    }, new
+                    {
+                        IngredientId = ingredientId,
+                        StartDate = startDate.ToString("yyyy-MM-dd"),
+                        EndDate = endDate.ToString("yyyy-MM-dd")
+                    }).ToList();
+
+                conn.Close();
+            }
+
+            return transactions;
+        }
+
+
+        public List<IngInventoryTransactionModel> GetAllByDateRange(DateTime startDate, DateTime endDate)
+        {
+            string query = @"SELECT * FROM IngInventoryTransactions AS Trans
+                            JOIN Ingredients AS Ing ON Ing.id = Trans.ingredientId
+                            JOIN Users AS U ON U.id=Trans.userId
+                            WHERE Trans.isDeleted=false AND Trans.createdAt BETWEEN @StartDate AND @EndDate
+                            ORDER BY Trans.id DESC";
+
+            var transactions = new List<IngInventoryTransactionModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                transactions = conn.Query<IngInventoryTransactionModel, IngredientModel, UserModel, IngInventoryTransactionModel>(query,
+                    (Trans, Ing, U) => {
+
+                        Trans.Ingredient = Ing;
+                        Trans.User = U;
+
+                        return Trans;
+                    }, new
+                    {
+                        StartDate = startDate.ToString("yyyy-MM-dd"),
+                        EndDate = endDate.ToString("yyyy-MM-dd")
+                    }).ToList();
+
+                conn.Close();
             }
 
             return transactions;

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.Helpers;
 
 namespace Main.Controllers.InventoryControllers
 {
@@ -20,23 +21,29 @@ namespace Main.Controllers.InventoryControllers
         private readonly ILogger<IngredientInventoryController> _logger;
         private readonly IMapper _mapper;
         private readonly Sessions _sessions;
+        private readonly IIngredientData _ingredientData;
         private readonly IIngredientInventoryData _ingredientInventoryData;
         private readonly IIngInventoryTransactionData _ingInventoryTransactionData;
         private readonly IngredientInventoryAddUpdateValidator _ingredientInventoryAddUpdateValidator;
+        private readonly UOMConverter _uOMConverter;
 
         public IngredientInventoryController(ILogger<IngredientInventoryController> logger,
                                             IMapper mapper,
                                             Sessions sessions,
+                                            IIngredientData ingredientData,
                                             IIngredientInventoryData ingredientInventoryData,
                                             IIngInventoryTransactionData ingInventoryTransactionData,
-                                            IngredientInventoryAddUpdateValidator ingredientInventoryAddUpdateValidator)
+                                            IngredientInventoryAddUpdateValidator ingredientInventoryAddUpdateValidator,
+                                            UOMConverter uOMConverter)
         {
             _logger = logger;
             _mapper = mapper;
             _sessions = sessions;
+            _ingredientData = ingredientData;
             _ingredientInventoryData = ingredientInventoryData;
             _ingInventoryTransactionData = ingInventoryTransactionData;
             _ingredientInventoryAddUpdateValidator = ingredientInventoryAddUpdateValidator;
+            _uOMConverter = uOMConverter;
         }
 
 
@@ -64,7 +71,9 @@ namespace Main.Controllers.InventoryControllers
                         UnitCost = details.UnitCost,
                         ExpirationDate = details.ExpirationDate,
                         UserId = _sessions.CurrentLoggedInUser.Id,
-                        Remarks = remarks
+                        Remarks = remarks,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
                     });
 
                 }
@@ -82,6 +91,31 @@ namespace Main.Controllers.InventoryControllers
             }
 
             return results;
+        }
+
+        public string GetUOMFormatted(StaticData.UOM uom, decimal qtyValue)
+        {
+            string uomFormatted = "";
+
+            switch (uom)
+            {
+                case StaticData.UOM.kg:
+                    uomFormatted = _uOMConverter.gram_to_kg_format(qtyValue);
+                    break;
+
+                case StaticData.UOM.L:
+                    uomFormatted = _uOMConverter.ml_to_L_format(qtyValue);
+                    break;
+
+                case StaticData.UOM.pcs:
+                    uomFormatted = _uOMConverter.pc_format(qtyValue);
+                    break;
+                default:
+                    uomFormatted = "0";
+                    break;
+            }
+
+            return uomFormatted;
         }
 
         public EntityResult<IngredientInventoryModel> Save (IngredientInventoryModel input, bool isNew, string remarks)
@@ -123,7 +157,9 @@ namespace Main.Controllers.InventoryControllers
                             UnitCost = inventoryDetails.UnitCost,
                             ExpirationDate = inventoryDetails.ExpirationDate,
                             UserId = _sessions.CurrentLoggedInUser.Id,
-                            Remarks = remarks
+                            Remarks = remarks,
+                            CreatedAt = DateTime.Now,
+                            UpdatedAt = DateTime.Now
                         });
 
                         results.IsSuccess = true;
@@ -144,8 +180,34 @@ namespace Main.Controllers.InventoryControllers
                         throw new Exception("Existing inventory details not found.");
                     }
 
-                    _mapper.Map(input, existingInventory);
+                    var ingredientDetails = _ingredientData.Get(existingInventory.IngredientId);
 
+                    if (ingredientDetails == null)
+                    {
+                        throw new Exception("Ingredient details not found.");
+                    }
+
+                    string additionalRemarks = "";
+
+                    if (input.UnitCost != existingInventory.UnitCost)
+                    {
+                        additionalRemarks += $"{Environment.NewLine}Update Unit Cost from {existingInventory.UnitCost} to {input.UnitCost}";
+                    }
+
+                    if (input.ExpirationDate != existingInventory.ExpirationDate)
+                    {
+                        additionalRemarks += $"{Environment.NewLine}Update Expiration date {existingInventory.ExpirationDate.ToShortDateString()} to {input.ExpirationDate.ToShortDateString()}";
+                    }
+
+                    if (input.RemainingQtyValue != existingInventory.RemainingQtyValue)
+                    {
+                        string prevQty = this.GetUOMFormatted(ingredientDetails.UOM, existingInventory.RemainingQtyValue);
+                        string newQty = this.GetUOMFormatted(ingredientDetails.UOM, input.RemainingQtyValue);
+
+                        additionalRemarks += $"{Environment.NewLine}Update Quantity value {prevQty} to {newQty}";
+                    }
+
+                    _mapper.Map(input, existingInventory);
 
                     // Update employee details
                     if (this._ingredientInventoryData.Update(existingInventory))
@@ -158,7 +220,9 @@ namespace Main.Controllers.InventoryControllers
                             UnitCost = existingInventory.UnitCost,
                             ExpirationDate = existingInventory.ExpirationDate,
                             UserId = _sessions.CurrentLoggedInUser.Id,
-                            Remarks = remarks
+                            Remarks = $"{remarks} - {additionalRemarks}",
+                            CreatedAt = DateTime.Now,
+                            UpdatedAt = DateTime.Now
                         });
 
                         results.IsSuccess = true;
@@ -192,6 +256,18 @@ namespace Main.Controllers.InventoryControllers
             {
                 var inventoryDetails = _ingredientInventoryData.GetByIdAndIngredient(ingredientId, inventoryId);
 
+                if (inventoryDetails == null)
+                {
+                    throw new Exception("Existing inventory details not found.");
+                }
+
+                var ingredientDetails = _ingredientData.Get(ingredientId);
+
+                if (ingredientDetails == null)
+                {
+                    throw new Exception("Ingredient details not found.");
+                }
+
                 if (inventoryDetails != null)
                 {
                     inventoryDetails.InitialQtyValue += qtyValue;
@@ -199,6 +275,8 @@ namespace Main.Controllers.InventoryControllers
 
                     if (this._ingredientInventoryData.Update(inventoryDetails))
                     {
+                        string increaseQtyValue = this.GetUOMFormatted(ingredientDetails.UOM, qtyValue);
+
                         _ingInventoryTransactionData.Add(new IngInventoryTransactionModel
                         {
                             IngredientId = inventoryDetails.IngredientId,
@@ -207,7 +285,9 @@ namespace Main.Controllers.InventoryControllers
                             UnitCost = inventoryDetails.UnitCost,
                             ExpirationDate = inventoryDetails.ExpirationDate,
                             UserId = _sessions.CurrentLoggedInUser.Id,
-                            Remarks = remarks
+                            Remarks = $"{remarks} - {Environment.NewLine} Increase Quantity value to {increaseQtyValue}",
+                            CreatedAt = DateTime.Now,
+                            UpdatedAt = DateTime.Now
                         });
 
                         results.IsSuccess = true;
@@ -246,10 +326,24 @@ namespace Main.Controllers.InventoryControllers
             {
                 var inventoryDetails = _ingredientInventoryData.GetByIdAndIngredient(ingredientId, inventoryId);
 
+                if (inventoryDetails == null)
+                {
+                    throw new Exception("Existing inventory details not found.");
+                }
+
+                var ingredientDetails = _ingredientData.Get(ingredientId);
+
+                if (ingredientDetails == null)
+                {
+                    throw new Exception("Ingredient details not found.");
+                }
+
                 if (inventoryDetails != null)
                 {
                     inventoryDetails.InitialQtyValue -= qtyValue;
                     inventoryDetails.RemainingQtyValue -= qtyValue;
+
+                    string decreaseQtyValue = this.GetUOMFormatted(ingredientDetails.UOM, qtyValue);
 
                     if (this._ingredientInventoryData.Update(inventoryDetails))
                     {
@@ -261,7 +355,9 @@ namespace Main.Controllers.InventoryControllers
                             UnitCost = inventoryDetails.UnitCost,
                             ExpirationDate = inventoryDetails.ExpirationDate,
                             UserId = _sessions.CurrentLoggedInUser.Id,
-                            Remarks = remarks
+                            Remarks = $"{remarks} - {Environment.NewLine} Decrease Quantity value to {decreaseQtyValue}",
+                            CreatedAt = DateTime.Now,
+                            UpdatedAt = DateTime.Now
                         });
 
                         results.IsSuccess = true;

@@ -1,4 +1,5 @@
-CREATE DATABASE PLST_HangfireStorage;
+CREATE DATABASE CHCafeDb_HangfireStorage;
+USE CHCafeDb_HangfireStorage;
 
 show variables like 'binlog_format';
 SET GLOBAL binlog_format = 'ROW';

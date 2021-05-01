@@ -13,6 +13,10 @@ namespace EntitiesShared.InventoryManagement
     {
         public long IngredientId { get; set; }
 
+        [Write(false)]
+        [Computed]
+        public IngredientModel Ingredient { get; set; }
+
         public StaticData.InventoryTransType TransType { get; set; }
 
         public decimal QtyVal { get; set; }

@@ -112,6 +112,10 @@ namespace Main.Forms.InventoryManagementForms
             inventoryControlObj.Location = new Point(this.ClientSize.Width / 2 - inventoryControlObj.Size.Width / 2, this.ClientSize.Height / 2 - inventoryControlObj.Size.Height / 2);
             inventoryControlObj.Anchor = AnchorStyles.None;
 
+            DateTime startDateTransFilter = DateTime.Now;
+            DateTime endDateTransFilter = startDateTransFilter.AddDays(1);
+            inventoryControlObj.IngredientInventoryTransactionAll = _ingInventoryTransactionData.GetAllByDateRange(startDateTransFilter, endDateTransFilter);
+
             inventoryControlObj.IngredientCategories = _ingredientCategoryData.GetAllNotDeleted();
             inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
 
@@ -124,11 +128,12 @@ namespace Main.Forms.InventoryManagementForms
 
             inventoryControlObj.IngredientGetInventories += HandleIngredientGetInventories;
             inventoryControlObj.IngredientInventorySave += HandleIngredientInventorySave;
+            inventoryControlObj.IncreaseInventoryQtyValueSave += HandleSaveInventoryIncreaseQtyValue;
+            inventoryControlObj.DecreaseInventoryQtyValueSave += HandleSaveInventoryDecreaseQtyValue;
             inventoryControlObj.GenerateInventoryIngredientReport += HandleGenerateInventoryIngredientReport;
             inventoryControlObj.IngredientInventoryDelete += HandleIngredientInventoryDelete;
             inventoryControlObj.FilterTransactionHistory += HandleFilterTransactionHistory;
-            inventoryControlObj.IncreaseInventoryQtyValueSave += HandleSaveInventoryIncreaseQtyValue;
-            inventoryControlObj.DecreaseInventoryQtyValueSave += HandleSaveInventoryDecreaseQtyValue;
+            inventoryControlObj.FilterTransactionAllHistory += HandleFilterTransactionAllHistory;
 
             inventoryControlObj.IngredientCalculateProductsCanMake += HandleIngredientCalculateProductsCanMake;
 
@@ -362,6 +367,18 @@ namespace Main.Forms.InventoryManagementForms
 
                     inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
                     inventoryControlObj.DisplayIngredientInDGV();
+
+                    int year = DateTime.Now.Year;
+                    DateTime Jan1 = new DateTime(year, 1, 1);
+                    DateTime today = DateTime.Now;
+
+                    inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, Jan1, today);
+                    inventoryControlObj.DisplayInventoryTransactionHistory();
+
+                    DateTime startDateTransFilter = DateTime.Now;
+                    DateTime endDateTransFilter = startDateTransFilter.AddDays(1);
+                    inventoryControlObj.IngredientInventoryTransactionAll = _ingInventoryTransactionData.GetAllByDateRange(startDateTransFilter, endDateTransFilter);
+
                     //inventoryControlObj.SelectedIngredientInventory = _ingredientInventoryData
                 }
                 else
@@ -400,6 +417,13 @@ namespace Main.Forms.InventoryManagementForms
 
                     inventoryControlObj.Ingredients = _ingredientData.GetAllNotDeleted();
                     inventoryControlObj.DisplayIngredientInDGV();
+
+                    int year = DateTime.Now.Year;
+                    DateTime Jan1 = new DateTime(year, 1, 1);
+                    DateTime today = DateTime.Now;
+
+                    inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(ingredientId, Jan1, today);
+                    inventoryControlObj.DisplayInventoryTransactionHistory();
                 }
                 else
                 {
@@ -418,6 +442,18 @@ namespace Main.Forms.InventoryManagementForms
 
             inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, startDate, endDate);
             inventoryControlObj.DisplayInventoryTransactionHistory();
+        }
+
+
+        private void HandleFilterTransactionAllHistory(object sender, EventArgs e)
+        {
+            IngredientInventoryControl inventoryControlObj = (IngredientInventoryControl)sender;
+            long selectedIngredientId = inventoryControlObj.SelectedIngredientId;
+            DateTime startDate = inventoryControlObj.FilterTransactionAllStartDate;
+            DateTime endDate = inventoryControlObj.FilterTransactionAllEndDate;
+
+            inventoryControlObj.IngredientInventoryTransactionAll = _ingInventoryTransactionData.GetAllByDateRange(startDate, endDate);
+            inventoryControlObj.DisplayInventoryTransactionHistoryAll(inventoryControlObj.IngredientInventoryTransactionAll);
         }
 
 
@@ -459,6 +495,12 @@ namespace Main.Forms.InventoryManagementForms
 
                     inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, Jan1, today);
                     inventoryControlObj.DisplayInventoryTransactionHistory();
+
+
+                    DateTime startDateTransFilter = DateTime.Now;
+                    DateTime endDateTransFilter = startDateTransFilter.AddDays(1);
+                    inventoryControlObj.IngredientInventoryTransactionAll = _ingInventoryTransactionData.GetAllByDateRange(startDateTransFilter, endDateTransFilter);
+                    inventoryControlObj.DisplayInventoryTransactionHistoryAll(inventoryControlObj.IngredientInventoryTransactionAll);
                 }
                 else
                 {
@@ -506,6 +548,12 @@ namespace Main.Forms.InventoryManagementForms
 
                     inventoryControlObj.InventoryTransactionHistory = _ingInventoryTransactionData.GetAllByIngredientAndDateRange(selectedIngredientId, Jan1, today);
                     inventoryControlObj.DisplayInventoryTransactionHistory();
+
+
+                    DateTime startDateTransFilter = DateTime.Now;
+                    DateTime endDateTransFilter = startDateTransFilter.AddDays(1);
+                    inventoryControlObj.IngredientInventoryTransactionAll = _ingInventoryTransactionData.GetAllByDateRange(startDateTransFilter, endDateTransFilter);
+                    inventoryControlObj.DisplayInventoryTransactionHistoryAll(inventoryControlObj.IngredientInventoryTransactionAll);
                 }
                 else
                 {
