@@ -672,7 +672,6 @@ CREATE TABLE IF NOT EXISTS ComboMealProducts(
     FOREIGN KEY(productId) REFERENCES Products(id)
 )ENGINE=INNODB;
 
-
 select * from ComboMealProducts;
 
 
@@ -693,6 +692,9 @@ CREATE TABLE IF NOT EXISTS StoreTables(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+
+SELECT * FROM StoreTables;
 
 
 CREATE TABLE IF NOT EXISTS SalesTransactions(

@@ -34,6 +34,7 @@ namespace Main.Forms.POSManagementForms
         private readonly IPOSCommandController _iPOSCommandController;
         private readonly IPOSReadController _pOSReadController;
         private readonly IIngredientData _ingredientData;
+        private readonly IComboMealProductData _comboMealProductData;
         private readonly POSState _pOSState;
         private readonly UOMConverter _uOMConverter;
         private readonly IStoreTableData _storeTableData;
@@ -47,6 +48,7 @@ namespace Main.Forms.POSManagementForms
                                 IPOSCommandController iPOSCommandController,
                                 IPOSReadController pOSReadController,
                                 IIngredientData ingredientData,
+                                IComboMealProductData comboMealProductData,
                                 POSState pOSState,
                                 UOMConverter uOMConverter,
                                 IOptions<OtherSettings> otherSettings,
@@ -61,6 +63,7 @@ namespace Main.Forms.POSManagementForms
             _iPOSCommandController = iPOSCommandController;
             _pOSReadController = pOSReadController;
             _ingredientData = ingredientData;
+            _comboMealProductData = comboMealProductData;
             _pOSState = pOSState;
             _uOMConverter = uOMConverter;
             _storeTableData = storeTableData;
@@ -309,15 +312,32 @@ namespace Main.Forms.POSManagementForms
 
             if (comboMealItemObj != null && comboMealItemObj.ComboMeal != null)
             {
-                FrmEnterComboMealQuantity frmEnterComboMealQuantity = new(comboMealItemObj.ComboMeal, _otherSettings);
+                var existingComboMealInCart = _pOSState.CurrentSaleTransactionComboMeals
+                                                .Where(x => x.ComboMealId == comboMealItemObj.ComboMeal.Id)
+                                                .FirstOrDefault();
+
+                int existingQty = existingComboMealInCart != null ? existingComboMealInCart.Qty : 1;
+
+                var comboMealProducts = _comboMealProductData.GetAllByComboMeal(comboMealItemObj.ComboMeal.Id);
+
+                List<ProductIngredientModel> productIngredients = new List<ProductIngredientModel>();
+
+                if (comboMealProducts != null)
+                {
+                    foreach(var prod in comboMealProducts)
+                    {
+                        var ingredients = _productIngredientData.GetAllByProduct(prod.ProductId);
+                        productIngredients.AddRange(ingredients);
+                    }
+                }
+
+                FrmEnterComboMealQuantity frmEnterComboMealQuantity = new(comboMealItemObj.ComboMeal, 
+                                                                            _otherSettings,
+                                                                            _ingredientInventoryManager, productIngredients, existingQty);
                 frmEnterComboMealQuantity.ShowDialog();
                 
                 if(frmEnterComboMealQuantity.IsCancelled == false && frmEnterComboMealQuantity.ComboMeal != null)
                 {
-                    var existingComboMealInCart = _pOSState.CurrentSaleTransactionComboMeals
-                                                    .Where(x => x.ComboMealId == frmEnterComboMealQuantity.ComboMeal.Id)
-                                                    .FirstOrDefault();
-
                     if (existingComboMealInCart == null)
                     {
                         var newComboMealObjRef = JsonSerializer.Deserialize<ComboMealModel>(JsonSerializer.Serialize(frmEnterComboMealQuantity.ComboMeal));

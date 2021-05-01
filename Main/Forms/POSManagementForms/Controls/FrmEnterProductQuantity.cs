@@ -89,7 +89,7 @@ namespace Main.Forms.POSManagementForms.Controls
             this.DGVProductExistingIngredients.ColumnHeadersHeight = 30;
 
             // ingredients
-            this.DisplayProductsExistingIngredientsInDGV(_existingProductIngredients, 1);
+            this.DisplayProductsExistingIngredientsInDGV(_existingProductIngredients, _quantity);
         }
 
         private void NumUpDownOrderQty_KeyUp(object sender, KeyEventArgs e)
