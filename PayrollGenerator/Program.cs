@@ -152,7 +152,6 @@ namespace PayrollGenerator
             var payslipGenerator = ActivatorUtilities.CreateInstance<PayslipGenerator>(host.Services);
 
             RecurringJob.AddOrUpdate(() => payslipGenerator.GeneratePayslip(), Cron.Daily);
-            //BackgroundJob.Enqueue(() => payslipGenerator.GeneratePayslip());
 
             HostFactory.Run(configure =>
             {
@@ -169,6 +168,7 @@ namespace PayrollGenerator
                 configure.SetDescription("Chonoland Hils Cafe Management system payroll generator background service.");
             });
 
+            // BackgroundJob.Enqueue(() => payslipGenerator.GeneratePayslip());
             //using (var server = new BackgroundJobServer())
             //{
             //    Log.Logger.Information("Hangfire server started...");

@@ -671,11 +671,11 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 categoryId = long.Parse(selectedCategory.Value.ToString());
             }
 
-            var searchResults = this.Ingredients.Where(x => x.IngName.Contains(searchStr)).ToList();
+            var searchResults = this.Ingredients.Where(x => x.IngName.ToLower().Contains(searchStr.ToLower())).ToList();
 
             if (categoryId > 0 && string.IsNullOrWhiteSpace(searchStr) == false)
             { // both category and search string
-                searchResults = this.Ingredients.Where(x => x.IngName.Contains(searchStr) && x.CategoryId == categoryId).ToList();
+                searchResults = this.Ingredients.Where(x => x.IngName.ToLower().Contains(searchStr.ToLower()) && x.CategoryId == categoryId).ToList();
 
             }else if (categoryId > 0 && string.IsNullOrWhiteSpace(searchStr) == true)
             {
