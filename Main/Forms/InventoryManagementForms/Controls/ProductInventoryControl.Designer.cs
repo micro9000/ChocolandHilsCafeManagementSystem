@@ -352,12 +352,13 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.label15.ForeColor = System.Drawing.Color.Red;
             this.label15.Location = new System.Drawing.Point(241, 55);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(445, 15);
+            this.label15.Size = new System.Drawing.Size(450, 15);
             this.label15.TabIndex = 31;
-            this.label15.Text = "Guide: Select ingredients on this tab, then go to next tab to input ingredient am" +
-    "ount";
+            this.label15.Text = "Guide: Select ingredients on this tab, then go to next tab to input ingredients a" +
+    "mount";
             // 
             // LblTotalCostFromAddingNewProduct
             // 

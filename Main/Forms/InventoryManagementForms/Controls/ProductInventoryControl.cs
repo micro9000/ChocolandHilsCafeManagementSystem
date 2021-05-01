@@ -111,6 +111,10 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.SelectedProductCategoryId = 0;
         }
 
+        public void MoveToAddProductTab()
+        {
+            this.MainTabControl.SelectedIndex = this.MainTabControl.TabPages.IndexOf(MainTabAddProduct);
+        }
 
         private void BtnSaveCategory_Click(object sender, EventArgs e)
         {
@@ -1054,63 +1058,67 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 return;
             }
 
-            if (this.SelectedIngredients == null)
+            //if (this.SelectedIngredients == null)
+            //{
+            //    MessageBox.Show($"Kindly choose product's ingredients.", "Product's ingredients", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    return;
+            //}
+
+            //if (this.SelectedIngredients.Count == 0)
+            //{
+            //    MessageBox.Show($"Kindly choose product's ingredients.", "Product's ingredients", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    return;
+            //}
+
+            if (this.SelectedIngredients != null && this.SelectedIngredients.Count > 0)
             {
-                MessageBox.Show($"Kindly choose product's ingredients.", "Product's ingredients", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
-            if (this.SelectedIngredients.Count == 0)
-            {
-                MessageBox.Show($"Kindly choose product's ingredients.", "Product's ingredients", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
-            foreach (DataGridViewRow row in this.DGVSelectedIngredients.Rows)
-            {
-                long tempIngredientId = long.Parse(row.Cells["IngredientId"].Value.ToString());
-                string ingredientNmae = row.Cells["Ingredient"].Value.ToString();
-                string uom = row.Cells["UOMToUse"].Value != null ? row.Cells["UOMToUse"].Value.ToString() : "";
-                string qtyValueTmp = row.Cells["selectedIngredientAmount"].Value != null ? row.Cells["selectedIngredientAmount"].Value.ToString() : "";
-
-                if (string.IsNullOrEmpty(uom))
+                foreach (DataGridViewRow row in this.DGVSelectedIngredients.Rows)
                 {
-                    MessageBox.Show($"Kindly choose unit of measurement for {ingredientNmae}", "Unit of measurement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    isContinueToGenerateData = false;
-                    break;
-                }
+                    long tempIngredientId = long.Parse(row.Cells["IngredientId"].Value.ToString());
+                    string ingredientNmae = row.Cells["Ingredient"].Value.ToString();
+                    string uom = row.Cells["UOMToUse"].Value != null ? row.Cells["UOMToUse"].Value.ToString() : "";
+                    string qtyValueTmp = row.Cells["selectedIngredientAmount"].Value != null ? row.Cells["selectedIngredientAmount"].Value.ToString() : "";
 
-                if (string.IsNullOrEmpty(qtyValueTmp))
-                {
-                    MessageBox.Show($"Kindly provide quantity value for {ingredientNmae}", "Quantity value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    isContinueToGenerateData = false;
-                    break;
-                }
-
-                if (decimal.TryParse(qtyValueTmp, out decimal qtyValue))
-                {
-                    var existingIngredientDetails = ProductSelectedIngredients.Where(x => x.IngredientId == tempIngredientId).FirstOrDefault() ;
-
-                    if (existingIngredientDetails == null)
+                    if (string.IsNullOrEmpty(uom))
                     {
-                        ProductSelectedIngredients.Add(new ProductIngredientModel
+                        MessageBox.Show($"Kindly choose unit of measurement for {ingredientNmae}", "Unit of measurement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        isContinueToGenerateData = false;
+                        break;
+                    }
+
+                    if (string.IsNullOrEmpty(qtyValueTmp))
+                    {
+                        MessageBox.Show($"Kindly provide quantity value for {ingredientNmae}", "Quantity value", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        isContinueToGenerateData = false;
+                        break;
+                    }
+
+                    if (decimal.TryParse(qtyValueTmp, out decimal qtyValue))
+                    {
+                        var existingIngredientDetails = ProductSelectedIngredients.Where(x => x.IngredientId == tempIngredientId).FirstOrDefault();
+
+                        if (existingIngredientDetails == null)
                         {
-                            IngredientId = tempIngredientId,
-                            UOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), uom),
-                            QtyValue = qtyValue
-                        });
+                            ProductSelectedIngredients.Add(new ProductIngredientModel
+                            {
+                                IngredientId = tempIngredientId,
+                                UOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), uom),
+                                QtyValue = qtyValue
+                            });
+                        }
+                        else
+                        {
+                            existingIngredientDetails.UOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), uom);
+                            existingIngredientDetails.QtyValue = qtyValue;
+                            existingIngredientDetails.IsDeleted = false;
+                            existingIngredientDetails.DeletedAt = DateTime.MinValue;
+                        }
+
                     }
-                    else
-                    {
-                        existingIngredientDetails.UOM = (StaticData.UOM)Enum.Parse(typeof(StaticData.UOM), uom);
-                        existingIngredientDetails.QtyValue = qtyValue;
-                        existingIngredientDetails.IsDeleted = false;
-                        existingIngredientDetails.DeletedAt = DateTime.MinValue;
-                    }
-                    
                 }
             }
 
+            
             if (isContinueToGenerateData == true)
             {
                 if (IsNewProduct)
@@ -1195,6 +1203,18 @@ namespace Main.Forms.InventoryManagementForms.Controls
             ClearProductDetailsForm();
         }
 
+        public void SelectedCategoryInCbox(long categoryId)
+        {
+            for (var i = 0; i < this.CboxCategories.Items.Count; i++)
+            {
+                var item = this.CboxCategories.Items[i] as ComboboxItem;
+                if (long.Parse(item.Value.ToString()) == categoryId)
+                {
+                    this.CboxCategories.SelectedIndex = i;
+                    break;
+                }
+            }
+        }
 
         public void DisplayProductDetailsAndIngredientsInFormAndDGV()
         {
@@ -1204,16 +1224,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
 
             if (this.ProductToAddUpdate != null)
             {
-
-                for (var i=0; i< this.CboxCategories.Items.Count; i++)
-                {
-                    var item = this.CboxCategories.Items[i] as ComboboxItem;
-                    if (long.Parse(item.Value.ToString()) == this.ProductToAddUpdate.CategoryId)
-                    {
-                        this.CboxCategories.SelectedIndex = i;
-                        break;
-                    }
-                }
+                SelectedCategoryInCbox(this.ProductToAddUpdate.CategoryId);
 
                 this.TboxBarcodeLbl.Text = this.ProductToAddUpdate.BarcodeLbl;
                 this.TboxProductName.Text = this.ProductToAddUpdate.ProdName;

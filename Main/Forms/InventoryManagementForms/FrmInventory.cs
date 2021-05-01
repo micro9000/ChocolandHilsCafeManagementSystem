@@ -580,6 +580,9 @@ namespace Main.Forms.InventoryManagementForms
                     inventoryControlObj.ResetProductCategoryForm();
                     inventoryControlObj.ProductCategories = _productCategoryData.GetAllNotDeleted();
                     inventoryControlObj.DisplayProductCategoriesInDGV();
+
+                    inventoryControlObj.SelectedCategoryInCbox(saveResults.Data.Id);
+                    inventoryControlObj.MoveToAddProductTab();
                 }
                 else
                 {
