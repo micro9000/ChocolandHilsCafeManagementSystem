@@ -18,17 +18,20 @@ namespace Main.Forms.POSManagementForms.Controls
     public partial class FrmNewTransaction : Form
     {
         private readonly IPOSCommandController _iPOSCommandController;
-        private readonly List<TableStatusModel> _tableStatuses;
+        private readonly IPOSReadController _pOSReadController;
 
-        public FrmNewTransaction(IPOSCommandController iPOSCommandController, List<TableStatusModel> tableStatuses)
+        public FrmNewTransaction(IPOSCommandController iPOSCommandController, 
+                                 IPOSReadController pOSReadController)
         {
             InitializeComponent();
             _iPOSCommandController = iPOSCommandController;
-            _tableStatuses = tableStatuses;
+            _pOSReadController = pOSReadController;
         }
 
         public bool IsCancelled { get; set; }
         public bool IsInitiateSuccessful { get; set; }
+
+        public int SelectedTableNumber { get; set; }
 
         private SaleTransactionModel _newSalesTransaction;
 
@@ -41,21 +44,6 @@ namespace Main.Forms.POSManagementForms.Controls
         private void FrmNewTransaction_Load(object sender, EventArgs e)
         {
             NewSalesTransaction = null;
-
-            this.CboxAvailableTables.Items.Clear();
-            if (this._tableStatuses != null)
-            {
-                var availableTables = this._tableStatuses.Where(x => x.Status == StaticData.TableStatus.Available).ToList();
-                ComboboxItem item;
-                foreach (var table in availableTables)
-                {
-                    item = new ComboboxItem();
-                    item.Text = table.TableTitle;
-                    item.Value = table.TableNumber;
-                    this.CboxAvailableTables.Items.Add(item);
-                }
-            }
-
             TboxCustomerName.Focus();
         }
 
@@ -75,24 +63,17 @@ namespace Main.Forms.POSManagementForms.Controls
 
             string customerName = string.IsNullOrEmpty(TboxCustomerName.Text) ? "NA" : TboxCustomerName.Text;
 
-            int tableNumber = 0;
-            var selectedTable = this.CboxAvailableTables.SelectedItem as ComboboxItem;
-            if (selectedTable == null && transType == StaticData.POSTransactionType.DineIn)
+            if (this.SelectedTableNumber == 0 && transType == StaticData.POSTransactionType.DineIn)
             {
                 MessageBox.Show("Kindly choose table.", "Initiate new transaction.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
-            }
-
-            if (selectedTable != null && transType == StaticData.POSTransactionType.DineIn)
-            {
-                tableNumber = int.Parse(selectedTable.Value.ToString());
             }
 
             var newTrans = new SaleTransactionModel
             {
                 TransactionType = transType,
                 CustomerName = customerName,
-                TableNumber = tableNumber
+                TableNumber = this.SelectedTableNumber
             };
 
             var initiateResult = _iPOSCommandController.InitiateNewTransaction(newTrans);
@@ -122,6 +103,23 @@ namespace Main.Forms.POSManagementForms.Controls
             this.IsCancelled = true;
             this.IsInitiateSuccessful = false;
             this.Close();
+        }
+
+        private void BtnSelectTable_Click(object sender, EventArgs e)
+        {
+            FrmSelectAvailableTable frmSelectAvailableTable = new FrmSelectAvailableTable(_pOSReadController);
+            frmSelectAvailableTable.ShowDialog();
+
+            if (frmSelectAvailableTable.SelectedTableNumber > 0) {
+                this.SelectedTableNumber = frmSelectAvailableTable.SelectedTableNumber;
+                this.LblTableNumber.Text = $"T-{this.SelectedTableNumber}";
+            }
+            else
+            {
+                this.SelectedTableNumber = 0;
+                this.LblTableNumber.Text = $"";
+                MessageBox.Show("No selected table", "Select table", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

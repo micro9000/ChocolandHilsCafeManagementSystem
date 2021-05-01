@@ -214,7 +214,7 @@ namespace Main.Controllers.POSControllers
         }
 
 
-        public EntityResult<string> SaveSaleTransaction(long saleTransId, List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals)
+        public EntityResult<string> SaveSaleTransaction(long saleTransId, int tableNumber, List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals)
         {
             var results = new EntityResult<string>();
             results.IsSuccess = false;
@@ -272,6 +272,11 @@ namespace Main.Controllers.POSControllers
                 }
 
                 saleTransactionDetailsInDb.SubTotalAmount = subTotal;
+
+                if (tableNumber != saleTransactionDetailsInDb.TableNumber)
+                {
+                    saleTransactionDetailsInDb.TableNumber = tableNumber;
+                }
 
                 _salesTransactionData.Update(saleTransactionDetailsInDb);
 

@@ -80,6 +80,7 @@ namespace Main.Controllers.POSControllers
                 var activeDineInOnTheCurrentTable = activeDineInSalesTrans.Where(x => x.TableNumber == tableNum).FirstOrDefault();
 
                 tables.Add(new TableStatusModel { 
+                    CurrentTransactionId = activeDineInOnTheCurrentTable == null ? 0 : activeDineInOnTheCurrentTable.Id,
                     TableNumber = tableNum,
                     TableTitle = $"T-{tableNum}",
                     Status = activeDineInOnTheCurrentTable == null ? StaticData.TableStatus.Available : StaticData.TableStatus.Occupied

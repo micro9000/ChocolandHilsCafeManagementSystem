@@ -25,7 +25,7 @@ namespace DataAccess.Data.POSManagement.Implementations
         public List<SaleTransactionModel> GetActiveTransactionGreaterOrEqualToMaxTable (int maxTableNum)
         {
             string query = @"SELECT * FROM SalesTransactions 
-                            WHERE isDeleted=false AND transStatus=@OngoingStatus AND tableNumber >= @MaxTableNumber";
+                            WHERE isDeleted=false AND transStatus=@OngoingStatus AND tableNumber > @MaxTableNumber";
 
             return this.GetAll(query,
                 new {

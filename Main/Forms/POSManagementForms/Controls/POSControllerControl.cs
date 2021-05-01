@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EntitiesShared;
+using Shared.CustomModels;
 
 namespace Main.Forms.POSManagementForms.Controls
 {
@@ -28,6 +29,8 @@ namespace Main.Forms.POSManagementForms.Controls
             _pOSReadController = pOSReadController;
             _pOSState = pOSState;
         }
+
+        public int CurrentTransactionTableNumber { get; set; }
 
         private List<SaleTransactionModel> _activedineInTransactions;
 
@@ -62,6 +65,7 @@ namespace Main.Forms.POSManagementForms.Controls
                     this.LblTransactionType.Text = "Dine-in";
                     this.LblTransactionType.BackColor = Color.Blue;
                     this.LblTransactionType.ForeColor = Color.White;
+                    this.BtnSelectTable.Enabled = true;
                 }
 
                 if (_pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.TakeOut)
@@ -72,13 +76,15 @@ namespace Main.Forms.POSManagementForms.Controls
 
                 this.TboxTicketNumber.Text = _pOSState.CurrentSaleTransaction.TicketNumber;
                 this.TboxCustomerName.Text = _pOSState.CurrentSaleTransaction.CustomerName;
-                this.TboxTableNumber.Text = _pOSState.CurrentSaleTransaction.TableNumber.ToString();
+                this.LblCurrentTransTable.Text = $"T-{_pOSState.CurrentSaleTransaction.TableNumber}";
+                this.CurrentTransactionTableNumber = _pOSState.CurrentSaleTransaction.TableNumber;
 
                 //this.LblSubTotal.Text = _pOSState.ToStringSubTotal;
             }
 
             DisplayCurrentSaleTransactionSubTotal();
         }
+
 
         public void DisplayCurrentSaleTransactionSubTotal()
         {
@@ -98,7 +104,10 @@ namespace Main.Forms.POSManagementForms.Controls
             this.LblTransactionType.ForeColor = Color.Black;
             this.TboxTicketNumber.Text = "";
             this.TboxCustomerName.Text = "";
-            this.TboxTableNumber.Text = "";
+            this.LblCurrentTransTable.Text = "";
+            this.CurrentTransactionTableNumber = 0;
+
+            this.BtnSelectTable.Enabled = false;
         }
 
         private void SetDGVActiveDineInTransactionsFontAndColors()
@@ -132,8 +141,7 @@ namespace Main.Forms.POSManagementForms.Controls
             _pOSState.CurrentSaleTransactionProducts = new List<SaleTransactionProductModel>();
             _pOSState.CurrentSaleTransactionComboMeals = new List<SaleTransactionComboMealModel>();
 
-            var tableStatuses = _pOSReadController.GetTableStatus();
-            FrmNewTransaction frmNewTransaction = new(_iPOSCommandController, tableStatuses);
+            FrmNewTransaction frmNewTransaction = new(_iPOSCommandController, _pOSReadController);
             frmNewTransaction.ShowDialog();
 
             bool isCancelled = frmNewTransaction.IsCancelled;
@@ -272,7 +280,13 @@ namespace Main.Forms.POSManagementForms.Controls
         {
             if (_pOSState.CurrentSaleTransaction != null)
             {
-                var saveResults = _iPOSCommandController.SaveSaleTransaction(_pOSState.CurrentSaleTransaction.Id, _pOSState.CurrentSaleTransactionProducts, _pOSState.CurrentSaleTransactionComboMeals);
+                if (this.CurrentTransactionTableNumber == 0 && _pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.DineIn)
+                {
+                    MessageBox.Show("Kindly select table.", "Save", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                var saveResults = _iPOSCommandController.SaveSaleTransaction(_pOSState.CurrentSaleTransaction.Id, this.CurrentTransactionTableNumber, _pOSState.CurrentSaleTransactionProducts, _pOSState.CurrentSaleTransactionComboMeals);
 
                 string resMsg = "";
                 foreach(var msg in saveResults.Messages)
@@ -300,7 +314,13 @@ namespace Main.Forms.POSManagementForms.Controls
         {
             if (_pOSState.CurrentSaleTransaction != null)
             {
-                var saveResults = _iPOSCommandController.SaveSaleTransaction(_pOSState.CurrentSaleTransaction.Id, _pOSState.CurrentSaleTransactionProducts, _pOSState.CurrentSaleTransactionComboMeals);
+                if (this.CurrentTransactionTableNumber == 0 && _pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.DineIn)
+                {
+                    MessageBox.Show("Kindly select table.", "Save", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                var saveResults = _iPOSCommandController.SaveSaleTransaction(_pOSState.CurrentSaleTransaction.Id, this.CurrentTransactionTableNumber, _pOSState.CurrentSaleTransactionProducts, _pOSState.CurrentSaleTransactionComboMeals);
 
                 string resMsg = "";
                 foreach (var msg in saveResults.Messages)
@@ -334,6 +354,18 @@ namespace Main.Forms.POSManagementForms.Controls
                 }
             }
 
+        }
+
+        private void BtnSelectTable_Click(object sender, EventArgs e)
+        {
+            FrmSelectAvailableTable frmSelectAvailableTable = new FrmSelectAvailableTable(_pOSReadController);
+            frmSelectAvailableTable.ShowDialog();
+
+            if (frmSelectAvailableTable.SelectedTableNumber > 0)
+            {
+                this.CurrentTransactionTableNumber = frmSelectAvailableTable.SelectedTableNumber;
+                this.LblCurrentTransTable.Text = $"T-{this.CurrentTransactionTableNumber}";
+            }
         }
     }
 }

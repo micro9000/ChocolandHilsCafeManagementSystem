@@ -13,7 +13,7 @@ namespace Main.Controllers.POSControllers.ControllerInterface
         EntityResult<string> UpdateMaxTableNumber(decimal newMaxTableNum);
 
         EntityResult<SaleTransactionModel> InitiateNewTransaction(SaleTransactionModel newSalesTransaction);
-        EntityResult<string> SaveSaleTransaction(long saleTransId, List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals);
+        EntityResult<string> SaveSaleTransaction(long saleTransId, int tableNumber, List<SaleTransactionProductModel> products, List<SaleTransactionComboMealModel> comboMeals);
 
         EntityResult<string> CancelSaleTransaction(long saleTransId);
 

@@ -8,6 +8,8 @@ namespace EntitiesShared.POSManagement.CustomModels
 {
     public class TableStatusModel
     {
+        public long CurrentTransactionId { get; set; }
+
         public int TableNumber { get; set; }
 
         public string TableTitle { get; set; }

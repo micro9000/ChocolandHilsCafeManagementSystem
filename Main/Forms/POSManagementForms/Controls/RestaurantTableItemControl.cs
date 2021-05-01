@@ -17,11 +17,20 @@ namespace Main.Forms.POSManagementForms.Controls
             InitializeComponent();
         }
 
+        public long TransactionId { get; set; }
+
         public bool IsOccupied { get; set; }
 
         public int TableNumber { get; set; }
 
         public string TableTitle { get; set; }
+
+        public event EventHandler ClickThisTable;
+        protected virtual void OnClickThisTable(EventArgs e)
+        {
+            ClickThisTable?.Invoke(this, e);
+        }
+
 
         private void RestaurantTableItemControl_Load(object sender, EventArgs e)
         {
@@ -45,6 +54,20 @@ namespace Main.Forms.POSManagementForms.Controls
             }
 
             this.LblTableNumber.Text = this.TableTitle;
+
+            this.initControlsRecursive(this.Controls);
+        }
+
+
+        private void initControlsRecursive(ControlCollection coll)
+        {
+            foreach (Control c in coll)
+            {
+                c.MouseClick += (sender, e) => {
+                    OnClickThisTable(EventArgs.Empty);
+                };
+                initControlsRecursive(c.Controls);
+            }
         }
     }
 }
