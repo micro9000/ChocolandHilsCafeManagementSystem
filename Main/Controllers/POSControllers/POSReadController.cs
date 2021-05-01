@@ -23,6 +23,7 @@ namespace Main.Controllers.POSControllers
         private readonly ISaleTransactionProductData _saleTransactionProductData;
         private readonly ISaleTransactionComboMealData _saleTransactionComboMealData;
         private readonly ICashRegisterCashOutTransactionData _cashRegisterCashOutTransactionData;
+        private readonly IStoreTableData _storeTableData;
         private readonly OtherSettings _otherSettings;
 
         public POSReadController(ILogger<POSReadController> logger,
@@ -31,6 +32,7 @@ namespace Main.Controllers.POSControllers
                                 ISaleTransactionProductData saleTransactionProductData,
                                 ISaleTransactionComboMealData saleTransactionComboMealData,
                                 ICashRegisterCashOutTransactionData cashRegisterCashOutTransactionData,
+                                IStoreTableData storeTableData,
                                 IOptions<OtherSettings> otherSettings)
         {
             _logger = logger;
@@ -39,6 +41,7 @@ namespace Main.Controllers.POSControllers
             _saleTransactionProductData = saleTransactionProductData;
             _saleTransactionComboMealData = saleTransactionComboMealData;
             _cashRegisterCashOutTransactionData = cashRegisterCashOutTransactionData;
+            _storeTableData = storeTableData;
             _otherSettings = otherSettings.Value;
         }
 
@@ -66,12 +69,13 @@ namespace Main.Controllers.POSControllers
 
         public List<TableStatusModel> GetTableStatus()
         {
-            int numberOfTable = _otherSettings.POSNumberOfTable;
+            var storeTable = _storeTableData.GetTheLastTransaction();
+            decimal numberOfTables = storeTable == null ? 20 : storeTable.NumberOfTables;
             List<TableStatusModel> tables = new List<TableStatusModel>();
 
             var activeDineInSalesTrans = this.GetActiveDineInSalesTransactions();
 
-            for(var tableNum=1; tableNum <= numberOfTable; tableNum++)
+            for(var tableNum=1; tableNum <= numberOfTables; tableNum++)
             {
                 var activeDineInOnTheCurrentTable = activeDineInSalesTrans.Where(x => x.TableNumber == tableNum).FirstOrDefault();
 

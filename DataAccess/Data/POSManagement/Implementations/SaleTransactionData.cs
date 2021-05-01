@@ -22,6 +22,18 @@ namespace DataAccess.Data.POSManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
+        public List<SaleTransactionModel> GetActiveTransactionGreaterOrEqualToMaxTable (int maxTableNum)
+        {
+            string query = @"SELECT * FROM SalesTransactions 
+                            WHERE isDeleted=false AND transStatus=@OngoingStatus AND tableNumber >= @MaxTableNumber";
+
+            return this.GetAll(query,
+                new {
+                    OngoingStatus = (int)StaticData.POSTransactionStatus.OnGoing,
+                    MaxTableNumber = maxTableNum
+                });
+        }
+
         public List<SaleTransactionModel> GetAllByTransactionDate (DateTime transDate, StaticData.POSTransactionStatus POSTransactionStatus)
         {
             string query = @"SELECT * FROM SalesTransactions 

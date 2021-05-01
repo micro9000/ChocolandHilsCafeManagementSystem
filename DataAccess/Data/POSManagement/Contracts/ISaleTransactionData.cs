@@ -12,6 +12,7 @@ namespace DataAccess.Data.POSManagement.Contracts
 {
     public interface ISaleTransactionData : IDataManagerCRUD<SaleTransactionModel>
     {
+        List<SaleTransactionModel> GetActiveTransactionGreaterOrEqualToMaxTable(int maxTableNum);
         List<SaleTransactionModel> GetAllByTransactionDate(DateTime transDate, StaticData.POSTransactionStatus POSTransactionStatus);
         List<SaleTransactionModel> GetAllByTransactionDateRange(DateTime startDate, DateTime endDate, StaticData.POSTransactionStatus POSTransactionStatus);
         List<SaleTransactionModel> GetSalesTransactionByStatusAndTransType(StaticData.POSTransactionStatus POSTransactionStatus, StaticData.POSTransactionType posTransactionType);

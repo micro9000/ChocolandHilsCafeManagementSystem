@@ -523,6 +523,7 @@ VALUES (1,2);
 -- --------------------------------------------------------------------------------------
 
 
+
 CREATE TABLE IF NOT EXISTS IngredientCategories(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	category VARCHAR(255),
@@ -566,6 +567,7 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
 
 SELECT *
 FROM Ingredients AS ING
+JOIN IngredientCategories AS CAT ON CAT.id = ING.categoryId
 JOIN IngredientInventory AS INGINV ON ING.id = INGINV.ingredientId
 WHERE ING.isDeleted=false AND INGINV.isDeleted=false AND INGINV.isSoldOut=false;
 
@@ -640,7 +642,7 @@ CREATE TABLE IF NOT EXISTS ProductIngredients(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
-SELECT * FROM ProductIngredients;
+SELECT * FROM ProductIngredients; 
 
 CREATE TABLE IF NOT EXISTS ComboMeals(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -683,6 +685,16 @@ select * from ComboMealProducts;
 --     isOccupied BOOLEAN DEFAULT False
 -- )ENGINE=INNODB;
 
+CREATE TABLE IF NOT EXISTS StoreTables(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	numberOfTables INT,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+
 CREATE TABLE IF NOT EXISTS SalesTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     transactionType INT, -- Dine-in or Take-out (Enum values)
@@ -711,7 +723,8 @@ ADD COLUMN discountPercent DECIMAL;
 ALTER TABLE SalesTransactions
 ADD COLUMN isCashOut BOOLEAN DEFAULT false;
 
-SELECT * FROM SalesTransactions;
+SELECT * FROM SalesTransactions 
+WHERE isDeleted=false AND transStatus=1 AND tableNumber >= 1;
 
 CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

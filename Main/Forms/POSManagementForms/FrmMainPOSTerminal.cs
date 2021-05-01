@@ -1,4 +1,5 @@
 ﻿using DataAccess.Data.InventoryManagement.Contracts;
+using DataAccess.Data.POSManagement.Contracts;
 using EntitiesShared;
 using EntitiesShared.InventoryManagement;
 using EntitiesShared.InventoryManagement.Models;
@@ -35,6 +36,7 @@ namespace Main.Forms.POSManagementForms
         private readonly IIngredientData _ingredientData;
         private readonly POSState _pOSState;
         private readonly UOMConverter _uOMConverter;
+        private readonly IStoreTableData _storeTableData;
         private readonly IIngredientInventoryManager _ingredientInventoryManager;
         private readonly IProductIngredientData _productIngredientData;
         private readonly OtherSettings _otherSettings;
@@ -48,6 +50,7 @@ namespace Main.Forms.POSManagementForms
                                 POSState pOSState,
                                 UOMConverter uOMConverter,
                                 IOptions<OtherSettings> otherSettings,
+                                IStoreTableData storeTableData,
                                 IIngredientInventoryManager ingredientInventoryManager,
                                 IProductIngredientData productIngredientData)
         {
@@ -60,6 +63,7 @@ namespace Main.Forms.POSManagementForms
             _ingredientData = ingredientData;
             _pOSState = pOSState;
             _uOMConverter = uOMConverter;
+            _storeTableData = storeTableData;
             _ingredientInventoryManager = ingredientInventoryManager;
             _productIngredientData = productIngredientData;
             _otherSettings = otherSettings.Value;
@@ -122,6 +126,11 @@ namespace Main.Forms.POSManagementForms
             InitializePOSControllerControl();
 
             _pOSState.PropertyChanged += TestingHandlingPOSStateChange;
+
+
+
+            var currentTables = _storeTableData.GetTheLastTransaction();
+            this.TboxCurrentNumberOfTables.Text = currentTables == null ? "20" : currentTables.NumberOfTables.ToString();
         }
 
         public void TestingHandlingPOSStateChange(object sender, PropertyChangedEventArgs e)
@@ -1075,6 +1084,30 @@ namespace Main.Forms.POSManagementForms
 
                     this.DGVCashRegisterTransactions.Rows.Add(row);
                 }
+            }
+        }
+
+        private void BtnNumberOfTables_Click(object sender, EventArgs e)
+        {
+            decimal newMaxTableNum = this.TboxCurrentNumberOfTables.Value;
+            var saveResults = _iPOSCommandController.UpdateMaxTableNumber(newMaxTableNum);
+
+            string msg = "";
+
+            foreach(var tempMsg in saveResults.Messages)
+            {
+                msg += $"{tempMsg} \n";
+            }
+
+            if (saveResults.IsSuccess)
+            {
+                MessageBox.Show(msg, "Update number of tables", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.TableStatus = _pOSReadController.GetTableStatus();
+                DisplayTableStatus(this.TableStatus);
+            }
+            else
+            {
+                MessageBox.Show(msg, "Update number of tables", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

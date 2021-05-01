@@ -23,6 +23,7 @@ namespace Main.Controllers.POSControllers
     {
         private readonly ILogger<POSCommandController> _logger;
         private readonly IMapper _mapper;
+        private readonly IStoreTableData _storeTableData;
         private readonly ISaleTransactionData _salesTransactionData;
         private readonly ISaleTransactionProductData _saleTransactionProductData;
         private readonly ISaleTransactionComboMealData _saleTransactionComboMealData;
@@ -41,6 +42,7 @@ namespace Main.Controllers.POSControllers
 
         public POSCommandController(ILogger<POSCommandController> logger,
                                 IMapper mapper,
+                                IStoreTableData storeTableData,
                                 ISaleTransactionData salesTransactionData,
                                 ISaleTransactionProductData saleTransactionProductData,
                                 ISaleTransactionComboMealData saleTransactionComboMealData,
@@ -59,6 +61,7 @@ namespace Main.Controllers.POSControllers
         {
             _logger = logger;
             _mapper = mapper;
+            _storeTableData = storeTableData;
             _salesTransactionData = salesTransactionData;
             _saleTransactionProductData = saleTransactionProductData;
             _saleTransactionComboMealData = saleTransactionComboMealData;
@@ -74,6 +77,67 @@ namespace Main.Controllers.POSControllers
             _sessions = sessions;
             _initiateNewDineInSalesTransValidator = initiateNewDineInSalesTransValidator;
             _initiateNewTakeOutSalesTransValidator = initiateNewTakeOutSalesTransValidator;
+        }
+
+        public bool CheckIfCanUpdateMaxTableNumber(decimal maxTableNumber)
+        {
+            var activeTransactionGreaterOrEqualToThisMaxTableNum = _salesTransactionData.GetActiveTransactionGreaterOrEqualToMaxTable((int)maxTableNumber);
+
+            if (activeTransactionGreaterOrEqualToThisMaxTableNum == null)
+                return true;
+
+            if (activeTransactionGreaterOrEqualToThisMaxTableNum.Count == 0)
+                return true;
+
+            return false;
+        }
+
+        public EntityResult<string> UpdateMaxTableNumber (decimal newMaxTableNum)
+        {
+            var results = new EntityResult<string>();
+            results.IsSuccess = false;
+
+
+            var lastData = _storeTableData.GetTheLastTransaction();
+
+            if (lastData == null)
+            {
+                var tableId = _storeTableData.Add(new StoreTableModel { NumberOfTables = newMaxTableNum });
+
+                if (tableId > 0)
+                {
+                    results.IsSuccess = true;
+                    results.Messages.Add("Successfully update number of tables");
+                    return results;
+                }
+            }
+
+            if (lastData != null)
+            {
+                bool canWeUpdateMaxTable = CheckIfCanUpdateMaxTableNumber(newMaxTableNum);
+
+                if (canWeUpdateMaxTable == false)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add($"Unable to update number of tables. Ongoing transaction(s) using tables greater than or equal to {newMaxTableNum}");
+                    return results;
+                }
+
+                if (canWeUpdateMaxTable)
+                {
+                    lastData.NumberOfTables = newMaxTableNum;
+                    if (_storeTableData.Update(lastData))
+                    {
+                        results.IsSuccess = true;
+                        results.Messages.Add("Successfully update number of tables");
+                        return results;
+                    }
+                }
+            }
+
+            results.Messages.Add("Unable to update number of tables");
+
+            return results;
         }
 
         public string GetTicketNumber()

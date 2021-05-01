@@ -60,6 +60,9 @@ namespace Main.Forms.POSManagementForms
             this.PanelDineInOrdersTableStatus = new System.Windows.Forms.Panel();
             this.FlowLayoutTables = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.BtnNumberOfTables = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.TabPageSalesHistory = new System.Windows.Forms.TabPage();
@@ -134,6 +137,7 @@ namespace Main.Forms.POSManagementForms
             this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
+            this.TboxCurrentNumberOfTables = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.MainSplitContainer)).BeginInit();
             this.MainSplitContainer.Panel1.SuspendLayout();
             this.MainSplitContainer.Panel2.SuspendLayout();
@@ -161,6 +165,7 @@ namespace Main.Forms.POSManagementForms
             this.TabPageTableStatus.SuspendLayout();
             this.PanelDineInOrdersTableStatus.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.TabPageSalesHistory.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -184,6 +189,7 @@ namespace Main.Forms.POSManagementForms
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TboxCurrentNumberOfTables)).BeginInit();
             this.SuspendLayout();
             // 
             // MainSplitContainer
@@ -529,9 +535,9 @@ namespace Main.Forms.POSManagementForms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.PanelDineInOrdersTableStatus.Controls.Add(this.FlowLayoutTables);
             this.PanelDineInOrdersTableStatus.Controls.Add(this.panel1);
-            this.PanelDineInOrdersTableStatus.Location = new System.Drawing.Point(63, 23);
+            this.PanelDineInOrdersTableStatus.Location = new System.Drawing.Point(63, 27);
             this.PanelDineInOrdersTableStatus.Name = "PanelDineInOrdersTableStatus";
-            this.PanelDineInOrdersTableStatus.Size = new System.Drawing.Size(1101, 567);
+            this.PanelDineInOrdersTableStatus.Size = new System.Drawing.Size(1101, 563);
             this.PanelDineInOrdersTableStatus.TabIndex = 0;
             // 
             // FlowLayoutTables
@@ -541,11 +547,12 @@ namespace Main.Forms.POSManagementForms
             this.FlowLayoutTables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FlowLayoutTables.Location = new System.Drawing.Point(0, 62);
             this.FlowLayoutTables.Name = "FlowLayoutTables";
-            this.FlowLayoutTables.Size = new System.Drawing.Size(1101, 505);
+            this.FlowLayoutTables.Size = new System.Drawing.Size(1101, 501);
             this.FlowLayoutTables.TabIndex = 2;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.panel5);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -553,6 +560,41 @@ namespace Main.Forms.POSManagementForms
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1101, 62);
             this.panel1.TabIndex = 1;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.TboxCurrentNumberOfTables);
+            this.panel5.Controls.Add(this.label1);
+            this.panel5.Controls.Add(this.BtnNumberOfTables);
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel5.Location = new System.Drawing.Point(700, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(401, 62);
+            this.panel5.TabIndex = 65;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(138, 21);
+            this.label1.TabIndex = 64;
+            this.label1.Text = "Number of tables";
+            // 
+            // BtnNumberOfTables
+            // 
+            this.BtnNumberOfTables.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnNumberOfTables.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnNumberOfTables.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnNumberOfTables.ForeColor = System.Drawing.Color.White;
+            this.BtnNumberOfTables.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnNumberOfTables.Location = new System.Drawing.Point(301, 11);
+            this.BtnNumberOfTables.Name = "BtnNumberOfTables";
+            this.BtnNumberOfTables.Size = new System.Drawing.Size(83, 31);
+            this.BtnNumberOfTables.TabIndex = 63;
+            this.BtnNumberOfTables.Text = "Update";
+            this.BtnNumberOfTables.UseVisualStyleBackColor = false;
+            this.BtnNumberOfTables.Click += new System.EventHandler(this.BtnNumberOfTables_Click);
             // 
             // label3
             // 
@@ -1293,6 +1335,13 @@ namespace Main.Forms.POSManagementForms
             this.numericUpDown6.Size = new System.Drawing.Size(217, 23);
             this.numericUpDown6.TabIndex = 0;
             // 
+            // TboxCurrentNumberOfTables
+            // 
+            this.TboxCurrentNumberOfTables.Location = new System.Drawing.Point(164, 13);
+            this.TboxCurrentNumberOfTables.Name = "TboxCurrentNumberOfTables";
+            this.TboxCurrentNumberOfTables.Size = new System.Drawing.Size(120, 29);
+            this.TboxCurrentNumberOfTables.TabIndex = 65;
+            // 
             // FrmMainPOSTerminal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1333,6 +1382,8 @@ namespace Main.Forms.POSManagementForms
             this.PanelDineInOrdersTableStatus.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             this.TabPageSalesHistory.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
@@ -1363,6 +1414,7 @@ namespace Main.Forms.POSManagementForms
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TboxCurrentNumberOfTables)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1474,5 +1526,9 @@ namespace Main.Forms.POSManagementForms
         private System.Windows.Forms.ColumnHeader Ingredient;
         private System.Windows.Forms.ColumnHeader RemainingQtyValue;
         private System.Windows.Forms.ColumnHeader ConsumeQtyValue;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button BtnNumberOfTables;
+        private System.Windows.Forms.NumericUpDown TboxCurrentNumberOfTables;
     }
 }

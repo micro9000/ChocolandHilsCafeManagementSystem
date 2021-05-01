@@ -166,6 +166,7 @@ namespace Main
             services.AddTransient<IComboMealProductData, ComboMealProductData>();
 
             // POS
+            services.AddTransient<IStoreTableData, StoreTableData>();
             services.AddTransient<ISaleTransactionData, SaleTransactionData>();
             services.AddTransient<ISaleTransactionProductData, SaleTransactionProductData>();
             services.AddTransient<ISaleTransactionComboMealData, SaleTransactionComboMealData>();
