@@ -98,5 +98,11 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.Close();
         }
 
+        private void BtnForceDelete_Click(object sender, EventArgs e)
+        {
+            this.IsCancelled = false;
+            this.IsDone = true;
+            this.Close();
+        }
     }
 }

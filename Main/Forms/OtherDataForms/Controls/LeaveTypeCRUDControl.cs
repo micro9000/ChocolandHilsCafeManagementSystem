@@ -157,6 +157,7 @@ namespace Main.Forms.OtherDataForms.Controls
                     this.LeaveTypeToAddUpdate.LeaveType = this.TbxLeaveType.Text;
                     this.LeaveTypeToAddUpdate.NumberOfDays = numberOfDays;
                     this.LeaveTypeToAddUpdate.IsActive = this.CboxDisable.Checked ? false : true;
+                    this.LeaveTypeToAddUpdate.UpdatedAt = DateTime.Now;
                     //Id = long.Parse(this.SelectedLeaveTypeId),
                 }
             }

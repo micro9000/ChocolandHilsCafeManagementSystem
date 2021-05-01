@@ -35,6 +35,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.label2 = new System.Windows.Forms.Label();
             this.BtnSubmitNewCategory = new System.Windows.Forms.Button();
             this.BtnCancelUpdateCategory = new System.Windows.Forms.Button();
+            this.BtnForceDelete = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,6 +112,21 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnCancelUpdateCategory.UseVisualStyleBackColor = false;
             this.BtnCancelUpdateCategory.Click += new System.EventHandler(this.BtnCancelUpdateCategory_Click);
             // 
+            // BtnForceDelete
+            // 
+            this.BtnForceDelete.BackColor = System.Drawing.Color.DarkRed;
+            this.BtnForceDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnForceDelete.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnForceDelete.ForeColor = System.Drawing.Color.White;
+            this.BtnForceDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnForceDelete.Location = new System.Drawing.Point(26, 167);
+            this.BtnForceDelete.Name = "BtnForceDelete";
+            this.BtnForceDelete.Size = new System.Drawing.Size(128, 47);
+            this.BtnForceDelete.TabIndex = 19;
+            this.BtnForceDelete.Text = "Delete Anyway";
+            this.BtnForceDelete.UseVisualStyleBackColor = false;
+            this.BtnForceDelete.Click += new System.EventHandler(this.BtnForceDelete_Click);
+            // 
             // FrmReassignIngredientsToOtherCategory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -118,6 +134,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(173)))));
             this.ClientSize = new System.Drawing.Size(526, 225);
             this.ControlBox = false;
+            this.Controls.Add(this.BtnForceDelete);
             this.Controls.Add(this.BtnCancelUpdateCategory);
             this.Controls.Add(this.BtnSubmitNewCategory);
             this.Controls.Add(this.panel1);
@@ -143,5 +160,6 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button BtnSubmitNewCategory;
         private System.Windows.Forms.Button BtnCancelUpdateCategory;
+        private System.Windows.Forms.Button BtnForceDelete;
     }
 }

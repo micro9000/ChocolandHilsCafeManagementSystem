@@ -66,6 +66,12 @@ namespace Main.Forms.SalesReport
             DefaultDisplayValues();
         }
 
+        private void BtnRefresh_Click(object sender, EventArgs e)
+        {
+            DisplayYearsInFlowLayout();
+            DefaultDisplayValues();
+        }
+
         public void DisplayYearsInFlowLayout()
         {
             List<YearSalesReportModel> salesReports = new List<YearSalesReportModel>();
