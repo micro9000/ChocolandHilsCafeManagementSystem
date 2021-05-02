@@ -366,7 +366,7 @@ namespace Main.Forms.POSManagementForms.Controls
         {
             if (_pOSState.CurrentSaleTransaction != null && _pOSState.CurrentSaleTransaction.TransactionType == StaticData.POSTransactionType.DineIn)
             {
-                FrmSelectAvailableTable frmSelectAvailableTable = new FrmSelectAvailableTable(_pOSReadController);
+                FrmSelectAvailableTable frmSelectAvailableTable = new FrmSelectAvailableTable(_pOSReadController, _iPOSCommandController);
                 frmSelectAvailableTable.ShowDialog();
 
                 if (frmSelectAvailableTable.SelectedTableNumber > 0)

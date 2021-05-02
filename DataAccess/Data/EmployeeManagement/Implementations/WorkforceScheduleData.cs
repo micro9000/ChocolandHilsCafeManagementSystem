@@ -145,23 +145,19 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
             return affectedRows > 0;
         }
+
+        public bool MassDeleteByDateRange(DateTime startDate, DateTime endDate)
+        {
+            string query = @"UPDATE WorkforceSchedules SET isDeleted=true WHERE workDate BETWEEN @StartDate AND @EndDate";
+
+            long affectedRows = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                affectedRows = conn.Execute(query, new { StartDate = startDate, EndDate=endDate });
+                conn.Close();
+            }
+
+            return affectedRows > 0;
+        }
     }
 }
-//string query = @"SELECT *
-//                    FROM WorkforceSchedules AS WFS
-//                    JOIN Employees AS E ON E.EmployeeNumber = WFS.employeeNumber
-//                    WHERE WFS.isDeleted=false AND WFS.isDone = false";
-
-//List<WorkforceScheduleModel> results = new List<WorkforceScheduleModel>();
-
-//using (var conn = _dbConnFactory.CreateConnection())
-//{
-//    results = conn.Query<WorkforceScheduleModel, EmployeeModel, WorkforceScheduleModel>(query,
-//            (WFS, E) => {
-//                WFS.Employee = E;
-//                return WFS;
-//            }).ToList();
-//    conn.Close();
-//}
-
-//return results;

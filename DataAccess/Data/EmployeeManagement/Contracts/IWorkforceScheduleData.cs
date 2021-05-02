@@ -18,5 +18,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
 
         bool MarkAsDeletedByEmployee(string employeeNumber);
         bool UndoMarkAsDeletedByEmployee(string employeeNumber);
+        bool MassDeleteByDateRange(DateTime startDate, DateTime endDate);
     }
 }

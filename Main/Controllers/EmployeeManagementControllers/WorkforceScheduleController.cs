@@ -29,6 +29,35 @@ namespace Main.Controllers.EmployeeManagementControllers
             _workforceScheduleData = workforceScheduleData;
         }
 
+
+        public EntityResult<string> DeleteByDateRange(DateTime workDateStart, DateTime workDateEnd)
+        {
+            var results = new EntityResult<string>();
+
+            try
+            {
+                var isDeleted = _workforceScheduleData.MassDeleteByDateRange(workDateStart, workDateEnd);
+
+                if (isDeleted)
+                {
+                    results.IsSuccess = isDeleted;
+                    results.Messages.Add("Schedule deleted");
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("No changes made.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
+        }
+
         public EntityResult<string> Delete(long scheduleId, DateTime workDate)
         {
             var results = new EntityResult<string>();

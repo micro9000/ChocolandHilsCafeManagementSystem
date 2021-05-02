@@ -371,7 +371,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     {
                         var existingEmpShift = this.EmployeeShifts
                                                     .Where(x => x.Shift.ToLower() == employeeShift.Shift.ToLower() &&
-                                                            x.Id == this.EmployeeShiftToAddUpdate.Id)
+                                                            x.Id != this.EmployeeShiftToAddUpdate.Id)
                                                     .FirstOrDefault();
 
                         if (existingEmpShift != null)

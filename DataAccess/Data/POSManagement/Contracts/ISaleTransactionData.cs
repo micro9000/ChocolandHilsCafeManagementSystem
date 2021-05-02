@@ -17,9 +17,12 @@ namespace DataAccess.Data.POSManagement.Contracts
         List<SaleTransactionModel> GetAllByTransactionDateRange(DateTime startDate, DateTime endDate, StaticData.POSTransactionStatus POSTransactionStatus);
         List<SaleTransactionModel> GetSalesTransactionByStatusAndTransType(StaticData.POSTransactionStatus POSTransactionStatus, StaticData.POSTransactionType posTransactionType);
         List<SaleTransactionModel> GetSalesTransactionByStatus(StaticData.POSTransactionStatus POSTransactionStatus);
+        List<SaleTransactionModel> GetOngoingSalesTransactionWithCustomerNotYetDone(StaticData.POSTransactionType posTransactionType);
+        List<SaleTransactionModel> GetSalesTransactionByTableNumberAndTransType(int tableNumber, StaticData.POSTransactionType posTransactionType);
 
         decimal GetDayTotalSales(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate);
         bool MassSalesTransactionSalesCashout(StaticData.POSTransactionStatus POSTransactionStatus, DateTime transDate);
+        bool MarkTableAsAvailable(int tableNum);
 
         long GetNumberOfValidTransactionsByYear(int year, StaticData.POSTransactionStatus POSTransactionStatus);
 

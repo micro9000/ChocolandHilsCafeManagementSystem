@@ -1305,13 +1305,20 @@ namespace Main.Forms.InventoryManagementForms.Controls
                 if (categoryId > 0 && string.IsNullOrEmpty(productName)) // Category only
                 {
                     searchResults = this.ExistingProducts.Where(x => x.CategoryId == categoryId).ToList();
+
                 }else if (categoryId > 0 && string.IsNullOrEmpty(productName) == false) // both
                 {
-                    searchResults = this.ExistingProducts.Where(x => x.CategoryId == categoryId && x.ProdName.ToLower().Contains(productName)).ToList();
+                    searchResults = this.ExistingProducts.Where(
+                        x => x.CategoryId == categoryId && 
+                        x.ProdName.ToLower().Contains(productName.ToLower())
+                    ).ToList();
                 }
                 else if (categoryId == 0 && string.IsNullOrEmpty(productName) == false) // product name only
                 {
-                    searchResults = this.ExistingProducts.Where(x => x.ProdName.ToLower().Contains(productName)).ToList();
+                    searchResults = this.ExistingProducts.Where(
+                        x => x.ProdName.ToLower()
+                        .Contains(productName.ToLower())
+                        ).ToList();
                 }
                 
                 DisplayExistingProductsInDGV(searchResults);

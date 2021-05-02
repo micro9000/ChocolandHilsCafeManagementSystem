@@ -1,4 +1,5 @@
 ﻿using EntitiesShared;
+using EntitiesShared.POSManagement.CustomModels;
 using Main.Controllers.POSControllers.ControllerInterface;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,13 @@ namespace Main.Forms.POSManagementForms.Controls
     public partial class FrmSelectAvailableTable : Form
     {
         private readonly IPOSReadController _pOSReadController;
+        private readonly IPOSCommandController _pOSCommandController;
 
-        public FrmSelectAvailableTable(IPOSReadController pOSReadController)
+        public FrmSelectAvailableTable(IPOSReadController pOSReadController, IPOSCommandController pOSCommandController)
         {
             InitializeComponent();
             _pOSReadController = pOSReadController;
+            _pOSCommandController = pOSCommandController;
         }
 
         public int SelectedTableNumber { get; set; }
@@ -29,7 +32,11 @@ namespace Main.Forms.POSManagementForms.Controls
         private void FrmSelectAvailableTable_Load(object sender, EventArgs e)
         {
             var tableStatus = _pOSReadController.GetTableStatus();
+            DisplayTableStatus(tableStatus);
+        }
 
+        private void DisplayTableStatus (List<TableStatusModel> tableStatus)
+        {
             this.FlowLayoutTables.Controls.Clear();
             foreach (var table in tableStatus)
             {
@@ -42,6 +49,7 @@ namespace Main.Forms.POSManagementForms.Controls
                 };
 
                 tableItemControl.ClickThisTable += HandleClickTableItem;
+                tableItemControl.MarkThisTableAsAvailable += HandleMarkTableAsAvailable;
 
                 this.FlowLayoutTables.Controls.Add(tableItemControl);
             }
@@ -61,5 +69,34 @@ namespace Main.Forms.POSManagementForms.Controls
 
             this.Close();
         }
+
+        private void HandleMarkTableAsAvailable(object sender, EventArgs e)
+        {
+            RestaurantTableItemControl tableObj = (RestaurantTableItemControl)sender;
+
+            if (tableObj != null && tableObj.TableNumber > 0)
+            {
+                var markTableAsAvailableResults = _pOSCommandController.MarkTableAsAvailable(tableObj.TableNumber);
+
+                string resMsg = "";
+                foreach (var msg in markTableAsAvailableResults.Messages)
+                {
+                    resMsg += msg;
+                }
+
+                if (markTableAsAvailableResults.IsSuccess)
+                {
+                    MessageBox.Show(resMsg, "Mark table as available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    var tableStatus = _pOSReadController.GetTableStatus();
+                    DisplayTableStatus(tableStatus);
+                }
+                else
+                {
+                    MessageBox.Show(resMsg, "Mark table as available", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
     }
 }

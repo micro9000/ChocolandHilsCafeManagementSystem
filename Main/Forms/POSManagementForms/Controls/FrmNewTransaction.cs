@@ -107,7 +107,7 @@ namespace Main.Forms.POSManagementForms.Controls
 
         private void BtnSelectTable_Click(object sender, EventArgs e)
         {
-            FrmSelectAvailableTable frmSelectAvailableTable = new FrmSelectAvailableTable(_pOSReadController);
+            FrmSelectAvailableTable frmSelectAvailableTable = new FrmSelectAvailableTable(_pOSReadController, _iPOSCommandController);
             frmSelectAvailableTable.ShowDialog();
 
             if (frmSelectAvailableTable.SelectedTableNumber > 0) {

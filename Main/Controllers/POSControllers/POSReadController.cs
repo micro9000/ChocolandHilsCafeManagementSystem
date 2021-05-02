@@ -73,9 +73,10 @@ namespace Main.Controllers.POSControllers
             decimal numberOfTables = storeTable == null ? 20 : storeTable.NumberOfTables;
             List<TableStatusModel> tables = new List<TableStatusModel>();
 
-            var activeDineInSalesTrans = this.GetActiveDineInSalesTransactions();
+            var activeDineInSalesTrans = _salesTransactionData.GetOngoingSalesTransactionWithCustomerNotYetDone(StaticData.POSTransactionType.DineIn);
+            //this.GetActiveDineInSalesTransactions();
 
-            for(var tableNum=1; tableNum <= numberOfTables; tableNum++)
+            for (var tableNum=1; tableNum <= numberOfTables; tableNum++)
             {
                 var activeDineInOnTheCurrentTable = activeDineInSalesTrans.Where(x => x.TableNumber == tableNum).FirstOrDefault();
 

@@ -10,6 +10,7 @@ namespace Main.Controllers.POSControllers.ControllerInterface
 {
     public interface IPOSCommandController
     {
+        EntityResult<string> MarkTableAsAvailable(int tableNumber);
         EntityResult<string> UpdateMaxTableNumber(decimal newMaxTableNum);
 
         EntityResult<SaleTransactionModel> InitiateNewTransaction(SaleTransactionModel newSalesTransaction);

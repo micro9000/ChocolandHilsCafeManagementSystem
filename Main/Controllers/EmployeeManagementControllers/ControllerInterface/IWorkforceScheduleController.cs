@@ -12,6 +12,7 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
     {
         WorkforceScheduling GetWorkforceSchedule();
         EntityResult<string> Delete(long scheduleId, DateTime workDate);
+        EntityResult<string> DeleteByDateRange(DateTime workDateStart, DateTime workDateEnd);
         EntityResult<WorkforceScheduling> Save(WorkforceScheduling workForceSchedule);
     }
 }

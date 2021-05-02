@@ -593,7 +593,37 @@ namespace Main.Forms.POSManagementForms
                     TableTitle = table.TableTitle
                 };
 
+                tableItemControl.MarkThisTableAsAvailable += HandleMarkTableAsAvailable;
+
                 this.FlowLayoutTables.Controls.Add(tableItemControl);
+            }
+        }
+
+        private void HandleMarkTableAsAvailable(object sender, EventArgs e)
+        {
+            RestaurantTableItemControl tableObj = (RestaurantTableItemControl)sender;
+
+            if (tableObj != null && tableObj.TableNumber > 0)
+            {
+                var markTableAsAvailableResults = _iPOSCommandController.MarkTableAsAvailable(tableObj.TableNumber);
+
+                string resMsg = "";
+                foreach (var msg in markTableAsAvailableResults.Messages)
+                {
+                    resMsg += msg;
+                }
+
+                if (markTableAsAvailableResults.IsSuccess)
+                {
+                    MessageBox.Show(resMsg, "Mark table as available", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    this.TableStatus = _pOSReadController.GetTableStatus();
+                    DisplayTableStatus(this.TableStatus);
+                }
+                else
+                {
+                    MessageBox.Show(resMsg, "Mark table as available", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 

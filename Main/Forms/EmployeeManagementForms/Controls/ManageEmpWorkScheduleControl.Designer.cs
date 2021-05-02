@@ -52,6 +52,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label5 = new System.Windows.Forms.Label();
             this.TbxSearchEmployeesInTab1 = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.BtnDeleteAll = new System.Windows.Forms.Button();
             this.BtnRefreshEmployees2 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.TbxSearchEmployeesInTab2 = new System.Windows.Forms.TextBox();
@@ -373,6 +374,22 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
             // 
+            // BtnDeleteAll
+            // 
+            this.BtnDeleteAll.BackColor = System.Drawing.Color.DarkRed;
+            this.BtnDeleteAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnDeleteAll.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnDeleteAll.ForeColor = System.Drawing.Color.White;
+            this.BtnDeleteAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnDeleteAll.Location = new System.Drawing.Point(183, 106);
+            this.BtnDeleteAll.Name = "BtnDeleteAll";
+            this.BtnDeleteAll.Size = new System.Drawing.Size(97, 30);
+            this.BtnDeleteAll.TabIndex = 61;
+            this.BtnDeleteAll.Text = "Delete All";
+            this.BtnDeleteAll.UseVisualStyleBackColor = false;
+            this.BtnDeleteAll.Click += new System.EventHandler(this.BtnDeleteAll_Click);
+            this.BtnDeleteAll.MouseHover += new System.EventHandler(this.BtnDeleteAll_MouseHover);
+            // 
             // BtnRefreshEmployees2
             // 
             this.BtnRefreshEmployees2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -511,6 +528,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.BtnDeleteAll);
             this.groupBox1.Controls.Add(this.BtnDeleteSchedule);
             this.groupBox1.Controls.Add(this.BtnUpdateSelectedDateWorkForce);
             this.groupBox1.Controls.Add(this.BtnGenerateWorkforceSchedule);
@@ -733,5 +751,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox TbxSearchEmployeesInTab2;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button BtnDeleteAll;
     }
 }

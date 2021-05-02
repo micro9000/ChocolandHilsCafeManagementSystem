@@ -583,7 +583,7 @@ namespace Main.Forms.EmployeeManagementForms
             manageEmpWorkScheduleControlObj.EmployeeShiftUpdated += HandleUpdateEmployeeShift;
             manageEmpWorkScheduleControlObj.SaveWorkforceSchedule += HandleSaveWorkforceSchedule;
             manageEmpWorkScheduleControlObj.UndoWorkForceChangesInFormOnly += HandleUndoChangesOnWorkforceScheduleFormOnly;
-
+            manageEmpWorkScheduleControlObj.DeleteAllWorkForceSchedule += HandleDeleteAllWorkForceSchedule;
             //manageEmpWorkScheduleControlObj.EmployeeShifts = _workShiftController.GetAll().Data;
 
             //manageEmpWorkScheduleControlObj.EmployeeShiftSaved += HandleWorkShiftSaved;
@@ -605,6 +605,40 @@ namespace Main.Forms.EmployeeManagementForms
                 manageEmpWorkScheduleControlObj.DisplayWorkShiftDays();
             }
         }
+
+        private void HandleDeleteAllWorkForceSchedule(object sender, EventArgs e)
+        {
+            ManageEmpWorkScheduleControl manageEmpWorkScheduleControlObj = (ManageEmpWorkScheduleControl)sender;
+
+            DateTime dateRangeStart = manageEmpWorkScheduleControlObj.SelectedDateRangeToDeleteStart;
+            DateTime dateRangeEnd = manageEmpWorkScheduleControlObj.SelectedDateRangeToDeleteEnd;
+
+            DialogResult res = MessageBox.Show($"Are you sure, you want to delete schedules from {dateRangeStart.ToShortDateString()} to {dateRangeEnd.ToShortDateString()}? \n You can't undo this action!",
+                                        "Delete workforce schedule by date range", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (res == DialogResult.Yes)
+            {
+                var deleteResults = _workforceScheduleController.DeleteByDateRange(dateRangeStart, dateRangeEnd);
+
+                string resultMessages = "";
+                foreach (var msg in deleteResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                MessageBox.Show(resultMessages, "Delete workforce schedule by date range", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                manageEmpWorkScheduleControlObj.Employees = _employeeController.GetAll().Data;
+                manageEmpWorkScheduleControlObj.WorkShifts = _workShiftController.GetAll().Data;
+                manageEmpWorkScheduleControlObj.WorkforceSchedule = _workforceScheduleController.GetWorkforceSchedule();
+
+                manageEmpWorkScheduleControlObj.DisplayEmployees();
+                manageEmpWorkScheduleControlObj.DisplayWorkShifts();
+                manageEmpWorkScheduleControlObj.ResetUpdateEmployeeShiftVal();
+                manageEmpWorkScheduleControlObj.DisplayWorkScheduleInListView();
+            }
+        }
+
 
         private void HandleUndoChangesOnWorkforceScheduleFormOnly(object sender, EventArgs e)
         {

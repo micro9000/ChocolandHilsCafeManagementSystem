@@ -22,7 +22,7 @@ namespace DataAccess.Data.POSManagement.Implementations
             _dbConnFactory = dbConnFactory;
         }
 
-        public List<SaleTransactionModel> GetActiveTransactionGreaterOrEqualToMaxTable (int maxTableNum)
+        public List<SaleTransactionModel> GetActiveTransactionGreaterOrEqualToMaxTable(int maxTableNum)
         {
             string query = @"SELECT * FROM SalesTransactions 
                             WHERE isDeleted=false AND transStatus=@OngoingStatus AND tableNumber > @MaxTableNumber";
@@ -34,13 +34,13 @@ namespace DataAccess.Data.POSManagement.Implementations
                 });
         }
 
-        public List<SaleTransactionModel> GetAllByTransactionDate (DateTime transDate, StaticData.POSTransactionStatus POSTransactionStatus)
+        public List<SaleTransactionModel> GetAllByTransactionDate(DateTime transDate, StaticData.POSTransactionStatus POSTransactionStatus)
         {
             string query = @"SELECT * FROM SalesTransactions 
                             WHERE DATE(createdAt)=@TransactionDate AND transStatus=@TransStatus
                             ORDER BY id DESC";
-            return this.GetAll(query, 
-                    new { 
+            return this.GetAll(query,
+                    new {
                         TransactionDate = transDate.ToString("yyyy-MM-dd"),
                         TransStatus = (int)POSTransactionStatus
                     });
@@ -52,9 +52,9 @@ namespace DataAccess.Data.POSManagement.Implementations
             string query = @"SELECT * FROM SalesTransactions 
                             WHERE createdAt BETWEEN @StartDate AND @EndDate AND transStatus=@TransStatus
                             ORDER BY id DESC";
-            return this.GetAll(query, 
-                new { 
-                    StartDate = startDate.ToString("yyyy-MM-dd"), 
+            return this.GetAll(query,
+                new {
+                    StartDate = startDate.ToString("yyyy-MM-dd"),
                     EndDate = endDate.ToString("yyyy-MM-dd"),
                     TransStatus = (int)POSTransactionStatus
                 });
@@ -68,9 +68,56 @@ namespace DataAccess.Data.POSManagement.Implementations
 
             return this.GetAll(query, new {
                 TransactionType = (int)posTransactionType,
-                TransStatus = (int)POSTransactionStatus 
+                TransStatus = (int)POSTransactionStatus
             });
         }
+
+        public List<SaleTransactionModel> GetSalesTransactionByTableNumberAndTransType(int tableNumber, StaticData.POSTransactionType posTransactionType)
+        {
+            string query = @"SELECT * FROM SalesTransactions
+                                WHERE isDeleted=false AND transactionType=@TransactionType AND transStatus <> @TransStatus AND tableNumber=@TableNumber
+                                ORDER BY id DESC";
+
+            return this.GetAll(query, new
+            {
+                TransactionType = (int)posTransactionType,
+                TableNumber = tableNumber,
+                TransStatus = (int)StaticData.POSTransactionStatus.Cancelled
+            });
+        }
+
+        public List<SaleTransactionModel> GetOngoingSalesTransactionWithCustomerNotYetDone(StaticData.POSTransactionType posTransactionType)
+        {
+            string query = @"SELECT * 
+                            FROM SalesTransactions WHERE isDeleted=false AND IsCustomerDone=false AND 
+                            transactionType=@TransactionType AND transStatus <> @TransStatus";
+
+            return this.GetAll(query, new
+            {
+                TransactionType = (int)posTransactionType,
+                TransStatus = (int)StaticData.POSTransactionStatus.Cancelled
+            });
+        }
+
+        public bool MarkTableAsAvailable(int tableNum)
+        {
+            string query = @"UPDATE SalesTransactions SET IsCustomerDone=true 
+                            WHERE tableNumber=@TableNumber";
+
+            int rowsAffected = 0;
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                rowsAffected = conn.Execute(query,
+                        new
+                        {
+                            TableNumber = tableNum
+                        });
+                conn.Close();
+            }
+
+            return rowsAffected > 0;
+        }
+
 
         public List<SaleTransactionModel> GetSalesTransactionByStatus(StaticData.POSTransactionStatus POSTransactionStatus)
         {

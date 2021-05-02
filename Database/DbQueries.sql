@@ -262,6 +262,7 @@ CREATE TABLE IF NOT EXISTS WorkforceSchedules(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM WorkforceSchedules;
 
 CREATE TABLE IF NOT EXISTS EmployeeAttendance(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -590,6 +591,7 @@ CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
     FOREIGN KEY(userId) REFERENCES Users(id)
 )ENGINE=INNODB;
 
+SELECT NOW();
 
 SELECT * FROM IngInventoryTransactions;
 SELECT * FROM Users;
@@ -597,7 +599,7 @@ SELECT * FROM Users;
 SELECT * FROM IngInventoryTransactions AS Trans
 JOIN Ingredients AS Ing ON Ing.id = Trans.ingredientId
 JOIN Users AS U ON U.id=Trans.userId
-WHERE isDeleted=false AND createdAt BETWEEN '' AND '';
+WHERE Trans.isDeleted=false AND Trans.createdAt BETWEEN '' AND '';
 
 CREATE TABLE IF NOT EXISTS ProductCategories(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -728,6 +730,8 @@ ALTER TABLE SalesTransactions
 ADD COLUMN isCashOut BOOLEAN DEFAULT false;
 ALTER TABLE SalesTransactions
 ADD COLUMN TakeOutNumber INT;
+ALTER TABLE SalesTransactions
+ADD COLUMN IsCustomerDone BOOLEAN DEFAULT False;
 
 SELECT * FROM SalesTransactions 
 WHERE isDeleted=false AND transStatus=1 AND tableNumber >= 1;

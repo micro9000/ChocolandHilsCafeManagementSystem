@@ -66,7 +66,30 @@ namespace Main.Forms.POSManagementForms.Controls
                 c.MouseClick += (sender, e) => {
                     OnClickThisTable(EventArgs.Empty);
                 };
+
+                c.ContextMenuStrip = this.contextMenuStrip1;
                 initControlsRecursive(c.Controls);
+            }
+        }
+
+        public event EventHandler MarkThisTableAsAvailable;
+        protected virtual void OnMarkThisTableAsAvailable(EventArgs e)
+        {
+            MarkThisTableAsAvailable?.Invoke(this, e);
+        }
+
+        private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            ToolStripItem clickedItem = e.ClickedItem;
+
+            if (clickedItem != null && clickedItem.Name == "toolStripMenuItemEnableThisTable" && IsOccupied == true)
+            {
+                DialogResult dialogResult = MessageBox.Show("Continue to mark this table as available?", "Mark this table as available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    OnMarkThisTableAsAvailable(EventArgs.Empty);
+                }
             }
         }
     }

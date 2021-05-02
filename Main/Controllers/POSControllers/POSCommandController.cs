@@ -140,6 +140,41 @@ namespace Main.Controllers.POSControllers
             return results;
         }
 
+        public EntityResult<string> MarkTableAsAvailable(int tableNumber)
+        {
+            var results = new EntityResult<string>();
+            results.IsSuccess = false;
+
+
+            var ongoingTransactionUsingThisTable = _salesTransactionData.GetSalesTransactionByTableNumberAndTransType(tableNumber, StaticData.POSTransactionType.DineIn);
+
+            if (ongoingTransactionUsingThisTable != null)
+            {
+                var singleTransUsingThisTable = ongoingTransactionUsingThisTable.Where(x => x.TableNumber == tableNumber && x.TransStatus == StaticData.POSTransactionStatus.OnGoing).FirstOrDefault();
+
+                if (singleTransUsingThisTable != null)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Ongoing transaction using this table");
+                    return results;
+                }
+            }
+
+            var markTableResult = _salesTransactionData.MarkTableAsAvailable(tableNumber);
+
+            if (markTableResult)
+            {
+                results.IsSuccess = true;
+                results.Messages.Add("Successfully mark this table as available");
+                return results;
+            }
+
+            results.IsSuccess = false;
+            results.Messages.Add("Unable to mark this table as available");
+
+            return results;
+        }
+
         public string GetTicketNumber()
         {
             return DateTime.Now.ToString("yyMMddHHmmssffft");

@@ -245,7 +245,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     row.Cells[0].Value = employee.EmployeeNumber;
                     row.Cells[1].Value = fullName;
-                    row.Cells[2].Value = employee.Position;
+                    row.Cells[2].Value = employee.Position.Title;
 
                     if (employee.Shift != null)
                     {
@@ -905,6 +905,29 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void BtnUndoChanges_MouseHover(object sender, EventArgs e)
         {
             toolTip1.SetToolTip(BtnUndoChanges, "Undo any changes");
+        }
+
+        private void BtnDeleteAll_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.SetToolTip(BtnDeleteAll, "Delete all workforce schedule based on selected date range");
+        }
+
+
+        public DateTime SelectedDateRangeToDeleteStart { get; set; }
+        public DateTime SelectedDateRangeToDeleteEnd { get; set; }
+
+        public event EventHandler DeleteAllWorkForceSchedule;
+        protected virtual void OnDeleteAllWorkForceSchedule(EventArgs e)
+        {
+            DeleteAllWorkForceSchedule?.Invoke(this, e);
+        }
+
+        private void BtnDeleteAll_Click(object sender, EventArgs e)
+        {
+            SelectedDateRangeToDeleteStart = DPicWorkScheduleStartFrom.Value;
+            SelectedDateRangeToDeleteEnd = DPicWorkScheduleEndTo.Value;
+
+            OnDeleteAllWorkForceSchedule(EventArgs.Empty);
         }
     }
 }

@@ -79,7 +79,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             if (Employees != null)
             {
                 this.DGVEmployeeList.Rows.Clear();
-                this.DGVEmployeeList.ColumnCount = 10;
+                this.DGVEmployeeList.ColumnCount = 11;
 
                 this.DGVEmployeeList.Columns[0].Name = "EmployeeNumber";
                 this.DGVEmployeeList.Columns[0].HeaderText = "Employee #";
@@ -112,8 +112,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVEmployeeList.Columns[9].Name = "PositionName";
                 this.DGVEmployeeList.Columns[9].HeaderText = "Position";
 
-                //this.DGVEmployeeList.Columns[10].Name = "CreatedAt";
-                //this.DGVEmployeeList.Columns[10].HeaderText = "Created At";
+                this.DGVEmployeeList.Columns[10].Name = "Status";
+                this.DGVEmployeeList.Columns[10].HeaderText = "Status";
 
 
                 DataGridViewImageColumn btnViewDetailsImg = new DataGridViewImageColumn();
@@ -137,6 +137,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[7].Value = employee.DateHire.ToShortDateString();
                     row.Cells[8].Value = employee.Shift.Shift;
                     row.Cells[9].Value = (employee.Position != null) ? employee.Position.Title : "";
+                    row.Cells[10].Value = employee.IsQuit ? "RESIGNED" : "";
                     //row.Cells[10].Value = employee.CreatedAt.ToShortDateString();
                     DGVEmployeeList.Rows.Add(row);
                 }
@@ -146,7 +147,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void DGVEmployees_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 10 && e.RowIndex > -1)
+            if (e.ColumnIndex == 11 && e.RowIndex > -1)
             {
                 if (DGVEmployeeList.CurrentRow != null)
                 {
