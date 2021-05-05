@@ -1,4 +1,5 @@
-﻿using EntitiesShared.EmployeeManagement;
+﻿using EntitiesShared;
+using EntitiesShared.EmployeeManagement;
 using EntitiesShared.OtherDataManagement;
 using EntitiesShared.PayrollManagement;
 using EntitiesShared.PayrollManagement.Models;
@@ -697,6 +698,31 @@ namespace Main.Forms.PayrollForms.Controls
         }
 
 
+        private decimal GetActualLeaveValue (StaticData.LeaveDurationType leaveDuration)
+        {
+            decimal leaveValue = 0;
+            switch (leaveDuration)
+            {
+                case StaticData.LeaveDurationType.FullDay:
+                    leaveValue = 1;
+                    break;
+
+                case StaticData.LeaveDurationType.FirstHalfDay:
+                    leaveValue = 0.5m;
+                    break;
+
+                case StaticData.LeaveDurationType.SecondHalfDay:
+                    leaveValue = 0.5m;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return leaveValue;
+        }
+
+
         public PaydaySalaryComputationPayslip GetEmployeeAttendanceRecordWithSalaryComputation(EmployeeModel employee)
         {
             if (this.AttendanceHistory != null && employee != null)
@@ -708,7 +734,7 @@ namespace Main.Forms.PayrollForms.Controls
                 if (this.EmployeeLeaveHistory != null)
                 {
                     var currentEmpLeave = this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == employee.EmployeeNumber).ToList();
-                    totalLeaveDays = currentEmpLeave.Sum(x => x.NumberOfDays);
+                    totalLeaveDays = currentEmpLeave.Sum(x => this.GetActualLeaveValue(x.DurationType) * x.NumberOfDays);
                 }
                 totalDays += totalLeaveDays;
 

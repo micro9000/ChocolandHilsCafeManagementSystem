@@ -22,7 +22,7 @@ namespace Shared.Helpers
 
             int minsSide = (int)Math.Truncate(frac * 60);
 
-            return $"{hrsSide.ToString()}.{minsSide.ToString()}";
+            return $"{hrsSide.ToString()}.{minsSide.ToString()} hrs";
         }
 
         public string ConvertToStringDays(decimal minutes)

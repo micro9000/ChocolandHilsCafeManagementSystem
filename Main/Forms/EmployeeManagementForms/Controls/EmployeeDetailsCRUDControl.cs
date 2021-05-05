@@ -19,6 +19,7 @@ using Main.Forms.PayrollForms.Controls;
 using Shared;
 using static EntitiesShared.StaticData;
 using PDFReportGenerators;
+using EntitiesShared;
 
 namespace Main.Forms.EmployeeManagementForms.Controls
 {
@@ -60,6 +61,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             get { return selectedShiftId; }
             set { selectedShiftId = value; }
+        }
+
+        private List<LeaveTypeModel> leaveLypes;
+
+        public List<LeaveTypeModel> LeaveTypes
+        {
+            get { return leaveLypes; }
+            set { leaveLypes = value; }
         }
 
 
@@ -216,6 +225,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void EmployeeDetailsCRUDControl_Load(object sender, EventArgs e)
         {
             LoadOtherComboBoxData();
+
+            SetDGVEmployeeLeaveHistoryFontAndColors();
+            DisplayLeaveTypes();
         }
 
 
@@ -314,8 +326,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             this.TboxEmpIdNumber.Text = "";
 
-            this.TbxSalaryRate.Text = "";
-            this.TboxHalfMonthRate.Text = "";
             this.TbxDailySalaryRate.Text = "";
 
             this.GBoxSearchEmployee.Visible = false;
@@ -329,11 +339,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.ListViewEmpGovtIdCards.Items.Clear();
             this.NumUpDwnEmployeeContribution.Value = 0;
             this.NumUpDwnEmployerContribution.Value = 0;
-
+                
             this.BtnUndoToDelete.Visible = false;
             this.BtnDeleteEmpIdCard.Visible = false;
 
             this.EmployeeGovtIdCards = new List<EmployeeGovtIdCardTempModel>();
+
+            this.EmployeeLeaveHistory = new List<EmployeeLeaveModel>();
+            this.DGVEmployeeLeaveHistory.Rows.Clear();
 
         }
 
@@ -414,8 +427,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 // Display salary rate based on position selected
                 if (employeeDetails.Position != null)
                 {
-                    this.TbxSalaryRate.Text = employeeDetails.Position.SalaryRate.ToString();
-                    this.TboxHalfMonthRate.Text = employeeDetails.Position.HalfMonthRate.ToString();
                     this.TbxDailySalaryRate.Text = employeeDetails.Position.DailyRate.ToString();
                 }
                 
@@ -1270,6 +1281,276 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 MessageBox.Show($"Attendance PDF report successfully generated, kindly check in {_payrollSettings.GeneratedPDFLoc}", "Search employee details", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
+            }
+        }
+
+        private void SetDGVEmployeeLeaveHistoryFontAndColors()
+        {
+            this.DGVEmployeeLeaveHistory.BackgroundColor = Color.White;
+            this.DGVEmployeeLeaveHistory.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVEmployeeLeaveHistory.RowHeadersVisible = false;
+            this.DGVEmployeeLeaveHistory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVEmployeeLeaveHistory.AllowUserToResizeRows = false;
+            this.DGVEmployeeLeaveHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVEmployeeLeaveHistory.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVEmployeeLeaveHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVEmployeeLeaveHistory.MultiSelect = false;
+
+            this.DGVEmployeeLeaveHistory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVEmployeeLeaveHistory.ColumnHeadersHeight = 30;
+        }
+
+        public void DisplayLeaveTypes()
+        {
+            if (this.LeaveTypes != null)
+            {
+                ComboboxItem item;
+                foreach (var leaveType in this.LeaveTypes)
+                {
+                    item = new ComboboxItem();
+                    item.Text = $"{ leaveType.LeaveType} ({leaveType.NumberOfDays} days)";
+                    item.Value = leaveType.Id;
+                    this.CBoxLeaveTypes.Items.Add(item);
+                }
+            }
+
+            ComboboxItem durationItem;
+            foreach (var duration in StaticData.GetLeaveDurationTypes)
+            {
+                durationItem = new ComboboxItem();
+                durationItem.Text = duration.Value;
+                durationItem.Value = duration.Key; // enum value
+                this.CboxDuration.Items.Add(durationItem);
+            }
+
+            int startingYear = 2021;
+            int currentDate = 2025;
+
+            ComboboxItem yearItem;
+            for (int year = startingYear; year <= currentDate; year++)
+            {
+
+                yearItem = new ComboboxItem();
+                yearItem.Text = year.ToString();
+                yearItem.Value = year;
+                this.CBoxYearList.Items.Add(yearItem);
+            }
+        }
+
+        public void DisplayEmployeeLeavesInDGV()
+        {
+            this.DGVEmployeeLeaveHistory.Rows.Clear();
+            if (this.EmployeeLeaveHistory != null)
+            {
+                this.DGVEmployeeLeaveHistory.ColumnCount = 7;
+
+                this.DGVEmployeeLeaveHistory.Columns[0].Name = "EmployeeLeaveRecordId";
+                this.DGVEmployeeLeaveHistory.Columns[0].Visible = false;
+
+                this.DGVEmployeeLeaveHistory.Columns[1].Name = "LeaveType";
+                this.DGVEmployeeLeaveHistory.Columns[1].HeaderText = "Leave type";
+
+                this.DGVEmployeeLeaveHistory.Columns[2].Name = "DurationType";
+                this.DGVEmployeeLeaveHistory.Columns[2].HeaderText = "DurationType";
+
+                this.DGVEmployeeLeaveHistory.Columns[3].Name = "CreatedAt";
+                this.DGVEmployeeLeaveHistory.Columns[3].HeaderText = "Created At";
+
+                this.DGVEmployeeLeaveHistory.Columns[4].Name = "NumberDays";
+                this.DGVEmployeeLeaveHistory.Columns[4].HeaderText = "Days";
+
+                this.DGVEmployeeLeaveHistory.Columns[5].Name = "DateRange";
+                this.DGVEmployeeLeaveHistory.Columns[5].HeaderText = "Date";
+
+                this.DGVEmployeeLeaveHistory.Columns[6].Name = "Remarks";
+                this.DGVEmployeeLeaveHistory.Columns[6].HeaderText = "Remarks";
+
+                // Delete button
+                DataGridViewImageColumn btnDeleteImg = new DataGridViewImageColumn();
+                //btnDeleteLeaveTypeImg.Name = "";
+                btnDeleteImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                btnDeleteImg.Image = Image.FromFile("./Resources/remove-24.png");
+                this.DGVEmployeeLeaveHistory.Columns.Add(btnDeleteImg);
+
+                foreach (var record in this.EmployeeLeaveHistory)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVEmployeeLeaveHistory);
+
+                    row.Cells[0].Value = record.Id;
+                    row.Cells[1].Value = record.LeaveType.LeaveType;
+                    row.Cells[2].Value = record.DurationType;
+                    row.Cells[3].Value = record.CreatedAt.ToShortDateString();
+                    row.Cells[4].Value = record.NumberOfDays;
+                    row.Cells[5].Value = $"{record.StartDate.ToString("MMM-dd")} to {record.EndDate.ToString("MMM-dd")}";
+                    row.Cells[6].Value = record.Reason;
+
+                    this.DGVEmployeeLeaveHistory.Rows.Add(row);
+                }
+            }
+
+        }
+
+
+        public event EventHandler EmployeeRemainingLeaveFetch;
+        protected virtual void OnEmployeeRemainingLeaveFetch(EventArgs e)
+        {
+            EmployeeRemainingLeaveFetch?.Invoke(this, e);
+        }
+
+        private LeaveTypeModel selectedLeaveType;
+
+        public LeaveTypeModel SelectedLeaveType
+        {
+            get { return selectedLeaveType; }
+            set { selectedLeaveType = value; }
+        }
+
+        private void CBoxLeaveTypes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.CBoxLeaveTypes.SelectedIndex >= 0)
+            {
+                var selectedLeaveType = this.CBoxLeaveTypes.SelectedItem as ComboboxItem;
+                if (selectedLeaveType != null)
+                {
+                    var selectedLeaveTypeId = long.Parse(selectedLeaveType.Value.ToString());
+                    var leaveType = this.LeaveTypes.Where(x => x.Id == selectedLeaveTypeId).FirstOrDefault();
+
+                    if (leaveType != null)
+                    {
+                        this.SelectedLeaveType = leaveType;
+                        OnEmployeeRemainingLeaveFetch(EventArgs.Empty);
+                    }
+                }
+            }
+        }
+
+        public decimal EmployeeRemainingLeaveCountBaseOnSelectedLeave { get; set; }
+        public void DisplayEmpRemainingLeaveCount(decimal leaveCount)
+        {
+            EmployeeRemainingLeaveCountBaseOnSelectedLeave = leaveCount;
+            this.LblRemainingLeave.Text = leaveCount.ToString();
+        }
+
+        // Event handler for saving
+        public event EventHandler EmployeeLeaveSaved;
+        protected virtual void OnEmployeeLeaveSaved(EventArgs e)
+        {
+            EmployeeLeaveSaved?.Invoke(this, e);
+        }
+
+        private EmployeeLeaveModel newEmployeeLeave;
+
+        public EmployeeLeaveModel NewEmployeeLeave
+        {
+            get { return newEmployeeLeave; }
+            set { newEmployeeLeave = value; }
+        }
+
+
+        public void ResetEmployeeFileLeaveForm()
+        {
+            this.CBoxLeaveTypes.SelectedIndex = -1;
+            this.LblRemainingLeave.Text = "0";
+            this.TboxLeaveReason.Text = "";
+            this.DPickerDurationStartDate.Value = DateTime.Now;
+            this.DPickerDurationEndDate.Value = DateTime.Now;
+        }
+
+        private void BtnSaveEmployeeLeave_Click(object sender, EventArgs e)
+        {
+            if (SelectedLeaveType == null)
+            {
+                MessageBox.Show("Select leave type", "Save employee leave", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            var selectedDurationItem = this.CboxDuration.SelectedItem as ComboboxItem;
+            var durationType = (StaticData.LeaveDurationType)selectedDurationItem.Value;
+
+            DateTime startDate = this.DPickerDurationStartDate.Value.Date;
+            DateTime endDate = this.DPickerDurationEndDate.Value.Date;
+
+            if (startDate < DateTime.Now.Date)
+            {
+                MessageBox.Show("Invalid start date", "Save employee leave", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            TimeSpan duration = endDate.Subtract(startDate);
+            decimal durationTotalDays = 0;
+
+            if (startDate == endDate)
+            {
+                durationTotalDays = 1;
+            }
+            else
+            {
+                durationTotalDays = (decimal)duration.TotalDays;
+            }
+
+            decimal remainingLeaveCount = EmployeeRemainingLeaveCountBaseOnSelectedLeave - durationTotalDays;
+
+            this.NewEmployeeLeave = new EmployeeLeaveModel
+            {
+                LeaveId = SelectedLeaveType.Id,
+                EmployeeNumber = this.EmployeeNumber,
+                Reason = this.TboxLeaveReason.Text,
+                DurationType = durationType,
+                StartDate = startDate,
+                EndDate = endDate,
+                //NumberOfDays = durationTotalDays,
+                RemainingDays = remainingLeaveCount,
+                CurrentYear = DateTime.Now.Year
+            };
+
+            OnEmployeeLeaveSaved(EventArgs.Empty);
+        }
+
+        public long EmployeeLeaveIdToDelete { get; set; }
+
+        public event EventHandler DeleteEmployeeLeave;
+        protected virtual void OnDeleteEmployeeLeave(EventArgs e)
+        {
+            DeleteEmployeeLeave?.Invoke(this, e);
+        }
+
+        private void DGVEmployeeLeaveHistory_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Delete button
+            if ((e.ColumnIndex == 7) && e.RowIndex > -1)
+            {
+                if (DGVEmployeeLeaveHistory.CurrentRow != null)
+                {
+                    string employeeLeaveId = DGVEmployeeLeaveHistory.CurrentRow.Cells[0].Value.ToString();
+                    EmployeeLeaveIdToDelete = long.Parse(employeeLeaveId);
+                    OnDeleteEmployeeLeave(EventArgs.Empty);
+                }
+            }
+        }
+
+
+        public event EventHandler FilterEmployeeLeave;
+        protected virtual void OnFilterEmployeeLeave(EventArgs e)
+        {
+            FilterEmployeeLeave?.Invoke(this, e);
+        }
+
+        public int FilterEmployeeLeaveHistoryYear
+        {
+            get; set;
+        }
+
+        private void BtnFilterEmployeeLeaveHistory_Click(object sender, EventArgs e)
+        {
+            var selectedYear = this.CBoxYearList.SelectedItem as ComboboxItem;
+            if (selectedYear != null)
+            {
+                this.FilterEmployeeLeaveHistoryYear = int.Parse(selectedYear.Value.ToString());
+                OnFilterEmployeeLeave(EventArgs.Empty);
             }
         }
     }

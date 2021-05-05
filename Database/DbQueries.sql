@@ -248,8 +248,17 @@ ALTER TABLE EmployeeLeaves
 ADD COLUMN isPaid BOOLEAN DEFAULT false;
 ALTER TABLE EmployeeLeaves
 ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
+ALTER TABLE EmployeeLeaves
+ADD COLUMN DurationType INT;
 
 SELECT * FROM EmployeeLeaves;
+
+SELECT * 
+FROM EmployeeLeaves AS EL
+JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
+WHERE EL.isDeleted=false AND EL.isPaid=false AND EL.currentYear=@Year AND 
+EL.startDate BETWEEN '2021/04/21' AND '2021/05/05' AND EL.endDate BETWEEN @StartDate AND @EndDate 
+ORDER BY EL.id DESC;
 
 CREATE TABLE IF NOT EXISTS WorkforceSchedules(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -414,6 +423,14 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
+ALTER TABLE EmployeePayslipBenefits
+ADD COLUMN multiplier INT;
+
+SELECT * FROM IngredientInventory;
+
+SELECT COUNT(*) as count
+FROM IngredientInventory
+WHERE isDeleted=false AND isSoldOut=false AND (expirationDate BETWEEN '2021/05/05' AND '2021/05/15' OR expirationDate <= '2021/05/05');
 
 select * from EmployeePayslipBenefits;
 
@@ -735,6 +752,8 @@ ADD COLUMN IsCustomerDone BOOLEAN DEFAULT False;
 
 SELECT * FROM SalesTransactions 
 WHERE isDeleted=false AND transStatus=1 AND tableNumber >= 1;
+
+SELECT * FROM SalesTransactions 
 
 CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

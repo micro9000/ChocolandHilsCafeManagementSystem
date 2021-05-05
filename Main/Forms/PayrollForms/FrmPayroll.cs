@@ -237,21 +237,19 @@ namespace Main.Forms.PayrollForms
                                     empTotalBenefits += benefit.Amount;
                                 }
                                 // Sales bonus here
-
-                                foreach(var salesReport in empPayslipGen.SelectedSalesReport)
-                                {
-                                    _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
-                                    {
-                                        PayslipId = payslipId,
-                                        EmployeeNumber = employeeNumber,
-                                        BenefitTitle = $"Special bonus from sales: {salesReport.CreatedAt.ToShortDateString()}",
-                                        Amount = _payrollSettings.EmployeeBonusFromSaleSpecialBonus
-                                    });
-
-                                    empTotalBenefits += _payrollSettings.EmployeeBonusFromSaleSpecialBonus;
-                                }
-
+                                int salesBonusNumberOfDays = empPayslipGen.SelectedSalesReport.Count;
+                                decimal totalDailySalesBonus = _payrollSettings.EmployeeBonusFromSaleSpecialBonus * salesBonusNumberOfDays;
+                                empTotalBenefits += totalDailySalesBonus;
                                 empTotalIncome += empTotalBenefits;
+
+                                _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                {
+                                    PayslipId = payslipId,
+                                    EmployeeNumber = employeeNumber,
+                                    BenefitTitle = "Sales bonus",
+                                    Amount = totalDailySalesBonus,
+                                    Multiplier = salesBonusNumberOfDays
+                                });
 
                                 // Deductions
                                 foreach (var deduction in empPayslipGen.SelectedDeductions)

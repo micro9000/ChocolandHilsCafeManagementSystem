@@ -91,7 +91,7 @@ namespace Main.Forms.AttendanceTerminal
             this.panelSecondaryBanner.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelSecondaryBanner.Location = new System.Drawing.Point(0, 0);
             this.panelSecondaryBanner.Name = "panelSecondaryBanner";
-            this.panelSecondaryBanner.Size = new System.Drawing.Size(1073, 95);
+            this.panelSecondaryBanner.Size = new System.Drawing.Size(1185, 95);
             this.panelSecondaryBanner.TabIndex = 2;
             // 
             // LblCurrentTime
@@ -151,7 +151,7 @@ namespace Main.Forms.AttendanceTerminal
             this.LViewAttendanceHistory.HideSelection = false;
             this.LViewAttendanceHistory.Location = new System.Drawing.Point(0, 286);
             this.LViewAttendanceHistory.Name = "LViewAttendanceHistory";
-            this.LViewAttendanceHistory.Size = new System.Drawing.Size(1073, 347);
+            this.LViewAttendanceHistory.Size = new System.Drawing.Size(1185, 347);
             this.LViewAttendanceHistory.TabIndex = 4;
             this.LViewAttendanceHistory.UseCompatibleStateImageBehavior = false;
             this.LViewAttendanceHistory.View = System.Windows.Forms.View.Details;
@@ -183,12 +183,12 @@ namespace Main.Forms.AttendanceTerminal
             // 
             // LVColumnFirstHalf
             // 
-            this.LVColumnFirstHalf.Text = "First half";
+            this.LVColumnFirstHalf.Text = "First halfday";
             this.LVColumnFirstHalf.Width = 100;
             // 
             // LVColumnSecondHalf
             // 
-            this.LVColumnSecondHalf.Text = "Second Half";
+            this.LVColumnSecondHalf.Text = "Second Halfday";
             this.LVColumnSecondHalf.Width = 100;
             // 
             // LVColumnRenderHrs
@@ -301,7 +301,7 @@ namespace Main.Forms.AttendanceTerminal
             this.tabControl1.Location = new System.Drawing.Point(0, 95);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1073, 185);
+            this.tabControl1.Size = new System.Drawing.Size(1173, 185);
             this.tabControl1.TabIndex = 12;
             // 
             // tabPage1
@@ -317,7 +317,7 @@ namespace Main.Forms.AttendanceTerminal
             this.tabPage1.Location = new System.Drawing.Point(4, 30);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1065, 151);
+            this.tabPage1.Size = new System.Drawing.Size(1165, 151);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "IN/OUT";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -515,7 +515,7 @@ namespace Main.Forms.AttendanceTerminal
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1073, 633);
+            this.ClientSize = new System.Drawing.Size(1185, 633);
             this.Controls.Add(this.LViewAttendanceHistory);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panelSecondaryBanner);

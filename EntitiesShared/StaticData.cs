@@ -76,5 +76,25 @@ namespace EntitiesShared
             Cancelled = 3
         }
 
+        public enum LeaveDurationType
+        { 
+            FullDay,
+            FirstHalfDay,
+            SecondHalfDay
+        }
+
+        public static Dictionary<LeaveDurationType, string> GetLeaveDurationTypes
+        {
+            get
+            {
+                var uoms = new Dictionary<LeaveDurationType, string>();
+
+                uoms.Add(LeaveDurationType.FullDay, "Whole Day");
+                uoms.Add(LeaveDurationType.FirstHalfDay, "First Halfday");
+                uoms.Add(LeaveDurationType.SecondHalfDay, "Second Halfday");
+
+                return uoms;
+            }
+        }
     }
 }

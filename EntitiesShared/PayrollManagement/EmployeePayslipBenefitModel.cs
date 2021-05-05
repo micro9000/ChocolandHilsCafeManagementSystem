@@ -42,5 +42,14 @@ namespace EntitiesShared.PayrollManagement
             get { return amount; }
             set { amount = value; }
         }
+
+        private int multiplier;
+
+        public int Multiplier
+        {
+            get { return multiplier; }
+            set { multiplier = value; }
+        }
+
     }
 }

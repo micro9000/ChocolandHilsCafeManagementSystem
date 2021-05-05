@@ -77,13 +77,13 @@ namespace Main.Forms.AttendanceTerminal
                         firstTimeOut = attendance.FirstTimeOut;
                     }
 
-                    string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm")} {firstTimeOut.ToString("hh:mm")}";
+                    string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm tt")} {firstTimeOut.ToString("hh:mm tt")}";
 
                     string secondTimeINandOUT = "";
 
                     if (attendance.IsTimeOutProvided)
                     {
-                        secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
+                        secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm tt")} {attendance.SecondTimeOut.ToString("hh:mm tt")}";
                     }
 
                     string wholeDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalHrs); //attendance.FirstHalfHrs + attendance.SecondHalfHrs

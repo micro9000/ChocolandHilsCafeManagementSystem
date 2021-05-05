@@ -19,6 +19,23 @@ namespace EntitiesShared.EmployeeManagement
             set { leaveId = value; }
         }
 
+        public StaticData.LeaveDurationType DurationType { get; set; }
+
+        [Write(false)]
+        [Computed]
+        public decimal Duration
+        {
+            get
+            {
+                if (this.DurationType == StaticData.LeaveDurationType.FullDay)
+                {
+                    return 1;
+                }
+
+                return 0.5m;
+            }
+        }
+
         private LeaveTypeModel leaveType;
 
         [Write(false)]
@@ -63,14 +80,26 @@ namespace EntitiesShared.EmployeeManagement
             set { endDate = value; }
         }
 
-
-        private decimal numberOfDays;
-
-        public decimal NumberOfDays
+        public decimal NumberOfDays 
         {
-            get { return numberOfDays; }
-            set { numberOfDays = value; }
+            get
+            {
+                if (this.StartDate == DateTime.MinValue && this.EndDate == DateTime.MinValue)
+                {
+                    return 0;
+                }
+
+                if (this.StartDate.Date == this.EndDate.Date)
+                {
+                    return 1;
+                }
+
+                TimeSpan timeSpan = this.EndDate.Subtract(this.StartDate);
+
+                return timeSpan.Days;
+            }
         }
+
 
         private decimal remainingDays;
 

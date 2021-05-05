@@ -86,23 +86,23 @@ namespace Main.Controllers.OtherDataController
 
                 if (isNew)
                 {
-                    var existingBranchWithTheSameName = _branchData.GetByBranchName(input.BranchName);
+                    //var existingBranchWithTheSameName = _branchData.GetByBranchName(input.BranchName);
 
-                    if (existingBranchWithTheSameName != null)
-                    {
-                        results.IsSuccess = false;
-                        results.Messages.Add("Existing branch with the same name.");
-                        return results;
-                    }
+                    //if (existingBranchWithTheSameName != null)
+                    //{
+                    //    results.IsSuccess = false;
+                    //    results.Messages.Add("Existing branch with the same name.");
+                    //    return results;
+                    //}
 
-                    var existingBranchWithTheTellNo = _branchData.GetByTellNo(input.TellNo);
+                    //var existingBranchWithTheTellNo = _branchData.GetByTellNo(input.TellNo);
 
-                    if (existingBranchWithTheTellNo != null)
-                    {
-                        results.IsSuccess = false;
-                        results.Messages.Add("Existing branch with the same tell no. (should be different contact number per branch)");
-                        return results;
-                    }
+                    //if (existingBranchWithTheTellNo != null)
+                    //{
+                    //    results.IsSuccess = false;
+                    //    results.Messages.Add("Existing branch with the same tell no. (should be different contact number per branch)");
+                    //    return results;
+                    //}
 
                     long branchId = _branchData.Add(input);
                     if (branchId > 0)

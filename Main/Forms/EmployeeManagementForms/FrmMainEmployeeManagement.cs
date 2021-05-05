@@ -167,6 +167,7 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.Location = new Point(this.ClientSize.Width / 2 - controlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - controlToDisplay.Size.Height / 2);
             //controlToDisplay.Anchor = (AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left);
 
+            controlToDisplay.LeaveTypes = _leaveTypeController.GetAll().Data;
             controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
             controlToDisplay.WorkShifts = _workShiftController.GetAll().Data;
             controlToDisplay.Branches = _branchData.GetAllNotDeleted();
@@ -179,6 +180,10 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.WorkShiftSelected += HandleSelectedWorkShiftToGetOtherInfo;
             controlToDisplay.FilterEmployeeAttendance += HandleFilterEmployeeAttendance;
             controlToDisplay.FilterEmployeePayslip += HandleFilterEmployeePayslip;
+            controlToDisplay.EmployeeRemainingLeaveFetch += HandleSearchingEmployeeRemainingLeaveCounts;
+            controlToDisplay.EmployeeLeaveSaved += HandleSaveEmployeeLeave;
+            controlToDisplay.DeleteEmployeeLeave += HandleDeleteEmployeeLeave;
+            controlToDisplay.FilterEmployeeLeave += HandleFilterEmployeeLeaveHistory;
 
             controlToDisplay.UndoMarkEmployeeAsResigned += HandleUndoMarkEmployeeAsResigned;
             controlToDisplay.MarkEmployeeAsResigned += HandleMarkEmployeeAsResigned;
@@ -279,6 +284,7 @@ namespace Main.Forms.EmployeeManagementForms
 
                 employeeCRUDControlObj.DisplayAttendanceRecord(Jan1, today);
                 employeeCRUDControlObj.DisplayEmpPayslipPaydateList();
+                employeeCRUDControlObj.DisplayEmployeeLeavesInDGV();
 
                 employeeCRUDControlObj.MoveToNextTabSaveEmployeeDetails();
 
@@ -718,9 +724,9 @@ namespace Main.Forms.EmployeeManagementForms
             employeeLeaveManagementControlObj.Location = new Point(this.ClientSize.Width / 2 - employeeLeaveManagementControlObj.Size.Width / 2, this.ClientSize.Height / 2 - employeeLeaveManagementControlObj.Size.Height / 2);
             employeeLeaveManagementControlObj.Anchor = AnchorStyles.None;
 
-            employeeLeaveManagementControlObj.EmployeeLeaveSaved += HandleSaveEmployeeLeave;
-            employeeLeaveManagementControlObj.DeleteEmployeeLeave += HandleDeleteEmployeeLeave;
-            employeeLeaveManagementControlObj.FilterEmployeeLeave += HandleFilterEmployeeLeaveHistory;
+            //employeeLeaveManagementControlObj.EmployeeLeaveSaved += HandleSaveEmployeeLeave;
+            //employeeLeaveManagementControlObj.DeleteEmployeeLeave += HandleDeleteEmployeeLeave;
+            //employeeLeaveManagementControlObj.FilterEmployeeLeave += HandleFilterEmployeeLeaveHistory;
 
             employeeLeaveManagementControlObj.PropSelectedEmpShiftIdToUpdateChanged += OnSearchByEmployeeNumberLeaves;
             employeeLeaveManagementControlObj.EmployeeRemainingLeaveFetch += HandleSearchingEmployeeRemainingLeaveCounts;
@@ -753,9 +759,9 @@ namespace Main.Forms.EmployeeManagementForms
 
         private void HandleSearchingEmployeeRemainingLeaveCounts(object sender, EventArgs e)
         {
-            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
-            var selectedLeaveType = employeeLeaveManagementControlObj.SelectedLeaveType;
-            var employeeNumber = employeeLeaveManagementControlObj.EmployeeNumber;
+            EmployeeDetailsCRUDControl controlToDisplay = (EmployeeDetailsCRUDControl)sender;
+            var selectedLeaveType = controlToDisplay.SelectedLeaveType;
+            var employeeNumber = controlToDisplay.EmployeeNumber;
 
             if (selectedLeaveType != null && string.IsNullOrEmpty(employeeNumber) == false)
             {
@@ -765,19 +771,19 @@ namespace Main.Forms.EmployeeManagementForms
                 {
                     var lastEmpLeave = empLeavesBySelectedLeave.LastOrDefault();
                     decimal remainingLeave = lastEmpLeave.RemainingDays;
-                    employeeLeaveManagementControlObj.DisplayEmpRemainingLeaveCount(remainingLeave);
+                    controlToDisplay.DisplayEmpRemainingLeaveCount(remainingLeave);
                 }
                 else
                 {
-                    employeeLeaveManagementControlObj.DisplayEmpRemainingLeaveCount(selectedLeaveType.NumberOfDays);
+                    controlToDisplay.DisplayEmpRemainingLeaveCount(selectedLeaveType.NumberOfDays);
                 }
             }
         }
 
         private void HandleSaveEmployeeLeave(object sender, EventArgs e)
         {
-            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
-            var newEmployeeLeave = employeeLeaveManagementControlObj.NewEmployeeLeave;
+            EmployeeDetailsCRUDControl controlToDisplay = (EmployeeDetailsCRUDControl)sender;
+            var newEmployeeLeave = controlToDisplay.NewEmployeeLeave;
 
             if (newEmployeeLeave != null)
             {
@@ -793,15 +799,11 @@ namespace Main.Forms.EmployeeManagementForms
                 if (saveResults.IsSuccess)
                 {
                     MessageBox.Show(resultMessages, "Save employee leave details", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    employeeLeaveManagementControlObj.ResetForm();
+                    controlToDisplay.ResetEmployeeFileLeaveForm();
 
                     // search all leave by employee
-                    employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(newEmployeeLeave.EmployeeNumber, DateTime.Now.Year);
-                    employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
-
-                    //string msg = addUpdateEmployeeObj.IsNew ? "Successfully save new employee details." : "Successfully update employee details.";
-
-                    //DisplayAddUpdateEmployeeConfirmationUserControl(saveResults.Data, msg);
+                    controlToDisplay.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(newEmployeeLeave.EmployeeNumber, DateTime.Now.Year);
+                    controlToDisplay.DisplayEmployeeLeavesInDGV();
                 }
                 else
                 {
@@ -812,9 +814,9 @@ namespace Main.Forms.EmployeeManagementForms
 
         private void HandleDeleteEmployeeLeave(object sender, EventArgs e)
         {
-            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
-            var employeeNumber = employeeLeaveManagementControlObj.EmployeeNumber;
-            var selectedEmployeeLeaveId = employeeLeaveManagementControlObj.EmployeeLeaveId;
+            EmployeeDetailsCRUDControl controlToDisplay = (EmployeeDetailsCRUDControl)sender;
+            var employeeNumber = controlToDisplay.EmployeeNumber;
+            var selectedEmployeeLeaveId = controlToDisplay.EmployeeLeaveIdToDelete;
 
             if (string.IsNullOrEmpty(employeeNumber) == false && selectedEmployeeLeaveId > 0)
             {
@@ -834,8 +836,8 @@ namespace Main.Forms.EmployeeManagementForms
                     {
                         MessageBox.Show(resultMessages, "Delete employee leave details", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         // search all leave by employee
-                        employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, DateTime.Now.Year);
-                        employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
+                        controlToDisplay.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, DateTime.Now.Year);
+                        controlToDisplay.DisplayEmployeeLeavesInDGV();
                     }
                     else
                     {
@@ -848,15 +850,15 @@ namespace Main.Forms.EmployeeManagementForms
 
         private void HandleFilterEmployeeLeaveHistory(object sender, EventArgs e)
         {
-            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
-            var employeeNumber = employeeLeaveManagementControlObj.EmployeeNumber;
-            var year = employeeLeaveManagementControlObj.FilterEmployeeLeaveHistoryYear;
+            EmployeeDetailsCRUDControl controlToDisplay = (EmployeeDetailsCRUDControl)sender;
+            var employeeNumber = controlToDisplay.EmployeeNumber;
+            var year = controlToDisplay.FilterEmployeeLeaveHistoryYear;
 
             if (string.IsNullOrEmpty(employeeNumber) == false)
             {
                 // search all leave by employee
-                employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, year);
-                employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
+                controlToDisplay.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, year);
+                controlToDisplay.DisplayEmployeeLeavesInDGV();
             }
         }
 

@@ -182,6 +182,22 @@ namespace Main.Forms.OtherDataForms.Controls
 
             if (this.IsSaveNew == true)
             {
+                if (this.Branches != null)
+                {
+                    var existingBranch = this.Branches.Where(x => 
+                                        x.BranchName
+                                            .ToLower()
+                                            .Contains(this.TbxBranchName.Text.ToLower()) ||
+                                        x.TellNo.ToLower() == this.TbxTellNo.Text.ToLower()
+                                        ).FirstOrDefault();
+
+                    if (existingBranch != null)
+                    {
+                        MessageBox.Show("Duplicate Data: Existing branch with the same name or tell no.", "Add new branch", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
                 this.BranchToAddUpdate = new BranchModel
                 {
                     BranchName = this.TbxBranchName.Text,
@@ -191,9 +207,27 @@ namespace Main.Forms.OtherDataForms.Controls
             }
             else
             {
-                this.BranchToAddUpdate.BranchName = this.TbxBranchName.Text;
-                this.BranchToAddUpdate.TellNo = this.TbxTellNo.Text;
-                this.BranchToAddUpdate.Address = this.TbxAddress.Text;
+                if (this.Branches != null && this.BranchToAddUpdate != null)
+                {
+                    var existingBranch = this.Branches.Where(x =>
+                                        (x.BranchName
+                                            .ToLower()
+                                            .Contains(this.TbxBranchName.Text.ToLower()) ||
+                                        x.TellNo.ToLower() == this.TbxTellNo.Text.ToLower()) &&
+                                        x.Id != this.BranchToAddUpdate.Id
+                                        ).FirstOrDefault();
+
+                    if (existingBranch != null)
+                    {
+                        MessageBox.Show("Duplicate Data: Existing branch with the same name or tell no.", "Update branch", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    this.BranchToAddUpdate.BranchName = this.TbxBranchName.Text;
+                    this.BranchToAddUpdate.TellNo = this.TbxTellNo.Text;
+                    this.BranchToAddUpdate.Address = this.TbxAddress.Text;
+                }
+
             }
 
             OnBranchSaved(EventArgs.Empty);

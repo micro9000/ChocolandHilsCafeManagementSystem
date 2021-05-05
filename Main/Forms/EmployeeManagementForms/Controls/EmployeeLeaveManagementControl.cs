@@ -274,7 +274,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 Reason = this.TboxLeaveReason.Text,
                 StartDate = this.DPickerDurationStartDate.Value,
                 EndDate = this.DPickerDurationEndDate.Value,
-                NumberOfDays = durationTotalDays,
+                //NumberOfDays = durationTotalDays,
                 RemainingDays = remainingLeaveCount,
                 CurrentYear = DateTime.Now.Year
             };
