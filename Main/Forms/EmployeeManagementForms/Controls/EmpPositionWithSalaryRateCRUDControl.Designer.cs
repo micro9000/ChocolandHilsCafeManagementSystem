@@ -32,6 +32,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.GboxPositionForm = new System.Windows.Forms.GroupBox();
+            this.CboxSingleEmployee = new System.Windows.Forms.CheckBox();
             this.NumUpDwnDailyRate = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.BtnCancelUpdate = new System.Windows.Forms.Button();
@@ -69,6 +70,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // GboxPositionForm
             // 
+            this.GboxPositionForm.Controls.Add(this.CboxSingleEmployee);
             this.GboxPositionForm.Controls.Add(this.NumUpDwnDailyRate);
             this.GboxPositionForm.Controls.Add(this.label5);
             this.GboxPositionForm.Controls.Add(this.BtnCancelUpdate);
@@ -83,9 +85,19 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GboxPositionForm.TabStop = false;
             this.GboxPositionForm.Text = "Position";
             // 
+            // CboxSingleEmployee
+            // 
+            this.CboxSingleEmployee.AutoSize = true;
+            this.CboxSingleEmployee.Location = new System.Drawing.Point(15, 236);
+            this.CboxSingleEmployee.Name = "CboxSingleEmployee";
+            this.CboxSingleEmployee.Size = new System.Drawing.Size(144, 25);
+            this.CboxSingleEmployee.TabIndex = 53;
+            this.CboxSingleEmployee.Text = "Single Employee";
+            this.CboxSingleEmployee.UseVisualStyleBackColor = true;
+            // 
             // NumUpDwnDailyRate
             // 
-            this.NumUpDwnDailyRate.Location = new System.Drawing.Point(16, 216);
+            this.NumUpDwnDailyRate.Location = new System.Drawing.Point(15, 188);
             this.NumUpDwnDailyRate.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -98,7 +110,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(16, 192);
+            this.label5.Location = new System.Drawing.Point(15, 164);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(80, 21);
             this.label5.TabIndex = 52;
@@ -111,7 +123,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnCancelUpdate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelUpdate.ForeColor = System.Drawing.Color.White;
             this.BtnCancelUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdate.Location = new System.Drawing.Point(59, 275);
+            this.BtnCancelUpdate.Location = new System.Drawing.Point(59, 292);
             this.BtnCancelUpdate.Name = "BtnCancelUpdate";
             this.BtnCancelUpdate.Size = new System.Drawing.Size(98, 47);
             this.BtnCancelUpdate.TabIndex = 48;
@@ -127,7 +139,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSavePosition.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSavePosition.ForeColor = System.Drawing.Color.White;
             this.BtnSavePosition.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSavePosition.Location = new System.Drawing.Point(163, 275);
+            this.BtnSavePosition.Location = new System.Drawing.Point(163, 292);
             this.BtnSavePosition.Name = "BtnSavePosition";
             this.BtnSavePosition.Size = new System.Drawing.Size(98, 47);
             this.BtnSavePosition.TabIndex = 47;
@@ -138,7 +150,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 89);
+            this.label1.Location = new System.Drawing.Point(15, 69);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(98, 21);
             this.label1.TabIndex = 2;
@@ -146,7 +158,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // TbxPositionTitle
             // 
-            this.TbxPositionTitle.Location = new System.Drawing.Point(16, 113);
+            this.TbxPositionTitle.Location = new System.Drawing.Point(15, 93);
             this.TbxPositionTitle.Multiline = true;
             this.TbxPositionTitle.Name = "TbxPositionTitle";
             this.TbxPositionTitle.Size = new System.Drawing.Size(245, 56);
@@ -198,5 +210,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.NumericUpDown NumUpDwnDailyRate;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView DGVPositionList;
+        private System.Windows.Forms.CheckBox CboxSingleEmployee;
     }
 }

@@ -108,14 +108,23 @@ SELECT * FROM Branches;
 CREATE TABLE IF NOT EXISTS EmployeePositions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	title VARCHAR(255),
-	salaryRate DECIMAL(9,2),
-    halfMonthRate DECIMAL(9,2),
+	-- salaryRate DECIMAL(9,2),
+    -- halfMonthRate DECIMAL(9,2),
     dailyRate DECIMAL(9,2),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+-- May 6 update:
+-- execute below queries to drop salaryRate and HalfMonthRate and add new column 
+-- ALTER TABLE EmployeePositions
+-- DROP COLUMN salaryRate;
+-- ALTER TABLE EmployeePositions
+-- DROP COLUMN halfMonthRate;
+ALTER TABLE EmployeePositions
+ADD COLUMN isSingleEmployee BOOLEAN DEFAULT False;
+
 
 SELECT * FROM EmployeePositions;
 

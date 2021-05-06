@@ -109,7 +109,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVPositionList.Rows.Clear();
             if (this.Positions != null)
             {
-                this.DGVPositionList.ColumnCount = 3;
+                this.DGVPositionList.ColumnCount = 4;
 
                 this.DGVPositionList.Columns[0].Name = "PositionId";
                 this.DGVPositionList.Columns[0].Visible = false;
@@ -119,6 +119,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 this.DGVPositionList.Columns[2].Name = "DailyRate";
                 this.DGVPositionList.Columns[2].HeaderText = "Daily rate";
+
+                this.DGVPositionList.Columns[3].Name = "IsSingleEmployeeOnly";
+                this.DGVPositionList.Columns[3].HeaderText = "Single employee";
 
                 // Update button
                 DataGridViewImageColumn btnUpdateLeaveTypeImg = new DataGridViewImageColumn();
@@ -142,6 +145,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[0].Value = position.Id;
                     row.Cells[1].Value = position.Title;
                     row.Cells[2].Value = position.DailyRate;
+                    row.Cells[3].Value = position.IsSingleEmployee ? "Single" : "Multiple";
                     DGVPositionList.Rows.Add(row);
                 }
             }
@@ -190,11 +194,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     }
                 }
 
-
                 this.PositionToAddUpdate = new EmployeePositionModel
                 {
                     Title = this.TbxPositionTitle.Text,
-                    DailyRate = this.NumUpDwnDailyRate.Value
+                    DailyRate = this.NumUpDwnDailyRate.Value,
+                    IsSingleEmployee = this.CboxSingleEmployee.Checked
                 };
             }
             else
@@ -218,6 +222,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     this.PositionToAddUpdate.Title = this.TbxPositionTitle.Text;
                     this.PositionToAddUpdate.DailyRate = this.NumUpDwnDailyRate.Value;
+                    this.PositionToAddUpdate.IsSingleEmployee = this.CboxSingleEmployee.Checked;
                 }
 
                 

@@ -16,5 +16,7 @@ namespace EntitiesShared.EmployeeManagement
         {
             get; set;
         }
+
+        public bool IsSingleEmployee { get; set; }
     }
 }
