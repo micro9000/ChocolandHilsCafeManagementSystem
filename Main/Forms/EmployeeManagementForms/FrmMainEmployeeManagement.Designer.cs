@@ -90,6 +90,7 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_Benefits_Deductions,
             this.ToolStripItem_PositionAndSalaryRate});
             this.EmployeeMenuItemsMenuStrip.Name = "EmployeeMenuItems";
+            this.EmployeeMenuItemsMenuStrip.OwnerItem = this.MenuItemEmployee;
             this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(260, 92);
             this.EmployeeMenuItemsMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.EmployeeMenuItemsMenuStrip_ItemClicked);
             // 

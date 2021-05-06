@@ -26,13 +26,15 @@ namespace Main.Controllers.EmployeeManagementControllers
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeeGovtIdCardData _employeeGovtIdCardData;
         private readonly IWorkforceScheduleData _workforceScheduleData;
+        private readonly IEmployeePositionData _employeePositionData;
 
         public EmployeeController(ILogger<LoginFrm> logger,
                                 IMapper mapper,
                                 EmployeeAddUpdateValidator employeeAddUpdateValidator,
                                 IEmployeeData employeeData,
                                 IEmployeeGovtIdCardData employeeGovtIdCardData,
-                                IWorkforceScheduleData workforceScheduleData)
+                                IWorkforceScheduleData workforceScheduleData,
+                                IEmployeePositionData employeePositionData)
         {
             _logger = logger;
             _mapper = mapper;
@@ -40,6 +42,7 @@ namespace Main.Controllers.EmployeeManagementControllers
             _employeeData = employeeData;
             _employeeGovtIdCardData = employeeGovtIdCardData;
             _workforceScheduleData = workforceScheduleData;
+            _employeePositionData = employeePositionData;
         }
 
 
@@ -189,9 +192,23 @@ namespace Main.Controllers.EmployeeManagementControllers
                 return results;
             }
 
+            var selectedPositionDetails = _employeePositionData.Get(input.PositionId);
 
             if (isNewEmployee)
             {
+                if (selectedPositionDetails.IsSingleEmployee)
+                {
+                    // Check if there is existing employee with the same position
+                    var employeeWithTheSamePosition = _employeeData.GetByPosition(selectedPositionDetails.Id);
+
+                    if (employeeWithTheSamePosition != null && employeeWithTheSamePosition.Count > 0)
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add($"Existing user with the same position. Only single employee can have {selectedPositionDetails.Title} position.");
+                        return results;
+                    }
+                }
+
                 var existingEmpWithTheSameMobileNum = _employeeData.GetByEmployeeMobileNumber(input.MobileNumber);
 
                 if (existingEmpWithTheSameMobileNum != null)
@@ -230,6 +247,26 @@ namespace Main.Controllers.EmployeeManagementControllers
                 if (employeeDetails == null)
                 {
                     throw new Exception($"Employee with the employee number of { input.EmployeeNumber } not found!");
+                }
+
+                if (selectedPositionDetails.IsSingleEmployee)
+                {
+                    // Check if there is existing employee with the same position
+                    var employeeWithTheSamePosition = _employeeData.GetByPosition(selectedPositionDetails.Id);
+
+                    if (employeeWithTheSamePosition != null)
+                    {
+                        var employeeWithTheSamePosition2 = employeeWithTheSamePosition != null ?
+                                        employeeWithTheSamePosition.Where(x => x.EmployeeNumber != employeeDetails.EmployeeNumber).ToList()
+                                        : null;
+
+                        if (employeeWithTheSamePosition2.Count > 0)
+                        {
+                            results.IsSuccess = false;
+                            results.Messages.Add($"Existing user with the same position. Only single employee can have {selectedPositionDetails.Title} position.");
+                            return results;
+                        }
+                    }
                 }
 
                 var existingEmpWithTheSameMobileNum = _employeeData.GetByEmployeeMobileNumber(input.MobileNumber);

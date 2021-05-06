@@ -77,6 +77,24 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return employees;
         }
 
+        public List<EmployeeModel> GetByPosition(long positionId)
+        {
+            string query = @"SELECT * FROM Employees 
+                            WHERE isDeleted=false AND positionId=@PositionId";
+
+            var employees = this.GetAll(query, new { PositionId = positionId });
+            if (employees != null)
+            {
+                foreach (var emp in employees)
+                {
+                    emp.Shift = _employeeShiftData.GetById(emp.ShiftId);
+                    emp.Position = _employeePositionData.Get(emp.PositionId);
+                    emp.Branch = _branchData.Get(emp.BranchId);
+                }
+            }
+            return employees;
+        }
+
         public EmployeeModel GetByEmployeeNumber(string employeeNumber)
         {
             string query = @"SELECT * FROM Employees 
