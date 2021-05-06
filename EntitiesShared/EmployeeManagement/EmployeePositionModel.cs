@@ -12,16 +12,6 @@ namespace EntitiesShared.EmployeeManagement
     {
         public string Title { get; set; }
 
-        public decimal SalaryRate
-        {
-            get;set;
-        }
-
-        public decimal HalfMonthRate
-        {
-            get; set;
-        }
-
         public decimal DailyRate
         {
             get; set;

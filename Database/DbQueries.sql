@@ -251,13 +251,13 @@ ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 ALTER TABLE EmployeeLeaves
 ADD COLUMN DurationType INT;
 
-SELECT * FROM EmployeeLeaves;
+SELECT * FROM EmployeeLeaves WHERE startDate BETWEEN '2021/04/21' AND '2021/05/05' OR endDate BETWEEN '2021/04/21' AND '2021/05/05';
 
 SELECT * 
 FROM EmployeeLeaves AS EL
 JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
-WHERE EL.isDeleted=false AND EL.isPaid=false AND EL.currentYear=@Year AND 
-EL.startDate BETWEEN '2021/04/21' AND '2021/05/05' AND EL.endDate BETWEEN @StartDate AND @EndDate 
+WHERE EL.isDeleted=false AND EL.isPaid=false AND EL.currentYear=2021 AND 
+(EL.startDate BETWEEN '2021/04/21' AND '2021/05/05' OR EL.endDate BETWEEN '2021/04/21' AND '2021/05/05')
 ORDER BY EL.id DESC;
 
 CREATE TABLE IF NOT EXISTS WorkforceSchedules(
@@ -377,8 +377,8 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	startShiftDate DATE,
     endShiftDate DATE,
     payDate DATE,
-    salaryRate DECIMAL(9,2),
-    halfMonthRate DECIMAL(9,2),
+    -- salaryRate DECIMAL(9,2), -- we need to remove these columns
+    -- halfMonthRate DECIMAL(9,2), --
     dailyRate DECIMAL(9,2),
     numOfDays INT,
     late VARCHAR(50),
@@ -402,6 +402,13 @@ ALTER TABLE EmployeePayslips
 ADD COLUMN isCancel BOOLEAN DEFAULT False;
 ALTER TABLE EmployeePayslips
 ADD COLUMN employerGovtContributionTotal DECIMAL(9,2) DEFAULT 0;
+
+-- May 6, update:
+-- execute below queries to drop columns
+ALTER TABLE EmployeePayslips
+DROP COLUMN salaryRate;
+ALTER TABLE EmployeePayslips
+DROP COLUMN halfMonthRate;
 
 
 SELECT * FROM EmployeePayslips;

@@ -177,8 +177,6 @@ namespace Main.Forms.PayrollForms
                                 StartShiftDate = empPayslipGen.ShiftStartDate,
                                 EndShiftDate = empPayslipGen.ShiftEndDate,
                                 PayDate = empPayslipGen.PayDate,
-                                SalaryRate = empPayslipGen.Employee.Position.SalaryRate,
-                                HalfMonthRate = empPayslipGen.Employee.Position.HalfMonthRate,
                                 DailyRate = empPayslipGen.Employee.Position.DailyRate,
                                 NumOfDays = empPayslipGen.PaydaySalaryComputation.NumberOfDays,
                                 Late = empPayslipGen.PaydaySalaryComputation.Late,

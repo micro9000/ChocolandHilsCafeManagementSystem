@@ -41,16 +41,6 @@ namespace Main.Forms.PayrollForms.Controls
                 this.LblShiftStartDate.Text = Payslip.StartShiftDate.ToShortDateString();
                 this.LblShiftEndDate.Text = Payslip.EndShiftDate.ToShortDateString();
 
-                var monthlyRate = new ListViewItem(new string[] {
-                    "Monthly Rate", "", Payslip.SalaryRate.ToString()
-                });
-                this.LVPayslipEarnings.Items.Add(monthlyRate);
-
-                var halfMonthlyRate = new ListViewItem(new string[] {
-                    "1/2 Month Rate", "", Payslip.HalfMonthRate.ToString()
-                });
-                this.LVPayslipEarnings.Items.Add(halfMonthlyRate);
-
                 var dailyRate = new ListViewItem(new string[] {
                     "Daily Rate", "", Payslip.DailyRate.ToString()
                 });

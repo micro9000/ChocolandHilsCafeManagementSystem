@@ -14,8 +14,6 @@ namespace Main.Controllers.EmployeeManagementControllers.Validator
         {
             this.CascadeMode = CascadeMode.Stop;
             RuleFor(e => e.Title).NotEmpty();
-            RuleFor(e => e.SalaryRate).NotEmpty();
-            RuleFor(e => e.HalfMonthRate).NotEmpty();
             RuleFor(e => e.DailyRate).NotEmpty();
         }
     }

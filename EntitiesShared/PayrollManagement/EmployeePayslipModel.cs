@@ -55,21 +55,6 @@ namespace EntitiesShared.PayrollManagement
             set { payDate = value; }
         }
 
-        private decimal salaryRate;
-
-        public decimal SalaryRate
-        {
-            get { return salaryRate; }
-            set { salaryRate = value; }
-        }
-
-        private decimal halfMonthRate;
-
-        public decimal HalfMonthRate
-        {
-            get { return halfMonthRate; }
-            set { halfMonthRate = value; }
-        }
 
         private decimal dailyRate;
 

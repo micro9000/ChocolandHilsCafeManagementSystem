@@ -109,7 +109,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVPositionList.Rows.Clear();
             if (this.Positions != null)
             {
-                this.DGVPositionList.ColumnCount = 5;
+                this.DGVPositionList.ColumnCount = 3;
 
                 this.DGVPositionList.Columns[0].Name = "PositionId";
                 this.DGVPositionList.Columns[0].Visible = false;
@@ -117,14 +117,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVPositionList.Columns[1].Name = "PositionTitle";
                 this.DGVPositionList.Columns[1].HeaderText = "Title";
 
-                this.DGVPositionList.Columns[2].Name = "MonthlyRate";
-                this.DGVPositionList.Columns[2].HeaderText = "Monthly rate";
-
-                this.DGVPositionList.Columns[3].Name = "HalfMonthRate";
-                this.DGVPositionList.Columns[3].HeaderText = "Half month rate";
-
-                this.DGVPositionList.Columns[4].Name = "DailyRate";
-                this.DGVPositionList.Columns[4].HeaderText = "Daily rate";
+                this.DGVPositionList.Columns[2].Name = "DailyRate";
+                this.DGVPositionList.Columns[2].HeaderText = "Daily rate";
 
                 // Update button
                 DataGridViewImageColumn btnUpdateLeaveTypeImg = new DataGridViewImageColumn();
@@ -147,9 +141,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     row.Cells[0].Value = position.Id;
                     row.Cells[1].Value = position.Title;
-                    row.Cells[2].Value = position.SalaryRate;
-                    row.Cells[3].Value = position.HalfMonthRate;
-                    row.Cells[4].Value = position.DailyRate;
+                    row.Cells[2].Value = position.DailyRate;
                     DGVPositionList.Rows.Add(row);
                 }
             }
@@ -158,8 +150,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         public void ResetForm()
         {
             this.TbxPositionTitle.Text = "";
-            this.NumUpDwnMonlyRate.Value = 0;
-            this.NumUpDwnHalfMonthRate.Value = 0;
             this.NumUpDwnDailyRate.Value = 0;
             this.IsSaveNew = true;
             this.PositionToAddUpdate = null;
@@ -175,19 +165,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             if (this.PositionToAddUpdate != null)
             {
                 this.TbxPositionTitle.Text = this.PositionToAddUpdate.Title;
-                this.NumUpDwnMonlyRate.Value = this.PositionToAddUpdate.SalaryRate;
-                this.NumUpDwnHalfMonthRate.Value = this.PositionToAddUpdate.HalfMonthRate;
                 this.NumUpDwnDailyRate.Value = this.PositionToAddUpdate.DailyRate;
             }
         }
 
         private void BtnSavePosition_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(this.TbxPositionTitle.Text) ||
-                this.NumUpDwnMonlyRate.Value <= 0 ||
-                this.NumUpDwnHalfMonthRate.Value <= 0 ||
-                this.NumUpDwnDailyRate.Value <= 0
-                )
+            if (string.IsNullOrEmpty(this.TbxPositionTitle.Text) || this.NumUpDwnDailyRate.Value <= 0)
             {
                 MessageBox.Show("Kindly input all details.", "Save position", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -210,8 +194,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.PositionToAddUpdate = new EmployeePositionModel
                 {
                     Title = this.TbxPositionTitle.Text,
-                    SalaryRate = this.NumUpDwnMonlyRate.Value,
-                    HalfMonthRate = this.NumUpDwnHalfMonthRate.Value,
                     DailyRate = this.NumUpDwnDailyRate.Value
                 };
             }
@@ -235,8 +217,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     }
 
                     this.PositionToAddUpdate.Title = this.TbxPositionTitle.Text;
-                    this.PositionToAddUpdate.SalaryRate = this.NumUpDwnMonlyRate.Value;
-                    this.PositionToAddUpdate.HalfMonthRate = this.NumUpDwnHalfMonthRate.Value;
                     this.PositionToAddUpdate.DailyRate = this.NumUpDwnDailyRate.Value;
                 }
 
@@ -258,7 +238,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void DGVPositionList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Update button
-            if ((e.ColumnIndex == 5) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 3) && e.RowIndex > -1)
             {
                 if (DGVPositionList.CurrentRow != null)
                 {
@@ -271,7 +251,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
 
             // Delete button
-            if ((e.ColumnIndex == 6) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 4) && e.RowIndex > -1)
             {
                 if (DGVPositionList.CurrentRow != null)
                 {

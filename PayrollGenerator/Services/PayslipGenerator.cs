@@ -203,8 +203,6 @@ namespace PayrollGenerator.Services
                             StartShiftDate = this.ShiftStartDate,
                             EndShiftDate = this.ShiftEndDate,
                             PayDate = this.PayDate,
-                            SalaryRate = empDetails.Position.SalaryRate,
-                            HalfMonthRate = empDetails.Position.HalfMonthRate,
                             DailyRate = empDetails.Position.DailyRate,
                             NumOfDays = empPaydateComputation.NumberOfDays,
                             Late = empPaydateComputation.Late,

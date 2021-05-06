@@ -170,16 +170,6 @@ namespace PDFReportGenerators
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Monthly Rate</td>
-                                <td></td>
-                                <td>{payslip.SalaryRate}</td>
-                            </tr>
-                            <tr>
-                                <td>1/2 Month Rate</td>
-                                <td></td>
-                                <td>{payslip.HalfMonthRate}</td>
-                            </tr>
-                            <tr>
                                 <td>Daily Rate</td>
                                 <td></td>
                                 <td>{payslip.DailyRate}</td>
