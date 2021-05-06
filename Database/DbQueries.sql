@@ -200,6 +200,14 @@ CREATE TABLE IF NOT EXISTS GovernmentAgencies(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+
+CREATE TABLE IF NOT EXISTS SSSContributionTable(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    rangeCompenstationStart DECIMAL(9,2),
+    rangeCompenstationEnd DECIMAL(9,2),
+    monthlySalaryCredit DECIMAL(9,2)
+)ENGINE=INNODB;
+
 SELECT * FROM GovernmentAgencies;
 
 CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(

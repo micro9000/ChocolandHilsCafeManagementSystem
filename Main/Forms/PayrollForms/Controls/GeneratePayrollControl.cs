@@ -427,7 +427,7 @@ namespace Main.Forms.PayrollForms.Controls
             this.DGVDeductionList.Rows.Clear();
             if (this.Deductions != null)
             {
-                this.DGVDeductionList.ColumnCount = 3;
+                this.DGVDeductionList.ColumnCount = 2;
 
                 this.DGVDeductionList.Columns[0].Name = "benefitId";
                 this.DGVDeductionList.Columns[0].Visible = false;
@@ -435,8 +435,16 @@ namespace Main.Forms.PayrollForms.Controls
                 this.DGVDeductionList.Columns[1].Name = "DeductionTitle";
                 this.DGVDeductionList.Columns[1].HeaderText = "Title";
 
-                this.DGVDeductionList.Columns[2].Name = "DeductionAmount";
-                this.DGVDeductionList.Columns[2].HeaderText = "Amount";
+                //this.DGVDeductionList.Columns[2].Name = "DeductionAmount";
+                //this.DGVDeductionList.Columns[2].HeaderText = "Amount";
+
+                DataGridViewTextBoxColumn textboxColumn = new DataGridViewTextBoxColumn();
+                textboxColumn.HeaderText = "Amount";
+                textboxColumn.Name = "DeductionAmount";
+                textboxColumn.DefaultCellStyle.BackColor = Color.Bisque;
+                textboxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //textboxColumn.ReadOnly = true;
+                DGVDeductionList.Columns.Add(textboxColumn);
 
                 DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
                 selectChbxToSchedule.HeaderText = "Select";
@@ -618,10 +626,14 @@ namespace Main.Forms.PayrollForms.Controls
             foreach (DataGridViewRow row in this.DGVDeductionList.Rows)
             {
                 bool isSelected = Convert.ToBoolean(row.Cells["selectDeductionCkbox"].Value);
+                decimal newAmount = Convert.ToDecimal(row.Cells["DeductionAmount"].Value);
+
                 if (isSelected)
                 {
                     var selectedEmpDeduction = (EmployeeDeductionModel)row.Tag;
                     var empDeductionInList = this.Deductions.Where(x => x.Id == selectedEmpDeduction.Id).FirstOrDefault();
+
+                    empDeductionInList.Amount = newAmount;
 
                     if (empDeductionInList != null)
                     {
