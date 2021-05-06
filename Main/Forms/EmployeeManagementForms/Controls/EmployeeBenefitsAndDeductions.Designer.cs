@@ -184,9 +184,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(16, 101);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 21);
+            this.label3.Size = new System.Drawing.Size(118, 21);
             this.label3.TabIndex = 45;
-            this.label3.Text = "Amount";
+            this.label3.Text = "Default amount";
             // 
             // label1
             // 
@@ -292,9 +292,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(16, 101);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(66, 21);
+            this.label4.Size = new System.Drawing.Size(118, 21);
             this.label4.TabIndex = 45;
-            this.label4.Text = "Amount";
+            this.label4.Text = "Default amount";
             // 
             // label5
             // 

@@ -189,7 +189,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVEmployeeBenefits.Columns[1].HeaderText = "Title";
 
                 this.DGVEmployeeBenefits.Columns[2].Name = "BenefitAmount";
-                this.DGVEmployeeBenefits.Columns[2].HeaderText = "Amount";
+                this.DGVEmployeeBenefits.Columns[2].HeaderText = "Default amount";
 
                 // Update button
                 DataGridViewImageColumn btnUpdateLeaveTypeImg = new DataGridViewImageColumn();
@@ -234,7 +234,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVEmployeeDeductions.Columns[1].HeaderText = "Title";
 
                 this.DGVEmployeeDeductions.Columns[2].Name = "DeductionAmount";
-                this.DGVEmployeeDeductions.Columns[2].HeaderText = "Amount";
+                this.DGVEmployeeDeductions.Columns[2].HeaderText = "Default amount";
 
                 // Update button
                 DataGridViewImageColumn btnUpdateLeaveTypeImg = new DataGridViewImageColumn();
