@@ -121,11 +121,6 @@ namespace Main.Forms.EmployeeManagementForms
             {
                 DisplayEmployeeListUserControl();
             }
-            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_FileLeave")
-            {
-                // Employee Leave management
-                DisplayEmployeeLeaveManagementControl();
-            }
             else if (clickedItem != null && clickedItem.Name == "ToolStripItem_Benefits_Deductions")
             {
                 DisplayBenefitDeductionCRUDControl();
@@ -707,53 +702,6 @@ namespace Main.Forms.EmployeeManagementForms
                 {
                     MessageBox.Show(resultMessages, "Save workforce schedule", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-            }
-        }
-
-
-        #endregion
-
-        #region Employee leave management
-
-        private void DisplayEmployeeLeaveManagementControl()
-        {
-            this.panelContainer.Controls.Clear();
-
-            var employeeLeaveManagementControlObj = new EmployeeLeaveManagementControl();
-            //employeeLeaveManagementControlObj.Dock = DockStyle.Fill;
-            employeeLeaveManagementControlObj.Location = new Point(this.ClientSize.Width / 2 - employeeLeaveManagementControlObj.Size.Width / 2, this.ClientSize.Height / 2 - employeeLeaveManagementControlObj.Size.Height / 2);
-            employeeLeaveManagementControlObj.Anchor = AnchorStyles.None;
-
-            //employeeLeaveManagementControlObj.EmployeeLeaveSaved += HandleSaveEmployeeLeave;
-            //employeeLeaveManagementControlObj.DeleteEmployeeLeave += HandleDeleteEmployeeLeave;
-            //employeeLeaveManagementControlObj.FilterEmployeeLeave += HandleFilterEmployeeLeaveHistory;
-
-            employeeLeaveManagementControlObj.PropSelectedEmpShiftIdToUpdateChanged += OnSearchByEmployeeNumberLeaves;
-            employeeLeaveManagementControlObj.EmployeeRemainingLeaveFetch += HandleSearchingEmployeeRemainingLeaveCounts;
-            employeeLeaveManagementControlObj.LeaveTypes = _leaveTypeController.GetAll().Data;
-            //userControlToDisplay.PropertySelectedLeaveTypeIdToDeleteChanged += OnLeaveTypeSelectToDelete;
-
-            //userControlToDisplay.Employees = this._employeeController.GetAll().Data;
-            //userControlToDisplay.DisplayEmployeeList();
-
-            //userControlToDisplay.PropertyChanged += OnEmployeeViewDetails;
-
-            this.panelContainer.Controls.Add(employeeLeaveManagementControlObj);
-        }
-
-        private void OnSearchByEmployeeNumberLeaves(object sender, PropertyChangedEventArgs e)
-        {
-            EmployeeLeaveManagementControl employeeLeaveManagementControlObj = (EmployeeLeaveManagementControl)sender;
-            var employeeNumber = employeeLeaveManagementControlObj.EmployeeNumber;
-
-            if (string.IsNullOrEmpty(employeeNumber) == false)
-            {
-                employeeLeaveManagementControlObj.Employee = _employeeController.GetByEmployeeNumber(employeeNumber).Data;
-                employeeLeaveManagementControlObj.DisplaySearchEmployee();
-
-                // search all leave by employee
-                employeeLeaveManagementControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, DateTime.Now.Year);
-                employeeLeaveManagementControlObj.DisplayEmployeeLeaveHistory();
             }
         }
 

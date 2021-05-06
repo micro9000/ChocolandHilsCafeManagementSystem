@@ -35,7 +35,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.EmployeeMenuItemsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ToolStripItem_DetailsCRUD = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_List = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripItem_FileLeave = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_Benefits_Deductions = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItem_PositionAndSalaryRate = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemWorkSchedules = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,12 +87,10 @@ namespace Main.Forms.EmployeeManagementForms
             this.EmployeeMenuItemsMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripItem_DetailsCRUD,
             this.ToolStripItem_List,
-            this.ToolStripItem_FileLeave,
             this.ToolStripItem_Benefits_Deductions,
             this.ToolStripItem_PositionAndSalaryRate});
             this.EmployeeMenuItemsMenuStrip.Name = "EmployeeMenuItems";
-            this.EmployeeMenuItemsMenuStrip.OwnerItem = this.MenuItemEmployee;
-            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(260, 114);
+            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(260, 92);
             this.EmployeeMenuItemsMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.EmployeeMenuItemsMenuStrip_ItemClicked);
             // 
             // ToolStripItem_DetailsCRUD
@@ -107,12 +104,6 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_List.Name = "ToolStripItem_List";
             this.ToolStripItem_List.Size = new System.Drawing.Size(259, 22);
             this.ToolStripItem_List.Text = "List";
-            // 
-            // ToolStripItem_FileLeave
-            // 
-            this.ToolStripItem_FileLeave.Name = "ToolStripItem_FileLeave";
-            this.ToolStripItem_FileLeave.Size = new System.Drawing.Size(259, 22);
-            this.ToolStripItem_FileLeave.Text = "File leave";
             // 
             // ToolStripItem_Benefits_Deductions
             // 
@@ -308,7 +299,6 @@ namespace Main.Forms.EmployeeManagementForms
         private System.Windows.Forms.ContextMenuStrip EmployeeMenuItemsMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItem_DetailsCRUD;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItem_List;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripItem_FileLeave;
         private System.Windows.Forms.ContextMenuStrip PayrollMenuItems;
         private System.Windows.Forms.ToolStripMenuItem AttendanceStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PayslipStripMenuItem;
