@@ -163,6 +163,26 @@ namespace Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_hand_24 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-hand-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_hand_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-hand-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_home_24 {
             get {
                 object obj = ResourceManager.GetObject("icons8-home-24", resourceCulture);

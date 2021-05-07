@@ -96,5 +96,13 @@ namespace EntitiesShared
                 return uoms;
             }
         }
+
+        public enum EmployeeRequestApprovalStatus
+        {
+            Pending,
+            Approved,
+            Disapproved,
+            Cancelled
+        }
     }
 }

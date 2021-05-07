@@ -50,6 +50,10 @@ using Main.Controllers.POSControllers.ControllerInterface;
 using Main.Controllers.POSControllers;
 using Main.Controllers.POSControllers.Validators;
 using Main.Forms.SalesReport;
+using Main.Forms.RequestsForm;
+using Main.Controllers.RequestControllers.Validators;
+using Main.Controllers.RequestControllers.ControllerInterface;
+using Main.Controllers.RequestControllers;
 
 namespace Main
 {
@@ -150,6 +154,7 @@ namespace Main
             services.AddTransient<IEmployeeShiftDayData, EmployeeShiftDayData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
             services.AddTransient<IWorkforceScheduleData, WorkforceScheduleData>();
+            services.AddTransient<IEmployeeCashAdvanceRequestData, EmployeeCashAdvanceRequestData>();
             // Other data management
             services.AddTransient<ILeaveTypeData, LeaveTypeData>();
             services.AddTransient<IGovernmentAgencyData, GovernmentAgencyData>();
@@ -197,6 +202,8 @@ namespace Main
             services.AddTransient<InitiateNewTakeOutSalesTransactionValidator>();
             services.AddTransient<CheckOutSalesTransactionValidator>();
 
+            services.AddTransient<EmployeeCashAdvanceRequestValidator>();
+
             // controllers
             services.AddTransient<IEmployeeBenefitsDeductionsController, EmployeeBenefitsDeductionsController>();
             services.AddTransient<IEmployeeController, EmployeeController>();
@@ -221,6 +228,8 @@ namespace Main
             services.AddTransient<IPOSCommandController, POSCommandController>();
             services.AddTransient<IPOSReadController, POSReadController>();
 
+            services.AddTransient<IEmployeeCashAdvanceRequestController, EmployeeCashAdvanceRequestController>();
+
 
             // forms
             services.AddTransient<HomeFrm>();
@@ -234,6 +243,7 @@ namespace Main
             services.AddTransient<FrmInventory>();
             services.AddTransient<FrmMainPOSTerminal>();
             services.AddTransient<FrmSalesReport>();
+            services.AddTransient<FrmEmployeeRequests>();
 
             services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
             services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();

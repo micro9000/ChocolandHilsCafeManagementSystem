@@ -5,6 +5,7 @@ using Main.Forms.InventoryManagementForms;
 using Main.Forms.OtherDataForms;
 using Main.Forms.PayrollForms;
 using Main.Forms.POSManagementForms;
+using Main.Forms.RequestsForm;
 using Main.Forms.SalesReport;
 using Main.Forms.UserManagementForms;
 using Microsoft.Extensions.Options;
@@ -33,6 +34,7 @@ namespace Main
         private readonly FrmInventory _frmInventory;
         private readonly FrmMainPOSTerminal _frmMainPOSTerminal;
         private readonly FrmSalesReport _frmSalesReport;
+        private readonly FrmEmployeeRequests _frmEmployeeRequests;
         private readonly HomeFrm _frmHome;
         private readonly IIngredientInventoryData _ingredientInventoryData;
         private Button currentButton;
@@ -48,6 +50,7 @@ namespace Main
                         FrmInventory frmInventory,
                         FrmMainPOSTerminal frmMainPOSTerminal,
                         FrmSalesReport frmSalesReport,
+                        FrmEmployeeRequests frmEmployeeRequests,
                         HomeFrm frmHome,
                         IIngredientInventoryData ingredientInventoryData)
         {
@@ -62,6 +65,7 @@ namespace Main
             _frmInventory = frmInventory;
             _frmMainPOSTerminal = frmMainPOSTerminal;
             _frmSalesReport = frmSalesReport;
+            _frmEmployeeRequests = frmEmployeeRequests;
             _frmHome = frmHome;
             _ingredientInventoryData = ingredientInventoryData;
         }
@@ -245,6 +249,11 @@ namespace Main
         private void BtnSalesReportSystem_Click(object sender, EventArgs e)
         {
             OpenChildForm(_frmSalesReport, sender);
+        }
+
+        private void BtnRequests_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(_frmEmployeeRequests, sender);
         }
     }
 }

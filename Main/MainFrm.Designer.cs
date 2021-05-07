@@ -32,6 +32,7 @@ namespace Main
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainFrm));
             this.panelSidebar = new System.Windows.Forms.Panel();
+            this.BtnRequests = new System.Windows.Forms.Button();
             this.BtnAttendanceTerminal = new System.Windows.Forms.Button();
             this.BtnOtherData = new System.Windows.Forms.Button();
             this.BtnUserMgnment = new System.Windows.Forms.Button();
@@ -67,6 +68,7 @@ namespace Main
             // panelSidebar
             // 
             this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.panelSidebar.Controls.Add(this.BtnRequests);
             this.panelSidebar.Controls.Add(this.BtnAttendanceTerminal);
             this.panelSidebar.Controls.Add(this.BtnOtherData);
             this.panelSidebar.Controls.Add(this.BtnUserMgnment);
@@ -82,6 +84,27 @@ namespace Main
             this.panelSidebar.Size = new System.Drawing.Size(212, 574);
             this.panelSidebar.TabIndex = 0;
             // 
+            // BtnRequests
+            // 
+            this.BtnRequests.BackColor = System.Drawing.Color.Transparent;
+            this.BtnRequests.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.BtnRequests.FlatAppearance.BorderSize = 0;
+            this.BtnRequests.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnRequests.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnRequests.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRequests.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnRequests.ForeColor = System.Drawing.Color.White;
+            this.BtnRequests.Image = global::Main.Properties.Resources.icons8_hand_24;
+            this.BtnRequests.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRequests.Location = new System.Drawing.Point(-5, 341);
+            this.BtnRequests.Name = "BtnRequests";
+            this.BtnRequests.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.BtnRequests.Size = new System.Drawing.Size(212, 47);
+            this.BtnRequests.TabIndex = 10;
+            this.BtnRequests.Text = "Requests";
+            this.BtnRequests.UseVisualStyleBackColor = false;
+            this.BtnRequests.Click += new System.EventHandler(this.BtnRequests_Click);
+            // 
             // BtnAttendanceTerminal
             // 
             this.BtnAttendanceTerminal.BackColor = System.Drawing.Color.Transparent;
@@ -94,7 +117,7 @@ namespace Main
             this.BtnAttendanceTerminal.ForeColor = System.Drawing.Color.White;
             this.BtnAttendanceTerminal.Image = global::Main.Properties.Resources.attendance_white_30;
             this.BtnAttendanceTerminal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAttendanceTerminal.Location = new System.Drawing.Point(0, 329);
+            this.BtnAttendanceTerminal.Location = new System.Drawing.Point(3, 288);
             this.BtnAttendanceTerminal.Name = "BtnAttendanceTerminal";
             this.BtnAttendanceTerminal.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.BtnAttendanceTerminal.Size = new System.Drawing.Size(212, 47);
@@ -115,7 +138,7 @@ namespace Main
             this.BtnOtherData.ForeColor = System.Drawing.Color.White;
             this.BtnOtherData.Image = global::Main.Properties.Resources.folder_white_24;
             this.BtnOtherData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnOtherData.Location = new System.Drawing.Point(0, 282);
+            this.BtnOtherData.Location = new System.Drawing.Point(-5, 394);
             this.BtnOtherData.Name = "BtnOtherData";
             this.BtnOtherData.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.BtnOtherData.Size = new System.Drawing.Size(212, 47);
@@ -495,5 +518,6 @@ namespace Main
         private System.Windows.Forms.ToolTip ToolTipForNavButtons;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button BtnToggleMenu;
+        private System.Windows.Forms.Button BtnRequests;
     }
 }

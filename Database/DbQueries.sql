@@ -368,6 +368,20 @@ CREATE TABLE IF NOT EXISTS EmployeeDeductions(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+CREATE TABLE IF NOT EXISTS EmployeeCashAdvanceRequests(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	employeeNumber CHAR(8),
+    amount DECIMAL(9,2),
+    needOnDate DATETIME,
+    employeeRemarks VARCHAR(255),
+    approvalStatus INT,
+    employerRemarks VARCHAR(255),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
 SELECT * FROM EmployeeDeductions;
 
 -- Payroll generation:

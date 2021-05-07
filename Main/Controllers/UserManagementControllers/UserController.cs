@@ -13,6 +13,7 @@ using FluentValidation.Results;
 using AutoMapper;
 using EntitiesShared.UserManagement.Model;
 using System.Transactions;
+using DataAccess.Data.EmployeeManagement.Contracts;
 
 namespace Main.Controllers.UserManagementControllers
 {
@@ -25,6 +26,7 @@ namespace Main.Controllers.UserManagementControllers
         private readonly IRoleData _roleData;
         private readonly IUserData _userData;
         private readonly IUserRoleData _userRoleData;
+        private readonly IEmployeeData _employeeData;
         private readonly UserAddUpdateValidator _userAddUpdateValidator;
 
         public UserController(ILogger<LoginFrm> logger,
@@ -34,6 +36,7 @@ namespace Main.Controllers.UserManagementControllers
                                 IRoleData roleData,
                                 IUserData userData,
                                 IUserRoleData userRoleData,
+                                IEmployeeData employeeData,
                                 UserAddUpdateValidator userAddUpdateValidator)
         {
             _logger = logger;
@@ -43,6 +46,7 @@ namespace Main.Controllers.UserManagementControllers
             _roleData = roleData;
             _userData = userData;
             _userRoleData = userRoleData;
+            _employeeData = employeeData;
             _userAddUpdateValidator = userAddUpdateValidator;
         }
 
@@ -220,6 +224,21 @@ namespace Main.Controllers.UserManagementControllers
                 {
                     results.IsSuccess = false;
                     results.Messages.Add("Duplicate username, kindly use other username.");
+                    return results;
+                }
+
+                if (userDetails == null && isNew == false)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Changing username is not allowed.");
+                    return results;
+                }
+
+                var employeeDetails = _employeeData.GetByEmployeeNumber(input.UserName);
+                if (employeeDetails == null)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Employee number doesn't existing.");
                     return results;
                 }
 

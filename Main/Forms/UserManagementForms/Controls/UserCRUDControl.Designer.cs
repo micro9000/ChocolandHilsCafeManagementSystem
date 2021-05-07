@@ -158,6 +158,7 @@ namespace Main.Forms.UserManagementForms.Controls
             // TboxUserFullname
             // 
             this.TboxUserFullname.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TboxUserFullname.Enabled = false;
             this.TboxUserFullname.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TboxUserFullname.Location = new System.Drawing.Point(14, 155);
             this.TboxUserFullname.MaxLength = 500;
@@ -206,9 +207,9 @@ namespace Main.Forms.UserManagementForms.Controls
             this.label9.ForeColor = System.Drawing.Color.Black;
             this.label9.Location = new System.Drawing.Point(14, 67);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(206, 20);
+            this.label9.Size = new System.Drawing.Size(216, 20);
             this.label9.TabIndex = 25;
-            this.label9.Text = "Username/ Employee number";
+            this.label9.Text = "Employee number as username";
             // 
             // BtnCancelUpdate
             // 

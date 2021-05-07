@@ -238,7 +238,7 @@ namespace Main.Forms.OtherDataForms
                     }
                     else
                     {
-                        MessageBox.Show(resultMessages, "Save leave type", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(resultMessages, "Delete leave type", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
 
