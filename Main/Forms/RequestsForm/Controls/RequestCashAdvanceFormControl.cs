@@ -127,6 +127,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.DPicDateNeed.Value = DateTime.Now;
             this.TboxEmployeeRemarks.Text = "";
             this.IsSaveNew = true;
+            this.TboxAdminRemarks.Text = "";
         }
 
 
@@ -294,7 +295,18 @@ namespace Main.Forms.RequestsForm.Controls
 
         private void DGVPreviousRequests_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // update button
+            if (e.RowIndex > -1 && DGVPreviousRequests.CurrentRow != null)
+            {
+                long requestId = long.Parse(DGVPreviousRequests.CurrentRow.Cells[0].Value.ToString());
+                var details = this.PreviousCashAdvanceRequests.Where(x => x.Id == requestId).FirstOrDefault();
+
+                if (details != null)
+                {
+                    this.TboxAdminRemarks.Text = details.EmployerRemarks;
+                }
+            }
+
+                // update button
             if ((e.ColumnIndex == 6) && e.RowIndex > -1)
             {
                 if (DGVPreviousRequests.CurrentRow != null)

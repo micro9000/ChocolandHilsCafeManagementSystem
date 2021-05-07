@@ -1,4 +1,6 @@
 ﻿using DataAccess.Data.EmployeeManagement.Contracts;
+using DataAccess.Data.PayrollManagement.Contracts;
+using EntitiesShared;
 using Main.Controllers.RequestControllers.ControllerInterface;
 using Main.Forms.RequestsForm.Controls;
 using System;
@@ -18,15 +20,18 @@ namespace Main.Forms.RequestsForm
         private readonly Sessions _sessions;
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeeCashAdvanceRequestController _employeeCashAdvanceRequestController;
+        private readonly IEmployeeCashAdvanceRequestData _employeeCashAdvanceRequestData;
 
         public FrmEmployeeRequests(Sessions sessions,
                                     IEmployeeData employeeData,
-                                    IEmployeeCashAdvanceRequestController employeeCashAdvanceRequestController)
+                                    IEmployeeCashAdvanceRequestController employeeCashAdvanceRequestController,
+                                    IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData)
         {
             InitializeComponent();
             _sessions = sessions;
             _employeeData = employeeData;
             _employeeCashAdvanceRequestController = employeeCashAdvanceRequestController;
+            _employeeCashAdvanceRequestData = employeeCashAdvanceRequestData;
         }
 
         private void CMenuCashAdvance_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -39,6 +44,14 @@ namespace Main.Forms.RequestsForm
             }
             else if (clickedItem != null && clickedItem.Name == "CashAdvanceApprovalMenuItem")
             {
+                if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.admin)
+                {
+                    DisplayRequestCashAdvanceListControl();
+                }
+                else
+                {
+                    MessageBox.Show("Unauthorized request", "View pending cash advance request", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
@@ -57,7 +70,7 @@ namespace Main.Forms.RequestsForm
 
             requestControlObj.CurrentEmployeeNumber = currEmpNumber;
             requestControlObj.CurrentEmployeeDetails = _employeeData.GetByEmployeeNumber(currEmpNumber);
-            requestControlObj.PreviousCashAdvanceRequests = _employeeCashAdvanceRequestController.GetAllByEmployee(currEmpNumber);
+            requestControlObj.PreviousCashAdvanceRequests = _employeeCashAdvanceRequestData.GetAllNotDeletedByEmployee(currEmpNumber);
 
             this.RequestsMainPanel.Controls.Add(requestControlObj);
         }
@@ -68,7 +81,7 @@ namespace Main.Forms.RequestsForm
 
             requestControlObj.ResetForm();
             requestControlObj.CurrentEmployeeDetails = _employeeData.GetByEmployeeNumber(requestControlObj.CurrentEmployeeNumber);
-            requestControlObj.PreviousCashAdvanceRequests = _employeeCashAdvanceRequestController.GetAllByEmployee(requestControlObj.CurrentEmployeeNumber);
+            requestControlObj.PreviousCashAdvanceRequests = _employeeCashAdvanceRequestData.GetAllNotDeletedByEmployee(requestControlObj.CurrentEmployeeNumber);
             requestControlObj.DisplayPreviousCashAdvanceRequests();
             requestControlObj.DisplayEmployeeDetails();
         }
@@ -91,7 +104,7 @@ namespace Main.Forms.RequestsForm
             {
                 MessageBox.Show(resultMessages, "Submit request details", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 requestControlObj.ResetForm();
-                requestControlObj.PreviousCashAdvanceRequests = _employeeCashAdvanceRequestController.GetAllByEmployee(requestControlObj.CurrentEmployeeNumber);
+                requestControlObj.PreviousCashAdvanceRequests = _employeeCashAdvanceRequestData.GetAllNotDeletedByEmployee(requestControlObj.CurrentEmployeeNumber);
                 requestControlObj.DisplayPreviousCashAdvanceRequests();
             }
             else
@@ -120,12 +133,61 @@ namespace Main.Forms.RequestsForm
                 {
                     MessageBox.Show(resultMessages, "Cancel request", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     requestControlObj.ResetForm();
-                    requestControlObj.PreviousCashAdvanceRequests = _employeeCashAdvanceRequestController.GetAllByEmployee(requestControlObj.CurrentEmployeeNumber);
+                    requestControlObj.PreviousCashAdvanceRequests = _employeeCashAdvanceRequestData.GetAllNotDeletedByEmployee(requestControlObj.CurrentEmployeeNumber);
                     requestControlObj.DisplayPreviousCashAdvanceRequests();
                 }
                 else
                 {
                     MessageBox.Show(resultMessages, "Cancel request", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+
+        }
+
+
+        public void DisplayRequestCashAdvanceListControl()
+        {
+            this.RequestsMainPanel.Controls.Clear();
+            var requestControlObj = new CashAdvanceForApprovalControl(_sessions);
+            requestControlObj.Location = new Point(this.ClientSize.Width / 2 - requestControlObj.Size.Width / 2, this.ClientSize.Height / 2 - requestControlObj.Size.Height / 2);
+            requestControlObj.Anchor = AnchorStyles.None;
+
+            requestControlObj.RequestApproval += HandleRequestApproval;
+
+            requestControlObj.Requests = _employeeCashAdvanceRequestData.GetAllNotDeletedByStatus(StaticData.EmployeeRequestApprovalStatus.Pending);
+
+            this.RequestsMainPanel.Controls.Add(requestControlObj);
+        }
+
+        private void HandleRequestApproval(object sender, EventArgs e)
+        {
+            CashAdvanceForApprovalControl requestControlObj = (CashAdvanceForApprovalControl)sender;
+
+            long requestId = requestControlObj.SelectedRequestId;
+            string remarks = requestControlObj.AdminRemarks;
+            StaticData.EmployeeRequestApprovalStatus approvalStatus = requestControlObj.ApprovalStatus;
+
+            DialogResult res = MessageBox.Show($"Continue to {approvalStatus} this request?", $"{approvalStatus} confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (res == DialogResult.Yes)
+            {
+                var approvalResults = _employeeCashAdvanceRequestController.Approval(requestId, approvalStatus, remarks);
+                string resultMessages = "";
+                foreach (var msg in approvalResults.Messages)
+                {
+                    resultMessages += msg + "\n";
+                }
+
+                if (approvalResults.IsSuccess)
+                {
+                    MessageBox.Show(resultMessages, $"Request {approvalStatus}", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    requestControlObj.Requests = _employeeCashAdvanceRequestData.GetAllNotDeletedByStatus(StaticData.EmployeeRequestApprovalStatus.Pending);
+                    requestControlObj.DisplayCashAdvanceRequests();
+                }
+                else
+                {
+                    MessageBox.Show(resultMessages, $"Request {approvalStatus}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
 

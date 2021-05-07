@@ -382,7 +382,9 @@ CREATE TABLE IF NOT EXISTS EmployeeCashAdvanceRequests(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
-SELECT * FROM EmployeeDeductions;
+SELECT * FROM EmployeeCashAdvanceRequests;
+SELECT * FROM EmployeeCashAdvanceRequests 
+                            WHERE isDeleted=false AND YEAR(createdAt) = @Year ORDER BY needOnDate ASC
 
 -- Payroll generation:
 -- Employee daily salary * number of days duty (display days, leave, absent)

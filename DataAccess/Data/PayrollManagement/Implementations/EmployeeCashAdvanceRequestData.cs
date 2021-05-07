@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
+using EntitiesShared.EmployeeManagement;
+using EntitiesShared;
 
 namespace DataAccess.Data.PayrollManagement.Implementations
 {
@@ -17,6 +20,57 @@ namespace DataAccess.Data.PayrollManagement.Implementations
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
+        }
+
+        public List<EmployeeCashAdvanceRequestModel> GetAllNotDeleted()
+        {
+            string query = @"SELECT * FROM EmployeeCashAdvanceRequests AS REQ
+                            JOIN Employees AS EMP ON EMP.employeeNumber=REQ.employeeNumber
+                            WHERE REQ.isDeleted=false AND YEAR(REQ.createdAt) = @Year ORDER BY REQ.needOnDate ASC";
+
+            var results = new List<EmployeeCashAdvanceRequestModel>();
+
+            using(var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeCashAdvanceRequestModel, EmployeeModel, EmployeeCashAdvanceRequestModel>(query,
+                    (REQ, EMP) =>
+                    {
+                        REQ.Employee = EMP;
+                        return REQ;
+                    }, new {
+                        Year = DateTime.Now.Year
+                    }).ToList();
+
+                conn.Close();
+            }
+            return results;
+        }
+
+
+        public List<EmployeeCashAdvanceRequestModel> GetAllNotDeletedByStatus(StaticData.EmployeeRequestApprovalStatus status)
+        {
+            string query = @"SELECT * FROM EmployeeCashAdvanceRequests  AS REQ
+                            JOIN Employees AS EMP ON EMP.employeeNumber=REQ.employeeNumber
+                            WHERE REQ.isDeleted=false AND REQ.approvalStatus=@Status
+                            ORDER BY REQ.needOnDate ASC";
+
+            var results = new List<EmployeeCashAdvanceRequestModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeCashAdvanceRequestModel, EmployeeModel, EmployeeCashAdvanceRequestModel>(query,
+                    (REQ, EMP) =>
+                    {
+                        REQ.Employee = EMP;
+                        return REQ;
+                    }, new
+                    {
+                        Status = (int)status
+                    }).ToList();
+
+                conn.Close();
+            }
+            return results;
         }
 
         public List<EmployeeCashAdvanceRequestModel> GetAllNotDeletedByEmployee(string employeeNumber)

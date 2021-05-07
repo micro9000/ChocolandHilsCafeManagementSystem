@@ -1,4 +1,5 @@
 ﻿using DapperGenericDataManager;
+using EntitiesShared;
 using EntitiesShared.PayrollManagement;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ namespace DataAccess.Data.PayrollManagement.Contracts
 {
     public interface IEmployeeCashAdvanceRequestData : IDataManagerCRUD<EmployeeCashAdvanceRequestModel>
     {
+        List<EmployeeCashAdvanceRequestModel> GetAllNotDeleted();
         List<EmployeeCashAdvanceRequestModel> GetAllNotDeletedByEmployee(string employeeNumber);
+        List<EmployeeCashAdvanceRequestModel> GetAllNotDeletedByStatus(StaticData.EmployeeRequestApprovalStatus status);
     }
 }

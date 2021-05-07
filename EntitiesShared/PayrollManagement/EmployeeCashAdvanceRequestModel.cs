@@ -1,4 +1,5 @@
 ﻿using Dapper.Contrib.Extensions;
+using EntitiesShared.EmployeeManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,10 @@ namespace EntitiesShared.PayrollManagement
     public class EmployeeCashAdvanceRequestModel : BaseLongModel
     {
         public string EmployeeNumber { get; set; }
+
+        [Write(false)]
+        [Computed]
+        public EmployeeModel Employee { get; set; }
 
         public decimal Amount { get; set; }
 

@@ -77,6 +77,9 @@ namespace Main.Controllers.RequestControllers
             return results;
         }
 
+
+       
+
         public EntityResult<EmployeeCashAdvanceRequestModel> Save(EmployeeCashAdvanceRequestModel input, bool isNew)
         {
             var results = new EntityResult<EmployeeCashAdvanceRequestModel>();
@@ -150,9 +153,44 @@ namespace Main.Controllers.RequestControllers
             return results;
         }
 
-        public List<EmployeeCashAdvanceRequestModel> GetAllByEmployee(string employeeNumber)
+
+        public EntityResult<string> Approval(long requestId, StaticData.EmployeeRequestApprovalStatus status, string adminRemarks)
         {
-            return this._employeeCashAdvanceRequestData.GetAllNotDeletedByEmployee(employeeNumber);
+            var results = new EntityResult<string>();
+            results.IsSuccess = false;
+
+            try
+            {
+                var requestDetails = _employeeCashAdvanceRequestData.Get(requestId);
+
+                if (requestDetails != null)
+                {
+                    if (requestDetails.ApprovalStatus != StaticData.EmployeeRequestApprovalStatus.Pending)
+                    {
+                        results.IsSuccess = false;
+                        results.Messages.Add($"Unable to modify this request because the status is already in {requestDetails.ApprovalStatus}");
+                        return results;
+                    }
+
+                    requestDetails.ApprovalStatus = status;
+                    requestDetails.EmployerRemarks = adminRemarks;
+
+                    results.IsSuccess = _employeeCashAdvanceRequestData.Update(requestDetails);
+                    results.Messages.Add($"Successfully {status} this request");
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("No changes made.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
         }
     }
 }

@@ -46,6 +46,8 @@ namespace Main.Forms.RequestsForm.Controls
             this.BtnSearchEmployee = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.LblEmployeeName = new System.Windows.Forms.Label();
+            this.TboxAdminRemarks = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumUDwnAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVPreviousRequests)).BeginInit();
@@ -171,7 +173,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.DGVPreviousRequests.Name = "DGVPreviousRequests";
             this.DGVPreviousRequests.ReadOnly = true;
             this.DGVPreviousRequests.RowTemplate.Height = 25;
-            this.DGVPreviousRequests.Size = new System.Drawing.Size(619, 333);
+            this.DGVPreviousRequests.Size = new System.Drawing.Size(619, 467);
             this.DGVPreviousRequests.TabIndex = 16;
             this.DGVPreviousRequests.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVPreviousRequests_CellClick);
             // 
@@ -181,7 +183,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
             this.groupBox1.Location = new System.Drawing.Point(406, 59);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(625, 359);
+            this.groupBox1.Size = new System.Drawing.Size(625, 493);
             this.groupBox1.TabIndex = 44;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Previous requests";
@@ -235,11 +237,31 @@ namespace Main.Forms.RequestsForm.Controls
             this.LblEmployeeName.TabIndex = 48;
             this.LblEmployeeName.Text = "Name";
             // 
+            // TboxAdminRemarks
+            // 
+            this.TboxAdminRemarks.Enabled = false;
+            this.TboxAdminRemarks.Location = new System.Drawing.Point(32, 435);
+            this.TboxAdminRemarks.Multiline = true;
+            this.TboxAdminRemarks.Name = "TboxAdminRemarks";
+            this.TboxAdminRemarks.Size = new System.Drawing.Size(351, 102);
+            this.TboxAdminRemarks.TabIndex = 50;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(32, 409);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(109, 20);
+            this.label7.TabIndex = 49;
+            this.label7.Text = "Admin remarks";
+            // 
             // RequestCashAdvanceFormControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.TboxAdminRemarks);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.LblEmployeeName);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.BtnSearchEmployee);
@@ -257,7 +279,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "RequestCashAdvanceFormControl";
-            this.Size = new System.Drawing.Size(1031, 418);
+            this.Size = new System.Drawing.Size(1031, 552);
             this.Load += new System.EventHandler(this.RequestCashAdvanceFormControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -288,5 +310,7 @@ namespace Main.Forms.RequestsForm.Controls
         private System.Windows.Forms.Button BtnSearchEmployee;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label LblEmployeeName;
+        private System.Windows.Forms.TextBox TboxAdminRemarks;
+        private System.Windows.Forms.Label label7;
     }
 }

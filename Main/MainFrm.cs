@@ -1,4 +1,5 @@
 ﻿using DataAccess.Data.InventoryManagement.Contracts;
+using DataAccess.Data.PayrollManagement.Contracts;
 using Main.Forms.AttendanceTerminal;
 using Main.Forms.EmployeeManagementForms;
 using Main.Forms.InventoryManagementForms;
@@ -37,6 +38,7 @@ namespace Main
         private readonly FrmEmployeeRequests _frmEmployeeRequests;
         private readonly HomeFrm _frmHome;
         private readonly IIngredientInventoryData _ingredientInventoryData;
+        private readonly IEmployeeCashAdvanceRequestData _employeeCashAdvanceRequestData;
         private Button currentButton;
         private Form activeForm;
 
@@ -52,7 +54,8 @@ namespace Main
                         FrmSalesReport frmSalesReport,
                         FrmEmployeeRequests frmEmployeeRequests,
                         HomeFrm frmHome,
-                        IIngredientInventoryData ingredientInventoryData)
+                        IIngredientInventoryData ingredientInventoryData,
+                        IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData)
         {
             InitializeComponent();
             _sessions = sessions;
@@ -68,6 +71,7 @@ namespace Main
             _frmEmployeeRequests = frmEmployeeRequests;
             _frmHome = frmHome;
             _ingredientInventoryData = ingredientInventoryData;
+            _employeeCashAdvanceRequestData = employeeCashAdvanceRequestData;
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -117,6 +121,22 @@ namespace Main
                 alertMessages.Add(new AlertMessage { Title = "Inventory ingredients expiration", Message = msg });
             }
 
+            var activeCashAdvanceRequests = _employeeCashAdvanceRequestData
+                                    .GetAllNotDeletedByStatus(EntitiesShared.StaticData.EmployeeRequestApprovalStatus.Pending);
+
+            if (activeCashAdvanceRequests != null && activeCashAdvanceRequests.Count > 0)
+            {
+                this.BtnRequests.Text = $"Requests ({activeCashAdvanceRequests.Count})";
+                this.BtnRequests.ForeColor = Color.Red;
+
+                foreach (var request in activeCashAdvanceRequests)
+                {
+                    alertMessages.Add(new AlertMessage { 
+                        Title = "Cash Advance request", 
+                        Message = $"{request.Employee.FullName} request {request.Amount} cash advance" 
+                    });
+                }
+            }
 
             if (alertMessages != null && alertMessages.Count > 0)
             {

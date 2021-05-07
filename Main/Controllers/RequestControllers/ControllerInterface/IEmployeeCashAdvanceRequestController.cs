@@ -1,4 +1,5 @@
-﻿using EntitiesShared.PayrollManagement;
+﻿using EntitiesShared;
+using EntitiesShared.PayrollManagement;
 using Shared.ResponseModels;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,6 @@ namespace Main.Controllers.RequestControllers.ControllerInterface
     {
         EntityResult<string> CancelRequest(long requestId);
         EntityResult<EmployeeCashAdvanceRequestModel> Save(EmployeeCashAdvanceRequestModel input, bool isNew);
-
-        List<EmployeeCashAdvanceRequestModel> GetAllByEmployee(string employeeNumber);
+        EntityResult<string> Approval(long requestId, StaticData.EmployeeRequestApprovalStatus status, string adminRemarks);
     }
 }
