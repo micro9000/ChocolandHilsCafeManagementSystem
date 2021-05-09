@@ -26,5 +26,7 @@ namespace EntitiesShared.PayrollManagement
         public StaticData.EmployeeRequestApprovalStatus ApprovalStatus { get; set; }
 
         public string EmployerRemarks { get; set; }
+
+        public DateTime CashReleaseDate { get; set; }
     }
 }

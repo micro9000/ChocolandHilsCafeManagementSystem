@@ -69,6 +69,16 @@ namespace EntitiesShared.PayrollManagement.Models
             set { selectedBenefits = value; }
         }
 
+
+        private List<EmployeeCashAdvanceRequestModel> selectedEmpCashAdvanceRequests;
+
+        public List<EmployeeCashAdvanceRequestModel> SelectedEmpCashAdvanceRequests
+        {
+            get { return selectedEmpCashAdvanceRequests; }
+            set { selectedEmpCashAdvanceRequests = value; }
+        }
+
+
         private List<EmployeeDeductionModel> selectedDeductions;
         public List<EmployeeDeductionModel> SelectedDeductions
         {

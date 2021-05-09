@@ -303,6 +303,7 @@ namespace Main.Forms.RequestsForm.Controls
                 if (details != null)
                 {
                     this.TboxAdminRemarks.Text = details.EmployerRemarks;
+                    this.TboxCashReleaseDate.Text = details.CashReleaseDate.ToShortDateString();
                 }
             }
 

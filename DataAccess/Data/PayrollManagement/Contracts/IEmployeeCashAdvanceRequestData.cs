@@ -14,5 +14,6 @@ namespace DataAccess.Data.PayrollManagement.Contracts
         List<EmployeeCashAdvanceRequestModel> GetAllNotDeleted();
         List<EmployeeCashAdvanceRequestModel> GetAllNotDeletedByEmployee(string employeeNumber);
         List<EmployeeCashAdvanceRequestModel> GetAllNotDeletedByStatus(StaticData.EmployeeRequestApprovalStatus status);
+        List<EmployeeCashAdvanceRequestModel> GetAllByCashReleaseDateRange(DateTime startDate, DateTime endDate);
     }
 }

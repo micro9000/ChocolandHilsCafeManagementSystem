@@ -381,10 +381,13 @@ CREATE TABLE IF NOT EXISTS EmployeeCashAdvanceRequests(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+ALTER TABLE EmployeeCashAdvanceRequests
+ADD COLUMN cashReleaseDate DATE;
 
 SELECT * FROM EmployeeCashAdvanceRequests;
-SELECT * FROM EmployeeCashAdvanceRequests 
-                            WHERE isDeleted=false AND YEAR(createdAt) = @Year ORDER BY needOnDate ASC
+SELECT * FROM EmployeeCashAdvanceRequests AS REQ
+JOIN Employees AS EMP
+WHERE isDeleted=false AND YEAR(createdAt) = @Year ORDER BY needOnDate ASC
 
 -- Payroll generation:
 -- Employee daily salary * number of days duty (display days, leave, absent)

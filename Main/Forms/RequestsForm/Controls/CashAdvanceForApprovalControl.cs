@@ -130,6 +130,7 @@ namespace Main.Forms.RequestsForm.Controls
 
         public StaticData.EmployeeRequestApprovalStatus ApprovalStatus { get; set; }
         public string AdminRemarks { get; set; }
+        public DateTime CashReleaseDate { get; set; }
 
 
         public event EventHandler RequestApproval;
@@ -147,7 +148,8 @@ namespace Main.Forms.RequestsForm.Controls
             }
 
             this.ApprovalStatus = status;
-            AdminRemarks = this.TboxAdminRemarks.Text;
+            this.AdminRemarks = this.TboxAdminRemarks.Text;
+            this.CashReleaseDate = this.DPicCashReleaseDate.Value;
 
             OnRequestApproval(EventArgs.Empty);
         }

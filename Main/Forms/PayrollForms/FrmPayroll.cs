@@ -41,6 +41,7 @@ namespace Main.Forms.PayrollForms
         private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
         private readonly IPayrollPDFReport _payrollPDFReport;
         private readonly ICashRegisterCashOutTransactionData _cashRegisterCashOutTransactionData;
+        private readonly IEmployeeCashAdvanceRequestData _employeeCashAdvanceRequestData;
         private readonly PayrollSettings _payrollSettings;
 
         public FrmPayroll(ILogger<FrmPayroll> logger,
@@ -59,6 +60,7 @@ namespace Main.Forms.PayrollForms
                            IEmployeePayslipPDFReport employeePayslipPDFReport,
                            IPayrollPDFReport payrollPDFReport,
                            ICashRegisterCashOutTransactionData cashRegisterCashOutTransactionData,
+                           IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData,
                            IOptions<PayrollSettings> payrollSettings)
         {
             InitializeComponent();
@@ -78,6 +80,7 @@ namespace Main.Forms.PayrollForms
             _employeePayslipPDFReport = employeePayslipPDFReport;
             _payrollPDFReport = payrollPDFReport;
             _cashRegisterCashOutTransactionData = cashRegisterCashOutTransactionData;
+            _employeeCashAdvanceRequestData = employeeCashAdvanceRequestData;
             _payrollSettings = payrollSettings.Value;
         }
 
@@ -133,8 +136,11 @@ namespace Main.Forms.PayrollForms
             generatePayrollControlObj.Employees = _employeeController.GetAll().Data;
             generatePayrollControlObj.AttendanceHistory = _employeeAttendanceData.GetAllUnpaidAttendanceRecordByWorkDateRange(shiftStartDate, shiftEndDate);
             generatePayrollControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllUnpaidByDateRange(shiftStartDate.Year, shiftStartDate, shiftEndDate);
+            generatePayrollControlObj.EmployeesCashAdvance = _employeeCashAdvanceRequestData.GetAllByCashReleaseDateRange(shiftStartDate, shiftEndDate);
             generatePayrollControlObj.CashRegisterTotalSales = _cashRegisterCashOutTransactionData.GetByDateRange(_payrollSettings.SaleAmoutForADayToGetSpecialBonus, shiftStartDate, shiftEndDate);
+            
             generatePayrollControlObj.DisplayEmployeeWithAttendanceRecordAndSalary(generatePayrollControlObj.Employees);
+            generatePayrollControlObj.DisplayEmployeeCashAdvanceRequestsInDGV();
             generatePayrollControlObj.DisplayCashRegisterTotalSalesInDGV();
         }
 
@@ -234,20 +240,43 @@ namespace Main.Forms.PayrollForms
 
                                     empTotalBenefits += benefit.Amount;
                                 }
+
+
                                 // Sales bonus here
                                 int salesBonusNumberOfDays = empPayslipGen.SelectedSalesReport.Count;
-                                decimal totalDailySalesBonus = _payrollSettings.EmployeeBonusFromSaleSpecialBonus * salesBonusNumberOfDays;
-                                empTotalBenefits += totalDailySalesBonus;
-                                empTotalIncome += empTotalBenefits;
-
-                                _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                if (salesBonusNumberOfDays > 0)
                                 {
-                                    PayslipId = payslipId,
-                                    EmployeeNumber = employeeNumber,
-                                    BenefitTitle = "Sales bonus",
-                                    Amount = totalDailySalesBonus,
-                                    Multiplier = salesBonusNumberOfDays
-                                });
+                                    decimal totalDailySalesBonus = _payrollSettings.EmployeeBonusFromSaleSpecialBonus * salesBonusNumberOfDays;
+                                    empTotalBenefits += totalDailySalesBonus;
+                                    empTotalIncome += empTotalBenefits;
+
+                                    _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                    {
+                                        PayslipId = payslipId,
+                                        EmployeeNumber = employeeNumber,
+                                        BenefitTitle = "Sales bonus",
+                                        Amount = totalDailySalesBonus,
+                                        Multiplier = salesBonusNumberOfDays
+                                    });
+                                }
+                                
+                                // Cash advance deductions
+                                var currentEmpCashAdvanceRequest = empPayslipGen.SelectedEmpCashAdvanceRequests.Where(x => x.EmployeeNumber == employeeNumber).ToList();
+                                if (currentEmpCashAdvanceRequest != null && currentEmpCashAdvanceRequest.Count > 0)
+                                {
+                                    foreach(var cashAdvance in currentEmpCashAdvanceRequest)
+                                    {
+                                        _employeePayslipDeductionData.Add(new EmployeePayslipDeductionModel
+                                        {
+                                            PayslipId = payslipId,
+                                            EmployeeNumber = employeeNumber,
+                                            DeductionTitle = $"Cash advance, release:{cashAdvance.CashReleaseDate.ToShortDateString()}",
+                                            Amount = cashAdvance.Amount
+                                        });
+
+                                        empTotalDeductions += cashAdvance.Amount;
+                                    }
+                                }
 
                                 // Deductions
                                 foreach (var deduction in empPayslipGen.SelectedDeductions)

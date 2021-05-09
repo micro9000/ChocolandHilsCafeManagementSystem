@@ -13,6 +13,6 @@ namespace Main.Controllers.RequestControllers.ControllerInterface
     {
         EntityResult<string> CancelRequest(long requestId);
         EntityResult<EmployeeCashAdvanceRequestModel> Save(EmployeeCashAdvanceRequestModel input, bool isNew);
-        EntityResult<string> Approval(long requestId, StaticData.EmployeeRequestApprovalStatus status, string adminRemarks);
+        EntityResult<string> Approval(long requestId, StaticData.EmployeeRequestApprovalStatus status, string adminRemarks, DateTime cashReleaseDate);
     }
 }

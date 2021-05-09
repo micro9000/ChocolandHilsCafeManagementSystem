@@ -47,6 +47,8 @@ namespace Main.Forms.RequestsForm.Controls
             this.label7 = new System.Windows.Forms.Label();
             this.BtnApproved = new System.Windows.Forms.Button();
             this.BtnDisapproved = new System.Windows.Forms.Button();
+            this.DPicCashReleaseDate = new System.Windows.Forms.DateTimePicker();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVRequests)).BeginInit();
@@ -81,7 +83,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
             this.groupBox1.Location = new System.Drawing.Point(417, 59);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(819, 490);
+            this.groupBox1.Size = new System.Drawing.Size(819, 517);
             this.groupBox1.TabIndex = 45;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Requests";
@@ -96,14 +98,14 @@ namespace Main.Forms.RequestsForm.Controls
             this.DGVRequests.Name = "DGVRequests";
             this.DGVRequests.ReadOnly = true;
             this.DGVRequests.RowTemplate.Height = 25;
-            this.DGVRequests.Size = new System.Drawing.Size(813, 464);
+            this.DGVRequests.Size = new System.Drawing.Size(813, 491);
             this.DGVRequests.TabIndex = 16;
             this.DGVRequests.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVRequests_CellClick);
             // 
             // LblEmployeeName
             // 
             this.LblEmployeeName.AutoSize = true;
-            this.LblEmployeeName.Location = new System.Drawing.Point(165, 95);
+            this.LblEmployeeName.Location = new System.Drawing.Point(165, 75);
             this.LblEmployeeName.Name = "LblEmployeeName";
             this.LblEmployeeName.Size = new System.Drawing.Size(49, 20);
             this.LblEmployeeName.TabIndex = 59;
@@ -112,7 +114,7 @@ namespace Main.Forms.RequestsForm.Controls
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(20, 95);
+            this.label6.Location = new System.Drawing.Point(20, 75);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(75, 20);
             this.label6.TabIndex = 58;
@@ -121,7 +123,7 @@ namespace Main.Forms.RequestsForm.Controls
             // DPicDateNeed
             // 
             this.DPicDateNeed.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DPicDateNeed.Location = new System.Drawing.Point(165, 204);
+            this.DPicDateNeed.Location = new System.Drawing.Point(165, 184);
             this.DPicDateNeed.Name = "DPicDateNeed";
             this.DPicDateNeed.Size = new System.Drawing.Size(225, 27);
             this.DPicDateNeed.TabIndex = 56;
@@ -129,7 +131,7 @@ namespace Main.Forms.RequestsForm.Controls
             // NumUDwnAmount
             // 
             this.NumUDwnAmount.DecimalPlaces = 2;
-            this.NumUDwnAmount.Location = new System.Drawing.Point(165, 165);
+            this.NumUDwnAmount.Location = new System.Drawing.Point(165, 145);
             this.NumUDwnAmount.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -141,7 +143,7 @@ namespace Main.Forms.RequestsForm.Controls
             // 
             // TboxEmployeeRemarks
             // 
-            this.TboxEmployeeRemarks.Location = new System.Drawing.Point(165, 253);
+            this.TboxEmployeeRemarks.Location = new System.Drawing.Point(165, 217);
             this.TboxEmployeeRemarks.Multiline = true;
             this.TboxEmployeeRemarks.Name = "TboxEmployeeRemarks";
             this.TboxEmployeeRemarks.Size = new System.Drawing.Size(225, 102);
@@ -149,7 +151,7 @@ namespace Main.Forms.RequestsForm.Controls
             // 
             // TboxEmployeeNumber
             // 
-            this.TboxEmployeeNumber.Location = new System.Drawing.Point(165, 124);
+            this.TboxEmployeeNumber.Location = new System.Drawing.Point(165, 104);
             this.TboxEmployeeNumber.Name = "TboxEmployeeNumber";
             this.TboxEmployeeNumber.Size = new System.Drawing.Size(225, 27);
             this.TboxEmployeeNumber.TabIndex = 53;
@@ -157,7 +159,7 @@ namespace Main.Forms.RequestsForm.Controls
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(20, 253);
+            this.label5.Location = new System.Drawing.Point(20, 260);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(135, 20);
             this.label5.TabIndex = 52;
@@ -166,7 +168,7 @@ namespace Main.Forms.RequestsForm.Controls
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(20, 211);
+            this.label4.Location = new System.Drawing.Point(20, 191);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(78, 20);
             this.label4.TabIndex = 51;
@@ -175,7 +177,7 @@ namespace Main.Forms.RequestsForm.Controls
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(20, 172);
+            this.label1.Location = new System.Drawing.Point(20, 152);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(62, 20);
             this.label1.TabIndex = 50;
@@ -184,7 +186,7 @@ namespace Main.Forms.RequestsForm.Controls
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(20, 127);
+            this.label3.Location = new System.Drawing.Point(20, 107);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(130, 20);
             this.label3.TabIndex = 49;
@@ -201,7 +203,7 @@ namespace Main.Forms.RequestsForm.Controls
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(20, 361);
+            this.label7.Location = new System.Drawing.Point(20, 396);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(94, 20);
             this.label7.TabIndex = 60;
@@ -214,7 +216,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.BtnApproved.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnApproved.ForeColor = System.Drawing.Color.White;
             this.BtnApproved.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnApproved.Location = new System.Drawing.Point(288, 482);
+            this.BtnApproved.Location = new System.Drawing.Point(288, 505);
             this.BtnApproved.Name = "BtnApproved";
             this.BtnApproved.Size = new System.Drawing.Size(102, 47);
             this.BtnApproved.TabIndex = 63;
@@ -229,7 +231,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.BtnDisapproved.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnDisapproved.ForeColor = System.Drawing.Color.White;
             this.BtnDisapproved.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnDisapproved.Location = new System.Drawing.Point(165, 482);
+            this.BtnDisapproved.Location = new System.Drawing.Point(165, 505);
             this.BtnDisapproved.Name = "BtnDisapproved";
             this.BtnDisapproved.Size = new System.Drawing.Size(117, 47);
             this.BtnDisapproved.TabIndex = 62;
@@ -237,11 +239,30 @@ namespace Main.Forms.RequestsForm.Controls
             this.BtnDisapproved.UseVisualStyleBackColor = false;
             this.BtnDisapproved.Click += new System.EventHandler(this.BtnDisapproved_Click);
             // 
+            // DPicCashReleaseDate
+            // 
+            this.DPicCashReleaseDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.DPicCashReleaseDate.Location = new System.Drawing.Point(165, 472);
+            this.DPicCashReleaseDate.Name = "DPicCashReleaseDate";
+            this.DPicCashReleaseDate.Size = new System.Drawing.Size(225, 27);
+            this.DPicCashReleaseDate.TabIndex = 65;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(21, 477);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(129, 20);
+            this.label8.TabIndex = 64;
+            this.label8.Text = "Cash Release date";
+            // 
             // CashAdvanceForApprovalControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.DPicCashReleaseDate);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.BtnApproved);
             this.Controls.Add(this.BtnDisapproved);
             this.Controls.Add(this.TboxAdminRemarks);
@@ -260,7 +281,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "CashAdvanceForApprovalControl";
-            this.Size = new System.Drawing.Size(1236, 549);
+            this.Size = new System.Drawing.Size(1236, 576);
             this.Load += new System.EventHandler(this.CashAdvanceForApprovalControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -292,5 +313,7 @@ namespace Main.Forms.RequestsForm.Controls
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button BtnApproved;
         private System.Windows.Forms.Button BtnDisapproved;
+        private System.Windows.Forms.DateTimePicker DPicCashReleaseDate;
+        private System.Windows.Forms.Label label8;
     }
 }

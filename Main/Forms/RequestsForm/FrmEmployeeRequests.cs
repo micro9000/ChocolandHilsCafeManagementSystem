@@ -165,13 +165,14 @@ namespace Main.Forms.RequestsForm
 
             long requestId = requestControlObj.SelectedRequestId;
             string remarks = requestControlObj.AdminRemarks;
+            DateTime cashReleaseDate = requestControlObj.CashReleaseDate;
             StaticData.EmployeeRequestApprovalStatus approvalStatus = requestControlObj.ApprovalStatus;
 
             DialogResult res = MessageBox.Show($"Continue to {approvalStatus} this request?", $"{approvalStatus} confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (res == DialogResult.Yes)
             {
-                var approvalResults = _employeeCashAdvanceRequestController.Approval(requestId, approvalStatus, remarks);
+                var approvalResults = _employeeCashAdvanceRequestController.Approval(requestId, approvalStatus, remarks, cashReleaseDate);
                 string resultMessages = "";
                 foreach (var msg in approvalResults.Messages)
                 {

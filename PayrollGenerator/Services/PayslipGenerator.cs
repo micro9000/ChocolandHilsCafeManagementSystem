@@ -41,6 +41,7 @@ namespace PayrollGenerator.Services
         private readonly IEmployeeShiftDayData _employeeShiftDayData;
         private readonly IEmployeeGovtIdCardData _employeeGovtIdCardData;
         private readonly ICashRegisterCashOutTransactionData _cashRegisterCashOutTransactionData;
+        private readonly IEmployeeCashAdvanceRequestData _employeeCashAdvanceRequestData;
         private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
         private readonly IPayrollPDFReport _payrollPDFReport;
 
@@ -58,6 +59,7 @@ namespace PayrollGenerator.Services
                                 IEmployeeShiftDayData employeeShiftDayData,
                                 IEmployeeGovtIdCardData employeeGovtIdCardData,
                                 ICashRegisterCashOutTransactionData cashRegisterCashOutTransactionData,
+                                IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData,
                                 IEmployeePayslipPDFReport employeePayslipPDFReport,
                                 IPayrollPDFReport payrollPDFReport)
         {
@@ -75,6 +77,7 @@ namespace PayrollGenerator.Services
             _employeeShiftDayData = employeeShiftDayData;
             _employeeGovtIdCardData = employeeGovtIdCardData;
             _cashRegisterCashOutTransactionData = cashRegisterCashOutTransactionData;
+            _employeeCashAdvanceRequestData = employeeCashAdvanceRequestData;
             _employeePayslipPDFReport = employeePayslipPDFReport;
             _payrollPDFReport = payrollPDFReport;
         }
@@ -168,6 +171,8 @@ namespace PayrollGenerator.Services
                     var cashRegisterSalesReport = _cashRegisterCashOutTransactionData.GetByDateRange(_payrollSettings.SaleAmoutForADayToGetSpecialBonus, this.ShiftStartDate, this.ShiftEndDate);
                     var benefits = _employeeBenefitData.GetAllNotDeleted();
                     var deductions = _employeeDeductionData.GetAllNotDeleted();
+
+                    var empCashAdvanceRequests = _employeeCashAdvanceRequestData.GetAllByCashReleaseDateRange(this.ShiftStartDate, this.ShiftEndDate);
 
                     var allEmployeesAttendanceRecord = _employeeAttendanceData.GetAllUnpaidAttendanceRecordByWorkDateRange(this.ShiftStartDate, this.ShiftEndDate);
 
@@ -275,6 +280,24 @@ namespace PayrollGenerator.Services
 
                                 employerGovtContributionTotal += empGovtId.EmployerContribution;
                                 empTotalDeductions += empGovtId.EmployeeContribution;
+                            }
+
+
+                            var currEmployeeCashAdvanceRequests = empCashAdvanceRequests.Where(x => x.EmployeeNumber == empNum).ToList();
+                            if (currEmployeeCashAdvanceRequests != null && currEmployeeCashAdvanceRequests.Count > 0)
+                            {
+                                foreach(var cashAdvance in currEmployeeCashAdvanceRequests)
+                                {
+                                    employeePayslipDeductionsList.Add(new EmployeePayslipDeductionModel
+                                    {
+                                        PayslipId = payslipId,
+                                        EmployeeNumber = empNum,
+                                        DeductionTitle = $"Cash advance, release:{cashAdvance.CashReleaseDate.ToShortDateString()}",
+                                        Amount = cashAdvance.Amount
+                                    });
+
+                                    empTotalDeductions += cashAdvance.Amount;
+                                }
                             }
 
                             // Deductions

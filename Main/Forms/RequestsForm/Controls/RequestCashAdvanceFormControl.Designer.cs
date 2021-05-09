@@ -48,6 +48,8 @@ namespace Main.Forms.RequestsForm.Controls
             this.LblEmployeeName = new System.Windows.Forms.Label();
             this.TboxAdminRemarks = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.TboxCashReleaseDate = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumUDwnAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVPreviousRequests)).BeginInit();
@@ -173,7 +175,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.DGVPreviousRequests.Name = "DGVPreviousRequests";
             this.DGVPreviousRequests.ReadOnly = true;
             this.DGVPreviousRequests.RowTemplate.Height = 25;
-            this.DGVPreviousRequests.Size = new System.Drawing.Size(619, 467);
+            this.DGVPreviousRequests.Size = new System.Drawing.Size(619, 496);
             this.DGVPreviousRequests.TabIndex = 16;
             this.DGVPreviousRequests.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVPreviousRequests_CellClick);
             // 
@@ -183,7 +185,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Right;
             this.groupBox1.Location = new System.Drawing.Point(406, 59);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(625, 493);
+            this.groupBox1.Size = new System.Drawing.Size(625, 522);
             this.groupBox1.TabIndex = 44;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Previous requests";
@@ -255,11 +257,30 @@ namespace Main.Forms.RequestsForm.Controls
             this.label7.TabIndex = 49;
             this.label7.Text = "Admin remarks";
             // 
+            // TboxCashReleaseDate
+            // 
+            this.TboxCashReleaseDate.Enabled = false;
+            this.TboxCashReleaseDate.Location = new System.Drawing.Point(161, 543);
+            this.TboxCashReleaseDate.Name = "TboxCashReleaseDate";
+            this.TboxCashReleaseDate.Size = new System.Drawing.Size(222, 27);
+            this.TboxCashReleaseDate.TabIndex = 51;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(32, 546);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(125, 20);
+            this.label8.TabIndex = 52;
+            this.label8.Text = "Cash release date";
+            // 
             // RequestCashAdvanceFormControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.TboxCashReleaseDate);
             this.Controls.Add(this.TboxAdminRemarks);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.LblEmployeeName);
@@ -279,7 +300,7 @@ namespace Main.Forms.RequestsForm.Controls
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "RequestCashAdvanceFormControl";
-            this.Size = new System.Drawing.Size(1031, 552);
+            this.Size = new System.Drawing.Size(1031, 581);
             this.Load += new System.EventHandler(this.RequestCashAdvanceFormControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -312,5 +333,7 @@ namespace Main.Forms.RequestsForm.Controls
         private System.Windows.Forms.Label LblEmployeeName;
         private System.Windows.Forms.TextBox TboxAdminRemarks;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox TboxCashReleaseDate;
+        private System.Windows.Forms.Label label8;
     }
 }

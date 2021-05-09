@@ -154,7 +154,7 @@ namespace Main.Controllers.RequestControllers
         }
 
 
-        public EntityResult<string> Approval(long requestId, StaticData.EmployeeRequestApprovalStatus status, string adminRemarks)
+        public EntityResult<string> Approval(long requestId, StaticData.EmployeeRequestApprovalStatus status, string adminRemarks, DateTime cashReleaseDate)
         {
             var results = new EntityResult<string>();
             results.IsSuccess = false;
@@ -174,6 +174,7 @@ namespace Main.Controllers.RequestControllers
 
                     requestDetails.ApprovalStatus = status;
                     requestDetails.EmployerRemarks = adminRemarks;
+                    requestDetails.CashReleaseDate = cashReleaseDate;
 
                     results.IsSuccess = _employeeCashAdvanceRequestData.Update(requestDetails);
                     results.Messages.Add($"Successfully {status} this request");

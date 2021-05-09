@@ -106,6 +106,15 @@ namespace Main.Forms.PayrollForms.Controls
         }
 
 
+        private List<EmployeeCashAdvanceRequestModel> _employeesCashAdvance;
+
+        public List<EmployeeCashAdvanceRequestModel> EmployeesCashAdvance
+        {
+            get { return _employeesCashAdvance; }
+            set { _employeesCashAdvance = value; }
+        }
+
+
         private List<CashRegisterCashOutTransactionModel> cashRegisterTotalSales;
 
         public List<CashRegisterCashOutTransactionModel> CashRegisterTotalSales
@@ -124,85 +133,31 @@ namespace Main.Forms.PayrollForms.Controls
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
         }
 
+        private void DGVFontAndColors(DataGridView dataGridView)
+        {
+            dataGridView.BackgroundColor = Color.White;
+            dataGridView.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.MultiSelect = false;
+            dataGridView.ReadOnly = false;
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridView.ColumnHeadersHeight = 30;
+        }
+
         private void SetDGVFontAndColors()
         {
-            this.DGVEmployeeList.BackgroundColor = Color.White;
-            this.DGVEmployeeList.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVEmployeeList.RowHeadersVisible = false;
-            this.DGVEmployeeList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            this.DGVEmployeeList.AllowUserToResizeRows = false;
-            this.DGVEmployeeList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.DGVEmployeeList.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVEmployeeList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.DGVEmployeeList.MultiSelect = false;
-            this.DGVEmployeeList.ReadOnly = false;
-            this.DGVEmployeeList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DGVEmployeeList.ColumnHeadersHeight = 30;
-
-            this.DGVGovtAgencies.BackgroundColor = Color.White;
-            this.DGVGovtAgencies.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVGovtAgencies.RowHeadersVisible = false;
-            this.DGVGovtAgencies.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            this.DGVGovtAgencies.AllowUserToResizeRows = false;
-            this.DGVGovtAgencies.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.DGVGovtAgencies.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVGovtAgencies.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.DGVGovtAgencies.MultiSelect = false;
-            this.DGVGovtAgencies.ReadOnly = false;
-            this.DGVGovtAgencies.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DGVGovtAgencies.ColumnHeadersHeight = 30;
-
-            this.DGVBenefitsList.BackgroundColor = Color.White;
-            this.DGVBenefitsList.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVBenefitsList.RowHeadersVisible = false;
-            this.DGVBenefitsList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            this.DGVBenefitsList.AllowUserToResizeRows = false;
-            this.DGVBenefitsList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.DGVBenefitsList.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVBenefitsList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.DGVBenefitsList.MultiSelect = false;
-            this.DGVBenefitsList.ReadOnly = false;
-            this.DGVBenefitsList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DGVBenefitsList.ColumnHeadersHeight = 30;
-
-            this.DGVDeductionList.BackgroundColor = Color.White;
-            this.DGVDeductionList.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVDeductionList.RowHeadersVisible = false;
-            this.DGVDeductionList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            this.DGVDeductionList.AllowUserToResizeRows = false;
-            this.DGVDeductionList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.DGVDeductionList.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVDeductionList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.DGVDeductionList.MultiSelect = false;
-            this.DGVDeductionList.ReadOnly = false;
-            this.DGVDeductionList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DGVDeductionList.ColumnHeadersHeight = 30;
-
-            this.DGVSalesRecords.BackgroundColor = Color.White;
-            this.DGVSalesRecords.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVSalesRecords.RowHeadersVisible = false;
-            this.DGVSalesRecords.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            this.DGVSalesRecords.AllowUserToResizeRows = false;
-            this.DGVSalesRecords.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.DGVSalesRecords.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVSalesRecords.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.DGVSalesRecords.MultiSelect = false;
-            this.DGVSalesRecords.ReadOnly = false;
-            this.DGVSalesRecords.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DGVSalesRecords.ColumnHeadersHeight = 30;
-
-            this.DGVEmployeeListForOverview.BackgroundColor = Color.White;
-            this.DGVEmployeeListForOverview.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVEmployeeListForOverview.RowHeadersVisible = false;
-            this.DGVEmployeeListForOverview.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            this.DGVEmployeeListForOverview.AllowUserToResizeRows = false;
-            this.DGVEmployeeListForOverview.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.DGVEmployeeListForOverview.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
-            this.DGVEmployeeListForOverview.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.DGVEmployeeListForOverview.MultiSelect = false;
-            this.DGVEmployeeListForOverview.ReadOnly = false;
-            this.DGVEmployeeListForOverview.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.DGVEmployeeListForOverview.ColumnHeadersHeight = 30;
+            this.DGVFontAndColors(this.DGVEmployeeList);
+            this.DGVFontAndColors(this.DGVGovtAgencies);
+            this.DGVFontAndColors(this.DGVBenefitsList);
+            this.DGVFontAndColors(this.DGVEmployeeCashAdvance);
+            this.DGVFontAndColors(this.DGVDeductionList);
+            this.DGVFontAndColors(this.DGVSalesRecords);
+            this.DGVFontAndColors(this.DGVEmployeeListForOverview);
         }
 
         private void GeneratePayrollControl_Load(object sender, EventArgs e)
@@ -422,6 +377,52 @@ namespace Main.Forms.PayrollForms.Controls
             }
         }
 
+
+        public void DisplayEmployeeCashAdvanceRequestsInDGV()
+        {
+            this.DGVEmployeeCashAdvance.Rows.Clear();
+            if (this.Deductions != null)
+            {
+                this.DGVEmployeeCashAdvance.ColumnCount = 4;
+
+                this.DGVEmployeeCashAdvance.Columns[0].Name = "benefitId";
+                this.DGVEmployeeCashAdvance.Columns[0].Visible = false;
+
+                this.DGVEmployeeCashAdvance.Columns[1].Name = "EmployeeName";
+                this.DGVEmployeeCashAdvance.Columns[1].HeaderText = "Employee";
+
+                this.DGVEmployeeCashAdvance.Columns[2].Name = "DeductionAmount";
+                this.DGVEmployeeCashAdvance.Columns[2].HeaderText = "Amount";
+
+                this.DGVEmployeeCashAdvance.Columns[3].Name = "CashReleaseDate";
+                this.DGVEmployeeCashAdvance.Columns[3].HeaderText = "Cash release date";
+
+                DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
+                selectChbxToSchedule.HeaderText = "Select";
+                selectChbxToSchedule.Name = "selectCashAdvanceCkbox";
+                selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                this.DGVEmployeeCashAdvance.Columns.Add(selectChbxToSchedule);
+
+                foreach (var cashAdvance in this.EmployeesCashAdvance)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(DGVEmployeeCashAdvance);
+
+                    row.Cells[0].Value = cashAdvance.Id;
+                    row.Cells[1].Value = cashAdvance.Employee.FullName;
+                    row.Cells[2].Value = cashAdvance.Amount;
+                    row.Cells[3].Value = cashAdvance.CashReleaseDate.ToShortDateString();
+
+                    row.Tag = cashAdvance;
+
+                    DGVEmployeeCashAdvance.Rows.Add(row);
+                }
+
+            }
+        }
+
+
+
         public void DisplayDeductionsInDGV()
         {
             this.DGVDeductionList.Rows.Clear();
@@ -439,7 +440,7 @@ namespace Main.Forms.PayrollForms.Controls
                 //this.DGVDeductionList.Columns[2].HeaderText = "Amount";
 
                 DataGridViewTextBoxColumn textboxColumn = new DataGridViewTextBoxColumn();
-                textboxColumn.HeaderText = "Amount";
+                textboxColumn.HeaderText = "Default Amount";
                 textboxColumn.Name = "DeductionAmount";
                 textboxColumn.DefaultCellStyle.BackColor = Color.Bisque;
                 textboxColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -523,6 +524,14 @@ namespace Main.Forms.PayrollForms.Controls
             foreach (DataGridViewRow row in this.DGVBenefitsList.Rows)
             {
                 row.Cells["selectBenefitCkbox"].Value = (bool)true;
+            }
+        }
+
+        private void btnSelectAllEmpCashAdvance_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in this.DGVEmployeeCashAdvance.Rows)
+            {
+                row.Cells["selectCashAdvanceCkbox"].Value = (bool)true;
             }
         }
 
@@ -637,13 +646,35 @@ namespace Main.Forms.PayrollForms.Controls
 
                     if (empDeductionInList != null)
                     {
-                        var govtAgencyTemp = JsonSerializer.Deserialize<GovernmentAgencyModel>(JsonSerializer.Serialize(empDeductionInList));
                         selectedEmpDeductions.Add(empDeductionInList);
                     }
                 }
             }
 
             return selectedEmpDeductions;
+        }
+
+
+        public List<EmployeeCashAdvanceRequestModel> GetSelectedEmpCashAdvanceRequestToGeneratePayslip()
+        {
+            List<EmployeeCashAdvanceRequestModel> selectedEmpCashAdvance = new List<EmployeeCashAdvanceRequestModel>();
+
+            foreach (DataGridViewRow row in this.DGVEmployeeCashAdvance.Rows)
+            {
+                bool isSelected = Convert.ToBoolean(row.Cells["selectCashAdvanceCkbox"].Value);
+
+                if (isSelected)
+                {
+                    var EmpCashAdvanceReq = (EmployeeCashAdvanceRequestModel)row.Tag;
+
+                    if (EmpCashAdvanceReq != null)
+                    {
+                        selectedEmpCashAdvance.Add(EmpCashAdvanceReq);
+                    }
+                }
+            }
+
+            return selectedEmpCashAdvance;
         }
 
         public List<CashRegisterCashOutTransactionModel> GetSelectedSalesRecordToGeneratePayslip()
@@ -799,6 +830,7 @@ namespace Main.Forms.PayrollForms.Controls
                 {
                     var SelectedGovtAgenciesForPayrollGeneration = this.GetSelectedGovtAgenciesToGeneratePayslip();
                     var SelectedBenefitsForPayrollGeneration = this.GetSelectedEmpBenefitsToGeneratePayslip();
+                    var SelectedEmpCashAdvanceRequestsForPayrollGeneration = this.GetSelectedEmpCashAdvanceRequestToGeneratePayslip();
                     var SelectedDeductionsForPayrollGeneration = this.GetSelectedEmpDeductionsToGeneratePayslip();
                     var selectedSaleRecords = this.GetSelectedSalesRecordToGeneratePayslip();
 
@@ -817,6 +849,7 @@ namespace Main.Forms.PayrollForms.Controls
                             EmployeeLeaves = this.EmployeeLeaveHistory != null ? this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
                             SelectedGovtAgencies = SelectedGovtAgenciesForPayrollGeneration,
                             SelectedBenefits = SelectedBenefitsForPayrollGeneration,
+                            SelectedEmpCashAdvanceRequests = SelectedEmpCashAdvanceRequestsForPayrollGeneration,
                             SelectedDeductions = SelectedDeductionsForPayrollGeneration,
                             SelectedSalesReport = selectedSaleRecords
                         });

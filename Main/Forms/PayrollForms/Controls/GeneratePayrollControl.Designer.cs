@@ -62,6 +62,12 @@ namespace Main.Forms.PayrollForms.Controls
             this.BtnSelectAllBenefits = new System.Windows.Forms.Button();
             this.DGVBenefitsList = new System.Windows.Forms.DataGridView();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.DGVEmployeeCashAdvance = new System.Windows.Forms.DataGridView();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.btnSelectAllEmpCashAdvance = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.BtnSelectAllDeductions = new System.Windows.Forms.Button();
             this.DGVDeductionList = new System.Windows.Forms.DataGridView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -86,6 +92,11 @@ namespace Main.Forms.PayrollForms.Controls
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVBenefitsList)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeCashAdvance)).BeginInit();
+            this.panel4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVDeductionList)).BeginInit();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVSalesRecords)).BeginInit();
@@ -467,14 +478,82 @@ namespace Main.Forms.PayrollForms.Controls
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.BtnSelectAllDeductions);
-            this.tabPage4.Controls.Add(this.DGVDeductionList);
+            this.tabPage4.Controls.Add(this.groupBox3);
+            this.tabPage4.Controls.Add(this.groupBox2);
             this.tabPage4.Location = new System.Drawing.Point(4, 30);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Size = new System.Drawing.Size(1095, 494);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Deductions";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.DGVEmployeeCashAdvance);
+            this.groupBox3.Controls.Add(this.panel4);
+            this.groupBox3.Location = new System.Drawing.Point(7, 16);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(522, 455);
+            this.groupBox3.TabIndex = 60;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Employee Cash advance";
+            // 
+            // DGVEmployeeCashAdvance
+            // 
+            this.DGVEmployeeCashAdvance.AllowUserToAddRows = false;
+            this.DGVEmployeeCashAdvance.AllowUserToDeleteRows = false;
+            this.DGVEmployeeCashAdvance.AllowUserToResizeRows = false;
+            this.DGVEmployeeCashAdvance.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVEmployeeCashAdvance.Location = new System.Drawing.Point(6, 68);
+            this.DGVEmployeeCashAdvance.Name = "DGVEmployeeCashAdvance";
+            this.DGVEmployeeCashAdvance.ReadOnly = true;
+            this.DGVEmployeeCashAdvance.RowTemplate.Height = 25;
+            this.DGVEmployeeCashAdvance.Size = new System.Drawing.Size(510, 379);
+            this.DGVEmployeeCashAdvance.TabIndex = 60;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.btnSelectAllEmpCashAdvance);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel4.Location = new System.Drawing.Point(3, 25);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(516, 37);
+            this.panel4.TabIndex = 59;
+            // 
+            // btnSelectAllEmpCashAdvance
+            // 
+            this.btnSelectAllEmpCashAdvance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.btnSelectAllEmpCashAdvance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSelectAllEmpCashAdvance.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnSelectAllEmpCashAdvance.ForeColor = System.Drawing.Color.White;
+            this.btnSelectAllEmpCashAdvance.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSelectAllEmpCashAdvance.Location = new System.Drawing.Point(3, 8);
+            this.btnSelectAllEmpCashAdvance.Name = "btnSelectAllEmpCashAdvance";
+            this.btnSelectAllEmpCashAdvance.Size = new System.Drawing.Size(87, 24);
+            this.btnSelectAllEmpCashAdvance.TabIndex = 58;
+            this.btnSelectAllEmpCashAdvance.Text = "Select all";
+            this.btnSelectAllEmpCashAdvance.UseVisualStyleBackColor = false;
+            this.btnSelectAllEmpCashAdvance.Click += new System.EventHandler(this.btnSelectAllEmpCashAdvance_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.panel3);
+            this.groupBox2.Controls.Add(this.DGVDeductionList);
+            this.groupBox2.Location = new System.Drawing.Point(550, 16);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(528, 458);
+            this.groupBox2.TabIndex = 59;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Predefined deductions";
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.BtnSelectAllDeductions);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel3.Location = new System.Drawing.Point(3, 25);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(522, 37);
+            this.panel3.TabIndex = 58;
             // 
             // BtnSelectAllDeductions
             // 
@@ -483,7 +562,7 @@ namespace Main.Forms.PayrollForms.Controls
             this.BtnSelectAllDeductions.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSelectAllDeductions.ForeColor = System.Drawing.Color.White;
             this.BtnSelectAllDeductions.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSelectAllDeductions.Location = new System.Drawing.Point(699, 18);
+            this.BtnSelectAllDeductions.Location = new System.Drawing.Point(3, 8);
             this.BtnSelectAllDeductions.Name = "BtnSelectAllDeductions";
             this.BtnSelectAllDeductions.Size = new System.Drawing.Size(87, 24);
             this.BtnSelectAllDeductions.TabIndex = 58;
@@ -497,11 +576,11 @@ namespace Main.Forms.PayrollForms.Controls
             this.DGVDeductionList.AllowUserToDeleteRows = false;
             this.DGVDeductionList.AllowUserToResizeRows = false;
             this.DGVDeductionList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVDeductionList.Location = new System.Drawing.Point(191, 48);
+            this.DGVDeductionList.Location = new System.Drawing.Point(6, 68);
             this.DGVDeductionList.Name = "DGVDeductionList";
             this.DGVDeductionList.ReadOnly = true;
             this.DGVDeductionList.RowTemplate.Height = 25;
-            this.DGVDeductionList.Size = new System.Drawing.Size(595, 367);
+            this.DGVDeductionList.Size = new System.Drawing.Size(516, 384);
             this.DGVDeductionList.TabIndex = 57;
             // 
             // tabPage5
@@ -669,6 +748,11 @@ namespace Main.Forms.PayrollForms.Controls
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVBenefitsList)).EndInit();
             this.tabPage4.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeCashAdvance)).EndInit();
+            this.panel4.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVDeductionList)).EndInit();
             this.tabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVSalesRecords)).EndInit();
@@ -725,5 +809,11 @@ namespace Main.Forms.PayrollForms.Controls
         private System.Windows.Forms.DataGridView DGVEmployeeListForOverview;
         private System.Windows.Forms.Button BtnCancelAllEmployeePayslip;
         private System.Windows.Forms.Button BtnCancelSelectedEmployeePayslip;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.DataGridView DGVEmployeeCashAdvance;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Button btnSelectAllEmpCashAdvance;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Panel panel3;
     }
 }

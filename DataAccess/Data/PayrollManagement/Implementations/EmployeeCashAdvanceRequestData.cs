@@ -73,6 +73,35 @@ namespace DataAccess.Data.PayrollManagement.Implementations
             return results;
         }
 
+        public List<EmployeeCashAdvanceRequestModel> GetAllByCashReleaseDateRange(DateTime startDate, DateTime endDate)
+        {
+            string query = @"SELECT * FROM EmployeeCashAdvanceRequests  AS REQ
+                            JOIN Employees AS EMP ON EMP.employeeNumber=REQ.employeeNumber
+                            WHERE REQ.isDeleted=false AND REQ.approvalStatus=@Status AND
+                                REQ.cashReleaseDate BETWEEN @StartDate AND @EndDate
+                            ORDER BY REQ.needOnDate ASC";
+
+            var results = new List<EmployeeCashAdvanceRequestModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeCashAdvanceRequestModel, EmployeeModel, EmployeeCashAdvanceRequestModel>(query,
+                    (REQ, EMP) =>
+                    {
+                        REQ.Employee = EMP;
+                        return REQ;
+                    }, new
+                    {
+                        Status = (int)StaticData.EmployeeRequestApprovalStatus.Approved,
+                        StartDate = startDate.ToString("yyyy-MM-dd"),
+                        EndDate = endDate.ToString("yyyy-MM-dd")
+                    }).ToList();
+
+                conn.Close();
+            }
+            return results;
+        }
+
         public List<EmployeeCashAdvanceRequestModel> GetAllNotDeletedByEmployee(string employeeNumber)
         {
             string query = @"SELECT * FROM EmployeeCashAdvanceRequests 
