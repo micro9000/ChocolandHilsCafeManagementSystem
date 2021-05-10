@@ -1,4 +1,5 @@
-﻿using EntitiesShared.EmployeeManagement;
+﻿using DataAccess.Data.OtherDataManagement.Contracts;
+using EntitiesShared.EmployeeManagement;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,9 +14,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 {
     public partial class EmpPositionWithSalaryRateCRUDControl : UserControl
     {
-        public EmpPositionWithSalaryRateCRUDControl()
+        public EmpPositionWithSalaryRateCRUDControl(INumberOfWorkingDaysInAMonthData numberOfWorkingDaysInAMonthData)
         {
             InitializeComponent();
+            _numberOfWorkingDaysInAMonthData = numberOfWorkingDaysInAMonthData;
         }
 
         private List<EmployeePositionModel> positions;
@@ -38,6 +40,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         public event PropertyChangedEventHandler IsSaveNewChanged;
 
         private bool _isSaveNew = true;
+        private readonly INumberOfWorkingDaysInAMonthData _numberOfWorkingDaysInAMonthData;
 
         public bool IsSaveNew
         {
@@ -82,6 +85,16 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             SetDGVPositionListFontAndColors();
             DisplayPositionList();
+
+            var numberOfWorkingDays = _numberOfWorkingDaysInAMonthData.GetLatestValue();
+            if (numberOfWorkingDays != null)
+            {
+                NumUpDwnNumberOfWorkingDays.Value = numberOfWorkingDays.NumberOfDays;
+            }
+            else
+            {
+                NumUpDwnNumberOfWorkingDays.Value = 0;
+            }
         }
 
         private void SetDGVPositionListFontAndColors()
@@ -109,7 +122,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVPositionList.Rows.Clear();
             if (this.Positions != null)
             {
-                this.DGVPositionList.ColumnCount = 4;
+                this.DGVPositionList.ColumnCount = 5;
 
                 this.DGVPositionList.Columns[0].Name = "PositionId";
                 this.DGVPositionList.Columns[0].Visible = false;
@@ -120,8 +133,11 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVPositionList.Columns[2].Name = "DailyRate";
                 this.DGVPositionList.Columns[2].HeaderText = "Daily rate";
 
-                this.DGVPositionList.Columns[3].Name = "IsSingleEmployeeOnly";
-                this.DGVPositionList.Columns[3].HeaderText = "Single employee";
+                this.DGVPositionList.Columns[3].Name = "MonthlyRate";
+                this.DGVPositionList.Columns[3].HeaderText = "Monthly rate";
+
+                this.DGVPositionList.Columns[4].Name = "IsSingleEmployeeOnly";
+                this.DGVPositionList.Columns[4].HeaderText = "Single employee";
 
                 // Update button
                 DataGridViewImageColumn btnUpdateLeaveTypeImg = new DataGridViewImageColumn();
@@ -145,7 +161,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[0].Value = position.Id;
                     row.Cells[1].Value = position.Title;
                     row.Cells[2].Value = position.DailyRate;
-                    row.Cells[3].Value = position.IsSingleEmployee ? "Single" : "Multiple";
+                    row.Cells[3].Value = position.MonthlyRate;
+                    row.Cells[4].Value = position.IsSingleEmployee ? "Single" : "Multiple";
                     DGVPositionList.Rows.Add(row);
                 }
             }
@@ -154,6 +171,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         public void ResetForm()
         {
             this.TbxPositionTitle.Text = "";
+            this.NumUpDwnMonthlyRate.Value = 0;
             this.NumUpDwnDailyRate.Value = 0;
             this.IsSaveNew = true;
             this.PositionToAddUpdate = null;
@@ -169,6 +187,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             if (this.PositionToAddUpdate != null)
             {
                 this.TbxPositionTitle.Text = this.PositionToAddUpdate.Title;
+                this.NumUpDwnMonthlyRate.Value = this.PositionToAddUpdate.MonthlyRate;
                 this.NumUpDwnDailyRate.Value = this.PositionToAddUpdate.DailyRate;
             }
         }
@@ -198,6 +217,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 {
                     Title = this.TbxPositionTitle.Text,
                     DailyRate = this.NumUpDwnDailyRate.Value,
+                    MonthlyRate = this.NumUpDwnMonthlyRate.Value,
                     IsSingleEmployee = this.CboxSingleEmployee.Checked
                 };
             }
@@ -222,6 +242,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     this.PositionToAddUpdate.Title = this.TbxPositionTitle.Text;
                     this.PositionToAddUpdate.DailyRate = this.NumUpDwnDailyRate.Value;
+                    this.PositionToAddUpdate.MonthlyRate = this.NumUpDwnMonthlyRate.Value;
                     this.PositionToAddUpdate.IsSingleEmployee = this.CboxSingleEmployee.Checked;
                 }
 
@@ -243,7 +264,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void DGVPositionList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Update button
-            if ((e.ColumnIndex == 3) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 5) && e.RowIndex > -1)
             {
                 if (DGVPositionList.CurrentRow != null)
                 {
@@ -256,7 +277,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
 
             // Delete button
-            if ((e.ColumnIndex == 4) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 6) && e.RowIndex > -1)
             {
                 if (DGVPositionList.CurrentRow != null)
                 {
@@ -265,6 +286,31 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                     OnDeletePosition(EventArgs.Empty);
                 }
+            }
+        }
+
+
+        public decimal NumberOfWorkingDays { get; set; }
+
+        public event EventHandler UpdateNumberOfWorkingDays;
+        protected virtual void OnUpdateNumberOfWorkingDays(EventArgs e)
+        {
+            UpdateNumberOfWorkingDays?.Invoke(this, e);
+        }
+
+        private void BtnUpdateNumberOfWorkingDaysInAMonth_Click(object sender, EventArgs e)
+        {
+            this.NumberOfWorkingDays = NumUpDwnNumberOfWorkingDays.Value;
+            OnUpdateNumberOfWorkingDays(EventArgs.Empty);
+        }
+
+        private void NumUpDwnMonthlyRate_KeyUp(object sender, KeyEventArgs e)
+        {
+            var numberOfWorkingDays = _numberOfWorkingDaysInAMonthData.GetLatestValue();
+
+            if (numberOfWorkingDays != null && numberOfWorkingDays.NumberOfDays > 0)
+            {
+                this.NumUpDwnDailyRate.Value = NumUpDwnMonthlyRate.Value / numberOfWorkingDays.NumberOfDays;
             }
         }
     }

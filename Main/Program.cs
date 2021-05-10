@@ -139,6 +139,7 @@ namespace Main
             services.AddTransient<IUserRoleData, UserRoleData>();
 
             // Employee Management module: services:
+            services.AddTransient<INumberOfWorkingDaysInAMonthData, NumberOfWorkingDaysInAMonthData>();
             services.AddTransient<IHolidayData, HolidayData>();
             services.AddTransient<IEmployeeAttendanceData, EmployeeAttendanceData>();
             services.AddTransient<IEmployeeBenefitData, EmployeeBenefitData>();

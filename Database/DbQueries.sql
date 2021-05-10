@@ -105,6 +105,12 @@ CREATE TABLE IF NOT EXISTS Branches(
 SELECT * FROM Branches;
 
 
+CREATE TABLE IF NOT EXISTS NumberOfWorkingDaysInMonth(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	numberOfDays DECIMAL(9,2)
+)ENGINE=INNODB;
+
+
 CREATE TABLE IF NOT EXISTS EmployeePositions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	title VARCHAR(255),
@@ -124,6 +130,8 @@ CREATE TABLE IF NOT EXISTS EmployeePositions(
 -- DROP COLUMN halfMonthRate;
 ALTER TABLE EmployeePositions
 ADD COLUMN isSingleEmployee BOOLEAN DEFAULT False;
+ALTER TABLE EmployeePositions
+ADD COLUMN monthlyRate DECIMAL(9,2);
 
 
 SELECT * FROM EmployeePositions;
@@ -199,16 +207,36 @@ CREATE TABLE IF NOT EXISTS GovernmentAgencies(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+ALTER TABLE GovernmentAgencies
+ADD COLUMN erContribInPercent DECIMAL(9,2);
+ALTER TABLE GovernmentAgencies
+ADD COLUMN eeContribInPercent DECIMAL(9,2);
+
+
+
+SELECT * FROM GovernmentAgencies;
 
 
 CREATE TABLE IF NOT EXISTS SSSContributionTable(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    rangeCompenstationStart DECIMAL(9,2),
-    rangeCompenstationEnd DECIMAL(9,2),
-    monthlySalaryCredit DECIMAL(9,2)
+    salaryStart DECIMAL(9,2),
+    salaryEnd DECIMAL(9,2),
+    monthlySalaryCredit DECIMAL(9,2),
+    mandatoryProvidentFund DECIMAL(9,2),
+    totalSalaryRate DECIMAL(9,2),
+    regularSocialSecurityEmployer DECIMAL(9,2),
+    regularSocialSecurityEmployee DECIMAL(9,2),
+    regularSocialSecurityTotal DECIMAL(9,2),
+    EmpCompensation DECIMAL(9,2),
+    mandatoryProvidentFundEmployer DECIMAL(9,2),
+    mandatoryProvidentFundEmployee DECIMAL(9,2),
+    mandatoryProvidentFundTotal DECIMAL(9,2),
+	totalContributionEmployer DECIMAL(9,2),
+    totalContributionEmployee DECIMAL(9,2),
+    totalContribution DECIMAL(9,2)
 )ENGINE=INNODB;
 
-SELECT * FROM GovernmentAgencies;
+SELECT * FROM SSSContributionTable;
 
 CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

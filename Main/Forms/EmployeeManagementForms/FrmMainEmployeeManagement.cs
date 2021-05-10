@@ -51,6 +51,7 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IEmployeePositionController _employeePositionController;
         private readonly IEmployeePositionData _employeePositionData;
         private readonly IAttendancePDFReport _attendancePDFReport;
+        private readonly INumberOfWorkingDaysInAMonthData _numberOfWorkingDaysInAMonthData;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
@@ -77,7 +78,8 @@ namespace Main.Forms.EmployeeManagementForms
                                 IWorkforceScheduleData workforceScheduleData,
                                 IEmployeePositionController employeePositionController,
                                 IEmployeePositionData employeePositionData,
-                                 IAttendancePDFReport attendancePDFReport)
+                                 IAttendancePDFReport attendancePDFReport,
+                                 INumberOfWorkingDaysInAMonthData numberOfWorkingDaysInAMonthData)
         {
             InitializeComponent();
             _logger = logger;
@@ -106,6 +108,7 @@ namespace Main.Forms.EmployeeManagementForms
             _employeePositionController = employeePositionController;
             _employeePositionData = employeePositionData;
             _attendancePDFReport = attendancePDFReport;
+            _numberOfWorkingDaysInAMonthData = numberOfWorkingDaysInAMonthData;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -1090,7 +1093,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             this.panelContainer.Controls.Clear();
 
-            var controlObj = new EmpPositionWithSalaryRateCRUDControl();
+            var controlObj = new EmpPositionWithSalaryRateCRUDControl(_numberOfWorkingDaysInAMonthData);
             controlObj.Location = new Point(this.ClientSize.Width / 2 - controlObj.Size.Width / 2, this.ClientSize.Height / 2 - controlObj.Size.Height / 2);
             controlObj.Anchor = AnchorStyles.None;
 
@@ -1098,10 +1101,38 @@ namespace Main.Forms.EmployeeManagementForms
 
             controlObj.PositionSaved += HandleSaveEmployeePosition;
             controlObj.DeletePosition += HandleDeleteEmployeePosition;
+            controlObj.UpdateNumberOfWorkingDays += HandleUpdateNumberOfWorkingDays;
 
             this.panelContainer.Controls.Add(controlObj);
         }
 
+        private void HandleUpdateNumberOfWorkingDays(object sender, EventArgs e)
+        {
+            EmpPositionWithSalaryRateCRUDControl controlObj = (EmpPositionWithSalaryRateCRUDControl)sender;
+            decimal numberOfWorkingDays = controlObj.NumberOfWorkingDays;
+
+            var saveResults = _employeePositionController.UpdateNumberOfWorkingDaysInAMonth(numberOfWorkingDays);
+
+            string resultMessages = "";
+            foreach (var msg in saveResults.Messages)
+            {
+                resultMessages += msg + "\n";
+            }
+
+            if (saveResults.IsSuccess)
+            {
+                MessageBox.Show(resultMessages, "Save new number of working days in month", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                controlObj.ResetForm();
+                controlObj.Positions = _employeePositionData.GetAllNotDeleted();
+                controlObj.DisplayPositionList();
+            }
+            else
+            {
+                MessageBox.Show(resultMessages, "Save new number of working days in month", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+        }
 
         private void HandleSaveEmployeePosition(object sender, EventArgs e)
         {

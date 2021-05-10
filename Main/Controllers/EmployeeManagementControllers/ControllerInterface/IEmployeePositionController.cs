@@ -10,6 +10,7 @@ namespace Main.Controllers.EmployeeManagementControllers.ControllerInterface
 {
     public interface IEmployeePositionController
     {
+        EntityResult<string> UpdateNumberOfWorkingDaysInAMonth(decimal newNumberOfDays);
         EntityResult<string> Delete(long positionId);
         EntityResult<EmployeePositionModel> Save(EmployeePositionModel input, bool isNew);
     }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using DataAccess.Data.EmployeeManagement.Contracts;
+using DataAccess.Data.OtherDataManagement.Contracts;
 using EntitiesShared.EmployeeManagement;
+using EntitiesShared.OtherDataManagement;
 using FluentValidation.Results;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Controllers.EmployeeManagementControllers.Validator;
@@ -11,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Main.Controllers.EmployeeManagementControllers
 {
@@ -20,16 +23,85 @@ namespace Main.Controllers.EmployeeManagementControllers
         private readonly IMapper _mapper;
         private readonly EmployeePositionAddUpdateValidator _positionValidator;
         private readonly IEmployeePositionData _employeePositionData;
+        private readonly INumberOfWorkingDaysInAMonthData _numberOfWorkingDaysInAMonthData;
 
         public EmployeePositionController(ILogger<EmployeePositionController> logger,
                                         IMapper mapper,
                                         EmployeePositionAddUpdateValidator positionValidator,
-                                        IEmployeePositionData employeePositionData)
+                                        IEmployeePositionData employeePositionData,
+                                        INumberOfWorkingDaysInAMonthData numberOfWorkingDaysInAMonthData)
         {
             _logger = logger;
             _mapper = mapper;
             _positionValidator = positionValidator;
             _employeePositionData = employeePositionData;
+            _numberOfWorkingDaysInAMonthData = numberOfWorkingDaysInAMonthData;
+        }
+
+        public EntityResult<string> UpdateNumberOfWorkingDaysInAMonth(decimal newNumberOfDays)
+        {
+            var results = new EntityResult<string>();
+
+            try
+            {
+                if (newNumberOfDays <= 0)
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("Invalid number of days.");
+                    return results;
+                }
+
+                var workDaysInAMonth = _numberOfWorkingDaysInAMonthData.GetLatestValue();
+
+                if (workDaysInAMonth != null)
+                {
+                    workDaysInAMonth.NumberOfDays = newNumberOfDays;
+
+                    using (var transaction = new TransactionScope())
+                    {
+                        results.IsSuccess = _numberOfWorkingDaysInAMonthData.Update(workDaysInAMonth);
+
+                        var positions = _employeePositionData.GetAllNotDeleted();
+
+                        foreach (var position in positions)
+                        {
+                            position.DailyRate = position.MonthlyRate / newNumberOfDays;
+                        }
+                        _employeePositionData.UpdateRange(positions);
+
+                        transaction.Complete();
+                    }
+
+                    results.Messages.Add("Number of working days updated.");
+                }
+                else
+                {
+                    using (var transaction = new TransactionScope())
+                    {
+                        _numberOfWorkingDaysInAMonthData.Add(new NumberOfWorkingDaysInAMonthModel { NumberOfDays = newNumberOfDays });
+
+                        var positions = _employeePositionData.GetAllNotDeleted();
+
+                        foreach (var position in positions)
+                        {
+                            position.DailyRate = position.MonthlyRate / newNumberOfDays;
+                        }
+                        _employeePositionData.UpdateRange(positions);
+
+                        transaction.Complete();
+                    }
+
+                    results.IsSuccess = true;
+                    results.Messages.Add("Number of working days updated.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
         }
 
         public EntityResult<string> Delete(long positionId)
