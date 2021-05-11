@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntitiesShared", "EntitiesShared\EntitiesShared.csproj", "{50922229-38D4-4B96-AA92-9B311BE84765}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayrollGenerator", "PayrollGenerator\PayrollGenerator.csproj", "{7747E5A6-DD1C-4D4E-9595-A407C0CB52D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayrollGenerator", "PayrollGenerator\PayrollGenerator.csproj", "{7747E5A6-DD1C-4D4E-9595-A407C0CB52D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFReportGenerators", "PDFReportGenerators\PDFReportGenerators.csproj", "{4E4E5D63-FE0B-4B27-948C-18B99AE736AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFReportGenerators", "PDFReportGenerators\PDFReportGenerators.csproj", "{4E4E5D63-FE0B-4B27-948C-18B99AE736AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

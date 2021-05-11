@@ -50,11 +50,6 @@ namespace Main
             }
         }
 
-        private void BtnLogin_Click(object sender, EventArgs e)
-        {
-            Login();
-        }
-
         private void TbxPassword_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -62,6 +57,11 @@ namespace Main
                 Login();
                 e.Handled = true;
             }
+        }
+
+        private void BtnLogin_Click(object sender, EventArgs e)
+        {
+            Login();
         }
     }
 }

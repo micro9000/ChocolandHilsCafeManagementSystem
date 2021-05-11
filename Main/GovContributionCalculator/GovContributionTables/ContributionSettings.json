@@ -1,0 +1,40 @@
+{
+  "GovernmentContributions": {
+    "PhilHealth": {
+      "FirstFixedRate": {
+        "EqualAndBelowTo": 10000,
+        "Rate": {
+          "EE": 175,
+          "ER": 175
+        }
+      },
+      "PercentageForInBetween": 3,
+      "SecondFixedRate": {
+        "EqualOrAboveTo": 70000,
+        "Rate": {
+          "EE": 1225,
+          "ER": 1225
+        }
+      }
+    },
+    "PagIbig": {
+      "FirstFixedRate": {
+        "EqualAndBelowTo": 1500,
+        "Rate": {
+          "EE": 1,
+          "ER": 1
+        }
+      },
+      "SecondFixedRate": {
+        "BetweenTo": {
+          "Min": 1501,
+          "Max": 5000
+        },
+        "Rate": {
+          "EE": 2,
+          "ER": 2
+        }
+      }
+    }
+  }
+}

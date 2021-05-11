@@ -5,6 +5,8 @@ using DataAccess.Data.POSManagement.Contracts;
 using EntitiesShared.PayrollManagement;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
 using Main.Forms.PayrollForms.Controls;
+using Main.GovContributionCalculator;
+using Main.GovContributionCalculator.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PDFReportGenerators;
@@ -42,6 +44,8 @@ namespace Main.Forms.PayrollForms
         private readonly IPayrollPDFReport _payrollPDFReport;
         private readonly ICashRegisterCashOutTransactionData _cashRegisterCashOutTransactionData;
         private readonly IEmployeeCashAdvanceRequestData _employeeCashAdvanceRequestData;
+        private readonly SSSContributionCalculator _sssContributionCalculator;
+        private readonly WTaxCalculator _wTaxCalculator;
         private readonly PayrollSettings _payrollSettings;
 
         public FrmPayroll(ILogger<FrmPayroll> logger,
@@ -61,6 +65,8 @@ namespace Main.Forms.PayrollForms
                            IPayrollPDFReport payrollPDFReport,
                            ICashRegisterCashOutTransactionData cashRegisterCashOutTransactionData,
                            IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData,
+                           SSSContributionCalculator sssContributionCalculator,
+                           WTaxCalculator wTaxCalculator,
                            IOptions<PayrollSettings> payrollSettings)
         {
             InitializeComponent();
@@ -81,7 +87,27 @@ namespace Main.Forms.PayrollForms
             _payrollPDFReport = payrollPDFReport;
             _cashRegisterCashOutTransactionData = cashRegisterCashOutTransactionData;
             _employeeCashAdvanceRequestData = employeeCashAdvanceRequestData;
+            _sssContributionCalculator = sssContributionCalculator;
+            _wTaxCalculator = wTaxCalculator;
             _payrollSettings = payrollSettings.Value;
+        }
+
+        private List<SSSContributionTableRow> sssContributionTable;
+
+        public List<SSSContributionTableRow> SSSContributionTable
+        {
+            get { return sssContributionTable; }
+            set { sssContributionTable = value; }
+        }
+
+        public WTaxTable WTaxTable { get; set; }
+
+        private void FrmPayroll_Load(object sender, EventArgs e)
+        {
+            SSSContributionTable = _sssContributionCalculator.GetContributionTable();
+            WTaxTable = _wTaxCalculator.GetMonthlyWTaxTable();
+
+            var sharedContribution = _sssContributionCalculator.GetEEandERSharedContribution(SSSContributionTable, 27413.39m);
         }
 
         private void CMStripPayroll_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -655,5 +681,6 @@ namespace Main.Forms.PayrollForms
         }
 
         #endregion
+
     }
 }

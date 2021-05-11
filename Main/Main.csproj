@@ -32,6 +32,18 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="GovContributionCalculator\GovContributionTables\ContributionSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="GovContributionCalculator\GovContributionTables\SSS\2021.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="GovContributionCalculator\GovContributionTables\SSS\Default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="GovContributionCalculator\GovContributionTables\WithholdingTaxTable.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\attendance-white-30.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -54,6 +54,7 @@ using Main.Forms.RequestsForm;
 using Main.Controllers.RequestControllers.Validators;
 using Main.Controllers.RequestControllers.ControllerInterface;
 using Main.Controllers.RequestControllers;
+using Main.GovContributionCalculator;
 
 namespace Main
 {
@@ -137,6 +138,9 @@ namespace Main
             services.AddTransient<IUserData, UserData>();
             services.AddTransient<IRoleData, RoleData>();
             services.AddTransient<IUserRoleData, UserRoleData>();
+
+            services.AddTransient<SSSContributionCalculator>();
+            services.AddTransient<WTaxCalculator>();
 
             // Employee Management module: services:
             services.AddTransient<INumberOfWorkingDaysInAMonthData, NumberOfWorkingDaysInAMonthData>();

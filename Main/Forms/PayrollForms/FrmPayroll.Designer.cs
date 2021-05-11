@@ -105,6 +105,7 @@ namespace Main.Forms.PayrollForms
             this.MainMenuStrip = this.menuStripPayroll;
             this.Name = "FrmPayroll";
             this.Text = "PayrollForm";
+            this.Load += new System.EventHandler(this.FrmPayroll_Load);
             this.menuStripPayroll.ResumeLayout(false);
             this.menuStripPayroll.PerformLayout();
             this.CMStripPayroll.ResumeLayout(false);
