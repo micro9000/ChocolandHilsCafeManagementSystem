@@ -33,6 +33,33 @@ namespace Main.GovContributionCalculator
             return taxTable;
         }
 
-        //public decimal GetMonthlyWithholdingTax ()
+        public decimal GetMonthlyWithholdingTax (WTaxTable wTaxTable, decimal monthlyGovContributionTotal, decimal monthlySalary)
+        {
+            if (monthlyGovContributionTotal > monthlySalary)
+                return 0;
+
+            var wTaxItem = wTaxTable.MonthlyWTax
+                                .Where(x => 
+                                    x.CompensationMinLevel >= monthlySalary && 
+                                    x.CompensationMaxLevel <= monthlySalary)
+                                .FirstOrDefault();
+
+            if (wTaxItem == null)
+                return 0;
+
+            if (wTaxItem.Percentage == 0 || wTaxItem.FixedTax == 0)
+                return 0;
+
+            decimal taxableIncome = monthlySalary - monthlyGovContributionTotal;
+
+            // FixedTax is also known Compensation level
+            decimal percentOverCompensationLvlTotal = taxableIncome - wTaxItem.FixedTax;
+
+            var percentage = wTaxItem.Percentage / 100;
+
+            decimal totalTax = percentOverCompensationLvlTotal * percentage;
+
+            return totalTax;
+        }
     }
 }
