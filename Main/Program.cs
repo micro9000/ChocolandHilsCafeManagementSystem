@@ -141,6 +141,8 @@ namespace Main
 
             services.AddTransient<SSSContributionCalculator>();
             services.AddTransient<WTaxCalculator>();
+            services.AddTransient<PagIbigContributionCalculator>();
+            services.AddTransient<PhilHealthContributionCalculator>();
 
             // Employee Management module: services:
             services.AddTransient<INumberOfWorkingDaysInAMonthData, NumberOfWorkingDaysInAMonthData>();

@@ -32,7 +32,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="GovContributionCalculator\GovContributionTables\ContributionSettings.json">
+    <None Update="GovContributionCalculator\GovContributionTables\PagIbigContributionTable.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="GovContributionCalculator\GovContributionTables\PhilHealthContributionTable.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="GovContributionCalculator\GovContributionTables\SSS\2021.json">

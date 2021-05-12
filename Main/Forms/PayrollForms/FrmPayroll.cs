@@ -46,6 +46,8 @@ namespace Main.Forms.PayrollForms
         private readonly IEmployeeCashAdvanceRequestData _employeeCashAdvanceRequestData;
         private readonly SSSContributionCalculator _sssContributionCalculator;
         private readonly WTaxCalculator _wTaxCalculator;
+        private readonly PhilHealthContributionCalculator _philHealthContributionCalculator;
+        private readonly PagIbigContributionCalculator _pagIbigContributionCalculator;
         private readonly PayrollSettings _payrollSettings;
 
         public FrmPayroll(ILogger<FrmPayroll> logger,
@@ -67,6 +69,8 @@ namespace Main.Forms.PayrollForms
                            IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData,
                            SSSContributionCalculator sssContributionCalculator,
                            WTaxCalculator wTaxCalculator,
+                           PhilHealthContributionCalculator philHealthContributionCalculator,
+                           PagIbigContributionCalculator pagIbigContributionCalculator,
                            IOptions<PayrollSettings> payrollSettings)
         {
             InitializeComponent();
@@ -89,6 +93,8 @@ namespace Main.Forms.PayrollForms
             _employeeCashAdvanceRequestData = employeeCashAdvanceRequestData;
             _sssContributionCalculator = sssContributionCalculator;
             _wTaxCalculator = wTaxCalculator;
+            _philHealthContributionCalculator = philHealthContributionCalculator;
+            _pagIbigContributionCalculator = pagIbigContributionCalculator;
             _payrollSettings = payrollSettings.Value;
         }
 
@@ -101,13 +107,15 @@ namespace Main.Forms.PayrollForms
         }
 
         public WTaxTable WTaxTable { get; set; }
+        public PhilHealthContributionSettings PhilHealthContributionTable { get; set; }
+        public PagIbigContributionSettings PagIbigContributionTable { get; set; }
 
         private void FrmPayroll_Load(object sender, EventArgs e)
         {
-            SSSContributionTable = _sssContributionCalculator.GetContributionTable();
-            WTaxTable = _wTaxCalculator.GetMonthlyWTaxTable();
-
-            var sharedContribution = _sssContributionCalculator.GetEEandERSharedContribution(SSSContributionTable, 27413.39m);
+            this.SSSContributionTable = _sssContributionCalculator.GetContributionTable();
+            this.WTaxTable = _wTaxCalculator.GetMonthlyWTaxTable();
+            this.PhilHealthContributionTable = _philHealthContributionCalculator.GetContributionTable();
+            this.PagIbigContributionTable = _pagIbigContributionCalculator.GetContributionTable();
         }
 
         private void CMStripPayroll_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
