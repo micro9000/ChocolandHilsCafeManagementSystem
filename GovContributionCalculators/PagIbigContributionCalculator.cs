@@ -1,4 +1,4 @@
-﻿using Main.GovContributionCalculator.Models;
+﻿using GovContributionCalculators.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,22 +7,15 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Main.GovContributionCalculator
+namespace GovContributionCalculators.GovContributionCalculator
 {
     public class PagIbigContributionCalculator
     {
-        public PagIbigContributionSettings GetContributionTable()
+        public PagIbigContributionSettings GetContributionTable(string govContributionTablesPath)
         {
-            string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string fullTablePath = $"{govContributionTablesPath}PagIbigContributionTable.json";
 
-            string govContributionTableDirPath = "\\GovContributionCalculator\\GovContributionTables\\";
-
-            var directoryInfo = Directory.CreateDirectory($"{appPath}{govContributionTableDirPath}");
-            string latestTableFileName = $"PagIbigContributionTable.json";
-
-            string fullTablePath = $"{appPath}{govContributionTableDirPath}{latestTableFileName}";
-
-            if (directoryInfo.Exists && File.Exists(fullTablePath) == false)
+            if (File.Exists(fullTablePath) == false)
             {
                 return null;
             }
@@ -54,10 +47,12 @@ namespace Main.GovContributionCalculator
                 };
             }
 
-            if (monthSalary > 0 && 
-                (monthSalary >= pagIbigContributionSettings.SecondFixedRate.BetweenTo.Min ||
-                monthSalary >= pagIbigContributionSettings.SecondFixedRate.BetweenTo.Max))
+            if (monthSalary > 0 && monthSalary >= pagIbigContributionSettings.SecondFixedRate.BetweenTo.Min)
             {
+                if (monthSalary > pagIbigContributionSettings.SecondFixedRate.BetweenTo.Max){
+                    monthSalary = pagIbigContributionSettings.SecondFixedRate.BetweenTo.Max;
+                }
+
                 var EEContPercentage = pagIbigContributionSettings.SecondFixedRate.Rate.EE / 100;
                 var ERContPercentage = pagIbigContributionSettings.SecondFixedRate.Rate.ER / 100;
 

@@ -78,6 +78,17 @@ namespace Main.Forms.PayrollForms.Controls
                     }
                 }
 
+                if (this.Payslip.EmployeeGovContributions != null)
+                {
+                    foreach (var contrib in this.Payslip.EmployeeGovContributions)
+                    {
+                        var contribItem = new ListViewItem(new string[] {
+                            contrib.GovContributionEnumVal.ToString(), contrib.EmployeeContribution.ToString()
+                        });
+                        this.LVPayslipDeductions.Items.Add(contribItem);
+                    }
+                }
+
                 if (this.Payslip.Deductions != null)
                 {
                     foreach(var deduction in this.Payslip.Deductions)
@@ -88,6 +99,8 @@ namespace Main.Forms.PayrollForms.Controls
                         this.LVPayslipDeductions.Items.Add(deductionItem);
                     }
                 }
+
+                
             }
         }
     }

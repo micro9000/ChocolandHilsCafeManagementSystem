@@ -53,13 +53,14 @@ namespace EntitiesShared.PayrollManagement.Models
         }
 
 
-        private List<GovernmentAgencyModel> selectedGovtAgencies;
+        private List<StaticData.GovContributions> selectedGovContributions;
 
-        public List<GovernmentAgencyModel> SelectedGovtAgencies
+        public List<StaticData.GovContributions> SelectedGovContributions
         {
-            get { return selectedGovtAgencies; }
-            set { selectedGovtAgencies = value; }
+            get { return selectedGovContributions; }
+            set { selectedGovContributions = value; }
         }
+
 
         private List<EmployeeBenefitModel> selectedBenefits;
 

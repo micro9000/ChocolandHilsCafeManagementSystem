@@ -10,7 +10,7 @@
       "CompensationMinLevel": 20833,
       "CompensationMaxLevel": 33332,
       "Percentage": 20,
-      "FixedTax": 0
+      "FixedTax": 20833
     },
     {
       "CompensationMinLevel": 33333,

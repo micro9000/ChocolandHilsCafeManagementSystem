@@ -24,6 +24,7 @@ using WkHtmlToPdfDotNet;
 using Topshelf;
 using DataAccess.Data.POSManagement.Contracts;
 using DataAccess.Data.POSManagement.Implementations;
+using GovContributionCalculators.GovContributionCalculator;
 
 namespace PayrollGenerator
 {
@@ -101,6 +102,7 @@ namespace PayrollGenerator
                     services.AddTransient<IEmployeePayslipBenefitData, EmployeePayslipBenefitData>();
                     services.AddTransient<IEmployeePayslipData, EmployeePayslipData>();
                     services.AddTransient<IEmployeePayslipDeductionData, EmployeePayslipDeductionData>();
+                    services.AddTransient<IEmployeeGovernmentContributionData, EmployeeGovernmentContributionData>();
                     services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
                     services.AddTransient<IEmployeeShiftDayData, EmployeeShiftDayData>();
                     services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
@@ -110,6 +112,11 @@ namespace PayrollGenerator
                     services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
                     services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();
                     services.AddTransient<ICashRegisterCashOutTransactionData, CashRegisterCashOutTransactionData>();
+
+                    services.AddTransient<SSSContributionCalculator>();
+                    services.AddTransient<WTaxCalculator>();
+                    services.AddTransient<PagIbigContributionCalculator>();
+                    services.AddTransient<PhilHealthContributionCalculator>();
                     //services.AddTransient<IAttendancePDFReport, AttendancePDFReport>();
                 })
                 .UseSerilog()

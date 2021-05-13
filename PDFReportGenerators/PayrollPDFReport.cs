@@ -50,7 +50,7 @@ namespace PDFReportGenerators
                     <table id='parent-table'>
                     <thead>
                         <tr style='border-bottom: 1px solid gray;'>
-                            <th colspan='14'> Paydate: {paydate.ToLongDateString()} </ th >
+                            <th colspan='15'> Paydate: {paydate.ToLongDateString()} </ th >
                         </tr>
                         <tr style = 'border-bottom: 1px solid gray; text-align: center;' >
                             <th> Emp#</th>
@@ -65,15 +65,24 @@ namespace PDFReportGenerators
                             <th> Deductions </th>
                             <th> Net Take Home </th>
                             <th> Days </th>
-                            <th> Employer Govt.Contribution </th>
-                            <th> Total </th>
+                            <th> EE Govt. Contribution </th>
+                            <th> ER Govt. Contribution </th>
+                            <th> Total Govt. contribution </th>
                         </tr>
                     </thead>
                     <tbody> ");
 
             decimal totalPayment = 0;
+            decimal totalGovContributionForCurrentEmp = 0;
+            decimal empTotalGovContribution = 0;
+            decimal emprTotalGovContribution = 0;
+
             foreach (var payslip in payslips)
             {
+                totalGovContributionForCurrentEmp = payslip.EmployeeGovContributions.Sum(x => x.TotalContribution);
+                empTotalGovContribution = payslip.EmployeeGovContributions.Sum(x => x.EmployeeContribution);
+                emprTotalGovContribution = payslip.EmployeeGovContributions.Sum(x => x.EmployerContribution);
+
                 sb.Append($@"<tr>
                                 <td>{payslip.EmployeeNumber}</td>
                                 <td>{payslip.Employee.FullName}</td>
@@ -87,11 +96,12 @@ namespace PDFReportGenerators
                                 <td>{payslip.DeductionTotal}</td>
                                 <td>{payslip.NetTakeHomePay}</td>
                                 <td>{payslip.NumOfDays}</td>
-                                <td>{payslip.EmployerGovtContributionTotal}</td>
-                                <td>{(payslip.NetTakeHomePay + payslip.EmployerGovtContributionTotal)}</td>
+                                <td>{empTotalGovContribution}</td>
+                                <td>{emprTotalGovContribution}</td>
+                                <td>{totalGovContributionForCurrentEmp}</td>
                             </tr>");
 
-                totalPayment += (payslip.NetTakeHomePay + payslip.EmployerGovtContributionTotal);
+                totalPayment += payslip.NetTakeHomePay;
             }
 
             sb.Append($@"</tbody>

@@ -45,13 +45,20 @@ namespace Main.Forms.PayrollForms.Controls
             this.CHLV_DeductionsTotal = new System.Windows.Forms.ColumnHeader();
             this.CHLV_NetTakeHomePay = new System.Windows.Forms.ColumnHeader();
             this.CHLV_WorkDays = new System.Windows.Forms.ColumnHeader();
-            this.CHLV_EmployerContribution = new System.Windows.Forms.ColumnHeader();
+            this.CHLV_EEGovContrib = new System.Windows.Forms.ColumnHeader();
+            this.CHLV_ERGovContrib = new System.Windows.Forms.ColumnHeader();
+            this.CHVL_TotalGovContrib = new System.Windows.Forms.ColumnHeader();
             this.BtnFilterPayrollHistory = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.CBoxPayslipDates = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.BtnGenerateEmployeePayslipsReportPDF = new System.Windows.Forms.Button();
             this.LblTotalPayment = new System.Windows.Forms.Label();
+            this.BtnGenerateEmpGovContributionReport = new System.Windows.Forms.Button();
+            this.BtnGenerateReportGovContrib = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.CboxMonths = new System.Windows.Forms.ComboBox();
+            this.BtnMonthsForEmpGovContrib = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,11 +66,13 @@ namespace Main.Forms.PayrollForms.Controls
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
             this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.LblTotalPayment);
+            this.panel1.Controls.Add(this.label3);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.panel1.Size = new System.Drawing.Size(1175, 52);
+            this.panel1.Size = new System.Drawing.Size(1367, 52);
             this.panel1.TabIndex = 8;
             // 
             // label2
@@ -93,13 +102,15 @@ namespace Main.Forms.PayrollForms.Controls
             this.CHLV_DeductionsTotal,
             this.CHLV_NetTakeHomePay,
             this.CHLV_WorkDays,
-            this.CHLV_EmployerContribution});
+            this.CHLV_EEGovContrib,
+            this.CHLV_ERGovContrib,
+            this.CHVL_TotalGovContrib});
             this.LVEmployeePayslipsHistory.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.LVEmployeePayslipsHistory.GridLines = true;
             this.LVEmployeePayslipsHistory.HideSelection = false;
             this.LVEmployeePayslipsHistory.Location = new System.Drawing.Point(0, 120);
             this.LVEmployeePayslipsHistory.Name = "LVEmployeePayslipsHistory";
-            this.LVEmployeePayslipsHistory.Size = new System.Drawing.Size(1175, 428);
+            this.LVEmployeePayslipsHistory.Size = new System.Drawing.Size(1367, 428);
             this.LVEmployeePayslipsHistory.TabIndex = 9;
             this.LVEmployeePayslipsHistory.UseCompatibleStateImageBehavior = false;
             this.LVEmployeePayslipsHistory.View = System.Windows.Forms.View.Details;
@@ -166,10 +177,20 @@ namespace Main.Forms.PayrollForms.Controls
             this.CHLV_WorkDays.Text = "Days";
             this.CHLV_WorkDays.Width = 50;
             // 
-            // CHLV_EmployerContribution
+            // CHLV_EEGovContrib
             // 
-            this.CHLV_EmployerContribution.Text = "Employer Govt Contribution";
-            this.CHLV_EmployerContribution.Width = 150;
+            this.CHLV_EEGovContrib.Text = "EE Govt. Contrib";
+            this.CHLV_EEGovContrib.Width = 100;
+            // 
+            // CHLV_ERGovContrib
+            // 
+            this.CHLV_ERGovContrib.Text = "ER Gov Contrib";
+            this.CHLV_ERGovContrib.Width = 100;
+            // 
+            // CHVL_TotalGovContrib
+            // 
+            this.CHVL_TotalGovContrib.Text = "Total Gov Contrib";
+            this.CHVL_TotalGovContrib.Width = 100;
             // 
             // BtnFilterPayrollHistory
             // 
@@ -209,7 +230,8 @@ namespace Main.Forms.PayrollForms.Controls
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(801, 72);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(215, 14);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(45, 21);
             this.label3.TabIndex = 56;
@@ -233,27 +255,86 @@ namespace Main.Forms.PayrollForms.Controls
             // LblTotalPayment
             // 
             this.LblTotalPayment.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.LblTotalPayment.Location = new System.Drawing.Point(852, 72);
+            this.LblTotalPayment.ForeColor = System.Drawing.Color.White;
+            this.LblTotalPayment.Location = new System.Drawing.Point(266, 14);
             this.LblTotalPayment.Name = "LblTotalPayment";
             this.LblTotalPayment.Size = new System.Drawing.Size(230, 21);
             this.LblTotalPayment.TabIndex = 58;
             this.LblTotalPayment.Text = "00000";
+            // 
+            // BtnGenerateEmpGovContributionReport
+            // 
+            this.BtnGenerateEmpGovContributionReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnGenerateEmpGovContributionReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnGenerateEmpGovContributionReport.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnGenerateEmpGovContributionReport.ForeColor = System.Drawing.Color.White;
+            this.BtnGenerateEmpGovContributionReport.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnGenerateEmpGovContributionReport.Location = new System.Drawing.Point(1108, 72);
+            this.BtnGenerateEmpGovContributionReport.Name = "BtnGenerateEmpGovContributionReport";
+            this.BtnGenerateEmpGovContributionReport.Size = new System.Drawing.Size(242, 29);
+            this.BtnGenerateEmpGovContributionReport.TabIndex = 59;
+            this.BtnGenerateEmpGovContributionReport.Text = "Government Contribution report";
+            this.BtnGenerateEmpGovContributionReport.UseVisualStyleBackColor = false;
+            this.BtnGenerateEmpGovContributionReport.Click += new System.EventHandler(this.BtnGenerateEmpGovContributionReport_Click);
+            // 
+            // BtnGenerateReportGovContrib
+            // 
+            this.BtnGenerateReportGovContrib.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnGenerateReportGovContrib.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnGenerateReportGovContrib.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnGenerateReportGovContrib.ForeColor = System.Drawing.Color.White;
+            this.BtnGenerateReportGovContrib.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnGenerateReportGovContrib.Location = new System.Drawing.Point(502, 69);
+            this.BtnGenerateReportGovContrib.Name = "BtnGenerateReportGovContrib";
+            this.BtnGenerateReportGovContrib.Size = new System.Drawing.Size(169, 29);
+            this.BtnGenerateReportGovContrib.TabIndex = 59;
+            this.BtnGenerateReportGovContrib.Text = "Gov. Contrib PDF Report";
+            this.BtnGenerateReportGovContrib.UseVisualStyleBackColor = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(867, 75);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(56, 21);
+            this.label4.TabIndex = 60;
+            this.label4.Text = "Month";
+            // 
+            // CboxMonths
+            // 
+            this.CboxMonths.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.CboxMonths.FormattingEnabled = true;
+            this.CboxMonths.Location = new System.Drawing.Point(939, 72);
+            this.CboxMonths.Name = "CboxMonths";
+            this.CboxMonths.Size = new System.Drawing.Size(152, 29);
+            this.CboxMonths.TabIndex = 61;
+            // 
+            // BtnMonthsForEmpGovContrib
+            // 
+            this.BtnMonthsForEmpGovContrib.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnMonthsForEmpGovContrib.FormattingEnabled = true;
+            this.BtnMonthsForEmpGovContrib.Location = new System.Drawing.Point(939, 72);
+            this.BtnMonthsForEmpGovContrib.Name = "BtnMonthsForEmpGovContrib";
+            this.BtnMonthsForEmpGovContrib.Size = new System.Drawing.Size(152, 29);
+            this.BtnMonthsForEmpGovContrib.TabIndex = 61;
             // 
             // PayrollReportControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.LblTotalPayment);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.CboxMonths);
+            this.Controls.Add(this.BtnGenerateEmpGovContributionReport);
             this.Controls.Add(this.BtnGenerateEmployeePayslipsReportPDF);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.BtnFilterPayrollHistory);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CBoxPayslipDates);
             this.Controls.Add(this.LVEmployeePayslipsHistory);
             this.Controls.Add(this.panel1);
             this.Name = "PayrollReportControl";
-            this.Size = new System.Drawing.Size(1175, 548);
+            this.Size = new System.Drawing.Size(1367, 548);
             this.Load += new System.EventHandler(this.PayrollReportControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -287,5 +368,13 @@ namespace Main.Forms.PayrollForms.Controls
         private System.Windows.Forms.ColumnHeader CHLV_NetTakeHomePay;
         private System.Windows.Forms.ColumnHeader CHLV_WorkDays;
         private System.Windows.Forms.ColumnHeader CHLV_EmployerContribution;
+        private System.Windows.Forms.ColumnHeader CHLV_EEGovContrib;
+        private System.Windows.Forms.ColumnHeader CHLV_ERGovContrib;
+        private System.Windows.Forms.ColumnHeader CHVL_TotalGovContrib;
+        private System.Windows.Forms.Button BtnGenerateEmpGovContributionReport;
+        private System.Windows.Forms.Button BtnGenerateReportGovContrib;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox CboxMonths;
+        private System.Windows.Forms.ComboBox BtnMonthsForEmpGovContrib;
     }
 }

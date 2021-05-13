@@ -1,11 +1,14 @@
 ﻿using DataAccess.Data.EmployeeManagement.Contracts;
 using DataAccess.Data.PayrollManagement.Contracts;
 using DataAccess.Data.POSManagement.Contracts;
+using EntitiesShared;
 using EntitiesShared.EmployeeManagement;
 using EntitiesShared.OtherDataManagement;
 using EntitiesShared.PayrollManagement;
 using EntitiesShared.PayrollManagement.Models;
 using EntitiesShared.POSManagement;
+using GovContributionCalculators.GovContributionCalculator;
+using GovContributionCalculators.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PDFReportGenerators;
@@ -44,6 +47,11 @@ namespace PayrollGenerator.Services
         private readonly IEmployeeCashAdvanceRequestData _employeeCashAdvanceRequestData;
         private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
         private readonly IPayrollPDFReport _payrollPDFReport;
+        private readonly SSSContributionCalculator _sssContributionCalculator;
+        private readonly WTaxCalculator _wTaxCalculator;
+        private readonly PhilHealthContributionCalculator _philHealthContributionCalculator;
+        private readonly PagIbigContributionCalculator _pagIbigContributionCalculator;
+        private readonly IEmployeeGovernmentContributionData _employeeGovernmentContributionData;
 
         public PayslipGenerator(ILogger<PayslipGenerator> log,
                                 IOptions<PayrollSettings> payrollSettings,
@@ -61,7 +69,12 @@ namespace PayrollGenerator.Services
                                 ICashRegisterCashOutTransactionData cashRegisterCashOutTransactionData,
                                 IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData,
                                 IEmployeePayslipPDFReport employeePayslipPDFReport,
-                                IPayrollPDFReport payrollPDFReport)
+                                IPayrollPDFReport payrollPDFReport,
+                               SSSContributionCalculator sssContributionCalculator,
+                               WTaxCalculator wTaxCalculator,
+                               PhilHealthContributionCalculator philHealthContributionCalculator,
+                               PagIbigContributionCalculator pagIbigContributionCalculator,
+                               IEmployeeGovernmentContributionData employeeGovernmentContributionData)
         {
             _log = log;
             _payrollSettings = payrollSettings.Value;
@@ -80,7 +93,24 @@ namespace PayrollGenerator.Services
             _employeeCashAdvanceRequestData = employeeCashAdvanceRequestData;
             _employeePayslipPDFReport = employeePayslipPDFReport;
             _payrollPDFReport = payrollPDFReport;
+            _sssContributionCalculator = sssContributionCalculator;
+            _wTaxCalculator = wTaxCalculator;
+            _philHealthContributionCalculator = philHealthContributionCalculator;
+            _pagIbigContributionCalculator = pagIbigContributionCalculator;
+            _employeeGovernmentContributionData = employeeGovernmentContributionData;
         }
+
+        private List<SSSContributionTableRow> sssContributionTable;
+
+        public List<SSSContributionTableRow> SSSContributionTable
+        {
+            get { return sssContributionTable; }
+            set { sssContributionTable = value; }
+        }
+
+        public WTaxTable WTaxTable { get; set; }
+        public PhilHealthContributionSettings PhilHealthContributionTable { get; set; }
+        public PagIbigContributionSettings PagIbigContributionTable { get; set; }
 
         public bool SetShiftRange()
         {
@@ -106,6 +136,11 @@ namespace PayrollGenerator.Services
 
                 return true;
             }
+
+            this.SSSContributionTable = _sssContributionCalculator.GetContributionTable(_payrollSettings.GovernmentContributionTablesPath);
+            this.WTaxTable = _wTaxCalculator.GetMonthlyWTaxTable(_payrollSettings.GovernmentContributionTablesPath);
+            this.PhilHealthContributionTable = _philHealthContributionCalculator.GetContributionTable(_payrollSettings.GovernmentContributionTablesPath);
+            this.PagIbigContributionTable = _pagIbigContributionCalculator.GetContributionTable(_payrollSettings.GovernmentContributionTablesPath);
 
             return false;
         }
@@ -195,7 +230,6 @@ namespace PayrollGenerator.Services
                         }
 
                         var currEmpLeaveRec = employeeLeaveHistory == null ? null : employeeLeaveHistory.Where(x => x.EmployeeNumber == empNum).ToList(); //_employeeLeaveData.GetAllByEmployeeNumberAndYear(empNum, this.PayDate.Year);
-                        var currEmpGovtIds = _employeeGovtIdCardData.GetAllByEmployeeNumber(empNum);
 
                         PaydaySalaryComputationPayslip empPaydateComputation = this.GetEmpAttendanceRecSalaryComputation(empDetails, currEmpAttendanceRec, currEmpLeaveRec);
 
@@ -229,7 +263,8 @@ namespace PayrollGenerator.Services
                             decimal empTotalBenefits = 0;
                             decimal empTotalIncome = newPayslipRec.NetBasicSalary;
                             decimal empNetTakeHomePay = 0;
-                            decimal employerGovtContributionTotal = 0;
+                            decimal employeeGovtContributionTotal = 0;
+                            decimal empMonthlySalary = empDetails.Position.MonthlyRate;
 
                             List<EmployeePayslipBenefitModel> employeePayslipBenefitsList = new List<EmployeePayslipBenefitModel>();
                             // Benefits
@@ -260,28 +295,109 @@ namespace PayrollGenerator.Services
                                 empTotalBenefits += _payrollSettings.EmployeeBonusFromSaleSpecialBonus;
                             }
 
-                            empTotalIncome += empTotalBenefits;
 
 
                             List<EmployeePayslipDeductionModel> employeePayslipDeductionsList = new List<EmployeePayslipDeductionModel>();
 
-                            // loop thru govt. agencies and retrieve employee and employer govt. id contribution
-                            foreach (EmployeeGovtIdCardModel empGovtId in currEmpGovtIds)
+
+                            #region SSS contribution
+                            var sssMonthContribution = _sssContributionCalculator
+                                                                    .GetEEandERSharedContribution(this.sssContributionTable, empMonthlySalary);
+
+                            if (sssMonthContribution != null)
                             {
-                                //_employeePayslipDeductionData
-                                employeePayslipDeductionsList.Add(new EmployeePayslipDeductionModel
+                                decimal empContributionKinsenas = (sssMonthContribution.EE / 2);
+                                decimal emprContributionKinsenas = (sssMonthContribution.ER / 2);
+
+                                _employeeGovernmentContributionData.Add(new EmployeeGovernmentContributionModel
                                 {
                                     PayslipId = payslipId,
                                     EmployeeNumber = empNum,
-                                    DeductionTitle = empGovtId.GovernmentAgency.GovtAgency,
-                                    Amount = empGovtId.EmployeeContribution,
-                                    EmployerGovtContributionAmount = empGovtId.EmployerContribution
+                                    Agency = StaticData.GovContributions.SSS.ToString(),
+                                    GovContributionEnumVal = StaticData.GovContributions.SSS,
+                                    EmployeeContribution = empContributionKinsenas,
+                                    EmployerContribution = emprContributionKinsenas
                                 });
 
-                                employerGovtContributionTotal += empGovtId.EmployerContribution;
-                                empTotalDeductions += empGovtId.EmployeeContribution;
+                                employeeGovtContributionTotal += sssMonthContribution.EE;
+                                empTotalDeductions += empContributionKinsenas;
+                            }
+                            #endregion
+
+                            #region PhilHealth contribution
+
+                            var philHealthMonthlyContribution = _philHealthContributionCalculator
+                                                                            .GetKinsenasContribution(this.PhilHealthContributionTable, empMonthlySalary);
+
+                            if (philHealthMonthlyContribution != null)
+                            {
+                                decimal empContributionKinsenas = (philHealthMonthlyContribution.EE / 2);
+                                decimal emprContributionKinsenas = (philHealthMonthlyContribution.ER / 2);
+
+                                _employeeGovernmentContributionData.Add(new EmployeeGovernmentContributionModel
+                                {
+                                    PayslipId = payslipId,
+                                    EmployeeNumber = empNum,
+                                    Agency = StaticData.GovContributions.PhilHealth.ToString(),
+                                    GovContributionEnumVal = StaticData.GovContributions.PhilHealth,
+                                    EmployeeContribution = empContributionKinsenas,
+                                    EmployerContribution = emprContributionKinsenas
+                                });
+
+                                employeeGovtContributionTotal += philHealthMonthlyContribution.EE;
+                                empTotalDeductions += empContributionKinsenas;
                             }
 
+                            #endregion
+
+                            #region PagIbig contribution
+
+                            var pagIbigMonthlyContribution = _pagIbigContributionCalculator
+                                                                        .GetMonthlyContribution(this.PagIbigContributionTable, empMonthlySalary);
+
+                            if (pagIbigMonthlyContribution != null)
+                            {
+                                decimal empContributionKinsenas = (pagIbigMonthlyContribution.EE / 2);
+                                decimal emprContributionKinsenas = (pagIbigMonthlyContribution.ER / 2);
+
+                                _employeeGovernmentContributionData.Add(new EmployeeGovernmentContributionModel
+                                {
+                                    PayslipId = payslipId,
+                                    EmployeeNumber = empNum,
+                                    Agency = StaticData.GovContributions.PagIbig.ToString(),
+                                    GovContributionEnumVal = StaticData.GovContributions.PagIbig,
+                                    EmployeeContribution = empContributionKinsenas,
+                                    EmployerContribution = emprContributionKinsenas
+                                });
+
+                                employeeGovtContributionTotal += pagIbigMonthlyContribution.EE;
+                                empTotalDeductions += empContributionKinsenas;
+                            }
+
+                            #endregion
+
+                            #region Withholding tax
+
+                            decimal monthlyWithholdingTax = _wTaxCalculator
+                                                                        .GetMonthlyWithholdingTax(this.WTaxTable, employeeGovtContributionTotal, empMonthlySalary);
+
+                            if (monthlyWithholdingTax > 0)
+                            {
+                                decimal empContributionKinsenas = (monthlyWithholdingTax / 2);
+
+                                _employeeGovernmentContributionData.Add(new EmployeeGovernmentContributionModel
+                                {
+                                    PayslipId = payslipId,
+                                    EmployeeNumber = empNum,
+                                    Agency = StaticData.GovContributions.PagIbig.ToString(),
+                                    GovContributionEnumVal = StaticData.GovContributions.PagIbig,
+                                    EmployeeContribution = empContributionKinsenas,
+                                    EmployerContribution = 0
+                                });
+                                empTotalDeductions += empContributionKinsenas;
+                            }
+
+                            #endregion
 
                             var currEmployeeCashAdvanceRequests = empCashAdvanceRequests.Where(x => x.EmployeeNumber == empNum).ToList();
                             if (currEmployeeCashAdvanceRequests != null && currEmployeeCashAdvanceRequests.Count > 0)
@@ -314,11 +430,13 @@ namespace PayrollGenerator.Services
                                 empTotalDeductions += deduction.Amount;
                             }
 
+
+                            empTotalIncome += empTotalBenefits;
+
                             empNetTakeHomePay = (empTotalIncome - empTotalDeductions);
 
                             payslipData.TotalIncome = empTotalIncome;
                             payslipData.BenefitsTotal = empTotalBenefits;
-                            payslipData.EmployerGovtContributionTotal = employerGovtContributionTotal;
                             // we already deduction the ff. deductions in total income
                             // upon time-out daily salary computation
                             //empTotalDeductions += payslipData.LateTotalDeduction;

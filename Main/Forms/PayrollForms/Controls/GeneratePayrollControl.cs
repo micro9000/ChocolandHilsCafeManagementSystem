@@ -80,15 +80,6 @@ namespace Main.Forms.PayrollForms.Controls
         }
 
 
-        private List<GovernmentAgencyModel> governmentAgencies;
-
-        public List<GovernmentAgencyModel> GovernmentAgencies
-        {
-            get { return governmentAgencies; }
-            set { governmentAgencies = value; }
-        }
-
-
         private List<EmployeeBenefitModel> benefits;
 
         public List<EmployeeBenefitModel> Benefits
@@ -307,34 +298,30 @@ namespace Main.Forms.PayrollForms.Controls
         public void DisplayGovernmentAgencyList()
         {
             this.DGVGovtAgencies.Rows.Clear();
-            if (this.GovernmentAgencies != null)
+
+            var govContributions = StaticData.GetGovContributions;
+
+            this.DGVGovtAgencies.ColumnCount = 1;
+
+            this.DGVGovtAgencies.Columns[0].Name = "AgencyTitle";
+            this.DGVGovtAgencies.Columns[0].HeaderText = "Agency";
+
+            DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
+            selectChbxToSchedule.HeaderText = "Select";
+            selectChbxToSchedule.Name = "selectGovtAngencyCkbox";
+            selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            this.DGVGovtAgencies.Columns.Add(selectChbxToSchedule);
+
+            foreach (var item in govContributions)
             {
-                this.DGVGovtAgencies.ColumnCount = 2;
+                DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(DGVGovtAgencies);
 
-                this.DGVGovtAgencies.Columns[0].Name = "GovernmentAgencyId";
-                this.DGVGovtAgencies.Columns[0].Visible = false;
+                row.Cells[0].Value = item.Value;
 
-                this.DGVGovtAgencies.Columns[1].Name = "AgencyTitle";
-                this.DGVGovtAgencies.Columns[1].HeaderText = "Agency";
+                row.Tag = item.Key; // enum value
 
-                DataGridViewCheckBoxColumn selectChbxToSchedule = new DataGridViewCheckBoxColumn();
-                selectChbxToSchedule.HeaderText = "Select";
-                selectChbxToSchedule.Name = "selectGovtAngencyCkbox";
-                selectChbxToSchedule.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                this.DGVGovtAgencies.Columns.Add(selectChbxToSchedule);
-
-                foreach (var agency in this.GovernmentAgencies)
-                {
-                    DataGridViewRow row = new DataGridViewRow();
-                    row.CreateCells(this.DGVGovtAgencies);
-
-                    row.Cells[0].Value = agency.Id;
-                    row.Cells[1].Value = agency.GovtAgency;
-
-                    row.Tag = agency;
-
-                    this.DGVGovtAgencies.Rows.Add(row);
-                }
+                DGVGovtAgencies.Rows.Add(row);
             }
         }
 
@@ -581,27 +568,21 @@ namespace Main.Forms.PayrollForms.Controls
         }
 
 
-        public List<GovernmentAgencyModel> GetSelectedGovtAgenciesToGeneratePayslip()
+        public List<StaticData.GovContributions> GetSelectedGovtAgenciesToGeneratePayslip()
         {
-            List<GovernmentAgencyModel> selectedGovtAgencies = new List<GovernmentAgencyModel>();
+            List<StaticData.GovContributions> selectedGovtContributions = new List<StaticData.GovContributions>();
 
             foreach (DataGridViewRow row in this.DGVGovtAgencies.Rows)
             {
                 bool isSelected = Convert.ToBoolean(row.Cells["selectGovtAngencyCkbox"].Value);
                 if (isSelected)
                 {
-                    var selectedGovt = (GovernmentAgencyModel)row.Tag;
-                    var govtAgencyInList = this.GovernmentAgencies.Where(x => x.Id == selectedGovt.Id).FirstOrDefault();
-
-                    if (govtAgencyInList != null)
-                    {
-                        var govtAgencyTemp = JsonSerializer.Deserialize<GovernmentAgencyModel>(JsonSerializer.Serialize(govtAgencyInList));
-                        selectedGovtAgencies.Add(govtAgencyTemp);
-                    }
+                    var selectedGovt = (StaticData.GovContributions)row.Tag;
+                    selectedGovtContributions.Add(selectedGovt);
                 }
             }
 
-            return selectedGovtAgencies;
+            return selectedGovtContributions;
         }
 
 
@@ -847,7 +828,7 @@ namespace Main.Forms.PayrollForms.Controls
                             PaydaySalaryComputation = this.GetEmployeeAttendanceRecordWithSalaryComputation(selectedEmp),
                             AttendanceHistory = this.AttendanceHistory != null ? this.AttendanceHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
                             EmployeeLeaves = this.EmployeeLeaveHistory != null ? this.EmployeeLeaveHistory.Where(x => x.EmployeeNumber == selectedEmp.EmployeeNumber).ToList() : null,
-                            SelectedGovtAgencies = SelectedGovtAgenciesForPayrollGeneration,
+                            SelectedGovContributions = SelectedGovtAgenciesForPayrollGeneration,
                             SelectedBenefits = SelectedBenefitsForPayrollGeneration,
                             SelectedEmpCashAdvanceRequests = SelectedEmpCashAdvanceRequestsForPayrollGeneration,
                             SelectedDeductions = SelectedDeductionsForPayrollGeneration,

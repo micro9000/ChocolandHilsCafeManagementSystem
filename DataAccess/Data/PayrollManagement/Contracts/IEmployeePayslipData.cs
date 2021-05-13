@@ -10,6 +10,7 @@ namespace DataAccess.Data.PayrollManagement.Contracts
 {
     public interface IEmployeePayslipData : IDataManagerCRUD<EmployeePayslipModel>
     {
+        List<EmployeePayslipModel> GetAllEmpPayslipByMonth(int monthNum);
         List<EmployeePayslipModel> GetAllEmpPayslipByPaydate(DateTime paydate);
         EmployeePayslipModel GetEmployeePayslipRecordByPaydate(string employeeNumber, DateTime paydate);
         List<DateTime> GetEmployeePayslipPaydatesList(string employeeNumber);

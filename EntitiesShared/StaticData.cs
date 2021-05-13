@@ -104,5 +104,44 @@ namespace EntitiesShared
             Disapproved,
             Cancelled
         }
+
+        public enum GovContributions
+        {
+            SSS,
+            PhilHealth,
+            PagIbig,
+            WithHoldingTax
+        }
+
+        public static Dictionary<GovContributions, string> GetGovContributions
+        {
+            get
+            {
+                var uoms = new Dictionary<GovContributions, string>();
+
+                uoms.Add(GovContributions.SSS, "SSS");
+                uoms.Add(GovContributions.PhilHealth, "PhilHealth");
+                uoms.Add(GovContributions.PagIbig, "PagIbig");
+                uoms.Add(GovContributions.WithHoldingTax, "Withholding tax");
+
+                return uoms;
+            }
+        }
+
+        public enum Months
+        {
+            Jan = 1,
+            Feb = 2,
+            Mar = 3,
+            Apr = 4,
+            May = 5,
+            Jun = 6,
+            Jul = 7,
+            Aug = 8,
+            Sep = 9,
+            Oct = 10,
+            Nov = 11,
+            Dec = 12
+        }
     }
 }

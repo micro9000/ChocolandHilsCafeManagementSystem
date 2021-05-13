@@ -1,4 +1,4 @@
-﻿using Main.GovContributionCalculator.Models;
+﻿using GovContributionCalculators.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,22 +7,15 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Main.GovContributionCalculator
+namespace GovContributionCalculators.GovContributionCalculator
 {
     public class PhilHealthContributionCalculator
     {
-        public PhilHealthContributionSettings GetContributionTable()
+        public PhilHealthContributionSettings GetContributionTable(string govContributionTablesPath)
         {
-            string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string fullTablePath = $"{govContributionTablesPath}PhilHealthContributionTable.json";
 
-            string govContributionTableDirPath = "\\GovContributionCalculator\\GovContributionTables\\";
-
-            var directoryInfo = Directory.CreateDirectory($"{appPath}{govContributionTableDirPath}");
-            string latestTableFileName = $"PhilHealthContributionTable.json";
-
-            string fullTablePath = $"{appPath}{govContributionTableDirPath}{latestTableFileName}";
-
-            if (directoryInfo.Exists && File.Exists(fullTablePath) == false)
+            if (File.Exists(fullTablePath) == false)
             {
                 return null;
             }

@@ -1,4 +1,5 @@
-﻿using EntitiesShared.PayrollManagement;
+﻿using EntitiesShared;
+using EntitiesShared.PayrollManagement;
 using Shared.CustomModels;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,15 @@ namespace Main.Forms.PayrollForms.Controls
         private void PayrollReportControl_Load(object sender, EventArgs e)
         {
             DisplayPayslipPaydateList();
+
+            ComboboxItem item;
+            foreach (int i in Enum.GetValues(typeof(StaticData.Months)))
+            {
+                item = new ComboboxItem();
+                item.Value = i;
+                item.Text = Enum.GetName(typeof(StaticData.Months), i);
+                this.CboxMonths.Items.Add(item);
+            }
         }
 
         public void DisplayPayslipPaydateList()
@@ -81,8 +91,16 @@ namespace Main.Forms.PayrollForms.Controls
             if (this.EmployeePayslipsByPaydate != null)
             {
                 decimal totalPayment = 0;
-                foreach(var payslip in this.EmployeePayslipsByPaydate)
+                decimal totalGovContributionForCurrentEmp = 0;
+                decimal empTotalGovContribution = 0;
+                decimal emprTotalGovContribution = 0;
+
+                foreach (var payslip in this.EmployeePayslipsByPaydate)
                 {
+                    totalGovContributionForCurrentEmp = payslip.EmployeeGovContributions.Sum(x => x.TotalContribution);
+                    empTotalGovContribution = payslip.EmployeeGovContributions.Sum(x => x.EmployeeContribution);
+                    emprTotalGovContribution = payslip.EmployeeGovContributions.Sum(x => x.EmployerContribution);
+
                     string[] item = new string[] {
                         payslip.EmployeeNumber,
                         payslip.Employee.FullName,
@@ -97,11 +115,13 @@ namespace Main.Forms.PayrollForms.Controls
                         payslip.DeductionTotal.ToString(),
                         payslip.NetTakeHomePay.ToString(),
                         payslip.NumOfDays,
-                        payslip.EmployerGovtContributionTotal.ToString()
+                        empTotalGovContribution.ToString(),
+                        emprTotalGovContribution.ToString(),
+                        totalGovContributionForCurrentEmp.ToString()
                     };
 
                     totalPayment += payslip.NetTakeHomePay;
-                    totalPayment += payslip.EmployerGovtContributionTotal;
+                    //totalPayment += payslip.EmployerGovtContributionTotal;
 
                     var listViewItem = new ListViewItem(item);
 
@@ -120,6 +140,25 @@ namespace Main.Forms.PayrollForms.Controls
         private void BtnGenerateEmployeePayslipsReportPDF_Click(object sender, EventArgs e)
         {
             OnGeneratePDFEmployeePayslipsReport(EventArgs.Empty);
+        }
+
+        public event EventHandler GeneratePDFEmployeeGovtContribReport;
+        protected virtual void OnGeneratePDFEmployeeGovtContribReport(EventArgs e)
+        {
+            GeneratePDFEmployeeGovtContribReport?.Invoke(this, e);
+        }
+
+        public int SelectedMonthForEmpGovtContribReport { get; set; }
+
+        private void BtnGenerateEmpGovContributionReport_Click(object sender, EventArgs e)
+        {
+            var selectedMonth = this.CboxMonths.SelectedItem as ComboboxItem;
+            if (selectedMonth != null)
+            {
+                SelectedMonthForEmpGovtContribReport = int.Parse(selectedMonth.Value.ToString());
+                OnGeneratePDFEmployeeGovtContribReport(EventArgs.Empty);
+            }
+
         }
     }
 }

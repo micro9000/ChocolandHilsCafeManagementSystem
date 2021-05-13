@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Main.GovContributionCalculator.Models
+namespace GovContributionCalculators.Models
 {
     public class GovernmentContribution
     {
         public PhilHealthContributionSettings PhilHealth { get; set; }
-
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using Main.GovContributionCalculator.Models;
+﻿using GovContributionCalculators.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,22 +7,15 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Main.GovContributionCalculator
+namespace GovContributionCalculators.GovContributionCalculator
 {
     public class WTaxCalculator
     {
-        public WTaxTable GetMonthlyWTaxTable()
+        public WTaxTable GetMonthlyWTaxTable(string govContributionTablesPath)
         {
-            string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string fullTablePath = $"{govContributionTablesPath}WithholdingTaxTable.json";
 
-            string govContributionTablesDirPath = "\\GovContributionCalculator\\GovContributionTables\\";
-
-            var directoryInfo = Directory.CreateDirectory($"{appPath}{govContributionTablesDirPath}");
-            string latestTableFileName = $"WithholdingTaxTable.json";
-
-            string fullTablePath = $"{appPath}{govContributionTablesDirPath}{latestTableFileName}";
-
-            if (directoryInfo.Exists && File.Exists(fullTablePath) == false)
+            if (File.Exists(fullTablePath) == false)
             {
                 return null;
             }
@@ -40,14 +33,14 @@ namespace Main.GovContributionCalculator
 
             var wTaxItem = wTaxTable.MonthlyWTax
                                 .Where(x => 
-                                    x.CompensationMinLevel >= monthlySalary && 
-                                    x.CompensationMaxLevel <= monthlySalary)
+                                    x.CompensationMinLevel <= monthlySalary && 
+                                    x.CompensationMaxLevel >= monthlySalary)
                                 .FirstOrDefault();
 
             if (wTaxItem == null)
                 return 0;
 
-            if (wTaxItem.Percentage == 0 || wTaxItem.FixedTax == 0)
+            if (wTaxItem.Percentage == 0)
                 return 0;
 
             decimal taxableIncome = monthlySalary - monthlyGovContributionTotal;

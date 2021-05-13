@@ -24,27 +24,13 @@
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\EntitiesShared\EntitiesShared.csproj" />
+    <ProjectReference Include="..\GovContributionCalculators\GovContributionCalculators.csproj" />
     <ProjectReference Include="..\PDFReportGenerators\PDFReportGenerators.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="GovContributionCalculator\GovContributionTables\PagIbigContributionTable.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="GovContributionCalculator\GovContributionTables\PhilHealthContributionTable.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="GovContributionCalculator\GovContributionTables\SSS\2021.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="GovContributionCalculator\GovContributionTables\SSS\Default.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="GovContributionCalculator\GovContributionTables\WithholdingTaxTable.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\attendance-white-30.png">

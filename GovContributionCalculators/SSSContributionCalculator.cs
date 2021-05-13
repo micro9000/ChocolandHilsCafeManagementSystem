@@ -1,4 +1,4 @@
-﻿using Main.GovContributionCalculator.Models;
+﻿using GovContributionCalculators.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,25 +7,19 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Main.GovContributionCalculator
+namespace GovContributionCalculators.GovContributionCalculator
 {
     public class SSSContributionCalculator
     {
-        public List<SSSContributionTableRow> GetContributionTable()
+        public List<SSSContributionTableRow> GetContributionTable(string govContributionTablesPath)
         {
-            string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-
-            string sssContributionTablesDirPath = "\\GovContributionCalculator\\GovContributionTables\\SSS\\";
-
-            var directoryInfo = Directory.CreateDirectory($"{appPath}{sssContributionTablesDirPath}");
             string latestTableFileName = $"{DateTime.Now.Year}.json";
 
-            string fullTablePath = $"{appPath}{sssContributionTablesDirPath}{latestTableFileName}";
+            string fullTablePath = $"{govContributionTablesPath}SSS\\{latestTableFileName}";
 
-            if (directoryInfo.Exists && File.Exists(fullTablePath) == false)
+            if (File.Exists(fullTablePath) == false)
             {
-                latestTableFileName = $"Default.json";
-                fullTablePath = $"{appPath}{latestTableFileName}";
+                fullTablePath = $"{govContributionTablesPath}Default.json";
             }
 
             var jsonString = File.ReadAllText(fullTablePath);

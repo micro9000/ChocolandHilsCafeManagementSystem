@@ -132,10 +132,19 @@ namespace EntitiesShared.PayrollManagement
             set { deductions = value; }
         }
 
+        private List<EmployeeGovernmentContributionModel> employeeGovContributions;
+        [Write(false)]
+        [Computed]
+        public List<EmployeeGovernmentContributionModel> EmployeeGovContributions
+        {
+            get { return employeeGovContributions; }
+            set { employeeGovContributions = value; }
+        }
+
+
         public decimal NetTakeHomePay { get; set; }
 
         public bool IsCancel { get; set; }
 
-        public decimal EmployerGovtContributionTotal { get; set; }
     }
 }

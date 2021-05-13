@@ -46,30 +46,5 @@ namespace EntitiesShared.EmployeeManagement
             set { employeeIdNumber = value; }
         }
 
-        private decimal employeeContribution;
-
-        public decimal EmployeeContribution
-        {
-            get { return employeeContribution; }
-            set { employeeContribution = value; }
-        }
-
-        private decimal employerContribution;
-
-        public decimal EmployerContribution
-        {
-            get { return employerContribution; }
-            set { employerContribution = value; }
-        }
-
-        [Write(false)]
-        [Computed]
-        public decimal TotalContribution {
-            get
-            {
-                return this.EmployeeContribution + this.EmployerContribution;
-            }
-        }
-
     }
 }

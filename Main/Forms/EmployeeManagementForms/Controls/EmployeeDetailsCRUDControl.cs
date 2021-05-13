@@ -337,8 +337,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnActionUpdateEmployeeDetails.Enabled = true;
             this.BtnCancelUpdateEmployee.Visible = true;
             this.ListViewEmpGovtIdCards.Items.Clear();
-            this.NumUpDwnEmployeeContribution.Value = 0;
-            this.NumUpDwnEmployerContribution.Value = 0;
                 
             this.BtnUndoToDelete.Visible = false;
             this.BtnDeleteEmpIdCard.Visible = false;
@@ -456,8 +454,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         var row = new string[] {
                             govtId.EmployeeGovtIdCard.GovernmentAgency != null ? govtId.EmployeeGovtIdCard.GovernmentAgency.GovtAgency : "",
                             govtId.EmployeeGovtIdCard.EmployeeIdNumber,
-                            govtId.EmployeeGovtIdCard.EmployeeContribution.ToString(),
-                            govtId.EmployeeGovtIdCard.EmployerContribution.ToString(),
                             (govtId.IsExisting ? "EXISTING" : "NEW"),
                             govtId.EmployeeGovtIdCard.IsDeleted ? "To Delete" : ""
                         };
@@ -666,8 +662,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                             // I will add the employee number in EmployeeController.cs
                             EmployeeIdNumber = empGovtIdNumber,
                             GovtAgencyId = selectedGovtAgencyId,
-                            EmployeeContribution = NumUpDwnEmployeeContribution.Value,
-                            EmployerContribution = NumUpDwnEmployerContribution.Value,
                             GovernmentAgency = new GovernmentAgencyModel
                             {
                                 // add temporary object to get the name or title of the govt. agency
@@ -689,8 +683,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                             // the employee govt. id number
                             addedNewGovtId.IsNeedToUpdate = true;
                             addedNewGovtId.EmployeeGovtIdCard.EmployeeIdNumber = empGovtIdNumber;
-                            addedNewGovtId.EmployeeGovtIdCard.EmployeeContribution = NumUpDwnEmployeeContribution.Value;
-                            addedNewGovtId.EmployeeGovtIdCard.EmployerContribution = NumUpDwnEmployerContribution.Value;
                         }
                         else
                         {
@@ -763,10 +755,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         }
 
                         TboxEmpIdNumber.Text = addedNewGovtId.EmployeeGovtIdCard.EmployeeIdNumber;
-                        NumUpDwnEmployeeContribution.Value = addedNewGovtId.EmployeeGovtIdCard.EmployeeContribution;
-                        NumUpDwnEmployerContribution.Value = addedNewGovtId.EmployeeGovtIdCard.EmployerContribution;
                     }
-
 
                     if (addedNewGovtId.EmployeeGovtIdCard.IsDeleted == true)
                     {

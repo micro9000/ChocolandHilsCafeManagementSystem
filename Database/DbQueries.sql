@@ -207,44 +207,25 @@ CREATE TABLE IF NOT EXISTS GovernmentAgencies(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+-- execute these queries, we don't need these columns
 ALTER TABLE GovernmentAgencies
-ADD COLUMN erContribInPercent DECIMAL(9,2);
+DROP COLUMN erContribInPercent;
 ALTER TABLE GovernmentAgencies
-ADD COLUMN eeContribInPercent DECIMAL(9,2);
+DROP COLUMN eeContribInPercent;
 
 
 
 SELECT * FROM GovernmentAgencies;
 
 
-CREATE TABLE IF NOT EXISTS SSSContributionTable(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    salaryStart DECIMAL(9,2),
-    salaryEnd DECIMAL(9,2),
-    monthlySalaryCredit DECIMAL(9,2),
-    mandatoryProvidentFund DECIMAL(9,2),
-    totalSalaryRate DECIMAL(9,2),
-    regularSocialSecurityEmployer DECIMAL(9,2),
-    regularSocialSecurityEmployee DECIMAL(9,2),
-    regularSocialSecurityTotal DECIMAL(9,2),
-    EmpCompensation DECIMAL(9,2),
-    mandatoryProvidentFundEmployer DECIMAL(9,2),
-    mandatoryProvidentFundEmployee DECIMAL(9,2),
-    mandatoryProvidentFundTotal DECIMAL(9,2),
-	totalContributionEmployer DECIMAL(9,2),
-    totalContributionEmployee DECIMAL(9,2),
-    totalContribution DECIMAL(9,2)
-)ENGINE=INNODB;
-
-SELECT * FROM SSSContributionTable;
-
 CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
     govtAgencyId BIGINT NOT NULL,
     employeeIdNumber VARCHAR(50) UNIQUE,
-    employeeContribution DECIMAL(5,2),
-    employerContribution DECIMAL(5,2),
+    -- employeeContribution DECIMAL(5,2),
+    -- employerContribution DECIMAL(5,2),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
@@ -253,6 +234,13 @@ CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
 )ENGINE=INNODB;
 
 SELECT * FROM EmployeeGovtIdCards;
+
+-- execute these queries, we don't need these columns
+ALTER TABLE EmployeeGovtIdCards
+DROP COLUMN employeeContribution;
+ALTER TABLE EmployeeGovtIdCards
+DROP COLUMN employerContribution;
+
 
 -- DROP THIS TABLE, WE DON'T NEED THIS ANYMORE <----------------------------------------------------------------
 drop table EmployeeSalaryRate;
@@ -464,8 +452,6 @@ CREATE TABLE IF NOT EXISTS EmployeePayslips(
 )ENGINE=INNODB;
 ALTER TABLE EmployeePayslips
 ADD COLUMN isCancel BOOLEAN DEFAULT False;
-ALTER TABLE EmployeePayslips
-ADD COLUMN employerGovtContributionTotal DECIMAL(9,2) DEFAULT 0;
 
 -- May 6, update:
 -- execute below queries to drop columns
@@ -473,7 +459,11 @@ ALTER TABLE EmployeePayslips
 DROP COLUMN salaryRate;
 ALTER TABLE EmployeePayslips
 DROP COLUMN halfMonthRate;
+-- May 13 update:
+ALTER TABLE EmployeePayslips
+DROP COLUMN employerGovtContributionTotal;
 
+SELECT * FROM EmployeePayslips WHERE isDeleted=false AND isCancel=false AND MONTH(paydate) = 5;
 
 SELECT * FROM EmployeePayslips;
 SELECT * FROM EmployeeAttendance;
@@ -524,6 +514,24 @@ ALTER TABLE EmployeePayslipDeductions
 ADD COLUMN employerGovtContributionAmount DECIMAL(9,2) DEFAULT 0;
 
 SELECT * FROM EmployeePayslipDeductions;
+
+CREATE TABLE IF NOT EXISTS EmployeeGovernmentContributions(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    payslipId BIGINT,
+    employeeNumber CHAR(8),
+	agency VARCHAR(255),
+    govContributionEnumVal INT,
+    employeeContribution DECIMAL(9,2),
+    employerContribution DECIMAL(9,2),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False,
+    FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
+)ENGINE=INNODB;
+
+SELECT * FROM EmployeeGovernmentContributions;
+
 -- --------------------------------------------------------------------------------------
 -- User related tables:
 -- --------------------------------------------------------------------------------------

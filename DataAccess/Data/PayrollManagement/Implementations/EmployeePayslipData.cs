@@ -17,17 +17,20 @@ namespace DataAccess.Data.PayrollManagement.Implementations
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeePayslipBenefitData _employeePayslipBenefitData;
         private readonly IEmployeePayslipDeductionData _employeePayslipDeductionData;
+        private readonly IEmployeeGovernmentContributionData _employeeGovernmentContributionData;
 
         public EmployeePayslipData(IDbConnectionFactory dbConnFactory,
                                     IEmployeeData employeeData,
                                     IEmployeePayslipBenefitData employeePayslipBenefitData,
-                                    IEmployeePayslipDeductionData employeePayslipDeductionData) :
+                                    IEmployeePayslipDeductionData employeePayslipDeductionData,
+                                    IEmployeeGovernmentContributionData employeeGovernmentContributionData) :
             base(DataManagerCRUDEnums.DatabaseAdapter.mysqlconnection, dbConnFactory)
         {
             _dbConnFactory = dbConnFactory;
             _employeeData = employeeData;
             _employeePayslipBenefitData = employeePayslipBenefitData;
             _employeePayslipDeductionData = employeePayslipDeductionData;
+            _employeeGovernmentContributionData = employeeGovernmentContributionData;
         }
 
         public List<EmployeePayslipModel> GetAllEmpPayslipByPaydate (DateTime paydate)
@@ -46,11 +49,37 @@ namespace DataAccess.Data.PayrollManagement.Implementations
                     x.Employee = _employeeData.GetByEmployeeNumber(x.EmployeeNumber);
                     x.Benefits = _employeePayslipBenefitData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
                     x.Deductions = _employeePayslipDeductionData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
+                    x.EmployeeGovContributions = _employeeGovernmentContributionData.GetByPayslip(x.Id, x.EmployeeNumber);
                 });
             }
 
             return payslipRecs;
         }
+
+
+        public List<EmployeePayslipModel> GetAllEmpPayslipByMonth(int monthNum)
+        {
+            string query = @"SELECT * FROM EmployeePayslips WHERE isDeleted=false AND isCancel=false AND MONTH(payDate)=@Month";
+
+            var payslipRecs = this.GetAll(query, new
+            {
+                Month = monthNum
+            });
+
+            if (payslipRecs != null)
+            {
+                payslipRecs.ForEach(x =>
+                {
+                    x.Employee = _employeeData.GetByEmployeeNumber(x.EmployeeNumber);
+                    x.Benefits = _employeePayslipBenefitData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
+                    x.Deductions = _employeePayslipDeductionData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
+                    x.EmployeeGovContributions = _employeeGovernmentContributionData.GetByPayslip(x.Id, x.EmployeeNumber);
+                });
+            }
+
+            return payslipRecs;
+        }
+
 
         public EmployeePayslipModel GetEmployeePayslipRecordByPaydate(string employeeNumber, DateTime paydate)
         {
@@ -69,6 +98,7 @@ namespace DataAccess.Data.PayrollManagement.Implementations
                     x.Employee = _employeeData.GetByEmployeeNumber(x.EmployeeNumber);
                     x.Benefits = _employeePayslipBenefitData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
                     x.Deductions = _employeePayslipDeductionData.GetAllByPayslipIdAndEmployeeNumber(x.Id, x.EmployeeNumber);
+                    x.EmployeeGovContributions = _employeeGovernmentContributionData.GetByPayslip(x.Id, x.EmployeeNumber);
                 });
             }
 

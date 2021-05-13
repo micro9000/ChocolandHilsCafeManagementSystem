@@ -54,7 +54,7 @@ using Main.Forms.RequestsForm;
 using Main.Controllers.RequestControllers.Validators;
 using Main.Controllers.RequestControllers.ControllerInterface;
 using Main.Controllers.RequestControllers;
-using Main.GovContributionCalculator;
+using GovContributionCalculators.GovContributionCalculator;
 
 namespace Main
 {
@@ -157,6 +157,7 @@ namespace Main
             services.AddTransient<IEmployeePayslipBenefitData, EmployeePayslipBenefitData>();
             services.AddTransient<IEmployeePayslipData, EmployeePayslipData>();
             services.AddTransient<IEmployeePayslipDeductionData, EmployeePayslipDeductionData>();
+            services.AddTransient<IEmployeeGovernmentContributionData, EmployeeGovernmentContributionData>();
             services.AddTransient<IEmployeeShiftData, EmployeeShiftData>();
             services.AddTransient<IEmployeeShiftDayData, EmployeeShiftDayData>();
             services.AddTransient<IEmployeeGovtIdCardData, EmployeeGovtIdCardData>();
@@ -254,6 +255,7 @@ namespace Main
 
             services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
             services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();
+            services.AddTransient<IEmployeeGovContributionsReport, EmployeeGovContributionsReport>();
             services.AddTransient<IAttendancePDFReport, AttendancePDFReport>();
             services.AddTransient<IIngredientsInventoryPDFReport, IngredientsInventoryPDFReport>();
 

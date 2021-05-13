@@ -63,10 +63,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label2 = new System.Windows.Forms.Label();
             this.TbxFirstName = new System.Windows.Forms.TextBox();
             this.EmployeeGovtIds = new System.Windows.Forms.TabPage();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.NumUpDwnEmployerContribution = new System.Windows.Forms.NumericUpDown();
-            this.NumUpDwnEmployeeContribution = new System.Windows.Forms.NumericUpDown();
             this.BtnUndoToDelete = new System.Windows.Forms.Button();
             this.BtnDeleteEmpIdCard = new System.Windows.Forms.Button();
             this.BtnAddNewEmpGovtId = new System.Windows.Forms.Button();
@@ -77,8 +73,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.ListViewEmpGovtIdCards = new System.Windows.Forms.ListView();
             this.GovtAgency = new System.Windows.Forms.ColumnHeader();
             this.CardNumber = new System.Windows.Forms.ColumnHeader();
-            this.EmployeeContribution = new System.Windows.Forms.ColumnHeader();
-            this.EmployerContribution = new System.Windows.Forms.ColumnHeader();
             this.CardIsExisting = new System.Windows.Forms.ColumnHeader();
             this.Remarks = new System.Windows.Forms.ColumnHeader();
             this.BtnCancelUpdateEmployee = new System.Windows.Forms.Button();
@@ -159,8 +153,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxEmpImage)).BeginInit();
             this.EmployeeGovtIds.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnEmployerContribution)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnEmployeeContribution)).BeginInit();
             this.TabControlSaveEmployeeDetails.SuspendLayout();
             this.SaveEmployeeAction.SuspendLayout();
             this.GBoxSearchEmployee.SuspendLayout();
@@ -546,10 +538,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // EmployeeGovtIds
             // 
-            this.EmployeeGovtIds.Controls.Add(this.label19);
-            this.EmployeeGovtIds.Controls.Add(this.label18);
-            this.EmployeeGovtIds.Controls.Add(this.NumUpDwnEmployerContribution);
-            this.EmployeeGovtIds.Controls.Add(this.NumUpDwnEmployeeContribution);
             this.EmployeeGovtIds.Controls.Add(this.BtnUndoToDelete);
             this.EmployeeGovtIds.Controls.Add(this.BtnDeleteEmpIdCard);
             this.EmployeeGovtIds.Controls.Add(this.BtnAddNewEmpGovtId);
@@ -566,52 +554,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeGovtIds.Text = "Government Ids";
             this.EmployeeGovtIds.UseVisualStyleBackColor = true;
             // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label19.ForeColor = System.Drawing.Color.Black;
-            this.label19.Location = new System.Drawing.Point(423, 111);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(159, 20);
-            this.label19.TabIndex = 50;
-            this.label19.Text = "Employer Contribution";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label18.ForeColor = System.Drawing.Color.Black;
-            this.label18.Location = new System.Drawing.Point(423, 76);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(162, 20);
-            this.label18.TabIndex = 49;
-            this.label18.Text = "Employee Contribution";
-            // 
-            // NumUpDwnEmployerContribution
-            // 
-            this.NumUpDwnEmployerContribution.Location = new System.Drawing.Point(600, 111);
-            this.NumUpDwnEmployerContribution.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.NumUpDwnEmployerContribution.Name = "NumUpDwnEmployerContribution";
-            this.NumUpDwnEmployerContribution.Size = new System.Drawing.Size(213, 29);
-            this.NumUpDwnEmployerContribution.TabIndex = 48;
-            // 
-            // NumUpDwnEmployeeContribution
-            // 
-            this.NumUpDwnEmployeeContribution.Location = new System.Drawing.Point(600, 73);
-            this.NumUpDwnEmployeeContribution.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.NumUpDwnEmployeeContribution.Name = "NumUpDwnEmployeeContribution";
-            this.NumUpDwnEmployeeContribution.Size = new System.Drawing.Size(213, 29);
-            this.NumUpDwnEmployeeContribution.TabIndex = 47;
-            // 
             // BtnUndoToDelete
             // 
             this.BtnUndoToDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -619,7 +561,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnUndoToDelete.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnUndoToDelete.ForeColor = System.Drawing.Color.White;
             this.BtnUndoToDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUndoToDelete.Location = new System.Drawing.Point(791, 184);
+            this.BtnUndoToDelete.Location = new System.Drawing.Point(791, 141);
             this.BtnUndoToDelete.Name = "BtnUndoToDelete";
             this.BtnUndoToDelete.Size = new System.Drawing.Size(87, 30);
             this.BtnUndoToDelete.TabIndex = 46;
@@ -635,7 +577,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnDeleteEmpIdCard.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnDeleteEmpIdCard.ForeColor = System.Drawing.Color.White;
             this.BtnDeleteEmpIdCard.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnDeleteEmpIdCard.Location = new System.Drawing.Point(884, 184);
+            this.BtnDeleteEmpIdCard.Location = new System.Drawing.Point(884, 141);
             this.BtnDeleteEmpIdCard.Name = "BtnDeleteEmpIdCard";
             this.BtnDeleteEmpIdCard.Size = new System.Drawing.Size(87, 30);
             this.BtnDeleteEmpIdCard.TabIndex = 45;
@@ -651,7 +593,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnAddNewEmpGovtId.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnAddNewEmpGovtId.ForeColor = System.Drawing.Color.White;
             this.BtnAddNewEmpGovtId.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnAddNewEmpGovtId.Location = new System.Drawing.Point(838, 111);
+            this.BtnAddNewEmpGovtId.Location = new System.Drawing.Point(726, 73);
             this.BtnAddNewEmpGovtId.Name = "BtnAddNewEmpGovtId";
             this.BtnAddNewEmpGovtId.Size = new System.Drawing.Size(87, 30);
             this.BtnAddNewEmpGovtId.TabIndex = 44;
@@ -683,7 +625,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(117, 111);
+            this.label9.Location = new System.Drawing.Point(436, 76);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(37, 20);
             this.label9.TabIndex = 22;
@@ -693,7 +635,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.TboxEmpIdNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TboxEmpIdNumber.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.TboxEmpIdNumber.Location = new System.Drawing.Point(172, 108);
+            this.TboxEmpIdNumber.Location = new System.Drawing.Point(491, 73);
             this.TboxEmpIdNumber.Name = "TboxEmpIdNumber";
             this.TboxEmpIdNumber.Size = new System.Drawing.Size(213, 29);
             this.TboxEmpIdNumber.TabIndex = 23;
@@ -704,17 +646,15 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.ListViewEmpGovtIdCards.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.GovtAgency,
             this.CardNumber,
-            this.EmployeeContribution,
-            this.EmployerContribution,
             this.CardIsExisting,
             this.Remarks});
             this.ListViewEmpGovtIdCards.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.ListViewEmpGovtIdCards.FullRowSelect = true;
             this.ListViewEmpGovtIdCards.GridLines = true;
             this.ListViewEmpGovtIdCards.HideSelection = false;
-            this.ListViewEmpGovtIdCards.Location = new System.Drawing.Point(96, 220);
+            this.ListViewEmpGovtIdCards.Location = new System.Drawing.Point(96, 177);
             this.ListViewEmpGovtIdCards.Name = "ListViewEmpGovtIdCards";
-            this.ListViewEmpGovtIdCards.Size = new System.Drawing.Size(875, 181);
+            this.ListViewEmpGovtIdCards.Size = new System.Drawing.Size(875, 224);
             this.ListViewEmpGovtIdCards.TabIndex = 1;
             this.ListViewEmpGovtIdCards.UseCompatibleStateImageBehavior = false;
             this.ListViewEmpGovtIdCards.View = System.Windows.Forms.View.Details;
@@ -731,16 +671,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CardNumber.Name = "CardNumber";
             this.CardNumber.Text = "Card #";
             this.CardNumber.Width = 150;
-            // 
-            // EmployeeContribution
-            // 
-            this.EmployeeContribution.Text = "Employee Contribution";
-            this.EmployeeContribution.Width = 150;
-            // 
-            // EmployerContribution
-            // 
-            this.EmployerContribution.Text = "Employer Contribution";
-            this.EmployerContribution.Width = 150;
             // 
             // CardIsExisting
             // 
@@ -1580,8 +1510,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             ((System.ComponentModel.ISupportInitialize)(this.PicBoxEmpImage)).EndInit();
             this.EmployeeGovtIds.ResumeLayout(false);
             this.EmployeeGovtIds.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnEmployerContribution)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumUpDwnEmployeeContribution)).EndInit();
             this.TabControlSaveEmployeeDetails.ResumeLayout(false);
             this.SaveEmployeeAction.ResumeLayout(false);
             this.GBoxSearchEmployee.ResumeLayout(false);
@@ -1658,12 +1586,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Label LblActionForEmployeeDetails;
         private System.Windows.Forms.ComboBox CBoxShiftList;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.NumericUpDown NumUpDwnEmployerContribution;
-        private System.Windows.Forms.NumericUpDown NumUpDwnEmployeeContribution;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.ColumnHeader EmployeeContribution;
-        private System.Windows.Forms.ColumnHeader EmployerContribution;
         private System.Windows.Forms.Label LblShiftWorkingDays;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button BtnBrowseEmployeeImage;

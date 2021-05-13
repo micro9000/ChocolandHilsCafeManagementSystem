@@ -17,10 +17,5 @@ namespace EntitiesShared.OtherDataManagement
             get { return govtAgency; }
             set { govtAgency = value; }
         }
-
-        // employer
-        public decimal ERContribInPercent { get; set; }
-        // employee
-        public decimal EEContribInPercent { get; set; }
     }
 }

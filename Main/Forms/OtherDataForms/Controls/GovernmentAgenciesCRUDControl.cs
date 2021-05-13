@@ -113,8 +113,6 @@ namespace Main.Forms.OtherDataForms.Controls
         public void ResetForm()
         {
             this.TbxAgency.Text = "";
-            this.NumUpDwnEmployerContributionPercent.Value = 0;
-            this.NumUpDwnEmployeeContributionPercent.Value = 0;
             this.SelectedGovernmentAgencyIdToUpdate = "";
             this.SelectedGovernmentAgencyIdToDelete = "";
             this.BtnCancelUpdate.Visible = false;
@@ -155,9 +153,7 @@ namespace Main.Forms.OtherDataForms.Controls
 
                 this.GovernmentAgencyToAddUpdate = new GovernmentAgencyModel
                 {
-                    GovtAgency = this.TbxAgency.Text,
-                    EEContribInPercent = this.NumUpDwnEmployeeContributionPercent.Value,
-                    ERContribInPercent = this.NumUpDwnEmployerContributionPercent.Value
+                    GovtAgency = this.TbxAgency.Text
                 };
             }
 
@@ -174,8 +170,6 @@ namespace Main.Forms.OtherDataForms.Controls
                 }
 
                 this.GovernmentAgencyToAddUpdate.GovtAgency = this.TbxAgency.Text;
-                this.GovernmentAgencyToAddUpdate.EEContribInPercent = this.NumUpDwnEmployeeContributionPercent.Value;
-                this.GovernmentAgencyToAddUpdate.ERContribInPercent = this.NumUpDwnEmployerContributionPercent.Value;
             }
 
             OnGovernmentAgencySaved(EventArgs.Empty);
@@ -187,7 +181,7 @@ namespace Main.Forms.OtherDataForms.Controls
             this.DGVGovernmentAgencies.Rows.Clear();
             if (this.GovernmentAgencies != null)
             {
-                this.DGVGovernmentAgencies.ColumnCount = 5;
+                this.DGVGovernmentAgencies.ColumnCount = 3;
 
 
                 this.DGVGovernmentAgencies.Columns[0].Name = "GovernmentAgencyId";
@@ -196,14 +190,8 @@ namespace Main.Forms.OtherDataForms.Controls
                 this.DGVGovernmentAgencies.Columns[1].Name = "AgencyTitle";
                 this.DGVGovernmentAgencies.Columns[1].HeaderText = "Agency";
 
-                this.DGVGovernmentAgencies.Columns[2].Name = "ERContributionPercent";
-                this.DGVGovernmentAgencies.Columns[2].HeaderText = "ER Contribution %";
-
-                this.DGVGovernmentAgencies.Columns[3].Name = "EEContributionPercent";
-                this.DGVGovernmentAgencies.Columns[3].HeaderText = "EE Contribution %";
-
-                this.DGVGovernmentAgencies.Columns[4].Name = "CreatedAt";
-                this.DGVGovernmentAgencies.Columns[4].HeaderText = "Created At";
+                this.DGVGovernmentAgencies.Columns[2].Name = "CreatedAt";
+                this.DGVGovernmentAgencies.Columns[2].HeaderText = "Created At";
 
 
                 // Update button
@@ -229,9 +217,7 @@ namespace Main.Forms.OtherDataForms.Controls
 
                     row.Cells[0].Value = agency.Id;
                     row.Cells[1].Value = agency.GovtAgency;
-                    row.Cells[2].Value = $"{agency.ERContribInPercent}%";
-                    row.Cells[3].Value = $"{agency.EEContribInPercent}%";
-                    row.Cells[4].Value = agency.CreatedAt.ToShortDateString();
+                    row.Cells[2].Value = agency.CreatedAt.ToShortDateString();
                     this.DGVGovernmentAgencies.Rows.Add(row);
                 }
             }

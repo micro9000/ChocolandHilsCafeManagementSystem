@@ -17,5 +17,7 @@ namespace Shared
         public decimal SaleAmoutForADayToGetSpecialBonus { get; set; }
 
         public decimal EmployeeBonusFromSaleSpecialBonus { get; set; }
+
+        public string GovernmentContributionTablesPath { get; set; }
     }
 }

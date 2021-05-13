@@ -139,9 +139,8 @@ namespace PDFReportGenerators
             }
 
             StringBuilder deductions = new StringBuilder();
-            if (payslip.Deductions != null)
-            {
-                deductions.Append(@"<table>
+
+            deductions.Append(@"<table>
                         <thead>
                             <tr>
                                 <th>Deductions</th>
@@ -149,6 +148,20 @@ namespace PDFReportGenerators
                             </tr>
                         </thead>
                         <tbody>");
+
+            if (payslip.EmployeeGovContributions != null)
+            {
+                foreach (var contrib in payslip.EmployeeGovContributions)
+                {
+                    deductions.Append($@"<tr> 
+                                    <td>{contrib.GovContributionEnumVal}</td> 
+                                    <td>{contrib.EmployeeContribution}</td> 
+                            </tr>");
+                }
+            }
+
+            if (payslip.Deductions != null)
+            {
                 foreach (var item in payslip.Deductions)
                 {
                     deductions.Append($@"<tr> 
@@ -156,8 +169,11 @@ namespace PDFReportGenerators
                                     <td>{item.Amount}</td> 
                             </tr>");
                 }
-                deductions.Append(@"</tbody></table>");
             }
+
+
+            deductions.Append(@"</tbody></table>");
+
 
             earnings.Append($@"
                     <table style='border-right: 1px solid gray;'>
