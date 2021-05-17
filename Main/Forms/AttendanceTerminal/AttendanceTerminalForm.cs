@@ -1,4 +1,5 @@
 ﻿using DataAccess.Data.EmployeeManagement.Contracts;
+using EntitiesShared;
 using EntitiesShared.EmployeeManagement;
 using EntitiesShared.PayrollManagement.Models;
 using Microsoft.Extensions.Logging;
@@ -24,6 +25,7 @@ namespace Main.Forms.AttendanceTerminal
         private readonly IEmployeeData _employeeData;
         private readonly IEmployeeAttendanceData _employeeAttendanceData;
         private readonly IWorkforceScheduleData _workforceScheduleData;
+        private readonly IHolidayData _holidayData;
         private readonly Sessions _sessions;
 
         public AttendanceTerminalForm(ILogger<LoginFrm> logger,
@@ -31,6 +33,7 @@ namespace Main.Forms.AttendanceTerminal
                                     IEmployeeData employeeData,
                                     IEmployeeAttendanceData employeeAttendanceData,
                                     IWorkforceScheduleData workforceScheduleData,
+                                    IHolidayData holidayData,
                                     Sessions sessions)
         {
             InitializeComponent();
@@ -39,6 +42,7 @@ namespace Main.Forms.AttendanceTerminal
             _employeeData = employeeData;
             _employeeAttendanceData = employeeAttendanceData;
             _workforceScheduleData = workforceScheduleData;
+            _holidayData = holidayData;
             _sessions = sessions;
         }
 
@@ -128,27 +132,99 @@ namespace Main.Forms.AttendanceTerminal
             confirmationForm.Show();
         }
 
-
-        private DailySalaryComputation GetDailySalaryComputation(decimal empDailyRate, decimal shiftHrs, EmployeeAttendanceModel empAttendance)
+        // Note: we only use this method in timeout transaction
+        private DailySalaryComputation GetDailySalaryComputation(decimal empDailyRate, DateTime todaysDateAndTime, EmployeeShiftModel empShift, EmployeeAttendanceModel empAttendance)
         {
-            decimal hourlyRate = empDailyRate / shiftHrs;
+            decimal hourlyRate = empDailyRate / empShift.NumberOfHrs;
             decimal minuteRate = hourlyRate / 60;
 
-            //// Whole day salary
-            //decimal wholeDayMins = empAttendance.FirstHalfHrs + empAttendance.SecondHalfHrs;
-            //Tuple<decimal, decimal> wholeDayHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(wholeDayMins);
-            //decimal wholeDayHrsSideTotalRate = wholeDayHrsAndMins.Item1 * hourlyRate;
-            //decimal wholeDayMinsSideTotalRate = wholeDayHrsAndMins.Item2 * minuteRate;
+            var overTimeRates = StaticData.OvertimeRates;
+            string todaysDateAbbr = todaysDateAndTime.ToString("ddd");
+            bool isEmpHasScheduleToday = empShift.ShiftDays.Where(x => x.DayName == todaysDateAbbr).FirstOrDefault() != null;
 
+            var holidayToday = _holidayData.GetHolidayByMonthAndDay(todaysDateAndTime.Month, todaysDateAndTime.Day);
+
+            //if (holidayToday != null && holidayToday.HolidayType == StaticData.HolidayTypes.RegularHoliday)
+
+            bool isUserDayOffToday = false;
+            bool isHolidayToday = false;
+            long holidayId = 0;
+            decimal overTimeHourlyRate = 0;
+            decimal empDailyRateHolidayAdjustment = 0;
+            StaticData.OverTimeTypes overTimeType = StaticData.OverTimeTypes.NA;
+
+            // Employee day off today but not holiday
+            if (isEmpHasScheduleToday == false && holidayToday == null)
+            {
+                isUserDayOffToday = true;
+                overTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OnRestDayOvertime];
+                overTimeType = StaticData.OverTimeTypes.OnRestDayOvertime;
+            }
+
+            // Employee day off today and regular holiday today
+            if (isEmpHasScheduleToday == false && holidayToday != null && holidayToday.HolidayType == StaticData.HolidayTypes.RegularHoliday)
+            {
+                isHolidayToday = true;
+                isUserDayOffToday = true;
+                holidayId = holidayToday.Id;
+                overTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OnRegularHolidayAndRestDayOvertime];
+                overTimeType = StaticData.OverTimeTypes.OnRegularHolidayAndRestDayOvertime;
+            }
+
+            // Employee day off today and special holiday today
+            if (isEmpHasScheduleToday == false && holidayToday != null && holidayToday.HolidayType == StaticData.HolidayTypes.SpecialHoliday)
+            {
+                isHolidayToday = true;
+                isUserDayOffToday = true;
+                holidayId = holidayToday.Id;
+                overTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OnSpecialHolidayAndRestDayOvertime];
+                overTimeType = StaticData.OverTimeTypes.OnSpecialHolidayAndRestDayOvertime;
+            }
+
+            // Special holiday today but the employee have working schedule today
+            if (isEmpHasScheduleToday == true && holidayToday != null && holidayToday.HolidayType == StaticData.HolidayTypes.SpecialHoliday)
+            {
+                isHolidayToday = true;
+                holidayId = holidayToday.Id;
+                overTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OnSpecialHolidayOvertime];
+                overTimeType = StaticData.OverTimeTypes.OnSpecialHolidayOvertime;
+            }
+
+            // Regular holiday today but the employee have working schedule today
+            if (isEmpHasScheduleToday == true && holidayToday != null && holidayToday.HolidayType == StaticData.HolidayTypes.RegularHoliday)
+            {
+                isHolidayToday = true;
+                holidayId = holidayToday.Id;
+                overTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OnRegularHolidayOvertime];
+                overTimeType = StaticData.OverTimeTypes.OnRegularHolidayOvertime;
+            }
+
+            empDailyRateHolidayAdjustment = overTimeHourlyRate * empShift.NumberOfHrs;
+
+            if (empDailyRateHolidayAdjustment > 0)
+                empDailyRateHolidayAdjustment = empDailyRateHolidayAdjustment - empDailyRate;
+
+            // for first half day
             if (empAttendance.FirstTimeIn == DateTime.MinValue && empAttendance.SecondTimeIn != DateTime.MinValue)
             {
                 empDailyRate = empDailyRate / 2;
+
+                if (empDailyRateHolidayAdjustment > 0)
+                {
+                    empDailyRateHolidayAdjustment = empDailyRateHolidayAdjustment / 2;
+                }
             }
 
+            // for second half day
             if (empAttendance.FirstTimeIn != DateTime.MinValue && empAttendance.FirstTimeOut != DateTime.MinValue &&
                 empAttendance.SecondTimeIn == DateTime.MinValue && empAttendance.SecondTimeOut == DateTime.MinValue)
             {
                 empDailyRate = empDailyRate / 2;
+
+                if (empDailyRateHolidayAdjustment > 0)
+                {
+                    empDailyRateHolidayAdjustment = empDailyRateHolidayAdjustment / 2;
+                }
             }
 
 
@@ -179,19 +255,31 @@ namespace Main.Forms.AttendanceTerminal
                 totalUnderTimeDeduction = underTimeHrsSideTotal + underTimeMinsSideTotal;
             }
 
+            // overtime computation
+            decimal overTimeTotal = 0;
+            if (empAttendance.OverTimeMins > 0)
+            {
+                var ordinaryOverTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OrdinaryDayOvertime];
+                Tuple<decimal, decimal> overTimeHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(empAttendance.OverTimeMins);
+                overTimeTotal = overTimeHrsAndMins.Item1 * ordinaryOverTimeHourlyRate;
+            }
+
             // (wholeDayHrsSideTotalRate + wholeDayMinsSideTotalRate)
             // whole day salary computation
-            decimal totalWholeDaySalary = empDailyRate - (totalLateDeduction + totalUnderTimeDeduction);
-
-            // will check if overtime is paid
-            // for now we will not add overtime
-            //decimal overTimeInMunites = empAttendance.OverTimeMins; 
+            decimal totalWholeDaySalary = (empDailyRate + overTimeTotal) - (totalLateDeduction + totalUnderTimeDeduction);
 
             return new DailySalaryComputation
             {
                 LateTotalDeduction = totalLateDeduction,
                 UnderTimeTotalDeduction = totalUnderTimeDeduction,
-                TotalDailySalary = totalWholeDaySalary
+                OverTimeTotal = overTimeTotal,
+                TotalDailySalary = totalWholeDaySalary,
+                IsUserDayOffToday = isUserDayOffToday,
+                IsHolidayToday = isHolidayToday,
+                HolidayId = holidayId,
+                OvertimeHrlyRate = overTimeHourlyRate,
+                OvertimeDailySalaryAdjustment = empDailyRateHolidayAdjustment,
+                OverTimeType = overTimeType
             };
 
         }
@@ -200,6 +288,7 @@ namespace Main.Forms.AttendanceTerminal
         private void TimeInAndOutTransaction(string empNumber)
         {
             //var empNumber = TBoxCurrentEmployeeNumber.Text;
+            
             var empDetails = this._employeeData.GetByEmployeeNumber(empNumber);
 
             if (empDetails == null)
@@ -459,12 +548,18 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.FirstTimeOut = todaysDateAndTime;
                         todayAttendance.FirstHalfHrs = firstTimeOutHrs;
 
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
 
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
                         todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                        todayAttendance.OverTimeTotalDeduction = 0;
+                        todayAttendance.OverTimeTotal = dailyRateComputation.OverTimeTotal;
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                         using (var transaction = new TransactionScope())
                         {
@@ -498,12 +593,18 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.FirstHalfHrs = firstTimeOutHrs;
                         todayAttendance.FirstHalfUnderTimeMins = underTime;
 
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
 
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
                         todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                        todayAttendance.OverTimeTotalDeduction = 0;
+                        todayAttendance.OverTimeTotal = dailyRateComputation.OverTimeTotal;
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                         using (var transaction = new TransactionScope())
                         {
@@ -551,12 +652,18 @@ namespace Main.Forms.AttendanceTerminal
 
                             todayAttendance.SecondHalfUnderTimeMins = underTime;
 
-                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
 
                             todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                             todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
                             todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                            todayAttendance.OverTimeTotalDeduction = 0;
+                            todayAttendance.OverTimeTotal = dailyRateComputation.OverTimeTotal;
+                            todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                            todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                            todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                            todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                            todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                            todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                             using (var transaction = new TransactionScope())
                             {
@@ -589,15 +696,20 @@ namespace Main.Forms.AttendanceTerminal
                             todayAttendance.SecondTimeIn = lateTimeInDateTime;
                             todayAttendance.SecondTimeOut = todaysDateAndTime;
                             todayAttendance.SecondHalfHrs = secondTimeOutHrs;
-
                             todayAttendance.OverTimeMins = overTimeHrs;
 
-                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
 
                             todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                             todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
                             todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                            todayAttendance.OverTimeTotalDeduction = 0;
+                            todayAttendance.OverTimeTotal = dailyRateComputation.OverTimeTotal;
+                            todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                            todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                            todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                            todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                            todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                            todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                             using (var transaction = new TransactionScope())
                             {
@@ -727,9 +839,16 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.FirstHalfLateMins = lateMins;
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                         // Re compute first half hrs
                         TimeSpan firstTimeOutHrsTimespan = earlyTimeOutDateTime - startDateTime;
@@ -765,9 +884,16 @@ namespace Main.Forms.AttendanceTerminal
                         }
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation( empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = 0;
+
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                         // Re compute first half hrs
                         TimeSpan firstTimeOutHrsTimespan = earlyTimeOutDateTime - startDateTime;
@@ -807,9 +933,16 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.SecondHalfLateMins = 0;
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = 0;
+
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                         TimeSpan secondTimeOutHrsTimespan = todaysDateAndTime - lateTimeInDateTime;
                         decimal secondTimeOutHrs = (int)secondTimeOutHrsTimespan.TotalMinutes;// no need to store the sec
@@ -851,9 +984,17 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.SecondHalfLateMins = lateMins;
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation( empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
+
+
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
 
                         TimeSpan secondTimeOutHrsTimespan = todaysDateAndTime - lateTimeInDateTime;
@@ -894,9 +1035,17 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.SecondHalfLateMins = 0;
 
                         // Re compute late mins, late deduction and daily salary
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = 0;
+
+
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                         if (todayAttendance.SecondTimeOut != DateTime.MinValue)
                         {
@@ -963,12 +1112,20 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.SecondHalfUnderTimeMins = 0;
 
 
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation( empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
 
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
                         todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                        todayAttendance.OverTimeTotalDeduction = 0;
+                        todayAttendance.OverTimeTotal = dailyRateComputation.OverTimeTotal;
+
+
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                         using (var transaction = new TransactionScope())
                         {
@@ -999,14 +1156,22 @@ namespace Main.Forms.AttendanceTerminal
                         todayAttendance.FirstTimeOut = todaysDateAndTime;
                         todayAttendance.FirstHalfHrs = firstTimeOutHrs;
                         todayAttendance.FirstHalfUnderTimeMins = underTime;
+                        todayAttendance.OverTimeMins = 0;
 
-                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                        var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
 
                         todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                         todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
                         todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                        todayAttendance.OverTimeTotalDeduction = 0;
-                        todayAttendance.OverTimeMins = 0;
+                        todayAttendance.OverTimeTotal = dailyRateComputation.OverTimeTotal;
+
+
+                        todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                        todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                        todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                        todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                        todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                        todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                         using (var transaction = new TransactionScope())
                         {
@@ -1052,16 +1217,23 @@ namespace Main.Forms.AttendanceTerminal
                             todayAttendance.SecondTimeIn = lateTimeInDateTime;
                             todayAttendance.SecondTimeOut = todaysDateAndTime;
                             todayAttendance.SecondHalfHrs = secondTimeOutHrs;
-
                             todayAttendance.SecondHalfUnderTimeMins = underTime;
+                            todayAttendance.OverTimeMins = 0;
 
-                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
 
                             todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                             todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
                             todayAttendance.UnderTimeTotalDeduction = dailyRateComputation.UnderTimeTotalDeduction;
-                            todayAttendance.OverTimeTotalDeduction = 0;
-                            todayAttendance.OverTimeMins = 0;
+                            todayAttendance.OverTimeTotal = 0;
+
+
+                            todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                            todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                            todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                            todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                            todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                            todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                             using (var transaction = new TransactionScope())
                             {
@@ -1094,17 +1266,23 @@ namespace Main.Forms.AttendanceTerminal
                             todayAttendance.SecondTimeIn = lateTimeInDateTime;
                             todayAttendance.SecondTimeOut = todaysDateAndTime;
                             todayAttendance.SecondHalfHrs = secondTimeOutHrs;
-
                             todayAttendance.OverTimeMins = overTimeHrs;
 
-                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, empDetails.Shift.NumberOfHrs, todayAttendance);
+                            var dailyRateComputation = GetDailySalaryComputation(empDetails.Position.DailyRate, todaysDateAndTime, empDetails.Shift, todayAttendance);
 
                             todayAttendance.TotalDailySalary = dailyRateComputation.TotalDailySalary;
                             todayAttendance.LateTotalDeduction = dailyRateComputation.LateTotalDeduction;
                             todayAttendance.UnderTimeTotalDeduction = 0;//dailyRateComputation.UnderTimeTotalDeduction;
                             todayAttendance.SecondHalfUnderTimeMins = 0;
-                            //todayAttendance.OverTimeTotalDeduction = 0; // need to rename this
-                            //todayAttendance.OverTimeMins = 0;
+                            todayAttendance.OverTimeTotal = dailyRateComputation.OverTimeTotal;
+
+
+                            todayAttendance.IsUserDayOffToday = dailyRateComputation.IsUserDayOffToday;
+                            todayAttendance.IsHolidayToday = dailyRateComputation.IsHolidayToday;
+                            todayAttendance.HolidayId = dailyRateComputation.HolidayId;
+                            todayAttendance.OvertimeHrlyRate = dailyRateComputation.OvertimeHrlyRate;
+                            todayAttendance.OvertimeDailySalaryAdjustment = dailyRateComputation.OvertimeDailySalaryAdjustment;
+                            todayAttendance.OverTimeType = dailyRateComputation.OverTimeType;
 
                             using (var transaction = new TransactionScope())
                             {

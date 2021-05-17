@@ -1,4 +1,6 @@
-﻿using EntitiesShared.EmployeeManagement;
+﻿using EntitiesShared;
+using EntitiesShared.EmployeeManagement;
+using Shared.CustomModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +23,25 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void HolidayCRUDControl_Load(object sender, EventArgs e)
         {
             SetDGVHolidaysFontAndColors();
+
+            ComboboxItem item;
+            foreach (var hType in StaticData.GetHolidayTypes)
+            {
+                item = new ComboboxItem();
+                item.Value = hType.Key;
+                item.Text = hType.Value;
+                this.CboxHolidayType.Items.Add(item);
+            }
+
+
+            ComboboxItem monthItem;
+            foreach (int i in Enum.GetValues(typeof(StaticData.Months)))
+            {
+                monthItem = new ComboboxItem();
+                monthItem.Value = i;
+                monthItem.Text = Enum.GetName(typeof(StaticData.Months), i);
+                this.CboxHolidayMonthAbbv.Items.Add(monthItem);
+            }
         }
 
         private List<HolidayModel> holidays;
@@ -86,6 +107,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TbxHoliday.Text = "";
             this.CBoxHolidayDayNum.SelectedIndex = -1;
             this.CboxHolidayMonthAbbv.SelectedIndex = -1;
+            this.CboxHolidayType.SelectedIndex = -1;
         }
 
 
@@ -94,7 +116,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DGVHolidays.Rows.Clear();
             if (this.Holidays != null)
             {
-                this.DGVHolidays.ColumnCount = 4;
+                this.DGVHolidays.ColumnCount = 5;
 
                 this.DGVHolidays.Columns[0].Name = "HolidayId";
                 this.DGVHolidays.Columns[0].Visible = false;
@@ -107,6 +129,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 this.DGVHolidays.Columns[3].Name = "Day";
                 this.DGVHolidays.Columns[3].HeaderText = "Day";
+
+                this.DGVHolidays.Columns[4].Name = "HolidayType";
+                this.DGVHolidays.Columns[4].HeaderText = "Type";
 
 
                 //// Update button
@@ -133,6 +158,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[1].Value = holiday.Holiday;
                     row.Cells[2].Value = holiday.MonthAbbr;
                     row.Cells[3].Value = holiday.DayNum.ToString();
+                    row.Cells[4].Value = holiday.HolidayType;
 
                     DGVHolidays.Rows.Add(row);
                 }
@@ -141,7 +167,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
         private void BtnSaveHoliday_Click(object sender, EventArgs e)
         {
-            if (this.CboxHolidayMonthAbbv.SelectedIndex > -1 && this.CBoxHolidayDayNum.SelectedIndex > -1)
+            if (this.CboxHolidayMonthAbbv.SelectedIndex > -1 && this.CBoxHolidayDayNum.SelectedIndex > -1 && this.CboxHolidayType.SelectedIndex > -1)
             {
                 if (this.Holidays != null)
                 {
@@ -154,12 +180,21 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     }
                 }
 
-                string selectedMonthAbbr = this.CboxHolidayMonthAbbv.GetItemText(this.CboxHolidayMonthAbbv.SelectedItem);
-                 string selectedDayNum = this.CBoxHolidayDayNum.GetItemText(this.CBoxHolidayDayNum.SelectedItem);
+                //string selectedMonthAbbr = this.CboxHolidayMonthAbbv.GetItemText(this.CboxHolidayMonthAbbv.SelectedItem);
+
+                var selectedMonth = this.CboxHolidayMonthAbbv.SelectedItem as ComboboxItem;
+                var month = (StaticData.Months)selectedMonth.Value;
+
+                string selectedDayNum = this.CBoxHolidayDayNum.GetItemText(this.CBoxHolidayDayNum.SelectedItem);
+
+                var selectedHolidayType = this.CboxHolidayType.SelectedItem as ComboboxItem;
+                var holidayType = (StaticData.HolidayTypes)selectedHolidayType.Value;
 
                  this.NewHolidayToAdd = new HolidayModel { 
                      Holiday = this.TbxHoliday.Text,
-                     MonthAbbr = selectedMonthAbbr,
+                     MonthAbbr = month.ToString(),
+                     MonthNum = (int)month,
+                     HolidayType = holidayType,
                      DayNum = int.Parse(selectedDayNum)
                  };
 
@@ -170,7 +205,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private void DGVHolidays_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Delete button
-            if ((e.ColumnIndex == 4) && e.RowIndex > -1)
+            if ((e.ColumnIndex == 5) && e.RowIndex > -1)
             {
                 if (DGVHolidays.CurrentRow != null)
                 {

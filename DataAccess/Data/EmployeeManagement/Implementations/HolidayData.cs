@@ -25,5 +25,11 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             string query = "SELECT * FROM Holidays WHERE isDeleted=false";
             return this.GetAll(query);
         }
+
+        public HolidayModel GetHolidayByMonthAndDay (int month, int day)
+        {
+            string query = @"SELECT * FROM Holidays WHERE isDeleted=false AND monthNum=@Month AND dayNum=@Day";
+            return this.GetFirstOrDefault(query, new { Month = month, Day = day });
+        }
     }
 }

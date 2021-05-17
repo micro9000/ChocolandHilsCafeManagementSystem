@@ -11,5 +11,6 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
     public interface IHolidayData : IDataManagerCRUD<HolidayModel>
     {
         List<HolidayModel> GetAllNotDeleted();
+        HolidayModel GetHolidayByMonthAndDay(int month, int day);
     }
 }

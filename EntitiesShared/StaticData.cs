@@ -143,5 +143,52 @@ namespace EntitiesShared
             Nov = 11,
             Dec = 12
         }
+
+        public enum HolidayTypes
+        {
+            RegularHoliday,
+            SpecialHoliday
+        }
+
+        public static Dictionary<HolidayTypes, string> GetHolidayTypes
+        {
+            get
+            {
+                var uoms = new Dictionary<HolidayTypes, string>();
+
+                uoms.Add(HolidayTypes.RegularHoliday, "Regular holiday");
+                uoms.Add(HolidayTypes.SpecialHoliday, "Special holiday");
+
+                return uoms;
+            }
+        }
+
+        public enum OverTimeTypes
+        {
+            OrdinaryDayOvertime,
+            OnRestDayOvertime,
+            OnSpecialHolidayOvertime,
+            OnSpecialHolidayAndRestDayOvertime,
+            OnRegularHolidayOvertime,
+            OnRegularHolidayAndRestDayOvertime,
+            NA,
+        }
+
+        public static Dictionary<OverTimeTypes, decimal> OvertimeRates
+        {
+            get
+            {
+                var rates = new Dictionary<OverTimeTypes, decimal>();
+                // reference: http: //payrollhero.ph/ot_pay
+                rates.Add(OverTimeTypes.OrdinaryDayOvertime, 1.25m);
+                rates.Add(OverTimeTypes.OnRestDayOvertime, 1.69m);
+                rates.Add(OverTimeTypes.OnSpecialHolidayOvertime, 1.69m);
+                rates.Add(OverTimeTypes.OnSpecialHolidayAndRestDayOvertime, 1.95m);
+                rates.Add(OverTimeTypes.OnRegularHolidayOvertime, 2.60m);
+                rates.Add(OverTimeTypes.OnRegularHolidayAndRestDayOvertime, 3.38m);
+
+                return rates;
+            }
+        }
     }
 }

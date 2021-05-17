@@ -35,5 +35,9 @@ namespace EntitiesShared.EmployeeManagement
             set { monthAbbr = value; }
         }
 
+        public int MonthNum { get; set; }
+
+        public StaticData.HolidayTypes HolidayType { get; set; }
+
     }
 }

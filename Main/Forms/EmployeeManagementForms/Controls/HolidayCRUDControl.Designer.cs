@@ -32,6 +32,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.GBoxLeaveTypeForm = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.CboxHolidayType = new System.Windows.Forms.ComboBox();
             this.CBoxHolidayDayNum = new System.Windows.Forms.ComboBox();
             this.CboxHolidayMonthAbbv = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -69,6 +71,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // GBoxLeaveTypeForm
             // 
+            this.GBoxLeaveTypeForm.Controls.Add(this.label4);
+            this.GBoxLeaveTypeForm.Controls.Add(this.CboxHolidayType);
             this.GBoxLeaveTypeForm.Controls.Add(this.CBoxHolidayDayNum);
             this.GBoxLeaveTypeForm.Controls.Add(this.CboxHolidayMonthAbbv);
             this.GBoxLeaveTypeForm.Controls.Add(this.label9);
@@ -78,10 +82,30 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.GBoxLeaveTypeForm.ForeColor = System.Drawing.Color.Black;
             this.GBoxLeaveTypeForm.Location = new System.Drawing.Point(27, 133);
             this.GBoxLeaveTypeForm.Name = "GBoxLeaveTypeForm";
-            this.GBoxLeaveTypeForm.Size = new System.Drawing.Size(299, 294);
+            this.GBoxLeaveTypeForm.Size = new System.Drawing.Size(299, 338);
             this.GBoxLeaveTypeForm.TabIndex = 48;
             this.GBoxLeaveTypeForm.TabStop = false;
             this.GBoxLeaveTypeForm.Text = "Add new holiday";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(19, 208);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(40, 20);
+            this.label4.TabIndex = 49;
+            this.label4.Text = "Type";
+            // 
+            // CboxHolidayType
+            // 
+            this.CboxHolidayType.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.CboxHolidayType.FormattingEnabled = true;
+            this.CboxHolidayType.Location = new System.Drawing.Point(19, 231);
+            this.CboxHolidayType.Name = "CboxHolidayType";
+            this.CboxHolidayType.Size = new System.Drawing.Size(265, 29);
+            this.CboxHolidayType.TabIndex = 48;
             // 
             // CBoxHolidayDayNum
             // 
@@ -128,19 +152,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.CboxHolidayMonthAbbv.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CboxHolidayMonthAbbv.FormattingEnabled = true;
-            this.CboxHolidayMonthAbbv.Items.AddRange(new object[] {
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"});
             this.CboxHolidayMonthAbbv.Location = new System.Drawing.Point(19, 126);
             this.CboxHolidayMonthAbbv.Name = "CboxHolidayMonthAbbv";
             this.CboxHolidayMonthAbbv.Size = new System.Drawing.Size(265, 29);
@@ -174,7 +185,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveHoliday.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveHoliday.ForeColor = System.Drawing.Color.White;
             this.BtnSaveHoliday.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveHoliday.Location = new System.Drawing.Point(169, 228);
+            this.BtnSaveHoliday.Location = new System.Drawing.Point(169, 280);
             this.BtnSaveHoliday.Name = "BtnSaveHoliday";
             this.BtnSaveHoliday.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveHoliday.TabIndex = 2;
@@ -226,7 +237,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.Controls.Add(this.GBoxLeaveTypeForm);
             this.Controls.Add(this.panel1);
             this.Name = "HolidayCRUDControl";
-            this.Size = new System.Drawing.Size(1007, 468);
+            this.Size = new System.Drawing.Size(1007, 495);
             this.Load += new System.EventHandler(this.HolidayCRUDControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -251,5 +262,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.ComboBox CBoxHolidayDayNum;
         private System.Windows.Forms.ComboBox CboxHolidayMonthAbbv;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox CboxHolidayType;
+        private System.Windows.Forms.Label label4;
     }
 }

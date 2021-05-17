@@ -198,12 +198,12 @@ namespace EntitiesShared.EmployeeManagement
             set { underTimeTotalDeduction = value; }
         }
 
-        private decimal overTimeTotalDeduction;
+        private decimal overTimeTotal;
 
-        public decimal OverTimeTotalDeduction
+        public decimal OverTimeTotal
         {
-            get { return overTimeTotalDeduction; }
-            set { overTimeTotalDeduction = value; }
+            get { return overTimeTotal; }
+            set { overTimeTotal = value; }
         }
 
 
@@ -231,6 +231,18 @@ namespace EntitiesShared.EmployeeManagement
             get { return payslipId; }
             set { payslipId = value; }
         }
+
+        public bool IsUserDayOffToday { get; set; }
+
+        public bool IsHolidayToday { get; set; }
+
+        public long HolidayId { get; set; }
+
+        public decimal OvertimeHrlyRate { get; set; }
+
+        public decimal OvertimeDailySalaryAdjustment { get; set; }
+
+        public StaticData.OverTimeTypes OverTimeType { get; set; }
 
     }
 }

@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace EntitiesShared.PayrollManagement.Models
 {
+    public class OverTimeCounter
+    {
+        public int NumberOfOvertime { get; set; }
+        public decimal TotalRate { get; set; }
+    }
+
     public class PaydaySalaryComputationPayslip
     {
         public string Late { get; set; }
@@ -28,6 +34,15 @@ namespace EntitiesShared.PayrollManagement.Models
         public decimal TotalIncome { get; set; }
 
         public decimal EmployerContributionTotal { get; set; }
+
+        private Dictionary<StaticData.OverTimeTypes, OverTimeCounter> _overTimeDaysWithRate = new Dictionary<StaticData.OverTimeTypes, OverTimeCounter>();
+
+        public Dictionary<StaticData.OverTimeTypes, OverTimeCounter> OverTimeDaysWithRate
+        {
+            get { return _overTimeDaysWithRate; }
+            set { _overTimeDaysWithRate = value; }
+        }
+
 
     }
 }

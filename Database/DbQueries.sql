@@ -88,6 +88,10 @@ CREATE TABLE IF NOT EXISTS Holidays(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+ALTER TABLE Holidays
+ADD COLUMN holidayType INT;
+ALTER TABLE Holidays
+ADD COLUMN monthNum INT;
 
 SELECT * FROM Holidays;
 
@@ -342,6 +346,24 @@ ADD COLUMN isPaid BOOLEAN DEFAULT false;
 ALTER TABLE EmployeeAttendance
 ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 
+-- May 17 update
+-- holiday is considered as overtime
+ALTER TABLE EmployeeAttendance
+ADD COLUMN isUserDayOffToday BOOLEAN DEFAULT False;
+ALTER TABLE EmployeeAttendance
+ADD COLUMN isHolidayToday BOOLEAN DEFAULT False;
+ALTER TABLE EmployeeAttendance
+ADD COLUMN holidayId LONG;
+ALTER TABLE EmployeeAttendance
+ADD COLUMN OverTimeHrlyRate DECIMAL(9,2);
+ALTER TABLE EmployeeAttendance
+ADD COLUMN overTimeDailySalaryAdjustment DECIMAL(9,2);
+ALTER TABLE EmployeeAttendance
+ADD COLUMN overTimeType INT;
+
+-- May 16 update
+ALTER TABLE EmployeeAttendance
+CHANGE overTimeTotalDeduction overTimeTotal DECIMAL(9,2);
 
 SELECT * FROM EmployeeAttendance WHERE employeeNumber='20190001' AND workDate BETWEEN '2021-04-16' AND '2021-04-30';
 
@@ -463,6 +485,8 @@ DROP COLUMN halfMonthRate;
 ALTER TABLE EmployeePayslips
 DROP COLUMN employerGovtContributionTotal;
 
+
+
 SELECT * FROM EmployeePayslips WHERE isDeleted=false AND isCancel=false AND MONTH(paydate) = 5;
 
 SELECT * FROM EmployeePayslips;
@@ -486,6 +510,11 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
 )ENGINE=INNODB;
 ALTER TABLE EmployeePayslipBenefits
 ADD COLUMN multiplier INT;
+
+-- May 17 updates:
+ALTER TABLE EmployeePayslipBenefits
+MODIFY COLUMN amount DECIMAL(9,2);
+
 
 SELECT * FROM IngredientInventory;
 
@@ -512,6 +541,11 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipDeductions(
 )ENGINE=INNODB;
 ALTER TABLE EmployeePayslipDeductions
 ADD COLUMN employerGovtContributionAmount DECIMAL(9,2) DEFAULT 0;
+
+-- May 17 updates:
+ALTER TABLE EmployeePayslipDeductions
+MODIFY COLUMN amount DECIMAL(9,2);
+
 
 SELECT * FROM EmployeePayslipDeductions;
 

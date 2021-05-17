@@ -351,6 +351,23 @@ namespace Main.Forms.PayrollForms
                                     }
                                 }
 
+                                // Overtimes
+                                if (empPayslipGen.PaydaySalaryComputation.OverTimeDaysWithRate != null && empPayslipGen.PaydaySalaryComputation.OverTimeDaysWithRate.Count > 0)
+                                {
+                                    foreach(var ot in empPayslipGen.PaydaySalaryComputation.OverTimeDaysWithRate)
+                                    {
+                                        _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                        {
+                                            PayslipId = payslipId,
+                                            EmployeeNumber = employeeNumber,
+                                            BenefitTitle = $"{ot.Key} - {ot.Value.NumberOfOvertime}",
+                                            Amount = ot.Value.TotalRate
+                                        });
+
+                                        empTotalBenefits += ot.Value.TotalRate;
+                                    }
+                                }
+
                                 // Benefits
                                 foreach (var benefit in empPayslipGen.SelectedBenefits)
                                 {

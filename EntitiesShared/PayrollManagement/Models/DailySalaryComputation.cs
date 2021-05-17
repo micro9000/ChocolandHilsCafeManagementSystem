@@ -12,8 +12,20 @@ namespace EntitiesShared.PayrollManagement.Models
 
         public decimal UnderTimeTotalDeduction { get; set; }
 
-        public decimal OverTimeTotalDeduction { get; set; }
+        public decimal OverTimeTotal { get; set; }
 
         public decimal TotalDailySalary { get; set; }
+
+        public bool IsUserDayOffToday { get; set; }
+
+        public bool IsHolidayToday { get; set; }
+
+        public long HolidayId { get; set; }
+
+        public decimal OvertimeHrlyRate { get; set; }
+
+        public decimal OvertimeDailySalaryAdjustment { get; set; }
+
+        public StaticData.OverTimeTypes OverTimeType { get; set; }
     }
 }

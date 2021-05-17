@@ -765,12 +765,33 @@ namespace Main.Forms.PayrollForms.Controls
                 if (employee.Position == null)
                     throw new Exception($"{employee.FullName} don't have position and salary rate. Kindly update employee details");
 
+
+                var attendanceRecordWithOvertimeGrpByOTType = currentEmpAttendanceRec
+                                                                        .Where(x => x.OverTimeType != StaticData.OverTimeTypes.NA)
+                                                                        .ToList()
+                                                                        .GroupBy(x => x.OverTimeType);
+
+                var overTimeDaysWithRate = new Dictionary<StaticData.OverTimeTypes, OverTimeCounter>();
+
+                if (attendanceRecordWithOvertimeGrpByOTType != null)
+                {
+                    foreach(var OTGrp in attendanceRecordWithOvertimeGrpByOTType)
+                    {
+                        overTimeDaysWithRate.Add(OTGrp.Key, 
+                                new OverTimeCounter { 
+                                    TotalRate = OTGrp.Sum(x => x.OvertimeDailySalaryAdjustment), 
+                                    NumberOfOvertime = OTGrp.Count() 
+                                });
+                    }
+                }
+
                 decimal netBasicSalary = currentEmpAttendanceRec.Sum(x => x.TotalDailySalary);
                 netBasicSalary += employee.Position.DailyRate * totalLeaveDays;
 
                 // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
                 decimal lateDeductions = currentEmpAttendanceRec.Sum(x => x.LateTotalDeduction);
                 decimal underTimeDeductions = currentEmpAttendanceRec.Sum(x => x.UnderTimeTotalDeduction);
+                decimal overTimeTotal = currentEmpAttendanceRec.Sum(x => x.OverTimeTotal);
 
                 return new PaydaySalaryComputationPayslip
                 {
@@ -778,8 +799,11 @@ namespace Main.Forms.PayrollForms.Controls
                     LateTotalDeduction = lateDeductions,
                     UnderTime = currentEmpAttendanceRec.Sum(x => x.TotalUnderTime).ToString() + "m",
                     UnderTimeTotalDeduction = underTimeDeductions,
+                    OverTime = currentEmpAttendanceRec.Sum(x => x.OverTimeMins).ToString() + "m",
+                    OverTimeTotalRate = overTimeTotal,
                     NumberOfDays = totalDays.ToString() + "d",
-                    NetBasicSalary = netBasicSalary
+                    NetBasicSalary = netBasicSalary,
+                    OverTimeDaysWithRate = overTimeDaysWithRate
                 };
             }
 
