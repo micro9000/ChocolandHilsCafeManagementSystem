@@ -44,26 +44,6 @@ add column lateTimeIn DATETIME; -- half day for last 4 or 6 hrs
 
 SELECT * FROM EmployeeShifts;
 
--- ADD SHIFT DAYS
--- Late Time allowance
--- maximum hrs for overtime
--- overtime rate
-
--- RegularShift, 0830 - 1730, 8, 12:00NN, 1Hr
-
--- DateTime dt = DateTime.Now;
--- string time = dt.ToString("hh:mm:ss");
-INSERT INTO EmployeeShifts (shift, startTime, endTime)
-VALUES ("ASDF", "08:30:00", "17:30:00");
-
-
-select * from EmployeeShifts;
-SELECT * FROM EmployeeSalaryRate;
-
--- for improvement on the future
-    -- get the number of hrs from EmployeeShifts table
-    -- the user can edit hrs for specific day
-    
 CREATE TABLE IF NOT EXISTS EmployeeShiftDays(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     shiftId BIGINT NOT NULL,
@@ -189,19 +169,8 @@ DROP COLUMN position;
 
 SELECT * FROM Employees;
 
-UPDATE Employees SET positionId=6 WHERE id > 0 AND isDeleted=false AND positionId IN (1,2,3,4,5);
-
 -- ALTER TABLE Employees
 -- DROP FOREIGN KEY employees_ibfk_1;
-
-SELECT * FROM Employees WHERE employeeNumber NOT IN (20190001,
-20210007,
-20210006,
-20210012
-);
-
-SELECT COUNT(*) as count FROM Employees 
-WHERE isDeleted=false AND empNumYear = '2021';
 
 CREATE TABLE IF NOT EXISTS GovernmentAgencies(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -248,19 +217,6 @@ DROP COLUMN employerContribution;
 
 -- DROP THIS TABLE, WE DON'T NEED THIS ANYMORE <----------------------------------------------------------------
 drop table EmployeeSalaryRate;
--- CREATE TABLE IF NOT EXISTS EmployeeSalaryRate(
--- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---     employeeNumber CHAR(8),
---     salaryRate DECIMAL(9,2),
---     halfMonthRate DECIMAL(9,2),
---     dailyRate DECIMAL(9,2),
---     increase DECIMAL DEFAULT 0,
---     increaseDate DATE,
---     createdAt DATETIME DEFAULT NOW(),
---     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
---     deletedAt DATETIME,
---     isDeleted BOOLEAN DEFAULT False
--- )ENGINE=INNODB;
 
 SELECT * FROM EmployeeSalaryRate;
 
@@ -288,14 +244,6 @@ ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 ALTER TABLE EmployeeLeaves
 ADD COLUMN DurationType INT;
 
-SELECT * FROM EmployeeLeaves WHERE startDate BETWEEN '2021/04/21' AND '2021/05/05' OR endDate BETWEEN '2021/04/21' AND '2021/05/05';
-
-SELECT * 
-FROM EmployeeLeaves AS EL
-JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
-WHERE EL.isDeleted=false AND EL.isPaid=false AND EL.currentYear=2021 AND 
-(EL.startDate BETWEEN '2021/04/21' AND '2021/05/05' OR EL.endDate BETWEEN '2021/04/21' AND '2021/05/05')
-ORDER BY EL.id DESC;
 
 CREATE TABLE IF NOT EXISTS WorkforceSchedules(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -367,16 +315,6 @@ CHANGE overTimeTotalDeduction overTimeTotal DECIMAL(9,2);
 
 SELECT * FROM EmployeeAttendance WHERE employeeNumber='20190001' AND workDate BETWEEN '2021-04-16' AND '2021-04-30';
 
-SELECT * 
-FROM EmployeeAttendance AS EA
-JOIN EmployeeShifts AS ES ON EA.shiftId=ES.id
-JOIN Employees AS E ON EA.employeeNumber=E.employeeNumber
-WHERE EA.employeeNumber='20190001' AND EA.workDate BETWEEN '2021-04-16' AND '2021-04-30' AND EA.isPaid=false
-ORDER BY EA.id DESC;
-
-SELECT * FROM EmployeePayslips WHERE isDeleted=false AND isCancel=false AND payDate='2021-04-23';
-
-UPDATE EmployeePayslips SET isDeleted=true WHERE id> 0;
 
 -- possible enhancement:
 -- add employee type that will use to add additional benefits
@@ -422,28 +360,7 @@ CREATE TABLE IF NOT EXISTS EmployeeCashAdvanceRequests(
 ALTER TABLE EmployeeCashAdvanceRequests
 ADD COLUMN cashReleaseDate DATE;
 
-SELECT * FROM EmployeeCashAdvanceRequests;
-SELECT * FROM EmployeeCashAdvanceRequests AS REQ
-JOIN Employees AS EMP
-WHERE isDeleted=false AND YEAR(createdAt) = @Year ORDER BY needOnDate ASC
 
--- Payroll generation:
--- Employee daily salary * number of days duty (display days, leave, absent)
--- Compute Deductions (deductions list, late, government contribution)
--- Compute Benefits (benefits list and bonus, employer government contribution)
--- 
-
--- CREATE TABLE IF NOT EXISTS PayrollHistory(
--- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---     startDate DATE,
---     endDate DATE,
---     payDate DATE,
---     totalPayment DECIMAL(9,2),
---     createdAt DATETIME DEFAULT NOW(),
---     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
---     deletedAt DATETIME,
---     isDeleted BOOLEAN DEFAULT False
--- )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS EmployeePayslips(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -518,9 +435,6 @@ MODIFY COLUMN amount DECIMAL(9,2);
 
 SELECT * FROM IngredientInventory;
 
-SELECT COUNT(*) as count
-FROM IngredientInventory
-WHERE isDeleted=false AND isSoldOut=false AND (expirationDate BETWEEN '2021/05/05' AND '2021/05/15' OR expirationDate <= '2021/05/05');
 
 select * from EmployeePayslipBenefits;
 
@@ -579,20 +493,6 @@ CREATE TABLE IF NOT EXISTS Roles(
 )ENGINE=INNODB;
 
 SELECT * FROM Roles;
-
-
--- --------------------------------------------------------------------------------------
-
--- Apr. 12, 2021:
-
--- DROP ALL TABLES BELOW
--- in order to create POS tables,
--- there are some changes on data type we used on previous updates that needs to implement
-
-
-
--- --------------------------------------------------------------------------------------
-
 
 
 -- you can store employee number as userName
@@ -693,16 +593,6 @@ CREATE TABLE IF NOT EXISTS IngredientInventory(
     FOREIGN KEY(ingredientId) REFERENCES Ingredients(id)
 )ENGINE=INNODB;
 
-SELECT *
-FROM Ingredients AS ING
-JOIN IngredientCategories AS CAT ON CAT.id = ING.categoryId
-JOIN IngredientInventory AS INGINV ON ING.id = INGINV.ingredientId
-WHERE ING.isDeleted=false AND INGINV.isDeleted=false AND INGINV.isSoldOut=false;
-
-
-SELECT * FROM IngredientInventory
-ORDER BY expirationDate DESC;
-
 
 CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -721,15 +611,6 @@ CREATE TABLE IF NOT EXISTS IngInventoryTransactions(
     FOREIGN KEY(userId) REFERENCES Users(id)
 )ENGINE=INNODB;
 
-SELECT NOW();
-
-SELECT * FROM IngInventoryTransactions;
-SELECT * FROM Users;
-
-SELECT * FROM IngInventoryTransactions AS Trans
-JOIN Ingredients AS Ing ON Ing.id = Trans.ingredientId
-JOIN Users AS U ON U.id=Trans.userId
-WHERE Trans.isDeleted=false AND Trans.createdAt BETWEEN '' AND '';
 
 CREATE TABLE IF NOT EXISTS ProductCategories(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -739,8 +620,6 @@ CREATE TABLE IF NOT EXISTS ProductCategories(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
-
-
 
 
 SELECT * FROM ProductCategories;
@@ -811,12 +690,6 @@ select * from ComboMealProducts;
 
 -- Point of sale tables:
 
--- CREATE TABLE IF NOT EXISTS TableStatus(
--- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
--- 	tableNumber INT,
---     tableTitle VARCHAR(50),
---     isOccupied BOOLEAN DEFAULT False
--- )ENGINE=INNODB;
 
 CREATE TABLE IF NOT EXISTS StoreTables(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -885,16 +758,6 @@ CREATE TABLE IF NOT EXISTS SalesTransactionProducts(
 
 DELETE FROM SalesTransactionProducts WHERE id> 0;
 
-select * from SalesTransactionProducts;
-
-SELECT Prd.prodName, PrdCat.prodCategory, SUM(STPrd.totalAmount) AS totalSales, COUNT(STPrd.qty) as qty, STPrd.productCurrentPrice
-FROM SalesTransactionProducts AS STPrd
-JOIN SalesTransactions AS ST ON ST.id = STPrd.salesTransId
-JOIN Products AS Prd ON Prd.id=STPrd.productId
-JOIN ProductCategories AS PrdCat ON PrdCat.id = Prd.categoryId
-WHERE STPrd.isDeleted=false AND ST.isDeleted=false AND ST.transStatus = 2 AND ST.createdAt BETWEEN '2021-04-01' AND '2021-04-25'
-GROUP BY STPrd.productId, STPrd.productCurrentPrice;
-
 CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     salesTransId BIGINT NOT NULL,
@@ -910,14 +773,6 @@ CREATE TABLE IF NOT EXISTS SalesTransactionComboMeals(
     FOREIGN KEY (comboMealId) REFERENCES ComboMeals (id)
 )ENGINE=INNODB;
 
-SELECT CMeals.title, SUM(STCMeals.totalAmount) As totalSales, COUNT(STCMeals.qty) AS qty, STCMeals.comboMealCurrentPrice
-FROM SalesTransactionComboMeals AS STCMeals
-JOIN ComboMeals AS CMeals ON CMeals.id = STCMeals.comboMealId
-JOIN SalesTransactions AS ST ON ST.id = STCMeals.salesTransId
-WHERE STCMeals.isDeleted=false AND ST.isDeleted=false AND ST.transStatus = 2 AND ST.createdAt BETWEEN '2021-04-01' AND '2021-04-25'
-ORDER BY STCMeals.comboMealId AND STCMeals.comboMealCurrentPrice;
-
-SELECT * FROM SalesTransactionComboMeals;
 
 -- Sale Transaction's Product's Ingredient's Inventory deduction history :D
 -- we just need to store the ingredients we used in our product and 
@@ -943,15 +798,6 @@ CREATE TABLE IF NOT EXISTS SaleTranProdIngInvDeductionsRecords(
 )ENGINE=INNODB;
 ALTER TABLE SaleTranProdIngInvDeductionsRecords
 ADD COLUMN totalCost DECIMAL(9,2);
-
-SELECT ING.id, ING.ingName, ING.uom, INGCAT.category, ING.categoryId, SUM(ProdIngDeduction.deductedQtyValue) AS TotalDeductedQtyValue
-FROM SaleTranProdIngInvDeductionsRecords as ProdIngDeduction
-JOIN SalesTransactionProducts AS STProd ON STProd.id = ProdIngDeduction.saleTransProductId
-JOIN SalesTransactions AS ST ON ST.id = STProd.salesTransId
-JOIN Ingredients AS ING ON ING.id = ProdIngDeduction.ingredientId
-JOIN IngredientCategories AS INGCAT ON INGCAT.id = ING.categoryId
-WHERE STProd.isDeleted=false AND ST.isDeleted=false AND ST.transStatus = 2 AND ST.createdAt BETWEEN '2021-04-01' AND '2021-04-25'
-GROUP BY ProdIngDeduction.ingredientId;
 
 SELECT * FROM SaleTranProdIngInvDeductionsRecords;
 
