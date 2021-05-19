@@ -336,16 +336,21 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             CollectCheckedDays();
 
+            DateTime breaktime = DateTime.Parse(this.DTPickerShiftBreaktime.Value.ToString("HH:mm:ss", CultureInfo.CurrentCulture));
+            DateTime earlyTimeIn = breaktime.AddHours((double)breakTimeHrs);
+
             var employeeShift = new EmployeeShiftModel
             {
                 Shift = this.TboxShiftTitle.Text,
                 StartTime = DateTime.Parse(this.DTPickerShiftStartTime.Value.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
                 EndTime = DateTime.Parse(shiftEndTime.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
                 NumberOfHrs = numberOfHrs,
-                BreakTime = DateTime.Parse(this.DTPickerShiftBreaktime.Value.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
+                BreakTime = breaktime,
                 BreakTimeHrs = breakTimeHrs,
-                EarlyTimeOut = DateTime.Parse(this.DTPickerEarlyTimeOut.Value.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
-                LateTimeIn = DateTime.Parse(this.DTPickerLateTimeIn.Value.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
+                //EarlyTimeOut = DateTime.Parse(this.DTPickerEarlyTimeOut.Value.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
+                //LateTimeIn = DateTime.Parse(this.DTPickerLateTimeIn.Value.ToString("HH:mm:ss", CultureInfo.CurrentCulture)),
+                EarlyTimeOut = breaktime,
+                LateTimeIn = earlyTimeIn,
                 IsActive = this.CboxDisable.Checked == true ? false : true
             };
 

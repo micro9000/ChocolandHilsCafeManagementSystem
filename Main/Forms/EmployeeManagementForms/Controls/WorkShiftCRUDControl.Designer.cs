@@ -134,6 +134,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label6.Size = new System.Drawing.Size(97, 21);
             this.label6.TabIndex = 56;
             this.label6.Text = "Late Time IN";
+            this.label6.Visible = false;
             // 
             // label3
             // 
@@ -145,6 +146,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label3.Size = new System.Drawing.Size(117, 21);
             this.label3.TabIndex = 54;
             this.label3.Text = "Early Time OUT";
+            this.label3.Visible = false;
             // 
             // DTPickerLateTimeIn
             // 
@@ -155,6 +157,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DTPickerLateTimeIn.ShowUpDown = true;
             this.DTPickerLateTimeIn.Size = new System.Drawing.Size(162, 29);
             this.DTPickerLateTimeIn.TabIndex = 55;
+            this.DTPickerLateTimeIn.Visible = false;
             // 
             // DTPickerEarlyTimeOut
             // 
@@ -165,6 +168,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.DTPickerEarlyTimeOut.ShowUpDown = true;
             this.DTPickerEarlyTimeOut.Size = new System.Drawing.Size(162, 29);
             this.DTPickerEarlyTimeOut.TabIndex = 53;
+            this.DTPickerEarlyTimeOut.Visible = false;
             // 
             // GroupPanelShiftDays
             // 
