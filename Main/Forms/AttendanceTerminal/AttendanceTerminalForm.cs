@@ -150,7 +150,6 @@ namespace Main.Forms.AttendanceTerminal
             bool isHolidayToday = false;
             long holidayId = 0;
             decimal overTimeHourlyRate = 0;
-            decimal empDailyRateHolidayAdjustment = 0;
             StaticData.OverTimeTypes overTimeType = StaticData.OverTimeTypes.NA;
 
             // Employee day off today but not holiday
@@ -199,10 +198,10 @@ namespace Main.Forms.AttendanceTerminal
                 overTimeType = StaticData.OverTimeTypes.OnRegularHolidayOvertime;
             }
 
-            empDailyRateHolidayAdjustment = overTimeHourlyRate * empShift.NumberOfHrs;
+            decimal empDailyRateHolidayAdjustment = overTimeHourlyRate * empShift.NumberOfHrs;
 
-            if (empDailyRateHolidayAdjustment > 0)
-                empDailyRateHolidayAdjustment = empDailyRateHolidayAdjustment - empDailyRate;
+            //if (empDailyRateHolidayAdjustment > 0)
+            //    empDailyRateHolidayAdjustment = empDailyRateHolidayAdjustment - empDailyRate;
 
             // for first half day
             if (empAttendance.FirstTimeIn == DateTime.MinValue && empAttendance.SecondTimeIn != DateTime.MinValue)
@@ -230,28 +229,24 @@ namespace Main.Forms.AttendanceTerminal
 
             // late deduction computation
             decimal lateInMunites = empAttendance.FirstHalfLateMins + empAttendance.SecondHalfLateMins;
-            decimal lateHrsSideTotal = 0;
-            decimal lateMinsSideTotal = 0;
             decimal totalLateDeduction = 0;
             if (lateInMunites >= 1)
             {
                 Tuple<decimal, decimal> lateHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(lateInMunites);
-                lateHrsSideTotal = lateHrsAndMins.Item1 * hourlyRate;
-                lateMinsSideTotal = lateHrsAndMins.Item2 * minuteRate;
+                decimal lateHrsSideTotal = lateHrsAndMins.Item1 * hourlyRate;
+                decimal lateMinsSideTotal = lateHrsAndMins.Item2 * minuteRate;
                 totalLateDeduction = lateHrsSideTotal + lateMinsSideTotal;
             }
             
 
             // undertime deduction computation
             decimal underTimeInMinutes = empAttendance.FirstHalfUnderTimeMins + empAttendance.SecondHalfUnderTimeMins;
-            decimal underTimeHrsSideTotal = 0;
-            decimal underTimeMinsSideTotal = 0;
             decimal totalUnderTimeDeduction = 0;
             if (underTimeInMinutes >= 1)
             {
                 Tuple<decimal, decimal> underTimeHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(underTimeInMinutes);
-                underTimeHrsSideTotal = underTimeHrsAndMins.Item1 * hourlyRate;
-                underTimeMinsSideTotal = underTimeHrsAndMins.Item2 * minuteRate;
+                decimal underTimeHrsSideTotal = underTimeHrsAndMins.Item1 * hourlyRate;
+                decimal underTimeMinsSideTotal = underTimeHrsAndMins.Item2 * minuteRate;
                 totalUnderTimeDeduction = underTimeHrsSideTotal + underTimeMinsSideTotal;
             }
 
@@ -260,8 +255,14 @@ namespace Main.Forms.AttendanceTerminal
             if (empAttendance.OverTimeMins > 0)
             {
                 var ordinaryOverTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OrdinaryDayOvertime];
+                var ordinaryOverTimeMinLate = minuteRate * overTimeRates[StaticData.OverTimeTypes.OrdinaryDayOvertime];
+
                 Tuple<decimal, decimal> overTimeHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(empAttendance.OverTimeMins);
-                overTimeTotal = overTimeHrsAndMins.Item1 * ordinaryOverTimeHourlyRate;
+
+                decimal overTimeHrsSideTotal = overTimeHrsAndMins.Item1 * ordinaryOverTimeHourlyRate;
+                decimal overTimeMinsSideTotal = overTimeHrsAndMins.Item2 * ordinaryOverTimeMinLate;
+
+                overTimeTotal = overTimeHrsSideTotal + overTimeMinsSideTotal;
             }
 
             // (wholeDayHrsSideTotalRate + wholeDayMinsSideTotalRate)

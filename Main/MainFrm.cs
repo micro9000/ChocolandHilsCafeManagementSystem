@@ -104,47 +104,52 @@ namespace Main
                 }
             }
 
-
-            List<AlertMessage> alertMessages = new();
-
-            DateTime startDate = DateTime.Now;
-            DateTime endDate = startDate.AddDays(_otherSettings.NumDaysNotifyUserForInventoryExpDate);
-            int notificationCountForInventory = _ingredientInventoryData.GetCountOfIngredientInventoryByExpirationDate(startDate, endDate);
-            if (notificationCountForInventory > 0)
+            if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.admin)
             {
-                this.BtnInventorySystem.Text = $"Inventory ({notificationCountForInventory})";
-                this.BtnInventorySystem.ForeColor = Color.Red;
+                List<AlertMessage> alertMessages = new();
 
-                string msg = $"{notificationCountForInventory} ingredient(s) inventory near on expiration date";
-                ToolTipForNavButtons.SetToolTip(this.BtnInventorySystem, msg);
-
-                alertMessages.Add(new AlertMessage { Title = "Inventory ingredients expiration", Message = msg });
-            }
-
-            var activeCashAdvanceRequests = _employeeCashAdvanceRequestData
-                                    .GetAllNotDeletedByStatus(EntitiesShared.StaticData.EmployeeRequestApprovalStatus.Pending);
-
-            if (activeCashAdvanceRequests != null && activeCashAdvanceRequests.Count > 0)
-            {
-                this.BtnRequests.Text = $"Requests ({activeCashAdvanceRequests.Count})";
-                this.BtnRequests.ForeColor = Color.Red;
-
-                foreach (var request in activeCashAdvanceRequests)
+                DateTime startDate = DateTime.Now;
+                DateTime endDate = startDate.AddDays(_otherSettings.NumDaysNotifyUserForInventoryExpDate);
+                int notificationCountForInventory = _ingredientInventoryData.GetCountOfIngredientInventoryByExpirationDate(startDate, endDate);
+                if (notificationCountForInventory > 0)
                 {
-                    alertMessages.Add(new AlertMessage { 
-                        Title = "Cash Advance request", 
-                        Message = $"{request.Employee.FullName} request {request.Amount} cash advance" 
-                    });
+                    this.BtnInventorySystem.Text = $"Inventory ({notificationCountForInventory})";
+                    this.BtnInventorySystem.ForeColor = Color.Red;
+
+                    string msg = $"{notificationCountForInventory} ingredient(s) inventory near on expiration date";
+                    ToolTipForNavButtons.SetToolTip(this.BtnInventorySystem, msg);
+
+                    alertMessages.Add(new AlertMessage { Title = "Inventory ingredients expiration", Message = msg });
+                }
+
+                var activeCashAdvanceRequests = _employeeCashAdvanceRequestData
+                                        .GetAllNotDeletedByStatus(EntitiesShared.StaticData.EmployeeRequestApprovalStatus.Pending);
+
+                if (activeCashAdvanceRequests != null && activeCashAdvanceRequests.Count > 0)
+                {
+                    this.BtnRequests.Text = $"Requests ({activeCashAdvanceRequests.Count})";
+                    this.BtnRequests.ForeColor = Color.Red;
+
+                    foreach (var request in activeCashAdvanceRequests)
+                    {
+                        alertMessages.Add(new AlertMessage
+                        {
+                            Title = "Cash Advance request",
+                            Message = $"{request.Employee.FullName} request {request.Amount} cash advance"
+                        });
+                    }
+                }
+
+                if (alertMessages != null && alertMessages.Count > 0)
+                {
+                    FrmAlertMessage frmAlertMessage = new();
+                    frmAlertMessage.AlertMessages = alertMessages;
+
+                    frmAlertMessage.ShowDialog();
                 }
             }
 
-            if (alertMessages != null && alertMessages.Count > 0)
-            {
-                FrmAlertMessage frmAlertMessage = new();
-                frmAlertMessage.AlertMessages = alertMessages;
-
-                frmAlertMessage.ShowDialog();
-            }
+            
         }
 
         private void DisableButton()
