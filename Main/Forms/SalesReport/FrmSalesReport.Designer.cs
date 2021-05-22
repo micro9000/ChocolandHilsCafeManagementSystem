@@ -83,6 +83,7 @@ namespace Main.Forms.SalesReport
             this.panelSalesTrend = new System.Windows.Forms.Panel();
             this.panelMainChart = new System.Windows.Forms.Panel();
             this.label31 = new System.Windows.Forms.Label();
+            this.BtnRefresh = new System.Windows.Forms.Button();
             this.BtnSubmitFilter = new System.Windows.Forms.Button();
             this.RBtnFilterTrendByWeek = new System.Windows.Forms.RadioButton();
             this.FlowLayoutCheckBoxYears = new System.Windows.Forms.FlowLayoutPanel();
@@ -90,7 +91,6 @@ namespace Main.Forms.SalesReport
             this.RBtnFilterTrendByMonth = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label33 = new System.Windows.Forms.Label();
-            this.BtnRefresh = new System.Windows.Forms.Button();
             this.panelReportHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerHeaderReports)).BeginInit();
             this.splitContainerHeaderReports.Panel1.SuspendLayout();
@@ -201,7 +201,7 @@ namespace Main.Forms.SalesReport
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Image = global::Main.Properties.Resources.icons8_total_sales_64;
+            this.pictureBox4.Image = global::Main.Properties.Resources.icons8_total_sales_641;
             this.pictureBox4.Location = new System.Drawing.Point(16, 42);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(75, 75);
@@ -733,6 +733,23 @@ namespace Main.Forms.SalesReport
             this.label31.TabIndex = 6;
             this.label31.Text = "SALES TREND";
             // 
+            // BtnRefresh
+            // 
+            this.BtnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BtnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnRefresh.ForeColor = System.Drawing.Color.White;
+            this.BtnRefresh.Image = global::Main.Properties.Resources.reset_white_24;
+            this.BtnRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnRefresh.Location = new System.Drawing.Point(136, 188);
+            this.BtnRefresh.Name = "BtnRefresh";
+            this.BtnRefresh.Size = new System.Drawing.Size(102, 32);
+            this.BtnRefresh.TabIndex = 15;
+            this.BtnRefresh.Text = "Refresh";
+            this.BtnRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BtnRefresh.UseVisualStyleBackColor = false;
+            this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
+            // 
             // BtnSubmitFilter
             // 
             this.BtnSubmitFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -817,23 +834,6 @@ namespace Main.Forms.SalesReport
             this.label33.Size = new System.Drawing.Size(58, 21);
             this.label33.TabIndex = 6;
             this.label33.Text = "FILTER";
-            // 
-            // BtnRefresh
-            // 
-            this.BtnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.BtnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnRefresh.ForeColor = System.Drawing.Color.White;
-            this.BtnRefresh.Image = global::Main.Properties.Resources.reset_white_24;
-            this.BtnRefresh.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnRefresh.Location = new System.Drawing.Point(136, 188);
-            this.BtnRefresh.Name = "BtnRefresh";
-            this.BtnRefresh.Size = new System.Drawing.Size(102, 32);
-            this.BtnRefresh.TabIndex = 15;
-            this.BtnRefresh.Text = "Refresh";
-            this.BtnRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BtnRefresh.UseVisualStyleBackColor = false;
-            this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
             // FrmSalesReport
             // 

@@ -113,6 +113,26 @@ namespace Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_calendar_961 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-calendar-961", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_calendar_962 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-calendar-962", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_cancel_30 {
             get {
                 object obj = ResourceManager.GetObject("icons8-cancel-30", resourceCulture);
@@ -236,6 +256,16 @@ namespace Main.Properties {
         internal static System.Drawing.Bitmap icons8_total_sales_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-total-sales-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_total_sales_641 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-total-sales-641", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
