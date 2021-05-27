@@ -254,15 +254,31 @@ namespace Main.Forms.AttendanceTerminal
             decimal overTimeTotal = 0;
             if (empAttendance.OverTimeMins > 0)
             {
-                var ordinaryOverTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OrdinaryDayOvertime];
-                var ordinaryOverTimeMinLate = minuteRate * overTimeRates[StaticData.OverTimeTypes.OrdinaryDayOvertime];
+                if (overTimeType == StaticData.OverTimeTypes.NA)
+                {
+                    var ordinaryOverTimeHourlyRate = hourlyRate * overTimeRates[StaticData.OverTimeTypes.OrdinaryDayOvertime];
+                    var ordinaryOverTimeMinLate = minuteRate * overTimeRates[StaticData.OverTimeTypes.OrdinaryDayOvertime];
 
-                Tuple<decimal, decimal> overTimeHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(empAttendance.OverTimeMins);
+                    Tuple<decimal, decimal> overTimeHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(empAttendance.OverTimeMins);
 
-                decimal overTimeHrsSideTotal = overTimeHrsAndMins.Item1 * ordinaryOverTimeHourlyRate;
-                decimal overTimeMinsSideTotal = overTimeHrsAndMins.Item2 * ordinaryOverTimeMinLate;
+                    decimal overTimeHrsSideTotal = overTimeHrsAndMins.Item1 * ordinaryOverTimeHourlyRate;
+                    decimal overTimeMinsSideTotal = overTimeHrsAndMins.Item2 * ordinaryOverTimeMinLate;
 
-                overTimeTotal = overTimeHrsSideTotal + overTimeMinsSideTotal;
+                    overTimeTotal = overTimeHrsSideTotal + overTimeMinsSideTotal;
+                    overTimeType = StaticData.OverTimeTypes.OrdinaryDayOvertime;
+                }
+                else
+                {
+                    var ordinaryOverTimeHourlyRate = hourlyRate * overTimeRates[overTimeType]; ;
+                    var ordinaryOverTimeMinLate = minuteRate * overTimeRates[overTimeType];
+
+                    Tuple<decimal, decimal> overTimeHrsAndMins = _decimalMinutesToHrsConverter.GetHrsAndMinsSide(empAttendance.OverTimeMins);
+
+                    decimal overTimeHrsSideTotal = overTimeHrsAndMins.Item1 * ordinaryOverTimeHourlyRate;
+                    decimal overTimeMinsSideTotal = overTimeHrsAndMins.Item2 * ordinaryOverTimeMinLate;
+
+                    overTimeTotal = overTimeHrsSideTotal + overTimeMinsSideTotal;
+                }
             }
 
             // (wholeDayHrsSideTotalRate + wholeDayMinsSideTotalRate)
