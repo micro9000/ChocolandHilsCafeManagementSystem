@@ -782,7 +782,7 @@ namespace Main.Forms.PayrollForms.Controls
                     {
                         overTimeDaysWithRate.Add(OTGrp.Key, 
                                 new OverTimeCounter { 
-                                    TotalRate = OTGrp.Sum(x => x.OvertimeDailySalaryAdjustment), 
+                                    TotalRate = OTGrp.Sum(x => (x.OvertimeDailySalaryAdjustment - (x.LateTotalDeduction + x.UnderTimeTotalDeduction))), 
                                     NumberOfOvertime = OTGrp.Count() 
                                 });
                     }
