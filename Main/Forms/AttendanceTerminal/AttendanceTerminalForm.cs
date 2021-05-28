@@ -284,6 +284,7 @@ namespace Main.Forms.AttendanceTerminal
             // (wholeDayHrsSideTotalRate + wholeDayMinsSideTotalRate)
             // whole day salary computation
             decimal totalWholeDaySalary = empDailyRate - (totalLateDeduction + totalUnderTimeDeduction);
+            empDailyRateHolidayAdjustment = empDailyRateHolidayAdjustment - (totalLateDeduction + totalUnderTimeDeduction);
 
             return new DailySalaryComputation
             {

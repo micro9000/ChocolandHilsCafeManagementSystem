@@ -795,13 +795,9 @@ namespace Main.Forms.PayrollForms.Controls
                 netBasicSalary += employee.Position.DailyRate * totalLeaveDays;
 
                 // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
-                decimal lateDeductions = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
-                                                                            x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
-                                                                .Sum(x => x.LateTotalDeduction);
+                decimal lateDeductions = currentEmpAttendanceRec.Sum(x => x.LateTotalDeduction);
 
-                decimal underTimeDeductions = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
-                                                                            x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
-                                                                    .Sum(x => x.UnderTimeTotalDeduction);
+                decimal underTimeDeductions = currentEmpAttendanceRec.Sum(x => x.UnderTimeTotalDeduction);
 
                 decimal overTimeTotal = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
                                                                             x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
