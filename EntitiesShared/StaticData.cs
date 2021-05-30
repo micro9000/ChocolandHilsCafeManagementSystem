@@ -165,13 +165,13 @@ namespace EntitiesShared
 
         public enum OverTimeTypes
         {
-            OrdinaryDayOvertime,
-            OnRestDayOvertime,
-            OnSpecialHolidayOvertime,
-            OnSpecialHolidayAndRestDayOvertime,
-            OnRegularHolidayOvertime,
-            OnRegularHolidayAndRestDayOvertime,
-            NA,
+            OrdinaryDayOvertime, // 0
+            OnRestDayOvertime, // 1
+            OnSpecialHolidayOvertime, // 2
+            OnSpecialHolidayAndRestDayOvertime, // 3
+            OnRegularHolidayOvertime, // 4
+            OnRegularHolidayAndRestDayOvertime, //5
+            NA, // 6
         }
 
         public static Dictionary<OverTimeTypes, decimal> OvertimeRates

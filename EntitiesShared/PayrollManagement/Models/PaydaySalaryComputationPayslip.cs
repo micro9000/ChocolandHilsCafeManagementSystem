@@ -10,6 +10,16 @@ namespace EntitiesShared.PayrollManagement.Models
     {
         public int NumberOfOvertime { get; set; }
         public decimal TotalRate { get; set; }
+
+        public string Late { get; set; }
+        public decimal LateTotalDeduction { get; set; }
+
+        public string UnderTime { get; set; }
+        public decimal UnderTimeTotalDeduction { get; set; }
+
+        public string OverTime { get; set; }
+        public decimal OverTimeTotalRate { get; set; }
+
     }
 
     public class PaydaySalaryComputationPayslip

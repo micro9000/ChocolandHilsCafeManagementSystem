@@ -781,9 +781,16 @@ namespace Main.Forms.PayrollForms.Controls
                     foreach(var OTGrp in attendanceRecordWithOvertimeGrpByOTType)
                     {
                         overTimeDaysWithRate.Add(OTGrp.Key, 
-                                new OverTimeCounter { 
-                                    TotalRate = OTGrp.Sum(x => (x.OvertimeDailySalaryAdjustment - (x.LateTotalDeduction + x.UnderTimeTotalDeduction))), 
-                                    NumberOfOvertime = OTGrp.Count() 
+                                new OverTimeCounter {
+                                    // late and undertime is already deducted upon time-out computation
+                                    TotalRate = OTGrp.Sum(x => x.OvertimeDailySalaryAdjustment), 
+                                    NumberOfOvertime = OTGrp.Count(),
+                                    Late = OTGrp.Sum(x => x.TotalLate).ToString() + "m",
+                                    LateTotalDeduction = OTGrp.Sum(x => x.LateTotalDeduction),
+                                    UnderTime = OTGrp.Sum(x => x.TotalUnderTime).ToString() + "m",
+                                    UnderTimeTotalDeduction = OTGrp.Sum(x => x.UnderTimeTotalDeduction),
+                                    OverTime = OTGrp.Sum(x => x.OverTimeMins).ToString() + "m",
+                                    OverTimeTotalRate = OTGrp.Sum(x => x.OverTimeTotal),
                                 });
                     }
                 }
@@ -794,22 +801,40 @@ namespace Main.Forms.PayrollForms.Controls
 
                 netBasicSalary += employee.Position.DailyRate * totalLeaveDays;
 
-                // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
-                decimal lateDeductions = currentEmpAttendanceRec.Sum(x => x.LateTotalDeduction);
 
-                decimal underTimeDeductions = currentEmpAttendanceRec.Sum(x => x.UnderTimeTotalDeduction);
+                string lateMins = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                            .Sum(x => x.TotalLate).ToString() + "m";
+
+                decimal lateTotalDeduction = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                            .Sum(x => x.LateTotalDeduction);
+
+                string underTimeMins = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                        .Sum(x => x.TotalUnderTime).ToString() + "m";
+
+                decimal underTimeTotalDeduction = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                    .Sum(x => x.UnderTimeTotalDeduction);
+
+                string overTimeMins = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                      x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                            .Sum(x => x.OverTimeMins).ToString() + "m";
 
                 decimal overTimeTotal = currentEmpAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
                                                                             x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
                                                                 .Sum(x => x.OverTimeTotal);
 
+
+                // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
                 return new PaydaySalaryComputationPayslip
                 {
-                    Late = currentEmpAttendanceRec.Sum(x => x.TotalLate).ToString() + "m",
-                    LateTotalDeduction = lateDeductions,
-                    UnderTime = currentEmpAttendanceRec.Sum(x => x.TotalUnderTime).ToString() + "m",
-                    UnderTimeTotalDeduction = underTimeDeductions,
-                    OverTime = currentEmpAttendanceRec.Sum(x => x.OverTimeMins).ToString() + "m",
+                    Late = lateMins,
+                    LateTotalDeduction = lateTotalDeduction,
+                    UnderTime = underTimeMins,
+                    UnderTimeTotalDeduction = underTimeTotalDeduction,
+                    OverTime = overTimeMins,
                     OverTimeTotalRate = overTimeTotal,
                     NumberOfDays = totalDays.ToString() + "d",
                     NetBasicSalary = netBasicSalary,

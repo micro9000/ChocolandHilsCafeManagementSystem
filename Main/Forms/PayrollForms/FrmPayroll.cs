@@ -370,12 +370,48 @@ namespace Main.Forms.PayrollForms
                                 {
                                     foreach(var ot in empPayslipGen.PaydaySalaryComputation.OverTimeDaysWithRate)
                                     {
+                                        if (ot.Value.LateTotalDeduction > 0)
+                                        {
+                                            _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                            {
+                                                PayslipId = payslipId,
+                                                EmployeeNumber = employeeNumber,
+                                                BenefitTitle = $"Late {ot.Key} - {ot.Value.Late}",
+                                                Amount = ot.Value.LateTotalDeduction
+                                            });
+                                        }
+                                        
+                                        if (ot.Value.UnderTimeTotalDeduction > 0)
+                                        {
+                                            _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                            {
+                                                PayslipId = payslipId,
+                                                EmployeeNumber = employeeNumber,
+                                                BenefitTitle = $"Undertime {ot.Key} - {ot.Value.UnderTime}",
+                                                Amount = ot.Value.UnderTimeTotalDeduction
+                                            });
+                                        }
+
+                                        decimal overTimeTotalRate = ot.Value.TotalRate;
+
+                                        if (ot.Value.OverTimeTotalRate > 0)
+                                        {
+                                            _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                            {
+                                                PayslipId = payslipId,
+                                                EmployeeNumber = employeeNumber,
+                                                BenefitTitle = $"Overtime {ot.Key} - {ot.Value.OverTime}",
+                                                Amount = ot.Value.OverTimeTotalRate
+                                            });
+                                            overTimeTotalRate += ot.Value.OverTimeTotalRate;
+                                        }
+
                                         _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
                                         {
                                             PayslipId = payslipId,
                                             EmployeeNumber = employeeNumber,
                                             BenefitTitle = $"{ot.Key} - {ot.Value.NumberOfOvertime}",
-                                            Amount = ot.Value.TotalRate
+                                            Amount = overTimeTotalRate
                                         });
 
                                         empTotalBenefits += ot.Value.TotalRate;
