@@ -31,9 +31,6 @@ namespace Main.Forms.OtherDataForms
         {
             this.components = new System.ComponentModel.Container();
             this.OtherMenuStrip = new System.Windows.Forms.MenuStrip();
-            this.ToolStripItemGovernment = new System.Windows.Forms.ToolStripMenuItem();
-            this.ContextMenuGovernmentItems = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.GovernmentAgencieToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripItemScheduleSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.ContextMenuScheduleSettings = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ToolStripItemLeaveType = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,7 +39,6 @@ namespace Main.Forms.OtherDataForms
             this.ToolStripMenuBranchesList = new System.Windows.Forms.ToolStripMenuItem();
             this.panelContainer = new System.Windows.Forms.Panel();
             this.OtherMenuStrip.SuspendLayout();
-            this.ContextMenuGovernmentItems.SuspendLayout();
             this.ContextMenuScheduleSettings.SuspendLayout();
             this.ContextMenuBranchesSettings.SuspendLayout();
             this.SuspendLayout();
@@ -50,7 +46,6 @@ namespace Main.Forms.OtherDataForms
             // OtherMenuStrip
             // 
             this.OtherMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripItemGovernment,
             this.ToolStripItemScheduleSettings,
             this.ToolStripMenuBranches});
             this.OtherMenuStrip.Location = new System.Drawing.Point(0, 0);
@@ -58,28 +53,6 @@ namespace Main.Forms.OtherDataForms
             this.OtherMenuStrip.Size = new System.Drawing.Size(800, 24);
             this.OtherMenuStrip.TabIndex = 0;
             this.OtherMenuStrip.Text = "menuStrip1";
-            // 
-            // ToolStripItemGovernment
-            // 
-            this.ToolStripItemGovernment.DropDown = this.ContextMenuGovernmentItems;
-            this.ToolStripItemGovernment.Name = "ToolStripItemGovernment";
-            this.ToolStripItemGovernment.Size = new System.Drawing.Size(85, 20);
-            this.ToolStripItemGovernment.Text = "Government";
-            // 
-            // ContextMenuGovernmentItems
-            // 
-            this.ContextMenuGovernmentItems.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.GovernmentAgencieToolStripItem});
-            this.ContextMenuGovernmentItems.Name = "ContextMenuGovernmentItems";
-            this.ContextMenuGovernmentItems.OwnerItem = this.ToolStripItemGovernment;
-            this.ContextMenuGovernmentItems.Size = new System.Drawing.Size(123, 26);
-            this.ContextMenuGovernmentItems.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ContextMenuGovernmentItems_ItemClicked);
-            // 
-            // GovernmentAgencieToolStripItem
-            // 
-            this.GovernmentAgencieToolStripItem.Name = "GovernmentAgencieToolStripItem";
-            this.GovernmentAgencieToolStripItem.Size = new System.Drawing.Size(122, 22);
-            this.GovernmentAgencieToolStripItem.Text = "Agencies";
             // 
             // ToolStripItemScheduleSettings
             // 
@@ -145,7 +118,6 @@ namespace Main.Forms.OtherDataForms
             this.Text = "OtherDataForm";
             this.OtherMenuStrip.ResumeLayout(false);
             this.OtherMenuStrip.PerformLayout();
-            this.ContextMenuGovernmentItems.ResumeLayout(false);
             this.ContextMenuScheduleSettings.ResumeLayout(false);
             this.ContextMenuBranchesSettings.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -156,9 +128,6 @@ namespace Main.Forms.OtherDataForms
         #endregion
 
         private System.Windows.Forms.MenuStrip OtherMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripItemGovernment;
-        private System.Windows.Forms.ContextMenuStrip ContextMenuGovernmentItems;
-        private System.Windows.Forms.ToolStripMenuItem GovernmentAgencieToolStripItem;
         private System.Windows.Forms.Panel panelContainer;
         private System.Windows.Forms.ContextMenuStrip ContextMenuScheduleSettings;
         private System.Windows.Forms.ToolStripMenuItem ToolStripItemScheduleSettings;

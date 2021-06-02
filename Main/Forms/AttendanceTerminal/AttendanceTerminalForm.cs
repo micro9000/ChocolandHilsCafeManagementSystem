@@ -56,6 +56,10 @@ namespace Main.Forms.AttendanceTerminal
             {
                 this.GBoxEditEmployeeAttendanceControls.Visible = true;
             }
+            else
+            {
+                this.TBoxCurrentEmployeeNumber.Text = _sessions.CurrentLoggedInUser.UserName;
+            }
         }
 
         public void DisplayAttendanceRecordForToday()
@@ -315,6 +319,18 @@ namespace Main.Forms.AttendanceTerminal
                 return;
             }
 
+
+            if (_sessions != null && _sessions.CurrentLoggedInUser != null &&
+                _sessions.CurrentLoggedInUser.Role != null &&
+                _sessions.CurrentLoggedInUser.Role.Role.RoleKey != EntitiesShared.StaticData.UserRole.admin)
+            {
+                if (empDetails.EmployeeNumber != _sessions.CurrentLoggedInUser.UserName)
+                {
+                    MessageBox.Show($"Not allowed to add attendance record for other employee", "Attendance", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
             if (empDetails.Position == null)
             {
                 MessageBox.Show($"{empDetails.FullName} don't have position and salary rate. Kindly update employee details", "Salary Rate", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -343,9 +359,9 @@ namespace Main.Forms.AttendanceTerminal
 
             // kung anong araw ngaun
             // change this.DPickerTesting.Value to DateTime.Now on production
-            DateTime todaysDateAndTime = this.DPickerTesting.Value; //DateTime.Now;
-                                                                    //var culture = CultureInfo.CurrentCulture;
-                                                                    //var workDateDayAbbr = culture.DateTimeFormat.GetAbbreviatedDayName(workDate.DayOfWeek);
+            DateTime todaysDateAndTime = DateTime.Now; //this.DPickerTesting.Value; //
+                                                       //var culture = CultureInfo.CurrentCulture;
+                                                       //var workDateDayAbbr = culture.DateTimeFormat.GetAbbreviatedDayName(workDate.DayOfWeek);
 
             var workforceSchedule = _workforceScheduleData.GetScheduleByEmpAndDate(empDetails.EmployeeNumber, todaysDateAndTime);
 

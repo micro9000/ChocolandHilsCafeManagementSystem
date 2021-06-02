@@ -29,7 +29,6 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly PayrollSettings _payrollSettings;
         private readonly OtherSettings _otherSettings;
-        private readonly IGovernmentAgencyData _governmentAgencyData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
         private readonly IBranchData _branchData;
         private readonly IEmployeeData _employeeData;
@@ -57,7 +56,6 @@ namespace Main.Forms.EmployeeManagementForms
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                                     IOptions<OtherSettings> otherSettingsOptions,
                                     IOptions<PayrollSettings> payrollSettingsOptions,
-                                IGovernmentAgencyData governmentAgencyData,
                                 IEmployeeLeaveData employeeLeaveData,
                                 IBranchData branchData,
                                 IEmployeeData employeeData,
@@ -86,7 +84,6 @@ namespace Main.Forms.EmployeeManagementForms
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _payrollSettings = payrollSettingsOptions.Value;
             _otherSettings = otherSettingsOptions.Value;
-            _governmentAgencyData = governmentAgencyData;
             _employeeLeaveData = employeeLeaveData;
             _branchData = branchData;
             _employeeData = employeeData;
@@ -166,7 +163,7 @@ namespace Main.Forms.EmployeeManagementForms
             //controlToDisplay.Anchor = (AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left);
 
             controlToDisplay.LeaveTypes = _leaveTypeController.GetAll().Data;
-            controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
+            //controlToDisplay.GovtAgencies = _governmentAgencyData.GetAllNotDeleted();
             controlToDisplay.WorkShifts = _workShiftController.GetAll().Data;
             controlToDisplay.Branches = _branchData.GetAllNotDeleted();
             controlToDisplay.Positions = _employeePositionData.GetAllNotDeleted();

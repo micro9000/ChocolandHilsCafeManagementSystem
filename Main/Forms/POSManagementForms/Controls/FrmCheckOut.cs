@@ -1,5 +1,6 @@
 ﻿using Main.Controllers.POSControllers.ControllerInterface;
 using Main.Forms.POSManagementForms.PrinterModels;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,12 +22,19 @@ namespace Main.Forms.POSManagementForms.Controls
     {
         private readonly IPOSCommandController _iPOSCommandController;
         private readonly POSState _pOSState;
+        private readonly OtherSettings _otherSettings;
+        private readonly Sessions _sessions;
 
-        public FrmCheckOut(IPOSCommandController iPOSCommandController, POSState pOSState)
+        public FrmCheckOut(IPOSCommandController iPOSCommandController, 
+                           POSState pOSState,
+                           OtherSettings otherSettings, 
+                           Sessions sessions)
         {
             InitializeComponent();
             _iPOSCommandController = iPOSCommandController;
             _pOSState = pOSState;
+            _otherSettings = otherSettings;
+            _sessions = sessions;
         }
 
         public decimal Total { get; set; }
@@ -248,6 +256,8 @@ namespace Main.Forms.POSManagementForms.Controls
                 StoreName = "Chonoland Hils Cafe",
                 Phone = "",
                 Address = "Nabunturan, Davao de Oro",
+                Cashier = _sessions.CurrentLoggedInUser.FullName,
+                Number = _pOSState.CurrentSaleTransaction.TransactionType == EntitiesShared.StaticData.POSTransactionType.DineIn ? _pOSState.CurrentSaleTransaction.TableNumberStr : _pOSState.CurrentSaleTransaction.TakeOutNumberStr,
                 City = "Davao de Oro",
                 BillNo = _pOSState.CurrentSaleTransaction.TicketNumber,
                 DateOfBill = DateTime.Now.ToShortDateString(),
@@ -315,6 +325,8 @@ namespace Main.Forms.POSManagementForms.Controls
             pageNum = 1;
             PrintDocument printDocument = new PrintDocument();
             printDocument.PrinterSettings.PrinterName = ReceiptReportData.Settings.PrinterName;
+            printDocument.PrinterSettings.PrintToFile = _otherSettings.IsPOSReceiptAutoSave;
+            printDocument.PrinterSettings.PrintFileName =  $"{_otherSettings.POSReceiptFileLoc}{DateTime.Now.ToString("yyMMddHHmmssffftt")}.oxps";
             printDocument.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(CreateReceipt);
 
             printDocument.Print();
@@ -408,11 +420,11 @@ namespace Main.Forms.POSManagementForms.Controls
                     //offset = offset + (int)fontHeight + 5;
 
 
-                    graphic.DrawString(string.Format("{0,-" + (ReceiptReportData.Settings.ItemLength + 6 + 9) + "}", "Address"), new Font(pageSetting.PageSetting.CashItemFontName, pageSetting.PageSetting.CashItemFontSize), new SolidBrush(Color.Black), startX, startY + offset);
+                    graphic.DrawString(string.Format("{0,-" + (ReceiptReportData.Settings.ItemLength + 6 + 9) + "}", $"Cashier: {ReceiptReportData.Header.Cashier}"), new Font(pageSetting.PageSetting.CashItemFontName, pageSetting.PageSetting.CashItemFontSize), new SolidBrush(Color.Black), startX, startY + offset);
                     graphic.DrawString(string.Format("{0,-" + "26".ToString() + "}", "Date: " + ReceiptReportData.Header.DateOfBill), new Font(pageSetting.PageSetting.CashItemFontName, pageSetting.PageSetting.CashItemFontSize), new SolidBrush(Color.Black), startX + 180, startY + offset);
                     offset = offset + (int)fontHeight + 3;
 
-
+                    graphic.DrawString(string.Format("{0,-" + (ReceiptReportData.Settings.ItemLength + 6 + 9) + "}", $"Number: {ReceiptReportData.Header.Number}"), new Font(pageSetting.PageSetting.CashItemFontName, pageSetting.PageSetting.CashItemFontSize), new SolidBrush(Color.Black), startX, startY + offset);
                     graphic.DrawString(string.Format("{0,-" + "26".ToString() + "}", "Time: " + ReceiptReportData.Header.TimeOfBill), new Font(pageSetting.PageSetting.CashItemFontName, pageSetting.PageSetting.CashItemFontSize), new SolidBrush(Color.Black), startX + 180, startY + offset);
                     offset = offset + (int)fontHeight + 3;
 

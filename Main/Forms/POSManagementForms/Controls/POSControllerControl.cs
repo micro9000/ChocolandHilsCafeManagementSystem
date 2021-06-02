@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using EntitiesShared;
 using Shared.CustomModels;
+using Shared;
 
 namespace Main.Forms.POSManagementForms.Controls
 {
@@ -21,13 +22,21 @@ namespace Main.Forms.POSManagementForms.Controls
         private readonly IPOSCommandController _iPOSCommandController;
         private readonly IPOSReadController _pOSReadController;
         private readonly POSState _pOSState;
+        private readonly OtherSettings _otherSettings;
+        private readonly Sessions _sessions;
 
-        public POSControllerControl(IPOSCommandController iPOSCommandController, IPOSReadController pOSReadController, POSState pOSState)
+        public POSControllerControl(IPOSCommandController iPOSCommandController, 
+                                    IPOSReadController pOSReadController, 
+                                    POSState pOSState,
+                                    OtherSettings otherSettings,
+                                    Sessions sessions)
         {
             InitializeComponent();
             _iPOSCommandController = iPOSCommandController;
             _pOSReadController = pOSReadController;
             _pOSState = pOSState;
+            _otherSettings = otherSettings;
+            _sessions = sessions;
         }
 
         public int CurrentTransactionTableNumber { get; set; }
@@ -336,7 +345,7 @@ namespace Main.Forms.POSManagementForms.Controls
 
                 if (saveResults.IsSuccess == true)
                 {
-                    FrmCheckOut frmCheckOut = new FrmCheckOut(_iPOSCommandController, _pOSState);
+                    FrmCheckOut frmCheckOut = new FrmCheckOut(_iPOSCommandController, _pOSState, _otherSettings, _sessions);
                     frmCheckOut.ShowDialog();
 
                     bool isCheckoutIsSuccessful = frmCheckOut.IsSuccessfulCheckout;

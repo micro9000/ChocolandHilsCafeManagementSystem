@@ -775,7 +775,6 @@ namespace Main.Forms.PayrollForms.Controls
                                                                         .GroupBy(x => x.OverTimeType);
 
                 var overTimeDaysWithRate = new Dictionary<StaticData.OverTimeTypes, OverTimeCounter>();
-
                 if (attendanceRecordWithOvertimeGrpByOTType != null)
                 {
                     foreach(var OTGrp in attendanceRecordWithOvertimeGrpByOTType)
@@ -792,6 +791,7 @@ namespace Main.Forms.PayrollForms.Controls
                                     OverTime = OTGrp.Sum(x => x.OverTimeMins).ToString() + "m",
                                     OverTimeTotalRate = OTGrp.Sum(x => x.OverTimeTotal),
                                 });
+
                     }
                 }
 

@@ -1,5 +1,6 @@
 ﻿using EntitiesShared.UserManagement;
 using EntitiesShared.UserManagement.Model;
+using Shared.CustomModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,6 +26,7 @@ namespace Main.Forms.UserManagementForms.Controls
         {
             SetDGVUsersFontAndColors();
             DisplayUsers();
+            DisplayRoles();
         }
 
         private void SetDGVUsersFontAndColors()
@@ -53,6 +55,16 @@ namespace Main.Forms.UserManagementForms.Controls
             get { return users; }
             set { users = value; }
         }
+
+
+        private List<RoleModel> roles = new List<RoleModel>();
+
+        public List<RoleModel> Roles
+        {
+            get { return roles; }
+            set { roles = value; }
+        }
+
 
         // Event handler for search employee
         public event EventHandler SearchByEmployeeNumber;
@@ -162,26 +174,21 @@ namespace Main.Forms.UserManagementForms.Controls
 
                 if (this.SelectedUserInfo.Role != null)
                 {
-                    if (this.SelectedUserInfo.Role.Role.RoleKey == UserRole.admin)
+                    for(int i=0; i< this.CBoxPermissions.Items.Count; i++)
                     {
-                        this.RBtnAdminUser.Checked = true;
-                        this.RBtnNormalUser.Checked = false;
-                    }
-                    else if (this.SelectedUserInfo.Role.Role.RoleKey == UserRole.normal)
-                    {
-                        this.RBtnAdminUser.Checked = false;
-                        this.RBtnNormalUser.Checked = true;
-                    }
-                    else
-                    {
-                        this.RBtnAdminUser.Checked = false;
-                        this.RBtnNormalUser.Checked = false;
+                        var item = this.CBoxPermissions.Items[i] as ComboboxItem;
+                        UserRole role = (UserRole)Enum.Parse(typeof(UserRole), item.Value.ToString());
+
+                        if (this.SelectedUserInfo.Role.Role.RoleKey == role)
+                        {
+                            this.CBoxPermissions.SelectedIndex = i;
+                            break;
+                        }
                     }
                 }
                 else
                 {
-                    this.RBtnAdminUser.Checked = false;
-                    this.RBtnNormalUser.Checked = false;
+                    this.CBoxPermissions.SelectedIndex = -1;
                 }
             }
         }
@@ -200,13 +207,7 @@ namespace Main.Forms.UserManagementForms.Controls
             this.CboxDisable.Checked = false;
             this.CboxDisable.Visible = false;
 
-            foreach (var control in this.GBoxPermissions.Controls)
-            {
-                if (control is RadioButton)
-                {
-                    ((RadioButton)control).Checked = false;
-                }
-            }
+            this.CBoxPermissions.SelectedIndex = -1;
 
             this.BtnCancelUpdate.Visible = false;
 
@@ -218,18 +219,26 @@ namespace Main.Forms.UserManagementForms.Controls
 
         private void BtnSaveUser_Click(object sender, EventArgs e)
         {
-            if (this.RBtnAdminUser.Checked == false && this.RBtnNormalUser.Checked == false)
+            //if (this.RBtnAdminUser.Checked == false && this.RBtnNormalUser.Checked == false)
+            //{
+            //    MessageBox.Show("Choose user permission", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //    return;
+            //}
+
+
+            var selectedUserPermission = this.CBoxPermissions.SelectedItem as ComboboxItem;
+            if (selectedUserPermission == null)
             {
                 MessageBox.Show("Choose user permission", "Permission", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
-            UserRole role = UserRole.normal;
+            UserRole role = (UserRole)Enum.Parse(typeof(UserRole), selectedUserPermission.Value.ToString());
 
-            if (this.RBtnAdminUser.Checked)
-            {
-                role = UserRole.admin;
-            }
+            //if (this.RBtnAdminUser.Checked)
+            //{
+            //    role = UserRole.admin;
+            //}
 
             UserToAddUpdate = new UserAddUpdateModel
             {
@@ -252,6 +261,22 @@ namespace Main.Forms.UserManagementForms.Controls
             }
         }
 
+
+        public void DisplayRoles()
+        {
+            this.CBoxPermissions.Items.Clear();
+            if (this.Roles != null)
+            {
+                ComboboxItem item;
+                foreach(var role in this.Roles)
+                {
+                    item = new ComboboxItem();
+                    item.Text = role.RoleKey.ToString();
+                    item.Value = role.RoleKey;
+                    this.CBoxPermissions.Items.Add(item);
+                }
+            }
+        }
 
         public void DisplayUsers()
         {

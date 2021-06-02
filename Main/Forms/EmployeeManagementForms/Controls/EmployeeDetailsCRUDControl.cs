@@ -40,13 +40,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        private List<GovernmentAgencyModel> govtAgencies;
+        //private List<GovernmentAgencyModel> govtAgencies;
 
-        public List<GovernmentAgencyModel> GovtAgencies
-        {
-            get { return govtAgencies; }
-            set { govtAgencies = value; }
-        }
+        //public List<GovernmentAgencyModel> GovtAgencies
+        //{
+        //    get { return govtAgencies; }
+        //    set { govtAgencies = value; }
+        //}
 
 
         public event EventHandler WorkShiftSelected;
@@ -235,17 +235,30 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             // Govt. agencies load in combo box
             this.CboxGovtAgencies.Items.Clear();
-            if (this.GovtAgencies != null)
+            Dictionary<StaticData.GovContributions, string> govtAgencies = new Dictionary<GovContributions, string>();
+            govtAgencies.Add(GovContributions.SSS, "SSS");
+            govtAgencies.Add(GovContributions.PhilHealth, "PhilHealth");
+            govtAgencies.Add(GovContributions.PagIbig, "PagIbig");
+
+            ComboboxItem govAgencyitem;
+            foreach (var govAgency in govtAgencies)
             {
-                ComboboxItem item;
-                foreach (var agency in this.GovtAgencies)
-                {
-                    item = new ComboboxItem();
-                    item.Text = agency.GovtAgency;
-                    item.Value = agency.Id;
-                    this.CboxGovtAgencies.Items.Add(item);
-                }
+                govAgencyitem = new ComboboxItem();
+                govAgencyitem.Text = govAgency.Value;
+                govAgencyitem.Value = (int)govAgency.Key;
+                this.CboxGovtAgencies.Items.Add(govAgencyitem);
             }
+            //if (this.GovtAgencies != null)
+            //{
+            //    
+            //    foreach (var agency in this.GovtAgencies)
+            //    {
+            //        item = new ComboboxItem();
+            //        item.Text = agency.GovtAgency;
+            //        item.Value = agency.Id;
+            //        this.CboxGovtAgencies.Items.Add(item);
+            //    }
+            //}
 
             // Work shifts load in combo box
             this.CBoxShiftList.Items.Clear();
@@ -452,7 +465,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     if (govtId.EmployeeGovtIdCard != null)
                     {
                         var row = new string[] {
-                            govtId.EmployeeGovtIdCard.GovernmentAgency != null ? govtId.EmployeeGovtIdCard.GovernmentAgency.GovtAgency : "",
+                            govtId.EmployeeGovtIdCard.GovtAgencyEnumVal.ToString(),
                             govtId.EmployeeGovtIdCard.EmployeeIdNumber,
                             (govtId.IsExisting ? "EXISTING" : "NEW"),
                             govtId.EmployeeGovtIdCard.IsDeleted ? "To Delete" : ""
@@ -646,10 +659,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                 if (selectedGovtAgency != null)
                 {
-                    long selectedGovtAgencyId = long.Parse(selectedGovtAgency.Value.ToString());
+                    var selectedGovtAgencyEnum = (StaticData.GovContributions)Enum.Parse(typeof(StaticData.GovContributions), selectedGovtAgency.Value.ToString());
 
                     var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
-                                            x.EmployeeGovtIdCard.GovtAgencyId == selectedGovtAgencyId).FirstOrDefault();
+                                            x.EmployeeGovtIdCard.GovtAgencyEnumVal == selectedGovtAgencyEnum).FirstOrDefault();
 
                     var tmpEmployeeGovtIdCard = new EmployeeGovtIdCardTempModel
                     {
@@ -661,12 +674,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                             // I assume that every transaction is add new employee, and we will wait for the employee number to generate
                             // I will add the employee number in EmployeeController.cs
                             EmployeeIdNumber = empGovtIdNumber,
-                            GovtAgencyId = selectedGovtAgencyId,
-                            GovernmentAgency = new GovernmentAgencyModel
-                            {
-                                // add temporary object to get the name or title of the govt. agency
-                                GovtAgency = selectedGovtAgency.Text.ToString()
-                            }
+                            GovtAgencyEnumVal = selectedGovtAgencyEnum,
+                            //GovernmentAgency = new GovernmentAgencyModel
+                            //{
+                            //    // add temporary object to get the name or title of the govt. agency
+                            //    GovtAgency = selectedGovtAgency.Text.ToString()
+                            //}
                         }
                     };
 
@@ -705,7 +718,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 if (selectedEmpGovtId != null)
                 {
                     var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
-                                            x.EmployeeGovtIdCard.GovtAgencyId == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId).FirstOrDefault();
+                                            x.EmployeeGovtIdCard.GovtAgencyEnumVal == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyEnumVal).FirstOrDefault();
 
                     if (addedNewGovtId != null)
                     {
@@ -734,7 +747,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 if (selectedEmpGovtId != null)
                 {
                     var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
-                                            x.EmployeeGovtIdCard.GovtAgencyId == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId).FirstOrDefault();
+                                            x.EmployeeGovtIdCard.GovtAgencyEnumVal == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyEnumVal).FirstOrDefault();
 
                     if (addedNewGovtId != null)
                     {
@@ -744,9 +757,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
                             if (govtAgencyItem != null)
                             {
-                                long selectedGovtAgencyId = long.Parse(govtAgencyItem.Value.ToString());
+                                var selectedGovtAgencyEnum = (StaticData.GovContributions)Enum.Parse(typeof(StaticData.GovContributions), govtAgencyItem.Value.ToString());
 
-                                if (addedNewGovtId.EmployeeGovtIdCard.GovtAgencyId == selectedGovtAgencyId)
+                                if (addedNewGovtId.EmployeeGovtIdCard.GovtAgencyEnumVal == selectedGovtAgencyEnum)
                                 {
                                     this.CboxGovtAgencies.SelectedIndex = i;
                                     break;
@@ -785,7 +798,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 if (selectedEmpGovtId != null)
                 {
                     var addedNewGovtId = EmployeeGovtIdCards.Where(x =>
-                                            x.EmployeeGovtIdCard.GovtAgencyId == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyId).FirstOrDefault();
+                                            x.EmployeeGovtIdCard.GovtAgencyEnumVal == selectedEmpGovtId.EmployeeGovtIdCard.GovtAgencyEnumVal).FirstOrDefault();
 
                     addedNewGovtId.EmployeeGovtIdCard.IsDeleted = false;
                     addedNewGovtId.EmployeeGovtIdCard.DeletedAt = DateTime.MinValue;

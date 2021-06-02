@@ -255,6 +255,16 @@ namespace Main.Forms.PayrollForms
                                 {
                                     if (empPayslipGen.SelectedGovContributions.Contains(StaticData.GovContributions.SSS))
                                     {
+                                        var empSSSId = employeeGovtIds.Where(x => x.GovtAgencyEnumVal == StaticData.GovContributions.SSS).FirstOrDefault();
+
+                                        if (empSSSId == null)
+                                        {
+                                            MessageBox.Show($"{empPayslipGen.Employee.FullName} - please provide SSS id number",
+                                            "Generate payslip", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            transaction.Dispose();
+                                            return;
+                                        }
+
                                         var sssMonthContribution = _sssContributionCalculator
                                                                     .GetEEandERSharedContribution(this.sssContributionTable, empMonthSalary);
 
@@ -269,6 +279,7 @@ namespace Main.Forms.PayrollForms
                                                 EmployeeNumber = employeeNumber,
                                                 Agency = StaticData.GovContributions.SSS.ToString(),
                                                 GovContributionEnumVal = StaticData.GovContributions.SSS,
+                                                IdNumber = empSSSId.EmployeeIdNumber,
                                                 EmployeeContribution = empContributionKinsenas,
                                                 EmployerContribution = emprContributionKinsenas
                                             });
@@ -280,6 +291,16 @@ namespace Main.Forms.PayrollForms
 
                                     if (empPayslipGen.SelectedGovContributions.Contains(StaticData.GovContributions.PhilHealth))
                                     {
+                                        var PhilHealthId = employeeGovtIds.Where(x => x.GovtAgencyEnumVal == StaticData.GovContributions.PhilHealth).FirstOrDefault();
+
+                                        if (PhilHealthId == null)
+                                        {
+                                            MessageBox.Show($"{empPayslipGen.Employee.FullName} - please provide PhilHealth id number",
+                                            "Generate payslip", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            transaction.Dispose();
+                                            return;
+                                        }
+
                                         var philHealthMonthlyContribution = _philHealthContributionCalculator
                                                                             .GetKinsenasContribution(this.PhilHealthContributionTable, empMonthSalary);
 
@@ -294,6 +315,7 @@ namespace Main.Forms.PayrollForms
                                                 EmployeeNumber = employeeNumber,
                                                 Agency = StaticData.GovContributions.PhilHealth.ToString(),
                                                 GovContributionEnumVal = StaticData.GovContributions.PhilHealth,
+                                                IdNumber = PhilHealthId.EmployeeIdNumber,
                                                 EmployeeContribution = empContributionKinsenas,
                                                 EmployerContribution = emprContributionKinsenas
                                             });
@@ -305,6 +327,17 @@ namespace Main.Forms.PayrollForms
 
                                     if (empPayslipGen.SelectedGovContributions.Contains(StaticData.GovContributions.PagIbig))
                                     {
+                                        var PagIbigId = employeeGovtIds.Where(x => x.GovtAgencyEnumVal == StaticData.GovContributions.PagIbig).FirstOrDefault();
+
+                                        if (PagIbigId == null)
+                                        {
+                                            MessageBox.Show($"{empPayslipGen.Employee.FullName} - please provide PagIbigId id number",
+                                            "Generate payslip", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            transaction.Dispose();
+                                            return;
+                                        }
+
+
                                         var pagIbigMonthlyContribution = _pagIbigContributionCalculator
                                                                         .GetMonthlyContribution(this.PagIbigContributionTable, empMonthSalary);
 
@@ -319,6 +352,7 @@ namespace Main.Forms.PayrollForms
                                                 EmployeeNumber = employeeNumber,
                                                 Agency = StaticData.GovContributions.PagIbig.ToString(),
                                                 GovContributionEnumVal = StaticData.GovContributions.PagIbig,
+                                                IdNumber = PagIbigId.EmployeeIdNumber,
                                                 EmployeeContribution = empContributionKinsenas,
                                                 EmployerContribution = emprContributionKinsenas
                                             });
@@ -414,7 +448,7 @@ namespace Main.Forms.PayrollForms
                                             Amount = overTimeTotalRate
                                         });
 
-                                        empTotalBenefits += ot.Value.TotalRate;
+                                        empTotalBenefits += overTimeTotalRate;
                                     }
                                 }
 

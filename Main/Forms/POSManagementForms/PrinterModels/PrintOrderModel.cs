@@ -24,6 +24,8 @@ namespace Main.Forms.POSManagementForms.PrinterModels
         public string Phone { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public string Cashier { get; set; }
+        public string Number { get; set; }
         public string BillNo { get; set; }
         public string DateOfBill { get; set; }
         public string TimeOfBill { get; set; }

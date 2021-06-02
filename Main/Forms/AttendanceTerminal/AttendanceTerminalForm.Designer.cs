@@ -278,19 +278,21 @@ namespace Main.Forms.AttendanceTerminal
             // DPickerTesting
             // 
             this.DPickerTesting.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.DPickerTesting.Location = new System.Drawing.Point(867, 33);
+            this.DPickerTesting.Location = new System.Drawing.Point(1006, 65);
             this.DPickerTesting.Name = "DPickerTesting";
             this.DPickerTesting.Size = new System.Drawing.Size(112, 29);
             this.DPickerTesting.TabIndex = 3;
+            this.DPickerTesting.Visible = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(752, 39);
+            this.label3.Location = new System.Drawing.Point(1006, 41);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(96, 21);
             this.label3.TabIndex = 11;
             this.label3.Text = "Testing Time";
+            this.label3.Visible = false;
             // 
             // tabControl1
             // 
@@ -332,7 +334,7 @@ namespace Main.Forms.AttendanceTerminal
             this.tabPage2.Location = new System.Drawing.Point(4, 30);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1065, 151);
+            this.tabPage2.Size = new System.Drawing.Size(1165, 151);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Search";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -392,7 +394,7 @@ namespace Main.Forms.AttendanceTerminal
             this.tabPage3.Location = new System.Drawing.Point(4, 30);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1065, 151);
+            this.tabPage3.Size = new System.Drawing.Size(1165, 151);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Edit Employee Attendance";
             this.tabPage3.UseVisualStyleBackColor = true;

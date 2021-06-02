@@ -172,39 +172,55 @@ SELECT * FROM Employees;
 -- ALTER TABLE Employees
 -- DROP FOREIGN KEY employees_ibfk_1;
 
-CREATE TABLE IF NOT EXISTS GovernmentAgencies(
+-- -------------------------------------------------------------------------------------- !!!!!!!!!!!!!!!!!! 
+-- -- June 2, update DROP this table, we don't need this table, we will use the enum in our code to add new govt. agency, since each agency requires different computation for contribution
+-- CREATE TABLE IF NOT EXISTS GovernmentAgencies(
+-- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     govtAgency VARCHAR(255),
+--     createdAt DATETIME DEFAULT NOW(),
+--     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+--     deletedAt DATETIME,
+--     isDeleted BOOLEAN DEFAULT False
+-- )ENGINE=INNODB;
+DROP TABLE GovernmentAgencies;
+
+-- -- execute these queries, we don't need these columns
+-- ALTER TABLE GovernmentAgencies
+-- DROP COLUMN erContribInPercent;
+-- ALTER TABLE GovernmentAgencies
+-- DROP COLUMN eeContribInPercent;
+
+-- SELECT * FROM GovernmentAgencies;
+
+-- -------------------------------------------------------------------------------------- !!!!!!!!!!!!!!!!!! -- June 2, update
+-- CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
+-- 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     employeeNumber CHAR(8),
+--     govtAgencyId BIGINT NOT NULL,
+--     employeeIdNumber VARCHAR(50) UNIQUE,
+--     -- employeeContribution DECIMAL(5,2),
+--     -- employerContribution DECIMAL(5,2),
+--     createdAt DATETIME DEFAULT NOW(),
+--     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+--     deletedAt DATETIME,
+--     isDeleted BOOLEAN DEFAULT False,
+--     FOREIGN KEY(govtAgencyId) REFERENCES GovernmentAgencies(id)
+-- )ENGINE=INNODB;
+-- -------------------------------------------------------------------------------------- !!!!!!!!!!!!!!!!!!
+DROP TABLE EmployeeGovtIdCards; -- DROP this table, we need to recreate this
+-- create this new table
+CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    govtAgency VARCHAR(255),
+    employeeNumber CHAR(8),
+    govtAgencyEnumVal INT,
+    employeeIdNumber VARCHAR(50),
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
--- execute these queries, we don't need these columns
-ALTER TABLE GovernmentAgencies
-DROP COLUMN erContribInPercent;
-ALTER TABLE GovernmentAgencies
-DROP COLUMN eeContribInPercent;
 
-
-
-SELECT * FROM GovernmentAgencies;
-
-
-CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
-	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    employeeNumber CHAR(8),
-    govtAgencyId BIGINT NOT NULL,
-    employeeIdNumber VARCHAR(50) UNIQUE,
-    -- employeeContribution DECIMAL(5,2),
-    -- employerContribution DECIMAL(5,2),
-    createdAt DATETIME DEFAULT NOW(),
-    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
-    deletedAt DATETIME,
-    isDeleted BOOLEAN DEFAULT False,
-    FOREIGN KEY(govtAgencyId) REFERENCES GovernmentAgencies(id)
-)ENGINE=INNODB;
 
 SELECT * FROM EmployeeGovtIdCards;
 
@@ -360,6 +376,7 @@ CREATE TABLE IF NOT EXISTS EmployeeCashAdvanceRequests(
 ALTER TABLE EmployeeCashAdvanceRequests
 ADD COLUMN cashReleaseDate DATE;
 
+SELECT * FROM EmployeeCashAdvanceRequests;
 
 
 CREATE TABLE IF NOT EXISTS EmployeePayslips(
@@ -478,6 +495,10 @@ CREATE TABLE IF NOT EXISTS EmployeeGovernmentContributions(
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
 
+-- -------------------------------------------------------------------------------------- !!!!!!!!!!!!!!!!!! -- June 2, update
+ALTER TABLE EmployeeGovernmentContributions
+ADD COLUMN IdNumber VARCHAR(50);
+
 SELECT * FROM EmployeeGovernmentContributions;
 
 -- --------------------------------------------------------------------------------------
@@ -508,6 +529,7 @@ CREATE TABLE IF NOT EXISTS Users(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM Users;
 
 CREATE TABLE IF NOT EXISTS UserActivityLog(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

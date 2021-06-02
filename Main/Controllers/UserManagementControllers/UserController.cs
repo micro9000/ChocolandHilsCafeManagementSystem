@@ -139,6 +139,14 @@ namespace Main.Controllers.UserManagementControllers
             return results;
         }
 
+        public List<RoleModel> GetAllRoles()
+        {
+            var results = new List<RoleModel>();
+            results = _roleData.GetAll();
+            return results;
+        }
+
+
         public EntityResult<UserModel> GetById(long userId)
         {
             var results = new EntityResult<UserModel>();
@@ -343,14 +351,14 @@ namespace Main.Controllers.UserManagementControllers
         {
             var result = new EntityResult<UserModel>();
             result.IsSuccess = false;
-            result.Messages.Add("User not found.");
+            result.Messages.Add("Login failed");
 
             try
             {
                 string hashPassword = _hashing.GetSHA512String(password);
                 var userInfo = _userData.GetUserByUserName(username);
 
-                if (userInfo != null)
+                if (userInfo != null && userInfo.IsActive)
                 {
                     if (userInfo.PasswordSha512.ToUpper() == hashPassword.ToUpper())
                     {

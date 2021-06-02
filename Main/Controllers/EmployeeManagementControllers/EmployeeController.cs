@@ -15,6 +15,7 @@ using EntitiesShared.EmployeeManagement;
 using System.Transactions;
 using Shared.CustomExceptions;
 using EntitiesShared.EmployeeManagement.Models;
+using DataAccess.Data.UserManagement.Contracts;
 
 namespace Main.Controllers.EmployeeManagementControllers
 {
@@ -27,6 +28,7 @@ namespace Main.Controllers.EmployeeManagementControllers
         private readonly IEmployeeGovtIdCardData _employeeGovtIdCardData;
         private readonly IWorkforceScheduleData _workforceScheduleData;
         private readonly IEmployeePositionData _employeePositionData;
+        private readonly IUserData _userData;
 
         public EmployeeController(ILogger<LoginFrm> logger,
                                 IMapper mapper,
@@ -34,7 +36,8 @@ namespace Main.Controllers.EmployeeManagementControllers
                                 IEmployeeData employeeData,
                                 IEmployeeGovtIdCardData employeeGovtIdCardData,
                                 IWorkforceScheduleData workforceScheduleData,
-                                IEmployeePositionData employeePositionData)
+                                IEmployeePositionData employeePositionData,
+                                IUserData userData)
         {
             _logger = logger;
             _mapper = mapper;
@@ -43,6 +46,7 @@ namespace Main.Controllers.EmployeeManagementControllers
             _employeeGovtIdCardData = employeeGovtIdCardData;
             _workforceScheduleData = workforceScheduleData;
             _employeePositionData = employeePositionData;
+            _userData = userData;
         }
 
 
@@ -463,6 +467,8 @@ namespace Main.Controllers.EmployeeManagementControllers
 
             if (employeeDetails != null)
             {
+                var employeeUserData = _userData.GetUserByUserName(employeeNumber);
+
                 employeeDetails.IsQuit = true;
                 employeeDetails.QuitDate = DateTime.Now;
 
@@ -471,6 +477,12 @@ namespace Main.Controllers.EmployeeManagementControllers
                     this._employeeData.Update(employeeDetails);
 
                     this._workforceScheduleData.MarkAsDeletedByEmployee(employeeNumber);
+
+                    if (employeeUserData != null)
+                    {
+                        employeeUserData.IsActive = false;
+                        this._userData.Update(employeeUserData);
+                    }
 
                     transaction.Complete();
                 }
@@ -487,6 +499,9 @@ namespace Main.Controllers.EmployeeManagementControllers
 
             if (employeeDetails != null)
             {
+
+                var employeeUserData = _userData.GetUserByUserName(employeeNumber);
+
                 employeeDetails.IsQuit = false;
 
                 using (var transaction = new TransactionScope())
@@ -494,6 +509,12 @@ namespace Main.Controllers.EmployeeManagementControllers
                     this._employeeData.Update(employeeDetails);
 
                     this._workforceScheduleData.UndoMarkAsDeletedByEmployee(employeeNumber);
+
+                    if (employeeUserData != null)
+                    {
+                        employeeUserData.IsActive = true;
+                        this._userData.Update(employeeUserData);
+                    }
 
                     transaction.Complete();
                 }

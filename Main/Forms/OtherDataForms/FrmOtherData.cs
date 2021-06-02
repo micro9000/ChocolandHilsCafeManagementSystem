@@ -20,14 +20,14 @@ namespace Main.Forms.OtherDataForms
     {
         private readonly ILogger<FrmOtherData> _logger;
         private readonly ILeaveTypeController _leaveTypeController;
-        private readonly IGovernmentController _governmentController;
+        //private readonly IGovernmentController _governmentController;
         private readonly IBranchInfoController _branchInfoController;
         private readonly IBranchData _branchData;
         private readonly IEmployeeData _employeeData;
 
         public FrmOtherData(ILogger<FrmOtherData> logger,
                                 ILeaveTypeController leaveTypeController,
-                                IGovernmentController governmentController,
+                                //IGovernmentController governmentController,
                                 IBranchInfoController branchInfoController,
                                 IBranchData branchData,
                                 IEmployeeData employeeData)
@@ -35,109 +35,109 @@ namespace Main.Forms.OtherDataForms
             InitializeComponent();
             _logger = logger;
             _leaveTypeController = leaveTypeController;
-            _governmentController = governmentController;
+            //_governmentController = governmentController;
             _branchInfoController = branchInfoController;
             _branchData = branchData;
             _employeeData = employeeData;
         }
 
-        private void ContextMenuGovernmentItems_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
+        //private void ContextMenuGovernmentItems_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        //{
 
-            ToolStripItem clickedItem = e.ClickedItem;
+        //    ToolStripItem clickedItem = e.ClickedItem;
 
-            if (clickedItem != null && clickedItem.Name == "GovernmentAgencieToolStripItem")
-            {
-                DisplayAddUpdateGovernmentAgency();
-            }
-        }
+        //    if (clickedItem != null && clickedItem.Name == "GovernmentAgencieToolStripItem")
+        //    {
+        //        DisplayAddUpdateGovernmentAgency();
+        //    }
+        //}
 
-        private void DisplayAddUpdateGovernmentAgency()
-        {
-            this.panelContainer.Controls.Clear();
+        //private void DisplayAddUpdateGovernmentAgency()
+        //{
+        //    this.panelContainer.Controls.Clear();
 
-            var governmentAgencyControlObj = new GovernmentAgenciesCRUDControl();
-            //leaveTypeControl.Dock = DockStyle.Fill;
-            governmentAgencyControlObj.Location = new Point(this.ClientSize.Width / 2 - governmentAgencyControlObj.Size.Width / 2, this.ClientSize.Height / 2 - governmentAgencyControlObj.Size.Height / 2);
-            governmentAgencyControlObj.Anchor = AnchorStyles.None;
+        //    var governmentAgencyControlObj = new GovernmentAgenciesCRUDControl();
+        //    //leaveTypeControl.Dock = DockStyle.Fill;
+        //    governmentAgencyControlObj.Location = new Point(this.ClientSize.Width / 2 - governmentAgencyControlObj.Size.Width / 2, this.ClientSize.Height / 2 - governmentAgencyControlObj.Size.Height / 2);
+        //    governmentAgencyControlObj.Anchor = AnchorStyles.None;
 
-            governmentAgencyControlObj.GovernmentAgencies = _governmentController.GetAll().Data;
-            governmentAgencyControlObj.GovernmentAgencySaved += HandleGovernmentAgencySaved;
-            governmentAgencyControlObj.PropertySelectedGovernmentAgencyIdToUpdateChanged += OnGovtAgencySelectedToUpdate;
-            governmentAgencyControlObj.PropertySelectedGovernmentAgencyIdToDeleteChanged += OnGovernmentAgencySelectToDelete;
+        //    governmentAgencyControlObj.GovernmentAgencies = _governmentController.GetAll().Data;
+        //    governmentAgencyControlObj.GovernmentAgencySaved += HandleGovernmentAgencySaved;
+        //    governmentAgencyControlObj.PropertySelectedGovernmentAgencyIdToUpdateChanged += OnGovtAgencySelectedToUpdate;
+        //    governmentAgencyControlObj.PropertySelectedGovernmentAgencyIdToDeleteChanged += OnGovernmentAgencySelectToDelete;
 
-            this.panelContainer.Controls.Add(governmentAgencyControlObj);
-        }
+        //    this.panelContainer.Controls.Add(governmentAgencyControlObj);
+        //}
 
 
-        private void HandleGovernmentAgencySaved (object sender, EventArgs e)
-        {
-            GovernmentAgenciesCRUDControl agencyControllerObj = (GovernmentAgenciesCRUDControl)sender;
+        //private void HandleGovernmentAgencySaved (object sender, EventArgs e)
+        //{
+        //    GovernmentAgenciesCRUDControl agencyControllerObj = (GovernmentAgenciesCRUDControl)sender;
 
-            var saveResults = _governmentController.Save(agencyControllerObj.GovernmentAgencyToAddUpdate, agencyControllerObj.IsSaveNew);
-            string resultMessages = "";
-            foreach (var msg in saveResults.Messages)
-            {
-                resultMessages += msg + "\n";
-            }
+        //    var saveResults = _governmentController.Save(agencyControllerObj.GovernmentAgencyToAddUpdate, agencyControllerObj.IsSaveNew);
+        //    string resultMessages = "";
+        //    foreach (var msg in saveResults.Messages)
+        //    {
+        //        resultMessages += msg + "\n";
+        //    }
 
-            if (saveResults.IsSuccess)
-            {
-                MessageBox.Show(resultMessages, "Save agency details", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                agencyControllerObj.ResetForm();
-                agencyControllerObj.GovernmentAgencies = _governmentController.GetAll().Data;
-                agencyControllerObj.DisplayGovernmentAgencyList();
-            }
-            else
-            {
-                MessageBox.Show(resultMessages, "Save agency details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+        //    if (saveResults.IsSuccess)
+        //    {
+        //        MessageBox.Show(resultMessages, "Save agency details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //        agencyControllerObj.ResetForm();
+        //        agencyControllerObj.GovernmentAgencies = _governmentController.GetAll().Data;
+        //        agencyControllerObj.DisplayGovernmentAgencyList();
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show(resultMessages, "Save agency details", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //    }
 
-        }
+        //}
 
-        private void OnGovtAgencySelectedToUpdate (object sender, PropertyChangedEventArgs e)
-        {
-            GovernmentAgenciesCRUDControl agencyControlObj = (GovernmentAgenciesCRUDControl)sender;
-            var selectedAgencyId = agencyControlObj.SelectedGovernmentAgencyIdToUpdate;
-            if (long.TryParse(selectedAgencyId, out long agencyId))
-            {
-                agencyControlObj.GovernmentAgencyToAddUpdate = _governmentController.GetById(agencyId).Data;
-                agencyControlObj.DisplaySelectedGovernmentAgency();
-            }
-        }
+        //private void OnGovtAgencySelectedToUpdate (object sender, PropertyChangedEventArgs e)
+        //{
+        //    GovernmentAgenciesCRUDControl agencyControlObj = (GovernmentAgenciesCRUDControl)sender;
+        //    var selectedAgencyId = agencyControlObj.SelectedGovernmentAgencyIdToUpdate;
+        //    if (long.TryParse(selectedAgencyId, out long agencyId))
+        //    {
+        //        agencyControlObj.GovernmentAgencyToAddUpdate = _governmentController.GetById(agencyId).Data;
+        //        agencyControlObj.DisplaySelectedGovernmentAgency();
+        //    }
+        //}
 
-        private void OnGovernmentAgencySelectToDelete(object sender, PropertyChangedEventArgs e)
-        {
-            GovernmentAgenciesCRUDControl agencyControlObj = (GovernmentAgenciesCRUDControl)sender;
-            var selectedAgencyId = agencyControlObj.SelectedGovernmentAgencyIdToDelete;
-            if (long.TryParse(selectedAgencyId, out long agencyId))
-            {
-                DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+        //private void OnGovernmentAgencySelectToDelete(object sender, PropertyChangedEventArgs e)
+        //{
+        //    GovernmentAgenciesCRUDControl agencyControlObj = (GovernmentAgenciesCRUDControl)sender;
+        //    var selectedAgencyId = agencyControlObj.SelectedGovernmentAgencyIdToDelete;
+        //    if (long.TryParse(selectedAgencyId, out long agencyId))
+        //    {
+        //        DialogResult res = MessageBox.Show("Are you sure, you want to delete this?", "Delete confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
-                if (res == DialogResult.OK)
-                {
-                    var deleteResults = _governmentController.Delete(agencyId);
+        //        if (res == DialogResult.OK)
+        //        {
+        //            var deleteResults = _governmentController.Delete(agencyId);
 
-                    string resultMessages = "";
-                    foreach (var msg in deleteResults.Messages)
-                    {
-                        resultMessages += msg + "\n";
-                    }
+        //            string resultMessages = "";
+        //            foreach (var msg in deleteResults.Messages)
+        //            {
+        //                resultMessages += msg + "\n";
+        //            }
 
-                    if (deleteResults.IsSuccess)
-                    {
-                        MessageBox.Show(resultMessages, "Delete Govt. agency", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        agencyControlObj.ResetForm();
-                        agencyControlObj.GovernmentAgencies = _governmentController.GetAll().Data;
-                        agencyControlObj.DisplayGovernmentAgencyList();
-                    }
-                    else
-                    {
-                        MessageBox.Show(resultMessages, "Delete Govt. agency", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                }
-            }
-        }
+        //            if (deleteResults.IsSuccess)
+        //            {
+        //                MessageBox.Show(resultMessages, "Delete Govt. agency", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //                agencyControlObj.ResetForm();
+        //                agencyControlObj.GovernmentAgencies = _governmentController.GetAll().Data;
+        //                agencyControlObj.DisplayGovernmentAgencyList();
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show(resultMessages, "Delete Govt. agency", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            }
+        //        }
+        //    }
+        //}
 
         // -----------------------------------------------------------------------------------------------------------------
         // -----------------------------------------------------------------------------------------------------------------

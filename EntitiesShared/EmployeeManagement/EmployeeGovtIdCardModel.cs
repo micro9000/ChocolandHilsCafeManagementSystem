@@ -20,22 +20,24 @@ namespace EntitiesShared.EmployeeManagement
         }
 
 
-        private long govtAgencyId;
+        public StaticData.GovContributions GovtAgencyEnumVal { get; set; }
 
-        public long GovtAgencyId
-        {
-            get { return govtAgencyId; }
-            set { govtAgencyId = value; }
-        }
+        //private long govtAgencyId;
 
-        private GovernmentAgencyModel governmentAgency;
-        [Write(false)]
-        [Computed]
-        public GovernmentAgencyModel GovernmentAgency
-        {
-            get { return governmentAgency; }
-            set { governmentAgency = value; }
-        }
+        //public long GovtAgencyId
+        //{
+        //    get { return govtAgencyId; }
+        //    set { govtAgencyId = value; }
+        //}
+
+        //private GovernmentAgencyModel governmentAgency;
+        //[Write(false)]
+        //[Computed]
+        //public GovernmentAgencyModel GovernmentAgency
+        //{
+        //    get { return governmentAgency; }
+        //    set { governmentAgency = value; }
+        //}
 
 
         private string employeeIdNumber;

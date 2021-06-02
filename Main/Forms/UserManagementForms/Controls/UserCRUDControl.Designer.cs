@@ -33,14 +33,13 @@ namespace Main.Forms.UserManagementForms.Controls
             this.label2 = new System.Windows.Forms.Label();
             this.DGVUsers = new System.Windows.Forms.DataGridView();
             this.GBoxLeaveTypeForm = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.CBoxPermissions = new System.Windows.Forms.ComboBox();
             this.CboxDisable = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.TBoxPassword = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TboxUserFullname = new System.Windows.Forms.TextBox();
-            this.GBoxPermissions = new System.Windows.Forms.GroupBox();
-            this.RBtnNormalUser = new System.Windows.Forms.RadioButton();
-            this.RBtnAdminUser = new System.Windows.Forms.RadioButton();
             this.label9 = new System.Windows.Forms.Label();
             this.BtnCancelUpdate = new System.Windows.Forms.Button();
             this.TboxUserName = new System.Windows.Forms.TextBox();
@@ -51,7 +50,6 @@ namespace Main.Forms.UserManagementForms.Controls
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVUsers)).BeginInit();
             this.GBoxLeaveTypeForm.SuspendLayout();
-            this.GBoxPermissions.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -91,12 +89,13 @@ namespace Main.Forms.UserManagementForms.Controls
             // 
             // GBoxLeaveTypeForm
             // 
+            this.GBoxLeaveTypeForm.Controls.Add(this.label5);
+            this.GBoxLeaveTypeForm.Controls.Add(this.CBoxPermissions);
             this.GBoxLeaveTypeForm.Controls.Add(this.CboxDisable);
             this.GBoxLeaveTypeForm.Controls.Add(this.label4);
             this.GBoxLeaveTypeForm.Controls.Add(this.TBoxPassword);
             this.GBoxLeaveTypeForm.Controls.Add(this.label3);
             this.GBoxLeaveTypeForm.Controls.Add(this.TboxUserFullname);
-            this.GBoxLeaveTypeForm.Controls.Add(this.GBoxPermissions);
             this.GBoxLeaveTypeForm.Controls.Add(this.label9);
             this.GBoxLeaveTypeForm.Controls.Add(this.BtnCancelUpdate);
             this.GBoxLeaveTypeForm.Controls.Add(this.TboxUserName);
@@ -109,6 +108,25 @@ namespace Main.Forms.UserManagementForms.Controls
             this.GBoxLeaveTypeForm.TabIndex = 54;
             this.GBoxLeaveTypeForm.TabStop = false;
             this.GBoxLeaveTypeForm.Text = "Add new user";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(14, 267);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(79, 20);
+            this.label5.TabIndex = 57;
+            this.label5.Text = "Permission";
+            // 
+            // CBoxPermissions
+            // 
+            this.CBoxPermissions.FormattingEnabled = true;
+            this.CBoxPermissions.Location = new System.Drawing.Point(14, 290);
+            this.CBoxPermissions.Name = "CBoxPermissions";
+            this.CBoxPermissions.Size = new System.Drawing.Size(265, 29);
+            this.CBoxPermissions.TabIndex = 56;
             // 
             // CboxDisable
             // 
@@ -167,39 +185,6 @@ namespace Main.Forms.UserManagementForms.Controls
             this.TboxUserFullname.Size = new System.Drawing.Size(265, 29);
             this.TboxUserFullname.TabIndex = 50;
             // 
-            // GBoxPermissions
-            // 
-            this.GBoxPermissions.Controls.Add(this.RBtnNormalUser);
-            this.GBoxPermissions.Controls.Add(this.RBtnAdminUser);
-            this.GBoxPermissions.Location = new System.Drawing.Point(14, 268);
-            this.GBoxPermissions.Name = "GBoxPermissions";
-            this.GBoxPermissions.Size = new System.Drawing.Size(265, 62);
-            this.GBoxPermissions.TabIndex = 49;
-            this.GBoxPermissions.TabStop = false;
-            this.GBoxPermissions.Text = "Permission";
-            // 
-            // RBtnNormalUser
-            // 
-            this.RBtnNormalUser.AutoSize = true;
-            this.RBtnNormalUser.Location = new System.Drawing.Point(135, 22);
-            this.RBtnNormalUser.Name = "RBtnNormalUser";
-            this.RBtnNormalUser.Size = new System.Drawing.Size(115, 25);
-            this.RBtnNormalUser.TabIndex = 50;
-            this.RBtnNormalUser.TabStop = true;
-            this.RBtnNormalUser.Text = "Normal user";
-            this.RBtnNormalUser.UseVisualStyleBackColor = true;
-            // 
-            // RBtnAdminUser
-            // 
-            this.RBtnAdminUser.AutoSize = true;
-            this.RBtnAdminUser.Location = new System.Drawing.Point(20, 22);
-            this.RBtnAdminUser.Name = "RBtnAdminUser";
-            this.RBtnAdminUser.Size = new System.Drawing.Size(108, 25);
-            this.RBtnAdminUser.TabIndex = 49;
-            this.RBtnAdminUser.TabStop = true;
-            this.RBtnAdminUser.Text = "Admin user";
-            this.RBtnAdminUser.UseVisualStyleBackColor = true;
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -218,7 +203,7 @@ namespace Main.Forms.UserManagementForms.Controls
             this.BtnCancelUpdate.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCancelUpdate.ForeColor = System.Drawing.Color.White;
             this.BtnCancelUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCancelUpdate.Location = new System.Drawing.Point(164, 349);
+            this.BtnCancelUpdate.Location = new System.Drawing.Point(164, 334);
             this.BtnCancelUpdate.Name = "BtnCancelUpdate";
             this.BtnCancelUpdate.Size = new System.Drawing.Size(115, 47);
             this.BtnCancelUpdate.TabIndex = 46;
@@ -246,7 +231,7 @@ namespace Main.Forms.UserManagementForms.Controls
             this.BtnSaveUser.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveUser.ForeColor = System.Drawing.Color.White;
             this.BtnSaveUser.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveUser.Location = new System.Drawing.Point(14, 349);
+            this.BtnSaveUser.Location = new System.Drawing.Point(14, 334);
             this.BtnSaveUser.Name = "BtnSaveUser";
             this.BtnSaveUser.Size = new System.Drawing.Size(115, 47);
             this.BtnSaveUser.TabIndex = 2;
@@ -303,15 +288,13 @@ namespace Main.Forms.UserManagementForms.Controls
             this.Controls.Add(this.GBoxLeaveTypeForm);
             this.Controls.Add(this.panel1);
             this.Name = "UserCRUDControl";
-            this.Size = new System.Drawing.Size(857, 557);
+            this.Size = new System.Drawing.Size(857, 552);
             this.Load += new System.EventHandler(this.UserCRUDControl_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVUsers)).EndInit();
             this.GBoxLeaveTypeForm.ResumeLayout(false);
             this.GBoxLeaveTypeForm.PerformLayout();
-            this.GBoxPermissions.ResumeLayout(false);
-            this.GBoxPermissions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -323,9 +306,6 @@ namespace Main.Forms.UserManagementForms.Controls
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView DGVUsers;
         private System.Windows.Forms.GroupBox GBoxLeaveTypeForm;
-        private System.Windows.Forms.GroupBox GBoxPermissions;
-        private System.Windows.Forms.RadioButton RBtnNormalUser;
-        private System.Windows.Forms.RadioButton RBtnAdminUser;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button BtnCancelUpdate;
         private System.Windows.Forms.Button BtnSaveUser;
@@ -338,5 +318,7 @@ namespace Main.Forms.UserManagementForms.Controls
         private System.Windows.Forms.TextBox TBoxPassword;
         private System.Windows.Forms.CheckBox CboxDisable;
         private System.Windows.Forms.Button BtnClearSearchResult;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox CBoxPermissions;
     }
 }

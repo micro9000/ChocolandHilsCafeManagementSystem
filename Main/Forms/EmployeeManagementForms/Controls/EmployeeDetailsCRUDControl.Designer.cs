@@ -178,7 +178,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.EmployeeBasicInfo.Controls.Add(this.TbxEmployeeNumberDisplayOnly);
             this.EmployeeBasicInfo.Controls.Add(this.CBoxPositions);
             this.EmployeeBasicInfo.Controls.Add(this.CBoxBranches);
-            this.EmployeeBasicInfo.Controls.Add(this.BtnSaveEmployee);
             this.EmployeeBasicInfo.Controls.Add(this.groupBox1);
             this.EmployeeBasicInfo.Controls.Add(this.groupBox2);
             this.EmployeeBasicInfo.Controls.Add(this.LblShiftWorkingDays);
@@ -254,7 +253,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnSaveEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnSaveEmployee.ForeColor = System.Drawing.Color.White;
             this.BtnSaveEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveEmployee.Location = new System.Drawing.Point(913, 430);
+            this.BtnSaveEmployee.Location = new System.Drawing.Point(905, 624);
             this.BtnSaveEmployee.Name = "BtnSaveEmployee";
             this.BtnSaveEmployee.Size = new System.Drawing.Size(93, 48);
             this.BtnSaveEmployee.TabIndex = 44;
@@ -1499,6 +1498,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.TabControlSaveEmployeeDetails);
             this.Controls.Add(this.BtnCancelUpdateEmployee);
+            this.Controls.Add(this.BtnSaveEmployee);
             this.Name = "EmployeeDetailsCRUDControl";
             this.Size = new System.Drawing.Size(1115, 687);
             this.Load += new System.EventHandler(this.EmployeeDetailsCRUDControl_Load);

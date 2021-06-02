@@ -21,5 +21,6 @@ namespace Main.Controllers.UserManagementControllers
         EntityResult<UserModel> GetById(long userId);
         EntityResult<UserModel> GetByUsername(string userName);
         ListOfEntityResult<UserModel> GetAll();
+        List<RoleModel> GetAllRoles();
     }
 }

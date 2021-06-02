@@ -47,6 +47,7 @@ namespace Main.Forms.UserManagementForms
             userCRUDControlObj.Anchor = AnchorStyles.None;
 
             userCRUDControlObj.Users = _userController.GetAll().Data;
+            userCRUDControlObj.Roles = _userController.GetAllRoles();
 
             userCRUDControlObj.SavedUserInfo += HandleSavedUser;
             userCRUDControlObj.DeleteEmployeeOnSelect += HandleDeleteUser;

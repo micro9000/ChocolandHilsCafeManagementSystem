@@ -92,6 +92,24 @@ namespace Main
                 this.LblCurrentUserName.Text = _sessions.CurrentLoggedInUser.FullName;
                 this.LblCurrentUserRoles.Text = _sessions.CurrentLoggedInUser.Role.Role.RoleKey.ToString();
 
+                if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.cashier)
+                {
+                    this.BtnEmployeeManagementMenuItem.Enabled = false;
+                    this.BtnPayrollSystem.Enabled = false;
+                    this.BtnInventorySystem.Enabled = false;
+                    this.BtnSalesReportSystem.Enabled = false;
+                    this.BtnUserMgnment.Enabled = false;
+                    this.BtnOtherData.Enabled = false;
+                }
+
+                if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.manager)
+                {
+                    this.BtnEmployeeManagementMenuItem.Enabled = false;
+                    this.BtnPayrollSystem.Enabled = false;
+                    this.BtnInventorySystem.Enabled = false;
+                    this.BtnOtherData.Enabled = false;
+                }
+
                 if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.normal)
                 {
                     this.BtnEmployeeManagementMenuItem.Enabled = false;

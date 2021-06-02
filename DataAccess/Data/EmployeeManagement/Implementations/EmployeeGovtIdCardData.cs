@@ -29,10 +29,10 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
             var idCards = this.GetAll(query, new { EmployeeNumber = employeeNumber });
 
-            foreach(var idCard in idCards)
-            {
-                idCard.GovernmentAgency = _governmentAgencyData.Get(idCard.GovtAgencyId);
-            }
+            //foreach(var idCard in idCards)
+            //{
+            //    idCard.GovernmentAgency = _governmentAgencyData.Get(idCard.GovtAgencyId);
+            //}
 
             return idCards;
         }
@@ -44,10 +44,10 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
             var idCards = this.GetAll(query, new { GovtAgencyId = govtAgencyId });
 
-            foreach (var idCard in idCards)
-            {
-                idCard.GovernmentAgency = _governmentAgencyData.Get(idCard.GovtAgencyId);
-            }
+            //foreach (var idCard in idCards)
+            //{
+            //    idCard.GovernmentAgency = _governmentAgencyData.Get(idCard.GovtAgencyId);
+            //}
 
             return idCards;
         }
@@ -59,7 +59,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
 
             var idCard = this.GetFirstOrDefault(query, new { EmployeeIdNumber = employeeIdNumber });
 
-            idCard.GovernmentAgency = _governmentAgencyData.Get(idCard.GovtAgencyId);
+            //idCard.GovernmentAgency = _governmentAgencyData.Get(idCard.GovtAgencyId);
 
             return idCard;
         }

@@ -30,6 +30,8 @@ namespace EntitiesShared.PayrollManagement
 
         public StaticData.GovContributions GovContributionEnumVal { get; set; }
 
+        public string IdNumber { get; set; }
+
         public decimal EmployeeContribution { get; set; }
 
         public decimal EmployerContribution { get; set; }

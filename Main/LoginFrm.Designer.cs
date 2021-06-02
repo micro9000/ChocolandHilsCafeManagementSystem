@@ -70,7 +70,7 @@ namespace Main
             this.TbxPassword.PasswordChar = '*';
             this.TbxPassword.Size = new System.Drawing.Size(257, 29);
             this.TbxPassword.TabIndex = 2;
-            this.TbxPassword.Text = "admin123";
+            this.TbxPassword.Text = "admin";
             this.TbxPassword.UseSystemPasswordChar = true;
             this.TbxPassword.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TbxPassword_KeyUp);
             // 

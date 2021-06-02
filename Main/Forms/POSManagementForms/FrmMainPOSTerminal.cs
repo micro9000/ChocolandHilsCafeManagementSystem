@@ -40,6 +40,7 @@ namespace Main.Forms.POSManagementForms
         private readonly IStoreTableData _storeTableData;
         private readonly IIngredientInventoryManager _ingredientInventoryManager;
         private readonly IProductIngredientData _productIngredientData;
+        private readonly Sessions _sessions;
         private readonly OtherSettings _otherSettings;
 
         public FrmMainPOSTerminal(IProductData productData,
@@ -54,7 +55,8 @@ namespace Main.Forms.POSManagementForms
                                 IOptions<OtherSettings> otherSettings,
                                 IStoreTableData storeTableData,
                                 IIngredientInventoryManager ingredientInventoryManager,
-                                IProductIngredientData productIngredientData)
+                                IProductIngredientData productIngredientData,
+                                Sessions sessions)
         {
             InitializeComponent();
             _productData = productData;
@@ -69,6 +71,7 @@ namespace Main.Forms.POSManagementForms
             _storeTableData = storeTableData;
             _ingredientInventoryManager = ingredientInventoryManager;
             _productIngredientData = productIngredientData;
+            _sessions = sessions;
             _otherSettings = otherSettings.Value;
         }
 
@@ -144,7 +147,7 @@ namespace Main.Forms.POSManagementForms
         public void InitializePOSControllerControl()
         {
             this.LeftSideSplitInnerContainer.Panel2.Controls.Clear();
-            this.pOSControllerControl = new(_iPOSCommandController, _pOSReadController, _pOSState);
+            this.pOSControllerControl = new(_iPOSCommandController, _pOSReadController, _pOSState, _otherSettings, _sessions);
             //pOSControllerControl.Anchor = AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
             this.pOSControllerControl.Dock = DockStyle.Fill;
 

@@ -135,6 +135,7 @@ namespace PDFReportGenerators
                         <thead>
                             <tr>
                                 <th>Agency</th>
+                                <th>Emp. Id #</th>
                                 <th>EE contribution</th>
                                 <th>ER contribution</th>
                                 <th>Total</th>
@@ -150,6 +151,7 @@ namespace PDFReportGenerators
                     {
                         contributionsSb.Append($@"<tr>
                                     <td>{contrib.GovContributionEnumVal}</td>
+                                    <td>{contrib.IdNumber}</td>
                                     <td>{contrib.EmployeeContribution}</td>
                                     <td>{contrib.EmployerContribution}</td>
                                     <td>{contrib.TotalContribution}</td>

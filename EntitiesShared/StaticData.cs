@@ -11,7 +11,9 @@ namespace EntitiesShared
         public enum UserRole
         {
             normal,
-            admin
+            admin,
+            cashier,
+            manager
         }
 
         public enum UOM
@@ -105,6 +107,9 @@ namespace EntitiesShared
             Cancelled
         }
 
+
+        // reminder: if you add new item here, please update the EmployeeDetailsCRUDControl to add the item in dictionary
+        // Dictionary<StaticData.GovContributions, string> govtAgencies
         public enum GovContributions
         {
             SSS,

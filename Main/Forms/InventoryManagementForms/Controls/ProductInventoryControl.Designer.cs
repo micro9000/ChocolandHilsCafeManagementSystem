@@ -112,6 +112,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.DGVComboMealExistingProducts = new System.Windows.Forms.DataGridView();
             this.ProductImageBrowser = new System.Windows.Forms.OpenFileDialog();
             this.ComboMealImageBrowser = new System.Windows.Forms.OpenFileDialog();
+            this.LblTotalCost2 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.MainTabProdCategory.SuspendLayout();
@@ -458,6 +460,8 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             // TabItemEnterIngredientAmount
             // 
+            this.TabItemEnterIngredientAmount.Controls.Add(this.LblTotalCost2);
+            this.TabItemEnterIngredientAmount.Controls.Add(this.label21);
             this.TabItemEnterIngredientAmount.Controls.Add(this.label16);
             this.TabItemEnterIngredientAmount.Controls.Add(this.BtnCompute);
             this.TabItemEnterIngredientAmount.Controls.Add(this.DGVSelectedIngredients);
@@ -486,7 +490,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             this.BtnCompute.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnCompute.ForeColor = System.Drawing.Color.White;
             this.BtnCompute.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCompute.Location = new System.Drawing.Point(527, 14);
+            this.BtnCompute.Location = new System.Drawing.Point(609, 8);
             this.BtnCompute.Name = "BtnCompute";
             this.BtnCompute.Size = new System.Drawing.Size(91, 34);
             this.BtnCompute.TabIndex = 57;
@@ -1146,6 +1150,28 @@ namespace Main.Forms.InventoryManagementForms.Controls
             // 
             this.ComboMealImageBrowser.FileName = "openFileDialog1";
             // 
+            // LblTotalCost2
+            // 
+            this.LblTotalCost2.AutoSize = true;
+            this.LblTotalCost2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LblTotalCost2.ForeColor = System.Drawing.Color.Black;
+            this.LblTotalCost2.Location = new System.Drawing.Point(522, 19);
+            this.LblTotalCost2.Name = "LblTotalCost2";
+            this.LblTotalCost2.Size = new System.Drawing.Size(15, 17);
+            this.LblTotalCost2.TabIndex = 60;
+            this.LblTotalCost2.Text = "0";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label21.ForeColor = System.Drawing.Color.Black;
+            this.label21.Location = new System.Drawing.Point(447, 19);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(74, 17);
+            this.label21.TabIndex = 59;
+            this.label21.Text = "Total Cost:";
+            // 
             // ProductInventoryControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1288,5 +1314,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
         private System.Windows.Forms.CheckBox CkBoxComboMealAutoGen;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox TboxComboMealBarcodeLbl;
+        private System.Windows.Forms.Label LblTotalCost2;
+        private System.Windows.Forms.Label label21;
     }
 }

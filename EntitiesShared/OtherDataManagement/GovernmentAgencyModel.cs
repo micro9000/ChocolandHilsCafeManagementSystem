@@ -17,5 +17,7 @@ namespace EntitiesShared.OtherDataManagement
             get { return govtAgency; }
             set { govtAgency = value; }
         }
+
+        //public StaticData.GovContributions GovtAgencyContribId { get; set; }
     }
 }

@@ -874,6 +874,7 @@ namespace Main.Forms.InventoryManagementForms.Controls
             }
 
             this.LblTotalCostFromAddingNewProduct.Text = totalCost.ToString("0.##");
+            this.LblTotalCost2.Text = totalCost.ToString("0.##");
         }
 
         private void BtnCompute_Click(object sender, EventArgs e)
