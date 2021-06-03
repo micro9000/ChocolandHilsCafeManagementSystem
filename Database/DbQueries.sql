@@ -347,6 +347,21 @@ CREATE TABLE IF NOT EXISTS EmployeeBenefits(
 
 SELECT * FROM EmployeeBenefits;
 
+CREATE TABLE IF NOT EXISTS SpecificEmployeeBenefits(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    employeeNumber CHAR(8),
+    employeeName VARCHAR(50),
+    benefitTitle VARCHAR(255),
+    amount DECIMAL(9,2),
+    isPaid BOOLEAN DEFAULT False,
+    paymentDate DATETIME,
+    payslipId BIGINT,
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
 -- possible enhancement:
 -- add employee type that will use to add conditional/special deduction
 -- certain employees can have special deduction
@@ -354,6 +369,21 @@ CREATE TABLE IF NOT EXISTS EmployeeDeductions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     deductionTitle VARCHAR(255),
     amount DECIMAL(9,2),
+    createdAt DATETIME DEFAULT NOW(),
+    updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
+    deletedAt DATETIME,
+    isDeleted BOOLEAN DEFAULT False
+)ENGINE=INNODB;
+
+CREATE TABLE IF NOT EXISTS SpecificEmployeeDeductions(
+	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    employeeNumber CHAR(8),
+    employeeName VARCHAR(50),
+    deductionTitle VARCHAR(255),
+    amount DECIMAL(9,2),
+    isDeducted BOOLEAN DEFAULT False,
+    deductedDate DATETIME,
+    payslipId BIGINT,
     createdAt DATETIME DEFAULT NOW(),
     updatedAt DATETIME DEFAULT NOW() ON UPDATE NOW(),
     deletedAt DATETIME,

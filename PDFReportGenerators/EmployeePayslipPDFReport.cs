@@ -114,14 +114,14 @@ namespace PDFReportGenerators
                             $@"<tr> 
                                     <td>Less Late</td> 
                                     <td>{payslip.Late}</td> 
-                                    <td>{payslip.LateTotalDeduction}</td> 
+                                    <td>-{payslip.LateTotalDeduction}</td> 
                             </tr>" : "";
 
             string underTimeDeductions = payslip.UnderTimeTotalDeduction > 0 ?
                             $@"<tr> 
                                     <td>Less Undertime</td> 
                                     <td>{payslip.UnderTime}</td> 
-                                    <td>{payslip.UnderTimeTotalDeduction}</td> 
+                                    <td>-{payslip.UnderTimeTotalDeduction}</td> 
                             </tr>" : "";
 
 
@@ -155,7 +155,7 @@ namespace PDFReportGenerators
                 {
                     deductions.Append($@"<tr> 
                                     <td>{contrib.GovContributionEnumVal}</td> 
-                                    <td>{contrib.EmployeeContribution}</td> 
+                                    <td>-{contrib.EmployeeContribution}</td> 
                             </tr>");
                 }
             }

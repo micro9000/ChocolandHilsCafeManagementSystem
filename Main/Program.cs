@@ -149,10 +149,12 @@ namespace Main
             services.AddTransient<IHolidayData, HolidayData>();
             services.AddTransient<IEmployeeAttendanceData, EmployeeAttendanceData>();
             services.AddTransient<IEmployeeBenefitData, EmployeeBenefitData>();
+            services.AddTransient<IEmployeeDeductionData, EmployeeDeductionData>();
+            services.AddTransient<ISpecificEmployeeBenefitData, SpecificEmployeeBenefitData>();
+            services.AddTransient<ISpecificEmployeeDeductionData, SpecificEmployeeDeductionData>();
             services.AddTransient<IBranchData, BranchData>();
             services.AddTransient<IEmployeePositionData, EmployeePositionData>();
             services.AddTransient<IEmployeeData, EmployeeData>();
-            services.AddTransient<IEmployeeDeductionData, EmployeeDeductionData>();
             services.AddTransient<IEmployeeLeaveData, EmployeeLeaveData>();
             services.AddTransient<IEmployeePayslipBenefitData, EmployeePayslipBenefitData>();
             services.AddTransient<IEmployeePayslipData, EmployeePayslipData>();

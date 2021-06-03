@@ -7,6 +7,8 @@ UPDATES
 (request to issue a payslip for the period from [Date to Date]) (same parin
 sa cash advance format.
 
+
+
 4. Payroll
 
 - sabi ng adviser ko nakakalito raw tingnan yung payroll kasi ang daming numbers haha.
@@ -14,6 +16,8 @@ bale sa deductions or mga less ay lagyan raw ng minus(-) before the para ng amou
 para madali ma distinguish.
 May suggestion rin sya sa pagkaka arrange ng mga data and columns.
 (magsesend ako ng pic for this.
+
+
 
 Payroll Generator
 

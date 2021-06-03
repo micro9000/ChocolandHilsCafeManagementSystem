@@ -49,7 +49,7 @@ namespace Main.Forms.PayrollForms.Controls
                 if (Payslip.LateTotalDeduction > 0)
                 {
                     var lessLate = new ListViewItem(new string[] {
-                        "Less Late", Payslip.Late, Payslip.LateTotalDeduction.ToString()
+                        "Less Late", Payslip.Late, $"-{Payslip.LateTotalDeduction}"
                     });
                     this.LVPayslipEarnings.Items.Add(lessLate);
                 }
@@ -57,7 +57,7 @@ namespace Main.Forms.PayrollForms.Controls
                 if (Payslip.UnderTimeTotalDeduction > 0)
                 {
                     var underTime = new ListViewItem(new string[] {
-                        "Less Undertime", Payslip.UnderTime, Payslip.UnderTimeTotalDeduction.ToString()
+                        "Less Undertime", Payslip.UnderTime, $"-{Payslip.UnderTimeTotalDeduction}"
                     });
                     this.LVPayslipEarnings.Items.Add(underTime);
                 }
@@ -83,7 +83,7 @@ namespace Main.Forms.PayrollForms.Controls
                     foreach (var contrib in this.Payslip.EmployeeGovContributions)
                     {
                         var contribItem = new ListViewItem(new string[] {
-                            contrib.GovContributionEnumVal.ToString(), contrib.EmployeeContribution.ToString()
+                            contrib.GovContributionEnumVal.ToString(), $"-{contrib.EmployeeContribution}"
                         });
                         this.LVPayslipDeductions.Items.Add(contribItem);
                     }
