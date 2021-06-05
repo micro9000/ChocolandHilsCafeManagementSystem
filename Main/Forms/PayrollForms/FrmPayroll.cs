@@ -40,6 +40,8 @@ namespace Main.Forms.PayrollForms
         private readonly IEmployeePayslipData _employeePayslipData;
         private readonly IEmployeePayslipBenefitData _employeePayslipBenefitData;
         private readonly IEmployeePayslipDeductionData _employeePayslipDeductionData;
+        private readonly ISpecificEmployeeBenefitData _specificEmployeeBenefitData;
+        private readonly ISpecificEmployeeDeductionData _specificEmployeeDeductionData;
         private readonly IEmployeeGovernmentContributionData _employeeGovernmentContributionData;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
@@ -65,6 +67,8 @@ namespace Main.Forms.PayrollForms
                            IEmployeePayslipData employeePayslipData,
                            IEmployeePayslipBenefitData employeePayslipBenefitData,
                            IEmployeePayslipDeductionData employeePayslipDeductionData,
+                           ISpecificEmployeeBenefitData specificEmployeeBenefitData,
+                           ISpecificEmployeeDeductionData specificEmployeeDeductionData,
                            IEmployeeGovernmentContributionData employeeGovernmentContributionData,
                            DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                            IEmployeePayslipPDFReport employeePayslipPDFReport,
@@ -91,6 +95,8 @@ namespace Main.Forms.PayrollForms
             _employeePayslipData = employeePayslipData;
             _employeePayslipBenefitData = employeePayslipBenefitData;
             _employeePayslipDeductionData = employeePayslipDeductionData;
+            _specificEmployeeBenefitData = specificEmployeeBenefitData;
+            _specificEmployeeDeductionData = specificEmployeeDeductionData;
             _employeeGovernmentContributionData = employeeGovernmentContributionData;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _employeePayslipPDFReport = employeePayslipPDFReport;
@@ -217,6 +223,9 @@ namespace Main.Forms.PayrollForms
                         {
                             string employeeNumber = empPayslipGen.Employee.EmployeeNumber;
 
+                            var currEmpSpecificBenefits = _specificEmployeeBenefitData.GetAllByEmployeeAndSubmissionDateRange(employeeNumber, empPayslipGen.ShiftStartDate, empPayslipGen.ShiftEndDate);
+                            var currEmpSpecificDeductions = _specificEmployeeDeductionData.GetAllByEmployeeAndSubmissionDateRange(employeeNumber, empPayslipGen.ShiftStartDate, empPayslipGen.ShiftEndDate);
+
                             var newPayslipRec = new EmployeePayslipModel
                             {
                                 EmployeeNumber = employeeNumber,
@@ -248,9 +257,7 @@ namespace Main.Forms.PayrollForms
                                 decimal employeeGovtContributionTotal = 0;
 
                                 // loop thru govt. agencies and retrieve employee and employer govt. id contribution
-
                                 decimal empMonthSalary = empPayslipGen.Employee.Position.MonthlyRate;
-
                                 if (empPayslipGen.SelectedGovContributions != null && empPayslipGen.SelectedGovContributions.Count > 0)
                                 {
                                     if (empPayslipGen.SelectedGovContributions.Contains(StaticData.GovContributions.SSS))
@@ -466,6 +473,20 @@ namespace Main.Forms.PayrollForms
                                     empTotalBenefits += benefit.Amount;
                                 }
 
+                                // Specific Benefits
+                                foreach (var benefit in currEmpSpecificBenefits)
+                                {
+                                    _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                    {
+                                        PayslipId = payslipId,
+                                        EmployeeNumber = employeeNumber,
+                                        BenefitTitle = benefit.BenefitTitle,
+                                        Amount = benefit.Amount
+                                    });
+
+                                    empTotalBenefits += benefit.Amount;
+                                }
+
 
                                 // Sales bonus here
                                 int salesBonusNumberOfDays = empPayslipGen.SelectedSalesReport.Count;
@@ -516,6 +537,20 @@ namespace Main.Forms.PayrollForms
                                     empTotalDeductions += deduction.Amount;
                                 }
 
+                                // Specific Deductions
+                                foreach (var deduction in currEmpSpecificDeductions)
+                                {
+                                    _employeePayslipDeductionData.Add(new EmployeePayslipDeductionModel
+                                    {
+                                        PayslipId = payslipId,
+                                        EmployeeNumber = employeeNumber,
+                                        DeductionTitle = deduction.DeductionTitle,
+                                        Amount = deduction.Amount
+                                    });
+
+                                    empTotalDeductions += deduction.Amount;
+                                }
+
                                 // Benefits
                                 empTotalIncome += empTotalBenefits;
 
@@ -535,6 +570,23 @@ namespace Main.Forms.PayrollForms
 
                                 _employeePayslipData.Update(payslipData);
 
+                                // Specific benefits
+                                currEmpSpecificBenefits.ForEach(x =>
+                                {
+                                    x.IsPaid = true;
+                                    x.PaymentDate = DateTime.Now;
+                                    x.PayslipId = payslipId;
+                                });
+                                _specificEmployeeBenefitData.UpdateRange(currEmpSpecificBenefits);
+
+                                // Specific deductions
+                                currEmpSpecificDeductions.ForEach(x =>
+                                {
+                                    x.IsDeducted = true;
+                                    x.DeductedDate = DateTime.Now;
+                                    x.PayslipId = payslipId;
+                                });
+                                _specificEmployeeDeductionData.UpdateRange(currEmpSpecificDeductions);
 
                                 // Mark employee leave as paid
                                 empPayslipGen.EmployeeLeaves.ForEach(x =>
@@ -748,6 +800,26 @@ namespace Main.Forms.PayrollForms
                         {
                             var attendanceRecordUnderPayslip = _employeeAttendanceData.GetEmployeeAttendanceByPayslipId(payslip.EmployeeNumber, payslip.Id);
 
+                            // Specific benefits
+                            var currEmpSpecificBenefits = _specificEmployeeBenefitData.GetAllByEmployeeAndPayslipId(payslip.EmployeeNumber, payslip.Id);
+                            currEmpSpecificBenefits.ForEach(x =>
+                            {
+                                x.IsPaid = false;
+                                x.PaymentDate = DateTime.MinValue;
+                                x.PayslipId = 0;
+                            });
+                            _specificEmployeeBenefitData.UpdateRange(currEmpSpecificBenefits);
+
+                            // Specific deductions
+                            var currEmpSpecificDeductions = _specificEmployeeDeductionData.GetAllByEmployeeAndPayslipId(payslip.EmployeeNumber, payslip.Id);
+                            currEmpSpecificDeductions.ForEach(x =>
+                            {
+                                x.IsDeducted = false;
+                                x.DeductedDate = DateTime.MinValue;
+                                x.PayslipId = 0;
+                            });
+                            _specificEmployeeDeductionData.UpdateRange(currEmpSpecificDeductions);
+
                             attendanceRecordUnderPayslip.ForEach(x =>
                             {
                                 x.IsPaid = false;
@@ -799,6 +871,33 @@ namespace Main.Forms.PayrollForms
                     using (var transaction = new TransactionScope())
                     {
                         var attendanceRecordUnderPayslip = _employeeAttendanceData.GetEmployeeAttendanceByPayslipId(employeePayslips.EmployeeNumber, employeePayslips.Id);
+
+                        // Specific benefits
+                        var currEmpSpecificBenefits = _specificEmployeeBenefitData.GetAllByEmployeeAndPayslipId(employeePayslips.EmployeeNumber, employeePayslips.Id);
+                        currEmpSpecificBenefits.ForEach(x =>
+                        {
+                            x.IsPaid = false;
+                            x.PaymentDate = DateTime.MinValue;
+                            x.PayslipId = 0;
+                        });
+                        _specificEmployeeBenefitData.UpdateRange(currEmpSpecificBenefits);
+
+                        // Specific deductions
+                        var currEmpSpecificDeductions = _specificEmployeeDeductionData.GetAllByEmployeeAndPayslipId(employeePayslips.EmployeeNumber, employeePayslips.Id);
+                        currEmpSpecificDeductions.ForEach(x =>
+                        {
+                            x.IsDeducted = false;
+                            x.DeductedDate = DateTime.MinValue;
+                            x.PayslipId = 0;
+                        });
+                        _specificEmployeeDeductionData.UpdateRange(currEmpSpecificDeductions);
+
+                        attendanceRecordUnderPayslip.ForEach(x =>
+                        {
+                            x.IsPaid = false;
+                            x.PayslipId = 0;
+                        });
+
 
                         attendanceRecordUnderPayslip.ForEach(x =>
                         {

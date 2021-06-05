@@ -36,6 +36,8 @@ namespace PayrollGenerator.Services
         private readonly IEmployeeAttendanceData _employeeAttendanceData;
         private readonly IEmployeeBenefitData _employeeBenefitData;
         private readonly IEmployeeDeductionData _employeeDeductionData;
+        private readonly ISpecificEmployeeBenefitData _specificEmployeeBenefitData;
+        private readonly ISpecificEmployeeDeductionData _specificEmployeeDeductionData;
         private readonly IEmployeeLeaveData _employeeLeaveData;
         private readonly IEmployeePayslipBenefitData _employeePayslipBenefitData;
         private readonly IEmployeePayslipData _employeePayslipData;
@@ -59,6 +61,8 @@ namespace PayrollGenerator.Services
                                 IEmployeeAttendanceData employeeAttendanceData,
                                 IEmployeeBenefitData employeeBenefitData,
                                 IEmployeeDeductionData employeeDeductionData,
+                                ISpecificEmployeeBenefitData specificEmployeeBenefitData,
+                                ISpecificEmployeeDeductionData specificEmployeeDeductionData,
                                 IEmployeeLeaveData employeeLeaveData,
                                 IEmployeePayslipBenefitData employeePayslipBenefitData,
                                 IEmployeePayslipData employeePayslipData,
@@ -82,6 +86,8 @@ namespace PayrollGenerator.Services
             _employeeAttendanceData = employeeAttendanceData;
             _employeeBenefitData = employeeBenefitData;
             _employeeDeductionData = employeeDeductionData;
+            _specificEmployeeBenefitData = specificEmployeeBenefitData;
+            _specificEmployeeDeductionData = specificEmployeeDeductionData;
             _employeeLeaveData = employeeLeaveData;
             _employeePayslipBenefitData = employeePayslipBenefitData;
             _employeePayslipData = employeePayslipData;
@@ -235,6 +241,9 @@ namespace PayrollGenerator.Services
 
                         Console.WriteLine($"{empNum} - {empDetails.FullName} {empPaydateComputation.NumberOfDays}");
 
+                        var currEmpSpecificBenefits = _specificEmployeeBenefitData.GetAllByEmployeeAndSubmissionDateRange(empNum, this.ShiftStartDate, this.ShiftEndDate);
+                        var currEmpSpecificDeductions = _specificEmployeeDeductionData.GetAllByEmployeeAndSubmissionDateRange(empNum, this.ShiftStartDate, this.ShiftEndDate);
+
                         // generation
                         var newPayslipRec = new EmployeePayslipModel
                         {
@@ -280,6 +289,21 @@ namespace PayrollGenerator.Services
 
                                 empTotalBenefits += benefit.Amount;
                             }
+
+                            // Specific Benefits
+                            foreach (var benefit in currEmpSpecificBenefits)
+                            {
+                                _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                {
+                                    PayslipId = payslipId,
+                                    EmployeeNumber = empNum,
+                                    BenefitTitle = benefit.BenefitTitle,
+                                    Amount = benefit.Amount
+                                });
+
+                                empTotalBenefits += benefit.Amount;
+                            }
+
 
                             // Sales bonus here
                             foreach (CashRegisterCashOutTransactionModel salesReport in cashRegisterSalesReport)
@@ -430,6 +454,20 @@ namespace PayrollGenerator.Services
                                 empTotalDeductions += deduction.Amount;
                             }
 
+                            // Specific Deductions
+                            foreach (var deduction in currEmpSpecificDeductions)
+                            {
+                                _employeePayslipDeductionData.Add(new EmployeePayslipDeductionModel
+                                {
+                                    PayslipId = payslipId,
+                                    EmployeeNumber = empNum,
+                                    DeductionTitle = deduction.DeductionTitle,
+                                    Amount = deduction.Amount
+                                });
+
+                                empTotalDeductions += deduction.Amount;
+                            }
+
 
                             empTotalIncome += empTotalBenefits;
 
@@ -471,6 +509,25 @@ namespace PayrollGenerator.Services
                                 x.PayslipId = payslipId;
                             });
                             _employeeAttendanceData.Update(currEmpAttendanceRec);
+
+
+                            // Specific benefits
+                            currEmpSpecificBenefits.ForEach(x =>
+                            {
+                                x.IsPaid = true;
+                                x.PaymentDate = DateTime.Now;
+                                x.PayslipId = payslipId;
+                            });
+                            _specificEmployeeBenefitData.UpdateRange(currEmpSpecificBenefits);
+
+                            // Specific deductions
+                            currEmpSpecificDeductions.ForEach(x =>
+                            {
+                                x.IsDeducted = true;
+                                x.DeductedDate = DateTime.Now;
+                                x.PayslipId = payslipId;
+                            });
+                            _specificEmployeeDeductionData.UpdateRange(currEmpSpecificDeductions);
 
                         }
                     }

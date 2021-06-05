@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.Data.EmployeeManagement.Contracts;
+using EntitiesShared;
 using EntitiesShared.EmployeeManagement;
 using FluentValidation.Results;
 using Main.Controllers.EmployeeManagementControllers.ControllerInterface;
@@ -63,6 +64,39 @@ namespace Main.Controllers.EmployeeManagementControllers
 
             return results;
         }
+
+        public EntityResult<string> Approval(long empLeaveId, string employeeNumber, string remarks, StaticData.EmployeeRequestApprovalStatus status)
+        {
+            var results = new EntityResult<string>();
+
+            try
+            {
+                var empLeaveDetails = _employeeLeaveData.Get(empLeaveId);
+
+                if (empLeaveDetails != null && empLeaveDetails.EmployeeNumber == employeeNumber)
+                {
+                    empLeaveDetails.EmployerRemarks = remarks;
+                    empLeaveDetails.ApprovalStatus = status;
+
+                    results.IsSuccess = _employeeLeaveData.Update(empLeaveDetails);
+                    results.Messages.Add($"{status} done!");
+                }
+                else
+                {
+                    results.IsSuccess = false;
+                    results.Messages.Add("No changes made.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{ ex.Message } - ${ex.StackTrace}");
+                results.Messages.Add("Internal error, kindly check system logs and report this error to developer.");
+            }
+
+            return results;
+        }
+
 
         public EntityResult<EmployeeLeaveModel> Save(EmployeeLeaveModel input, bool isNew)
         {

@@ -94,7 +94,6 @@ namespace Main
 
                 if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.cashier)
                 {
-                    this.BtnEmployeeManagementMenuItem.Enabled = false;
                     this.BtnPayrollSystem.Enabled = false;
                     this.BtnInventorySystem.Enabled = false;
                     this.BtnSalesReportSystem.Enabled = false;
@@ -104,7 +103,6 @@ namespace Main
 
                 if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.manager)
                 {
-                    this.BtnEmployeeManagementMenuItem.Enabled = false;
                     this.BtnPayrollSystem.Enabled = false;
                     this.BtnInventorySystem.Enabled = false;
                     this.BtnOtherData.Enabled = false;
@@ -112,7 +110,6 @@ namespace Main
 
                 if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == EntitiesShared.StaticData.UserRole.normal)
                 {
-                    this.BtnEmployeeManagementMenuItem.Enabled = false;
                     this.BtnPayrollSystem.Enabled = false;
                     this.BtnInventorySystem.Enabled = false;
                     this.BtnSalesReportSystem.Enabled = false;

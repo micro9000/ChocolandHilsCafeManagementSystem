@@ -20,12 +20,14 @@ using Microsoft.Extensions.Options;
 using PDFReportGenerators;
 using Shared;
 using Shared.Helpers;
+using static EntitiesShared.StaticData;
 
 namespace Main.Forms.EmployeeManagementForms
 {
     public partial class FrmMainEmployeeManagement : Form
     {
         private readonly ILogger<FrmMainEmployeeManagement> _logger;
+        private readonly Sessions _sessions;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly PayrollSettings _payrollSettings;
         private readonly OtherSettings _otherSettings;
@@ -55,6 +57,7 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly INumberOfWorkingDaysInAMonthData _numberOfWorkingDaysInAMonthData;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
+                                    Sessions sessions,
                                     DecimalMinutesToHrsConverter decimalMinutesToHrsConverter,
                                     IOptions<OtherSettings> otherSettingsOptions,
                                     IOptions<PayrollSettings> payrollSettingsOptions,
@@ -85,6 +88,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             InitializeComponent();
             _logger = logger;
+            _sessions = sessions;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _payrollSettings = payrollSettingsOptions.Value;
             _otherSettings = otherSettingsOptions.Value;
@@ -123,15 +127,15 @@ namespace Main.Forms.EmployeeManagementForms
                 // Add/update form
                 DisplayAddUpdateEmployeeUserControl();
             }
-            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_List")
+            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_List" && _sessions.CurrentLoggedInUser.Role.Role.RoleKey == UserRole.admin)
             {
                 DisplayEmployeeListUserControl();
             }
-            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_Benefits_Deductions")
+            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_Benefits_Deductions" && _sessions.CurrentLoggedInUser.Role.Role.RoleKey == UserRole.admin)
             {
                 DisplayBenefitDeductionCRUDControl();
             }
-            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_PositionAndSalaryRate")
+            else if (clickedItem != null && clickedItem.Name == "ToolStripItem_PositionAndSalaryRate" && _sessions.CurrentLoggedInUser.Role.Role.RoleKey == UserRole.admin)
             {
                 DisplayEmpPositionWithSalaryRateCRUDControl();
             }
@@ -163,7 +167,7 @@ namespace Main.Forms.EmployeeManagementForms
         {
             this.panelContainer.Controls.Clear();
 
-            var controlToDisplay = new EmployeeDetailsCRUDControl(_decimalMinutesToHrsConverter, _otherSettings, _payrollSettings, _attendancePDFReport);
+            var controlToDisplay = new EmployeeDetailsCRUDControl(_sessions, _decimalMinutesToHrsConverter, _otherSettings, _payrollSettings, _attendancePDFReport);
             //controlToDisplay.Dock = DockStyle.Fill;
             controlToDisplay.Location = new Point(this.ClientSize.Width / 2 - controlToDisplay.Size.Width / 2, this.ClientSize.Height / 2 - controlToDisplay.Size.Height / 2);
             //controlToDisplay.Anchor = (AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left);
@@ -185,6 +189,7 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.EmployeeLeaveSaved += HandleSaveEmployeeLeave;
             controlToDisplay.DeleteEmployeeLeave += HandleDeleteEmployeeLeave;
             controlToDisplay.FilterEmployeeLeave += HandleFilterEmployeeLeaveHistory;
+            controlToDisplay.EmployeeLeaveApprovedOrDisapproved += ControlToDisplay_EmployeeLeaveApproval;
 
             controlToDisplay.UndoMarkEmployeeAsResigned += HandleUndoMarkEmployeeAsResigned;
             controlToDisplay.MarkEmployeeAsResigned += HandleMarkEmployeeAsResigned;
@@ -201,6 +206,7 @@ namespace Main.Forms.EmployeeManagementForms
             }
 
         }
+
 
         private void HandleEmployeeSaved(object sender, EventArgs e)
         {
@@ -278,6 +284,12 @@ namespace Main.Forms.EmployeeManagementForms
 
                 employeeCRUDControlObj.AttendanceHistory = _employeeAttendanceData.GetAllAttendanceRecordByWorkDateRange(employeeDetails.Data.EmployeeNumber, Jan1, today);
                 employeeCRUDControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeDetails.Data.EmployeeNumber, year);
+
+                if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == UserRole.admin)
+                {
+                    employeeCRUDControlObj.EmployeeLeaveForApproval = _employeeLeaveData.GetAllByStatus(EmployeeRequestApprovalStatus.Pending);
+                }
+
                 employeeCRUDControlObj.Holidays = _holidayData.GetAllNotDeleted();
                 employeeCRUDControlObj.WorkforceSchedules = _workforceScheduleData.GetAllForEmpAttendance(Jan1, today, employeeDetails.Data.EmployeeNumber);
 
@@ -286,6 +298,7 @@ namespace Main.Forms.EmployeeManagementForms
                 employeeCRUDControlObj.DisplayAttendanceRecord(Jan1, today);
                 employeeCRUDControlObj.DisplayEmpPayslipPaydateList();
                 employeeCRUDControlObj.DisplayEmployeeLeavesInDGV();
+                employeeCRUDControlObj.DisplayEmployeeLeavesForApprovalInDGV();
 
                 employeeCRUDControlObj.MoveToNextTabSaveEmployeeDetails();
 
@@ -385,6 +398,38 @@ namespace Main.Forms.EmployeeManagementForms
             }
         }
 
+        private void ControlToDisplay_EmployeeLeaveApproval(object sender, EventArgs e)
+        {
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            string remarks = employeeCRUDControlObj.EmployeeLeaveApprovalRemarks;
+            var employeeNumber = employeeCRUDControlObj.EmployeeNumber;
+            long employeeLeaveId = employeeCRUDControlObj.SelectedLeaveIdForApproval;
+            var approvalStatus = employeeCRUDControlObj.EmployeeLeaveApprovalStatus;
+
+            var approvalResults = _employeeLeaveController.Approval(employeeLeaveId, employeeNumber, remarks, approvalStatus);
+
+            string resultMessages = "";
+            foreach (var msg in approvalResults.Messages)
+            {
+                resultMessages += msg + "\n";
+            }
+
+            if (approvalResults.IsSuccess)
+            {
+                MessageBox.Show(resultMessages, "Employee leave approval", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // search all leave by employee
+                employeeCRUDControlObj.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(employeeNumber, DateTime.Now.Year);
+                employeeCRUDControlObj.DisplayEmployeeLeavesInDGV();
+
+
+                employeeCRUDControlObj.EmployeeLeaveForApproval = _employeeLeaveData.GetAllByStatus(EmployeeRequestApprovalStatus.Pending);
+                employeeCRUDControlObj.DisplayEmployeeLeavesForApprovalInDGV();
+            }
+            else
+            {
+                MessageBox.Show(resultMessages, "Employee leave approval", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
 
         #endregion
 
@@ -442,17 +487,21 @@ namespace Main.Forms.EmployeeManagementForms
         {
             ToolStripItem clickedItem = e.ClickedItem;
 
-            if (clickedItem != null && clickedItem.Name == "WorkShiftsMenItem")
+            if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == UserRole.admin)
             {
-                // CRUD form
-                DisplayWorkScheduleShiftsCRUDControl();
-            }else if (clickedItem != null && clickedItem.Name == "EmpWorkShiftScheds")
-            {
-                DisplayEmployeeWorkShiftScheduleMgmntControl();
-            }
-            else if (clickedItem != null && clickedItem.Name == "HolidaysMenuItem")
-            {
-                DisplayHolidayCRUDControl();
+                if (clickedItem != null && clickedItem.Name == "WorkShiftsMenItem")
+                {
+                    // CRUD form
+                    DisplayWorkScheduleShiftsCRUDControl();
+                }
+                else if (clickedItem != null && clickedItem.Name == "EmpWorkShiftScheds")
+                {
+                    DisplayEmployeeWorkShiftScheduleMgmntControl();
+                }
+                else if (clickedItem != null && clickedItem.Name == "HolidaysMenuItem")
+                {
+                    DisplayHolidayCRUDControl();
+                }
             }
         }
 
@@ -757,7 +806,9 @@ namespace Main.Forms.EmployeeManagementForms
 
                     // search all leave by employee
                     controlToDisplay.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(newEmployeeLeave.EmployeeNumber, DateTime.Now.Year);
+                    controlToDisplay.EmployeeLeaveForApproval = _employeeLeaveData.GetAllByStatus(EmployeeRequestApprovalStatus.Pending);
                     controlToDisplay.DisplayEmployeeLeavesInDGV();
+                    controlToDisplay.DisplayEmployeeLeavesForApprovalInDGV();
                 }
                 else
                 {

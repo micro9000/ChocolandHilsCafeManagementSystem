@@ -31,6 +31,10 @@ namespace PDFReportGenerators
                             <html> 
                             <header>
                                 <style>
+                                    body{
+                                        font-size: 10px;
+                                    }
+
                                     th, td{
                                         padding: 5px;
                                     }
@@ -67,6 +71,10 @@ namespace PDFReportGenerators
                             <html> 
                             <header>
                                 <style>
+                                    body{
+                                        font-size: 10px;
+                                    }
+
                                     th, td{
                                         padding: 5px;
                                     }
@@ -99,9 +107,21 @@ namespace PDFReportGenerators
             header.Append($@"<hr/>
                             <table id='parent-table'>
                             <thead>
-                                <tr style='border-bottom: 1px solid gray;'>
+                                <tr>
                                     <th> Employee: {payslip.Employee.FullName}</th>
+                                    <th> SSS no:  </th>
+                                </tr>
+                                <tr>
                                     <th> ID No: {payslip.EmployeeNumber} </th>
+                                    <th> PhilHealth no: </th>
+                                </tr>
+                                <tr>
+                                    <th> Position {payslip.EmployeeNumber} </th>
+                                    <th> PhilHealth no: {payslip.Employee.Position.Title}</th>
+                                </tr>
+                                <tr style='border-bottom: 1px solid gray;'>
+                                    <th> Date generated {DateTime.Now.ToShortDateString()} </th>
+                                    <th></th>
                                 </tr>
                                 <tr style='border-bottom: 1px solid gray; text-align: center;'>
                                     <th colspan='2'>Shift from {payslip.StartShiftDate.ToLongDateString()} to {payslip.EndShiftDate.ToLongDateString()}</th>

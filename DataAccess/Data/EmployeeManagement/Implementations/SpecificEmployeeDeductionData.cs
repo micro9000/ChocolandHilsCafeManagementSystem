@@ -26,28 +26,32 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return this.GetAll(query);
         }
 
-        public List<SpecificEmployeeDeductionModel> GetAllBySubmissionDateRange(DateTime startDate, DateTime endDate)
+        public List<SpecificEmployeeDeductionModel> GetAllByEmployeeAndSubmissionDateRange(string employeeNumber, DateTime startDate, DateTime endDate)
         {
             string query = @"SELECT * 
                             FROM SpecificEmployeeDeductions 
-                            WHERE isDeleted=false AND isDeducted=false AND createdAt BETWEEN @StartDate AND @EndDate";
+                            WHERE isDeleted=false AND isDeducted=false AND employeeNumber=@EmployeeNumber AND createdAt BETWEEN @StartDate AND @EndDate";
+
+            endDate = endDate.AddDays(1);
 
             return this.GetAll(query, new
             {
-                StartDate = startDate,
-                EndDate = endDate
+                EmployeeNumber = employeeNumber,
+                StartDate = startDate.ToString("yyyy-MM-dd"),
+                EndDate = endDate.ToString("yyyy-MM-dd")
             });
         }
 
-        public List<SpecificEmployeeDeductionModel> GetAllByPaymentDate(DateTime paymentDate)
+        public List<SpecificEmployeeDeductionModel> GetAllByEmployeeAndPayslipId(string employeeNumber, long payslipId)
         {
             string query = @"SELECT * 
                             FROM SpecificEmployeeDeductions 
-                            WHERE isDeleted=false AND isDeducted=false AND DATE(paymentDate)=@PaymentDate";
+                            WHERE isDeleted=false AND employeeNumber=@EmployeeNumber AND payslipId=@PayslipId";
 
             return this.GetAll(query, new
             {
-                PaymentDate = paymentDate.ToString("yyyy-MM-dd")
+                EmployeeNumber = employeeNumber,
+                PayslipId = payslipId
             });
         }
 

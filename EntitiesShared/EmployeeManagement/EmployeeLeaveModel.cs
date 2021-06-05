@@ -128,5 +128,10 @@ namespace EntitiesShared.EmployeeManagement
             get { return payslipId; }
             set { payslipId = value; }
         }
+
+
+        public StaticData.EmployeeRequestApprovalStatus ApprovalStatus { get; set; }
+
+        public string EmployerRemarks { get; set; }
     }
 }

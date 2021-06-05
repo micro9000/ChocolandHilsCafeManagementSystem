@@ -2,8 +2,9 @@ UPDATES
 
 1. Normal user
 
-- should also have request for Leave (same doon sa cash advance format).
-- Employees can view their own payslip in their own account user. Can Request for payslip from employees
+		- should also have request for Leave (same doon sa cash advance format).
+		- Employees can view their own payslip in their own account user. Can Request for payslip from employees
+		
 (request to issue a payslip for the period from [Date to Date]) (same parin
 sa cash advance format.
 
@@ -11,26 +12,12 @@ sa cash advance format.
 
 4. Payroll
 
-- sabi ng adviser ko nakakalito raw tingnan yung payroll kasi ang daming numbers haha.
-bale sa deductions or mga less ay lagyan raw ng minus(-) before the para ng amount
-para madali ma distinguish.
-May suggestion rin sya sa pagkaka arrange ng mga data and columns.
-(magsesend ako ng pic for this.
+		- sabi ng adviser ko nakakalito raw tingnan yung payroll kasi ang daming numbers haha.
+		bale sa deductions or mga less ay lagyan raw ng minus(-) before the para ng amount
+		para madali ma distinguish.
+		May suggestion rin sya sa pagkaka arrange ng mga data and columns.
+		(magsesend ako ng pic for this.
 
-
-
-Payroll Generator
-
-- automatic add ng deductions and benefits based doon sa date range ng
-pag generate. (see item 5)
-
-5. Employee Deductions
-
-- ex. deduction nila for damage, naka damage sila shop. So within that day
-makakagpag lagay si admin ng deduction of that employee, it will also record
-the day and amount. Kasi para sa automatic deduction for the payroll generator,
-ma kukuha nya yung deduction within that range of date. ex. naka damage sya within 1-15 days,
-then masasali yun sa payroll.
 
 
 ---------- DONE:
@@ -74,3 +61,18 @@ then masasali yun sa payroll.
 4. Payroll
 		[Reminder]: we need to remove Government Agencies table and form, since we use enum list (hardcoded values) since each agency contribution requires different computation
 		- include government ids ng employee sa pag generate ng government contribution for employer.
+
+
+
+		Payroll Generator
+
+		- automatic add ng deductions and benefits based doon sa date range ng
+		pag generate. (see item 5)
+
+5. Employee Deductions
+
+		- ex. deduction nila for damage, naka damage sila shop. So within that day
+		makakagpag lagay si admin ng deduction of that employee, it will also record
+		the day and amount. Kasi para sa automatic deduction for the payroll generator,
+		ma kukuha nya yung deduction within that range of date. ex. naka damage sya within 1-15 days,
+		then masasali yun sa payroll.

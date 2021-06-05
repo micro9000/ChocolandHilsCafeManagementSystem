@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using EntitiesShared.OtherDataManagement;
+using EntitiesShared;
 
 namespace DataAccess.Data.EmployeeManagement.Implementations
 {
@@ -54,7 +55,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             string query = @"SELECT * 
                             FROM EmployeeLeaves AS EL
                             JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
-                            WHERE EL.isDeleted=false AND EL.employeeNumber=@EmployeeNumber AND EL.currentYear=@Year
+                            WHERE EL.isDeleted=false AND EL.employeeNumber=@EmployeeNumber AND EL.currentYear=@Year AND EL.approvalStatus<>@Status
                             ORDER BY EL.id DESC";
 
             List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
@@ -68,14 +69,49 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                         }, new
                         {
                             EmployeeNumber = employeeNumber,
-                            Year = year
+                            Year = year,
+                            Status = (int)StaticData.EmployeeRequestApprovalStatus.Pending
                         }).ToList();
                 conn.Close();
             }
 
             return results;
-
         }
+
+
+        public List<EmployeeLeaveModel> GetAllByStatus(StaticData.EmployeeRequestApprovalStatus status)
+        {
+            string query = @"SELECT * 
+                            FROM EmployeeLeaves AS EL
+                            JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
+                            WHERE EL.isDeleted=false AND EL.approvalStatus=@Status
+                            ORDER BY EL.id DESC";
+
+            List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeLeaveModel, LeaveTypeModel, EmployeeLeaveModel>(query,
+                        (EL, LT) => {
+                            EL.LeaveType = LT;
+                            return EL;
+                        }, new
+                        {
+                            Status = (int)status
+                        }).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
+
+
+        public int GetCountByStatus(StaticData.EmployeeRequestApprovalStatus status)
+        {
+            string query = "SELECT COUNT(*) AS COUNT FROM EmployeeLeaves WHERE isDeleted=false AND approvalStatus=@Status";
+            return this.GetValue<int>(query, new { });
+        }
+
 
         public List<EmployeeLeaveModel> GetAllByDateRange(int year, DateTime startDate, DateTime endDate)
         {
@@ -83,7 +119,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                             FROM EmployeeLeaves AS EL
                             JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
                             WHERE EL.isDeleted=false AND EL.currentYear=@Year AND 
-                            EL.startDate BETWEEN @StartDate AND @EndDate AND EL.endDate BETWEEN @StartDate AND @EndDate 
+                            EL.startDate BETWEEN @StartDate AND @EndDate AND EL.endDate BETWEEN @StartDate
                             ORDER BY EL.id DESC";
 
             List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
@@ -113,7 +149,7 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                             FROM EmployeeLeaves AS EL
                             JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
                             WHERE EL.isDeleted=false AND EL.isPaid=false AND EL.currentYear=@Year AND 
-                            EL.startDate BETWEEN @StartDate AND @EndDate AND EL.endDate BETWEEN @StartDate AND @EndDate 
+                            EL.startDate BETWEEN @StartDate AND @EndDate AND EL.endDate BETWEEN @StartDate AND @EndDate AND EL.approvalStatus=@Status
                             ORDER BY EL.id DESC";
 
             List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
@@ -128,7 +164,8 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
                         {
                             Year = year,
                             StartDate = startDate,
-                            EndDate = endDate
+                            EndDate = endDate,
+                            Status = (int)StaticData.EmployeeRequestApprovalStatus.Approved
                         }).ToList();
                 conn.Close();
             }

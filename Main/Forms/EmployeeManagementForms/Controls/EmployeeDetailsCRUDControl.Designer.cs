@@ -34,7 +34,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TbxEmployeeNumberDisplayOnly = new System.Windows.Forms.TextBox();
             this.CBoxPositions = new System.Windows.Forms.ComboBox();
             this.CBoxBranches = new System.Windows.Forms.ComboBox();
-            this.BtnSaveEmployee = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.TbxDailySalaryRate = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -62,6 +61,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.TbxFirstName = new System.Windows.Forms.TextBox();
+            this.BtnSaveEmployee = new System.Windows.Forms.Button();
             this.EmployeeGovtIds = new System.Windows.Forms.TabPage();
             this.BtnUndoToDelete = new System.Windows.Forms.Button();
             this.BtnDeleteEmpIdCard = new System.Windows.Forms.Button();
@@ -129,11 +129,22 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label29 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.TabPageEmpLeaveHistory = new System.Windows.Forms.TabPage();
-            this.CBoxYearList = new System.Windows.Forms.ComboBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.TBoxEmployerEnteredRemarks = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.TBoxEmployeeLeaveReason = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.DGVEmployeeLeaveHistory = new System.Windows.Forms.DataGridView();
+            this.CBoxYearList = new System.Windows.Forms.ComboBox();
             this.BtnFilterEmployeeLeaveHistory = new System.Windows.Forms.Button();
             this.label30 = new System.Windows.Forms.Label();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.BtnApprovedEmpLeave = new System.Windows.Forms.Button();
+            this.BtnDisapprovedEmpLeave = new System.Windows.Forms.Button();
+            this.TboxAdminRemarks = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.TboxEmployeeLeaveRemarks = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.DGVEmployeeLeaveApproval = new System.Windows.Forms.DataGridView();
             this.EmployeeDetailsSettings = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label28 = new System.Windows.Forms.Label();
@@ -163,8 +174,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.tabControl1.SuspendLayout();
             this.TabPageEmpLeaveFiling.SuspendLayout();
             this.TabPageEmpLeaveHistory.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeLeaveHistory)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeLeaveApproval)).BeginInit();
             this.EmployeeDetailsSettings.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -245,21 +257,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.CBoxBranches.Name = "CBoxBranches";
             this.CBoxBranches.Size = new System.Drawing.Size(267, 29);
             this.CBoxBranches.TabIndex = 57;
-            // 
-            // BtnSaveEmployee
-            // 
-            this.BtnSaveEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.BtnSaveEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnSaveEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.BtnSaveEmployee.ForeColor = System.Drawing.Color.White;
-            this.BtnSaveEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSaveEmployee.Location = new System.Drawing.Point(905, 624);
-            this.BtnSaveEmployee.Name = "BtnSaveEmployee";
-            this.BtnSaveEmployee.Size = new System.Drawing.Size(93, 48);
-            this.BtnSaveEmployee.TabIndex = 44;
-            this.BtnSaveEmployee.Text = "Save";
-            this.BtnSaveEmployee.UseVisualStyleBackColor = false;
-            this.BtnSaveEmployee.Click += new System.EventHandler(this.BtnSaveEmployee_Click);
             // 
             // groupBox1
             // 
@@ -534,6 +531,21 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TbxFirstName.Name = "TbxFirstName";
             this.TbxFirstName.Size = new System.Drawing.Size(265, 29);
             this.TbxFirstName.TabIndex = 21;
+            // 
+            // BtnSaveEmployee
+            // 
+            this.BtnSaveEmployee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnSaveEmployee.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnSaveEmployee.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnSaveEmployee.ForeColor = System.Drawing.Color.White;
+            this.BtnSaveEmployee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnSaveEmployee.Location = new System.Drawing.Point(905, 624);
+            this.BtnSaveEmployee.Name = "BtnSaveEmployee";
+            this.BtnSaveEmployee.Size = new System.Drawing.Size(93, 48);
+            this.BtnSaveEmployee.TabIndex = 44;
+            this.BtnSaveEmployee.Text = "Save";
+            this.BtnSaveEmployee.UseVisualStyleBackColor = false;
+            this.BtnSaveEmployee.Click += new System.EventHandler(this.BtnSaveEmployee_Click);
             // 
             // EmployeeGovtIds
             // 
@@ -1087,6 +1099,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             this.tabControl1.Controls.Add(this.TabPageEmpLeaveFiling);
             this.tabControl1.Controls.Add(this.TabPageEmpLeaveHistory);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
@@ -1257,8 +1270,12 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // TabPageEmpLeaveHistory
             // 
+            this.TabPageEmpLeaveHistory.Controls.Add(this.TBoxEmployerEnteredRemarks);
+            this.TabPageEmpLeaveHistory.Controls.Add(this.label18);
+            this.TabPageEmpLeaveHistory.Controls.Add(this.TBoxEmployeeLeaveReason);
+            this.TabPageEmpLeaveHistory.Controls.Add(this.label19);
+            this.TabPageEmpLeaveHistory.Controls.Add(this.DGVEmployeeLeaveHistory);
             this.TabPageEmpLeaveHistory.Controls.Add(this.CBoxYearList);
-            this.TabPageEmpLeaveHistory.Controls.Add(this.groupBox6);
             this.TabPageEmpLeaveHistory.Controls.Add(this.BtnFilterEmployeeLeaveHistory);
             this.TabPageEmpLeaveHistory.Controls.Add(this.label30);
             this.TabPageEmpLeaveHistory.Location = new System.Drawing.Point(4, 30);
@@ -1269,38 +1286,64 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TabPageEmpLeaveHistory.Text = "History";
             this.TabPageEmpLeaveHistory.UseVisualStyleBackColor = true;
             // 
-            // CBoxYearList
+            // TBoxEmployerEnteredRemarks
             // 
-            this.CBoxYearList.FormattingEnabled = true;
-            this.CBoxYearList.Location = new System.Drawing.Point(783, 15);
-            this.CBoxYearList.Name = "CBoxYearList";
-            this.CBoxYearList.Size = new System.Drawing.Size(190, 29);
-            this.CBoxYearList.TabIndex = 54;
+            this.TBoxEmployerEnteredRemarks.Location = new System.Drawing.Point(22, 285);
+            this.TBoxEmployerEnteredRemarks.Multiline = true;
+            this.TBoxEmployerEnteredRemarks.Name = "TBoxEmployerEnteredRemarks";
+            this.TBoxEmployerEnteredRemarks.Size = new System.Drawing.Size(368, 102);
+            this.TBoxEmployerEnteredRemarks.TabIndex = 76;
             // 
-            // groupBox6
+            // label18
             // 
-            this.groupBox6.Controls.Add(this.DGVEmployeeLeaveHistory);
-            this.groupBox6.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox6.Location = new System.Drawing.Point(3, 50);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(1073, 426);
-            this.groupBox6.TabIndex = 68;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "History";
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(22, 261);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(103, 21);
+            this.label18.TabIndex = 75;
+            this.label18.Text = "Your remarks";
+            // 
+            // TBoxEmployeeLeaveReason
+            // 
+            this.TBoxEmployeeLeaveReason.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TBoxEmployeeLeaveReason.Location = new System.Drawing.Point(22, 130);
+            this.TBoxEmployeeLeaveReason.Multiline = true;
+            this.TBoxEmployeeLeaveReason.Name = "TBoxEmployeeLeaveReason";
+            this.TBoxEmployeeLeaveReason.Size = new System.Drawing.Size(368, 94);
+            this.TBoxEmployeeLeaveReason.TabIndex = 73;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label19.ForeColor = System.Drawing.Color.Black;
+            this.label19.Location = new System.Drawing.Point(22, 106);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(61, 21);
+            this.label19.TabIndex = 74;
+            this.label19.Text = "Reason";
             // 
             // DGVEmployeeLeaveHistory
             // 
             this.DGVEmployeeLeaveHistory.AllowUserToAddRows = false;
             this.DGVEmployeeLeaveHistory.AllowUserToDeleteRows = false;
             this.DGVEmployeeLeaveHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVEmployeeLeaveHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DGVEmployeeLeaveHistory.Location = new System.Drawing.Point(3, 25);
+            this.DGVEmployeeLeaveHistory.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DGVEmployeeLeaveHistory.Location = new System.Drawing.Point(403, 3);
             this.DGVEmployeeLeaveHistory.Name = "DGVEmployeeLeaveHistory";
             this.DGVEmployeeLeaveHistory.ReadOnly = true;
             this.DGVEmployeeLeaveHistory.RowTemplate.Height = 25;
-            this.DGVEmployeeLeaveHistory.Size = new System.Drawing.Size(1067, 398);
+            this.DGVEmployeeLeaveHistory.Size = new System.Drawing.Size(673, 473);
             this.DGVEmployeeLeaveHistory.TabIndex = 67;
             this.DGVEmployeeLeaveHistory.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployeeLeaveHistory_CellClick);
+            // 
+            // CBoxYearList
+            // 
+            this.CBoxYearList.FormattingEnabled = true;
+            this.CBoxYearList.Location = new System.Drawing.Point(68, 39);
+            this.CBoxYearList.Name = "CBoxYearList";
+            this.CBoxYearList.Size = new System.Drawing.Size(190, 29);
+            this.CBoxYearList.TabIndex = 54;
             // 
             // BtnFilterEmployeeLeaveHistory
             // 
@@ -1309,7 +1352,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.BtnFilterEmployeeLeaveHistory.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BtnFilterEmployeeLeaveHistory.ForeColor = System.Drawing.Color.White;
             this.BtnFilterEmployeeLeaveHistory.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnFilterEmployeeLeaveHistory.Location = new System.Drawing.Point(979, 15);
+            this.BtnFilterEmployeeLeaveHistory.Location = new System.Drawing.Point(264, 39);
             this.BtnFilterEmployeeLeaveHistory.Name = "BtnFilterEmployeeLeaveHistory";
             this.BtnFilterEmployeeLeaveHistory.Size = new System.Drawing.Size(78, 31);
             this.BtnFilterEmployeeLeaveHistory.TabIndex = 53;
@@ -1322,11 +1365,109 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label30.ForeColor = System.Drawing.Color.Black;
-            this.label30.Location = new System.Drawing.Point(737, 19);
+            this.label30.Location = new System.Drawing.Point(22, 43);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(40, 21);
             this.label30.TabIndex = 52;
             this.label30.Text = "Year";
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.BtnApprovedEmpLeave);
+            this.tabPage1.Controls.Add(this.BtnDisapprovedEmpLeave);
+            this.tabPage1.Controls.Add(this.TboxAdminRemarks);
+            this.tabPage1.Controls.Add(this.label13);
+            this.tabPage1.Controls.Add(this.TboxEmployeeLeaveRemarks);
+            this.tabPage1.Controls.Add(this.label12);
+            this.tabPage1.Controls.Add(this.DGVEmployeeLeaveApproval);
+            this.tabPage1.Location = new System.Drawing.Point(4, 30);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1079, 479);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "For Approval";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // BtnApprovedEmpLeave
+            // 
+            this.BtnApprovedEmpLeave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnApprovedEmpLeave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnApprovedEmpLeave.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnApprovedEmpLeave.ForeColor = System.Drawing.Color.White;
+            this.BtnApprovedEmpLeave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnApprovedEmpLeave.Location = new System.Drawing.Point(286, 333);
+            this.BtnApprovedEmpLeave.Name = "BtnApprovedEmpLeave";
+            this.BtnApprovedEmpLeave.Size = new System.Drawing.Size(102, 47);
+            this.BtnApprovedEmpLeave.TabIndex = 74;
+            this.BtnApprovedEmpLeave.Text = "Approved";
+            this.BtnApprovedEmpLeave.UseVisualStyleBackColor = false;
+            this.BtnApprovedEmpLeave.Click += new System.EventHandler(this.BtnApprovedEmpLeave_Click);
+            // 
+            // BtnDisapprovedEmpLeave
+            // 
+            this.BtnDisapprovedEmpLeave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnDisapprovedEmpLeave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnDisapprovedEmpLeave.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnDisapprovedEmpLeave.ForeColor = System.Drawing.Color.White;
+            this.BtnDisapprovedEmpLeave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnDisapprovedEmpLeave.Location = new System.Drawing.Point(163, 333);
+            this.BtnDisapprovedEmpLeave.Name = "BtnDisapprovedEmpLeave";
+            this.BtnDisapprovedEmpLeave.Size = new System.Drawing.Size(117, 47);
+            this.BtnDisapprovedEmpLeave.TabIndex = 73;
+            this.BtnDisapprovedEmpLeave.Text = "Disapproved";
+            this.BtnDisapprovedEmpLeave.UseVisualStyleBackColor = false;
+            this.BtnDisapprovedEmpLeave.Click += new System.EventHandler(this.BtnDisapprovedEmpLeave_Click);
+            // 
+            // TboxAdminRemarks
+            // 
+            this.TboxAdminRemarks.Location = new System.Drawing.Point(20, 216);
+            this.TboxAdminRemarks.Multiline = true;
+            this.TboxAdminRemarks.Name = "TboxAdminRemarks";
+            this.TboxAdminRemarks.Size = new System.Drawing.Size(368, 102);
+            this.TboxAdminRemarks.TabIndex = 72;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(20, 180);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(103, 21);
+            this.label13.TabIndex = 71;
+            this.label13.Text = "Your remarks";
+            // 
+            // TboxEmployeeLeaveRemarks
+            // 
+            this.TboxEmployeeLeaveRemarks.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TboxEmployeeLeaveRemarks.Location = new System.Drawing.Point(20, 49);
+            this.TboxEmployeeLeaveRemarks.Multiline = true;
+            this.TboxEmployeeLeaveRemarks.Name = "TboxEmployeeLeaveRemarks";
+            this.TboxEmployeeLeaveRemarks.Size = new System.Drawing.Size(368, 94);
+            this.TboxEmployeeLeaveRemarks.TabIndex = 69;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label12.ForeColor = System.Drawing.Color.Black;
+            this.label12.Location = new System.Drawing.Point(20, 25);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(61, 21);
+            this.label12.TabIndex = 70;
+            this.label12.Text = "Reason";
+            // 
+            // DGVEmployeeLeaveApproval
+            // 
+            this.DGVEmployeeLeaveApproval.AllowUserToAddRows = false;
+            this.DGVEmployeeLeaveApproval.AllowUserToDeleteRows = false;
+            this.DGVEmployeeLeaveApproval.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVEmployeeLeaveApproval.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DGVEmployeeLeaveApproval.Location = new System.Drawing.Point(412, 3);
+            this.DGVEmployeeLeaveApproval.Name = "DGVEmployeeLeaveApproval";
+            this.DGVEmployeeLeaveApproval.ReadOnly = true;
+            this.DGVEmployeeLeaveApproval.RowTemplate.Height = 25;
+            this.DGVEmployeeLeaveApproval.Size = new System.Drawing.Size(664, 473);
+            this.DGVEmployeeLeaveApproval.TabIndex = 68;
+            this.DGVEmployeeLeaveApproval.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployeeLeaveApproval_CellClick);
             // 
             // EmployeeDetailsSettings
             // 
@@ -1526,8 +1667,10 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.TabPageEmpLeaveFiling.PerformLayout();
             this.TabPageEmpLeaveHistory.ResumeLayout(false);
             this.TabPageEmpLeaveHistory.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeLeaveHistory)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVEmployeeLeaveApproval)).EndInit();
             this.EmployeeDetailsSettings.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -1650,7 +1793,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.TextBox TboxLeaveReason;
-        private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.DataGridView DGVEmployeeLeaveHistory;
         private System.Windows.Forms.ComboBox CBoxYearList;
         private System.Windows.Forms.Button BtnFilterEmployeeLeaveHistory;
@@ -1660,5 +1802,17 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.TabPage TabPageEmpLeaveHistory;
         private System.Windows.Forms.ComboBox CboxDuration;
         private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.DataGridView DGVEmployeeLeaveApproval;
+        private System.Windows.Forms.TextBox TboxEmployeeLeaveRemarks;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox TboxAdminRemarks;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button BtnApprovedEmpLeave;
+        private System.Windows.Forms.Button BtnDisapprovedEmpLeave;
+        private System.Windows.Forms.TextBox TBoxEmployerEnteredRemarks;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox TBoxEmployeeLeaveReason;
+        private System.Windows.Forms.Label label19;
     }
 }

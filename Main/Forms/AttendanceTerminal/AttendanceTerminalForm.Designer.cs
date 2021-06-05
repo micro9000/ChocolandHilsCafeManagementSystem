@@ -282,7 +282,6 @@ namespace Main.Forms.AttendanceTerminal
             this.DPickerTesting.Name = "DPickerTesting";
             this.DPickerTesting.Size = new System.Drawing.Size(112, 29);
             this.DPickerTesting.TabIndex = 3;
-            this.DPickerTesting.Visible = false;
             // 
             // label3
             // 
@@ -292,7 +291,6 @@ namespace Main.Forms.AttendanceTerminal
             this.label3.Size = new System.Drawing.Size(96, 21);
             this.label3.TabIndex = 11;
             this.label3.Text = "Testing Time";
-            this.label3.Visible = false;
             // 
             // tabControl1
             // 

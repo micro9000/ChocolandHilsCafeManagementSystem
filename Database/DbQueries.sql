@@ -220,8 +220,6 @@ CREATE TABLE IF NOT EXISTS EmployeeGovtIdCards(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
-
-
 SELECT * FROM EmployeeGovtIdCards;
 
 -- execute these queries, we don't need these columns
@@ -259,7 +257,21 @@ ALTER TABLE EmployeeLeaves
 ADD COLUMN payslipId BIGINT DEFAULT 0; -- for easy retrieval of payslip data
 ALTER TABLE EmployeeLeaves
 ADD COLUMN DurationType INT;
+ALTER TABLE EmployeeLeaves
+ADD COLUMN DurationType INT;
+-- -------------------------------------------------------------------------------------- !!!!!!!!!!!!!!!!!! -- June 5, update
+ALTER TABLE EmployeeLeaves
+ADD COLUMN approvalStatus INT DEFAULT 0;
+ALTER TABLE EmployeeLeaves
+ADD COLUMN employerRemarks VARCHAR(255);
 
+SELECT * FROM EmployeeLeaves;
+
+SELECT * 
+FROM EmployeeLeaves AS EL
+JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
+WHERE EL.isDeleted=false AND EL.employeeNumber='20190001' AND EL.currentYear=2021 AND @EndDate AND EL.approvalStatus<>@Status
+ORDER BY EL.id DESC;
 
 CREATE TABLE IF NOT EXISTS WorkforceSchedules(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -362,6 +374,10 @@ CREATE TABLE IF NOT EXISTS SpecificEmployeeBenefits(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+SELECT * FROM SpecificEmployeeBenefits;
+
+SELECT * FROM SpecificEmployeeBenefits WHERE createdAt BETWEEN '2021-06-05' AND '2021-06-05';
+
 -- possible enhancement:
 -- add employee type that will use to add conditional/special deduction
 -- certain employees can have special deduction
@@ -389,6 +405,8 @@ CREATE TABLE IF NOT EXISTS SpecificEmployeeDeductions(
     deletedAt DATETIME,
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
+
+select * from SpecificEmployeeDeductions;
 
 CREATE TABLE IF NOT EXISTS EmployeeCashAdvanceRequests(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,

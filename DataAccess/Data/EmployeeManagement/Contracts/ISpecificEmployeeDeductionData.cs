@@ -11,7 +11,7 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
     public interface ISpecificEmployeeDeductionData : IDataManagerCRUD<SpecificEmployeeDeductionModel>
     {
         List<SpecificEmployeeDeductionModel> GetAllPending();
-        List<SpecificEmployeeDeductionModel> GetAllBySubmissionDateRange(DateTime startDate, DateTime endDate);
-        List<SpecificEmployeeDeductionModel> GetAllByPaymentDate(DateTime paymentDate);
+        List<SpecificEmployeeDeductionModel> GetAllByEmployeeAndSubmissionDateRange(string employeeNumber, DateTime startDate, DateTime endDate);
+        List<SpecificEmployeeDeductionModel> GetAllByEmployeeAndPayslipId(string employeeNumber, long payslipId);
     }
 }

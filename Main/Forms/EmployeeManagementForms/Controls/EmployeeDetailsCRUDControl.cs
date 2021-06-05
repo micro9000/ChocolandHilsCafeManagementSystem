@@ -25,12 +25,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 {
     public partial class EmployeeDetailsCRUDControl : UserControl
     {
-        public EmployeeDetailsCRUDControl(DecimalMinutesToHrsConverter decimalMinutesToHrsConverter, 
+        public EmployeeDetailsCRUDControl(Sessions sessions,
+                                        DecimalMinutesToHrsConverter decimalMinutesToHrsConverter, 
                                         OtherSettings otherSettings,
                                         PayrollSettings payrollSettings,
                                         IAttendancePDFReport attendancePDFReport)
         {
             InitializeComponent();
+            _sessions = sessions;
             _decimalMinutesToHrsConverter = decimalMinutesToHrsConverter;
             _otherSettings = otherSettings;
             _payrollSettings = payrollSettings;
@@ -205,6 +207,14 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             set { employeeLeaveHistory = value; }
         }
 
+        private List<EmployeeLeaveModel> employeeLeaveForApproval;
+
+        public List<EmployeeLeaveModel> EmployeeLeaveForApproval
+        {
+            get { return employeeLeaveForApproval; }
+            set { employeeLeaveForApproval = value; }
+        }
+
         private List<HolidayModel> holidays;
 
         public List<HolidayModel> Holidays
@@ -228,6 +238,32 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             SetDGVEmployeeLeaveHistoryFontAndColors();
             DisplayLeaveTypes();
+
+            this.EmployeeNumber = _sessions.CurrentLoggedInUser.UserName;
+
+            if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey != UserRole.admin)
+            {
+                this.BtnActionAddNewEmployee.Enabled = false;
+                this.BtnActionUpdateEmployeeDetails.Enabled = false;
+                this.BtnActionSearchEmployeeByEmployeeNumber.Enabled = false;
+                this.BtnSaveEmployee.Enabled = false;
+                this.BtnCancelUpdateEmployee.Enabled = false;
+                this.BtnBrowseEmployeeImage.Enabled = false;
+                this.BtnAddNewEmpGovtId.Enabled = false;
+                this.BtnUndoToDelete.Enabled = false;
+                this.BtnDeleteEmpIdCard.Enabled = false;
+
+                this.BtnDeleteThisEmployee.Enabled = false;
+                this.BtnUndoResignedEmployee.Enabled = false;
+                this.BtnMarkAsResignedThisEmployee.Enabled = false;
+                this.groupBox4.Visible = false;
+                this.groupBox3.Visible = false;
+
+                this.TboxAdminRemarks.Enabled = false;
+                this.BtnApprovedEmpLeave.Enabled = false;
+                this.BtnDisapprovedEmpLeave.Enabled = false;
+            }
+
         }
 
 
@@ -358,6 +394,9 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             this.EmployeeLeaveHistory = new List<EmployeeLeaveModel>();
             this.DGVEmployeeLeaveHistory.Rows.Clear();
+
+            this.EmployeeLeaveForApproval = new List<EmployeeLeaveModel>();
+            this.DGVEmployeeLeaveApproval.Rows.Clear();
 
         }
 
@@ -995,13 +1034,13 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                         firstTimeOut = attendance.FirstTimeOut;
                     }
 
-                    string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm")} {firstTimeOut.ToString("hh:mm")}";
+                    string firstTimeINandOUT = $"{attendance.FirstTimeIn.ToString("hh:mm tt")} {firstTimeOut.ToString("hh:mm tt")}";
 
                     string secondTimeINandOUT = "";
 
                     if (attendance.IsTimeOutProvided)
                     {
-                        secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm")} {attendance.SecondTimeOut.ToString("hh:mm")}";
+                        secondTimeINandOUT = $"{attendance.SecondTimeIn.ToString("hh:mm tt")} {attendance.SecondTimeOut.ToString("hh:mm tt")}";
                     }
 
                     string wholeDayTotalHrs = _decimalMinutesToHrsConverter.ConvertToStringHrs(attendance.TotalHrs); //attendance.FirstHalfHrs + attendance.SecondHalfHrs
@@ -1174,6 +1213,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
 
         private DateTime filterAttendanceEndDate;
+        private readonly Sessions _sessions;
         private readonly DecimalMinutesToHrsConverter _decimalMinutesToHrsConverter;
         private readonly OtherSettings _otherSettings;
         private readonly PayrollSettings _payrollSettings;
@@ -1303,6 +1343,23 @@ namespace Main.Forms.EmployeeManagementForms.Controls
 
             this.DGVEmployeeLeaveHistory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.DGVEmployeeLeaveHistory.ColumnHeadersHeight = 30;
+
+            // =============================
+            this.DGVEmployeeLeaveApproval.BackgroundColor = Color.White;
+            this.DGVEmployeeLeaveApproval.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVEmployeeLeaveApproval.RowHeadersVisible = false;
+            this.DGVEmployeeLeaveApproval.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            this.DGVEmployeeLeaveApproval.AllowUserToResizeRows = false;
+            this.DGVEmployeeLeaveApproval.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.DGVEmployeeLeaveApproval.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 12);
+
+            this.DGVEmployeeLeaveApproval.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.DGVEmployeeLeaveApproval.MultiSelect = false;
+
+            this.DGVEmployeeLeaveApproval.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.DGVEmployeeLeaveApproval.ColumnHeadersHeight = 30;
         }
 
         public void DisplayLeaveTypes()
@@ -1367,8 +1424,8 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.DGVEmployeeLeaveHistory.Columns[5].Name = "DateRange";
                 this.DGVEmployeeLeaveHistory.Columns[5].HeaderText = "Date";
 
-                this.DGVEmployeeLeaveHistory.Columns[6].Name = "Remarks";
-                this.DGVEmployeeLeaveHistory.Columns[6].HeaderText = "Remarks";
+                this.DGVEmployeeLeaveHistory.Columns[6].Name = "ApprovalStatus";
+                this.DGVEmployeeLeaveHistory.Columns[6].HeaderText = "Approval";
 
                 // Delete button
                 DataGridViewImageColumn btnDeleteImg = new DataGridViewImageColumn();
@@ -1388,9 +1445,65 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     row.Cells[3].Value = record.CreatedAt.ToShortDateString();
                     row.Cells[4].Value = record.NumberOfDays;
                     row.Cells[5].Value = $"{record.StartDate.ToString("MMM-dd")} to {record.EndDate.ToString("MMM-dd")}";
-                    row.Cells[6].Value = record.Reason;
+                    row.Cells[6].Value = record.ApprovalStatus.ToString();
 
                     this.DGVEmployeeLeaveHistory.Rows.Add(row);
+                }
+            }
+
+        }
+
+
+
+        public void DisplayEmployeeLeavesForApprovalInDGV()
+        {
+            this.DGVEmployeeLeaveApproval.Rows.Clear();
+            if (this.EmployeeLeaveForApproval != null)
+            {
+                this.DGVEmployeeLeaveApproval.ColumnCount = 7;
+
+                this.DGVEmployeeLeaveApproval.Columns[0].Name = "EmployeeLeaveRecordId";
+                this.DGVEmployeeLeaveApproval.Columns[0].Visible = false;
+
+                this.DGVEmployeeLeaveApproval.Columns[1].Name = "LeaveType";
+                this.DGVEmployeeLeaveApproval.Columns[1].HeaderText = "Leave type";
+
+                this.DGVEmployeeLeaveApproval.Columns[2].Name = "DurationType";
+                this.DGVEmployeeLeaveApproval.Columns[2].HeaderText = "DurationType";
+
+                this.DGVEmployeeLeaveApproval.Columns[3].Name = "CreatedAt";
+                this.DGVEmployeeLeaveApproval.Columns[3].HeaderText = "Created At";
+
+                this.DGVEmployeeLeaveApproval.Columns[4].Name = "NumberDays";
+                this.DGVEmployeeLeaveApproval.Columns[4].HeaderText = "Days";
+
+                this.DGVEmployeeLeaveApproval.Columns[5].Name = "DateRange";
+                this.DGVEmployeeLeaveApproval.Columns[5].HeaderText = "Date";
+
+                this.DGVEmployeeLeaveApproval.Columns[6].Name = "ApprovalStatus";
+                this.DGVEmployeeLeaveApproval.Columns[6].HeaderText = "Approval";
+
+                //// Delete button
+                //DataGridViewImageColumn btnDeleteImg = new DataGridViewImageColumn();
+                ////btnDeleteLeaveTypeImg.Name = "";
+                //btnDeleteImg.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                //btnDeleteImg.Image = Image.FromFile("./Resources/remove-24.png");
+                //this.DGVEmployeeLeaveApproval.Columns.Add(btnDeleteImg);
+
+                foreach (var record in this.EmployeeLeaveForApproval)
+                {
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(this.DGVEmployeeLeaveApproval);
+
+                    row.Cells[0].Value = record.Id;
+                    row.Cells[1].Value = record.LeaveType.LeaveType;
+                    row.Cells[2].Value = record.DurationType;
+                    row.Cells[3].Value = record.CreatedAt.ToShortDateString();
+                    row.Cells[4].Value = record.NumberOfDays;
+                    row.Cells[5].Value = $"{record.StartDate.ToString("MMM-dd")} to {record.EndDate.ToString("MMM-dd")}";
+                    row.Cells[6].Value = record.ApprovalStatus.ToString();
+
+                    this.DGVEmployeeLeaveApproval.Rows.Add(row);
                 }
             }
 
@@ -1532,6 +1645,23 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                     OnDeleteEmployeeLeave(EventArgs.Empty);
                 }
             }
+
+            if (e.RowIndex > -1)
+            {
+                if (DGVEmployeeLeaveHistory.CurrentRow != null)
+                {
+                    string employeeLeaveId = DGVEmployeeLeaveHistory.CurrentRow.Cells[0].Value.ToString();
+                    long selectedLeaveId = long.Parse(employeeLeaveId);
+                    var employeeLeaveDetais = this.EmployeeLeaveHistory.Where(x => x.Id == selectedLeaveId).FirstOrDefault();
+                    
+                    if (employeeLeaveDetais != null)
+                    {
+                        this.TBoxEmployerEnteredRemarks.Text = employeeLeaveDetais.EmployerRemarks;
+                        this.TBoxEmployeeLeaveReason.Text = employeeLeaveDetais.Reason;
+                    }
+                }
+            }
+
         }
 
 
@@ -1554,6 +1684,74 @@ namespace Main.Forms.EmployeeManagementForms.Controls
                 this.FilterEmployeeLeaveHistoryYear = int.Parse(selectedYear.Value.ToString());
                 OnFilterEmployeeLeave(EventArgs.Empty);
             }
+        }
+
+        private void DGVEmployeeLeaveApproval_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > -1)
+            {
+                if (DGVEmployeeLeaveApproval.CurrentRow != null)
+                {
+                    string employeeLeaveId = DGVEmployeeLeaveApproval.CurrentRow.Cells[0].Value.ToString();
+                    long selectedLeaveId = long.Parse(employeeLeaveId);
+                    var employeeLeaveDetais = this.EmployeeLeaveForApproval.Where(x => x.Id == selectedLeaveId).FirstOrDefault();
+
+                    if (employeeLeaveDetais != null)
+                    {
+                        this.TboxEmployeeLeaveRemarks.Text = employeeLeaveDetais.Reason;
+                    }
+                }
+            }
+        }
+
+
+        public event EventHandler EmployeeLeaveApprovedOrDisapproved;
+        protected virtual void OnEmployeeLeaveApproval(EventArgs e)
+        {
+            EmployeeLeaveApprovedOrDisapproved?.Invoke(this, e);
+        }
+
+        public long SelectedLeaveIdForApproval { get; set; }
+        public string EmployeeLeaveApprovalRemarks { get; set; }
+        public StaticData.EmployeeRequestApprovalStatus EmployeeLeaveApprovalStatus { get; set; }
+
+        private void EmployeeLeaveApproval (StaticData.EmployeeRequestApprovalStatus status)
+        {
+            if (string.IsNullOrEmpty(TboxAdminRemarks.Text))
+            {
+                MessageBox.Show("Your remarks is required", "Approval", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+
+            if (DGVEmployeeLeaveApproval.CurrentRow != null)
+            {
+                DialogResult res = MessageBox.Show($"Continue to {status}?", "Approval", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (res == DialogResult.Yes)
+                {
+                    string remarks = TboxAdminRemarks.Text;
+
+                    string employeeLeaveId = DGVEmployeeLeaveApproval.CurrentRow.Cells[0].Value.ToString();
+
+                    this.EmployeeLeaveApprovalRemarks = TboxAdminRemarks.Text;
+                    this.SelectedLeaveIdForApproval = long.Parse(employeeLeaveId);
+                    this.EmployeeLeaveApprovalStatus = status;
+
+                    OnEmployeeLeaveApproval(EventArgs.Empty);
+                }
+            }
+        }
+
+
+        private void BtnApprovedEmpLeave_Click(object sender, EventArgs e)
+        {
+            this.EmployeeLeaveApproval(EmployeeRequestApprovalStatus.Approved);
+        }
+
+        private void BtnDisapprovedEmpLeave_Click(object sender, EventArgs e)
+        {
+            this.EmployeeLeaveApproval(EmployeeRequestApprovalStatus.Disapproved);
         }
     }
 }

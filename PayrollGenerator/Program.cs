@@ -98,6 +98,8 @@ namespace PayrollGenerator
                     services.AddTransient<IEmployeeBenefitData, EmployeeBenefitData>();
                     services.AddTransient<IEmployeeData, EmployeeData>();
                     services.AddTransient<IEmployeeDeductionData, EmployeeDeductionData>();
+                    services.AddTransient<ISpecificEmployeeBenefitData, SpecificEmployeeBenefitData>();
+                    services.AddTransient<ISpecificEmployeeDeductionData, SpecificEmployeeDeductionData>();
                     services.AddTransient<IEmployeeLeaveData, EmployeeLeaveData>();
                     services.AddTransient<IEmployeePayslipBenefitData, EmployeePayslipBenefitData>();
                     services.AddTransient<IEmployeePayslipData, EmployeePayslipData>();

@@ -359,9 +359,9 @@ namespace Main.Forms.AttendanceTerminal
 
             // kung anong araw ngaun
             // change this.DPickerTesting.Value to DateTime.Now on production
-            DateTime todaysDateAndTime = DateTime.Now; //this.DPickerTesting.Value; //
-                                                       //var culture = CultureInfo.CurrentCulture;
-                                                       //var workDateDayAbbr = culture.DateTimeFormat.GetAbbreviatedDayName(workDate.DayOfWeek);
+            DateTime todaysDateAndTime = this.DPickerTesting.Value; //DateTime.Now; //
+                                                                    //var culture = CultureInfo.CurrentCulture;
+                                                                    //var workDateDayAbbr = culture.DateTimeFormat.GetAbbreviatedDayName(workDate.DayOfWeek);
 
             var workforceSchedule = _workforceScheduleData.GetScheduleByEmpAndDate(empDetails.EmployeeNumber, todaysDateAndTime);
 

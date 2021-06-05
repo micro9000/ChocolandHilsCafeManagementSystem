@@ -11,7 +11,7 @@ namespace DataAccess.Data.EmployeeManagement.Contracts
     public interface ISpecificEmployeeBenefitData : IDataManagerCRUD<SpecificEmployeeBenefitModel>
     {
         List<SpecificEmployeeBenefitModel> GetAllUnpaid();
-        List<SpecificEmployeeBenefitModel> GetAllBySubmissionDateRange(DateTime startDate, DateTime endDate);
-        List<SpecificEmployeeBenefitModel> GetAllByPaymentDate(DateTime paymentDate);
+        List<SpecificEmployeeBenefitModel> GetAllByEmployeeAndSubmissionDateRange(string employeeNumber, DateTime startDate, DateTime endDate);
+        List<SpecificEmployeeBenefitModel> GetAllByEmployeeAndPayslipId(string employeeNumber, long payslipId);
     }
 }
