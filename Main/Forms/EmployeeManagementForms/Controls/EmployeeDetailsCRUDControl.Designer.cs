@@ -159,6 +159,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.PanelResignedIndicator = new System.Windows.Forms.Panel();
             this.LblResignedDate = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
+            this.BtnGeneratePDF = new System.Windows.Forms.Button();
             this.EmployeeBasicInfo.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -995,6 +996,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             // 
             // EmployeePayslip
             // 
+            this.EmployeePayslip.Controls.Add(this.BtnGeneratePDF);
             this.EmployeePayslip.Controls.Add(this.CBoxPayslipPaydateList);
             this.EmployeePayslip.Controls.Add(this.PanelPayslipDetailsContainer);
             this.EmployeePayslip.Controls.Add(this.panel2);
@@ -1052,7 +1054,7 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.label25.ForeColor = System.Drawing.Color.Black;
-            this.label25.Location = new System.Drawing.Point(317, 55);
+            this.label25.Location = new System.Drawing.Point(534, 55);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(337, 20);
             this.label25.TabIndex = 48;
@@ -1630,6 +1632,21 @@ namespace Main.Forms.EmployeeManagementForms.Controls
             this.label24.TabIndex = 50;
             this.label24.Text = "Resigned:";
             // 
+            // BtnGeneratePDF
+            // 
+            this.BtnGeneratePDF.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.BtnGeneratePDF.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnGeneratePDF.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.BtnGeneratePDF.ForeColor = System.Drawing.Color.White;
+            this.BtnGeneratePDF.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnGeneratePDF.Location = new System.Drawing.Point(308, 51);
+            this.BtnGeneratePDF.Name = "BtnGeneratePDF";
+            this.BtnGeneratePDF.Size = new System.Drawing.Size(126, 31);
+            this.BtnGeneratePDF.TabIndex = 52;
+            this.BtnGeneratePDF.Text = "Generate PDF";
+            this.BtnGeneratePDF.UseVisualStyleBackColor = false;
+            this.BtnGeneratePDF.Click += new System.EventHandler(this.BtnGeneratePDF_Click);
+            // 
             // EmployeeDetailsCRUDControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1814,5 +1831,6 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox TBoxEmployeeLeaveReason;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button BtnGeneratePDF;
     }
 }

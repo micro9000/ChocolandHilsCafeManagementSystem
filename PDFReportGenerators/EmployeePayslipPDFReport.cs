@@ -116,8 +116,8 @@ namespace PDFReportGenerators
                                     <th> PhilHealth no: </th>
                                 </tr>
                                 <tr>
-                                    <th> Position {payslip.EmployeeNumber} </th>
-                                    <th> PhilHealth no: {payslip.Employee.Position.Title}</th>
+                                    <th> Position {payslip.Employee.Position.Title} </th>
+                                    <th> PhilHealth no: </th>
                                 </tr>
                                 <tr style='border-bottom: 1px solid gray;'>
                                     <th> Date generated {DateTime.Now.ToShortDateString()} </th>

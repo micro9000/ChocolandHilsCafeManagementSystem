@@ -55,6 +55,7 @@ namespace Main.Forms.EmployeeManagementForms
         private readonly IEmployeePositionData _employeePositionData;
         private readonly IAttendancePDFReport _attendancePDFReport;
         private readonly INumberOfWorkingDaysInAMonthData _numberOfWorkingDaysInAMonthData;
+        private readonly IEmployeePayslipPDFReport _employeePayslipPDFReport;
 
         public FrmMainEmployeeManagement(ILogger<FrmMainEmployeeManagement> logger,
                                     Sessions sessions,
@@ -84,7 +85,8 @@ namespace Main.Forms.EmployeeManagementForms
                                 IEmployeePositionController employeePositionController,
                                 IEmployeePositionData employeePositionData,
                                  IAttendancePDFReport attendancePDFReport,
-                                 INumberOfWorkingDaysInAMonthData numberOfWorkingDaysInAMonthData)
+                                 INumberOfWorkingDaysInAMonthData numberOfWorkingDaysInAMonthData,
+                                 IEmployeePayslipPDFReport employeePayslipPDFReport)
         {
             InitializeComponent();
             _logger = logger;
@@ -116,6 +118,7 @@ namespace Main.Forms.EmployeeManagementForms
             _employeePositionData = employeePositionData;
             _attendancePDFReport = attendancePDFReport;
             _numberOfWorkingDaysInAMonthData = numberOfWorkingDaysInAMonthData;
+            _employeePayslipPDFReport = employeePayslipPDFReport;
         }
 
         private void EmployeeMenuItemsMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -190,6 +193,7 @@ namespace Main.Forms.EmployeeManagementForms
             controlToDisplay.DeleteEmployeeLeave += HandleDeleteEmployeeLeave;
             controlToDisplay.FilterEmployeeLeave += HandleFilterEmployeeLeaveHistory;
             controlToDisplay.EmployeeLeaveApprovedOrDisapproved += ControlToDisplay_EmployeeLeaveApproval;
+            controlToDisplay.GeneratePayslipPDFForSelectedEmployee += ControlToDisplay_GeneratePayslipPDFForSelectedEmployee;
 
             controlToDisplay.UndoMarkEmployeeAsResigned += HandleUndoMarkEmployeeAsResigned;
             controlToDisplay.MarkEmployeeAsResigned += HandleMarkEmployeeAsResigned;
@@ -207,6 +211,20 @@ namespace Main.Forms.EmployeeManagementForms
 
         }
 
+        private void ControlToDisplay_GeneratePayslipPDFForSelectedEmployee(object sender, EventArgs e)
+        {
+            EmployeeDetailsCRUDControl employeeCRUDControlObj = (EmployeeDetailsCRUDControl)sender;
+            var paydate = employeeCRUDControlObj.SelectedDateForPayslipToGeneratePDF;
+            string employeeNumber = employeeCRUDControlObj.EmployeeNumber;
+
+            var payslip = _employeePayslipData.GetEmployeePayslipRecordByPaydate(employeeNumber, paydate);
+
+            if (payslip != null)
+            {
+                _employeePayslipPDFReport.GenerateEmployeePayslip(payslip);
+                MessageBox.Show($"Kindly check the generated pdf to {_payrollSettings.GeneratedPDFLoc}.", "Generated PDF", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
 
         private void HandleEmployeeSaved(object sender, EventArgs e)
         {

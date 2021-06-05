@@ -1753,5 +1753,24 @@ namespace Main.Forms.EmployeeManagementForms.Controls
         {
             this.EmployeeLeaveApproval(EmployeeRequestApprovalStatus.Disapproved);
         }
+
+
+        public DateTime SelectedDateForPayslipToGeneratePDF { get; set; }
+
+        public event EventHandler GeneratePayslipPDFForSelectedEmployee;
+        protected virtual void OnGeneratePayslipPDFForSelectedEmployee(EventArgs e)
+        {
+            GeneratePayslipPDFForSelectedEmployee?.Invoke(this, e);
+        }
+
+        private void BtnGeneratePDF_Click(object sender, EventArgs e)
+        {
+            var selectedPaydate = this.CBoxPayslipPaydateList.SelectedItem as ComboboxItem;
+            if (selectedPaydate != null)
+            {
+                SelectedDateForPayslipToGeneratePDF = DateTime.Parse(selectedPaydate.Value.ToString());
+                OnGeneratePayslipPDFForSelectedEmployee(EventArgs.Empty);
+            }
+        }
     }
 }
