@@ -195,5 +195,12 @@ namespace EntitiesShared
                 return rates;
             }
         }
+
+
+        public enum DisplayTypes { 
+            Earnings,
+            Benefit
+        }
+
     }
 }

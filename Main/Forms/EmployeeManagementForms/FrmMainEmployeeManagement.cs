@@ -307,6 +307,10 @@ namespace Main.Forms.EmployeeManagementForms
                 {
                     employeeCRUDControlObj.EmployeeLeaveForApproval = _employeeLeaveData.GetAllByStatus(EmployeeRequestApprovalStatus.Pending);
                 }
+                else
+                {
+                    employeeCRUDControlObj.EmployeeLeaveForApproval = _employeeLeaveData.GetAllByEmpAndStatus(employeeDetails.Data.EmployeeNumber, EmployeeRequestApprovalStatus.Pending);
+                }
 
                 employeeCRUDControlObj.Holidays = _holidayData.GetAllNotDeleted();
                 employeeCRUDControlObj.WorkforceSchedules = _workforceScheduleData.GetAllForEmpAttendance(Jan1, today, employeeDetails.Data.EmployeeNumber);
@@ -824,7 +828,16 @@ namespace Main.Forms.EmployeeManagementForms
 
                     // search all leave by employee
                     controlToDisplay.EmployeeLeaveHistory = _employeeLeaveData.GetAllByEmployeeNumberAndYear(newEmployeeLeave.EmployeeNumber, DateTime.Now.Year);
-                    controlToDisplay.EmployeeLeaveForApproval = _employeeLeaveData.GetAllByStatus(EmployeeRequestApprovalStatus.Pending);
+
+                    if (_sessions.CurrentLoggedInUser.Role.Role.RoleKey == UserRole.admin)
+                    {
+                        controlToDisplay.EmployeeLeaveForApproval = _employeeLeaveData.GetAllByStatus(EmployeeRequestApprovalStatus.Pending);
+                    }
+                    else
+                    {
+                        controlToDisplay.EmployeeLeaveForApproval = _employeeLeaveData.GetAllByEmpAndStatus(newEmployeeLeave.EmployeeNumber, EmployeeRequestApprovalStatus.Pending);
+                    }
+
                     controlToDisplay.DisplayEmployeeLeavesInDGV();
                     controlToDisplay.DisplayEmployeeLeavesForApprovalInDGV();
                 }

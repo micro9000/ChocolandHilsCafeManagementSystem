@@ -359,6 +359,7 @@ CREATE TABLE IF NOT EXISTS EmployeeBenefits(
 
 SELECT * FROM EmployeeBenefits;
 
+-- -------------------------------------------------------------------------------------- !!!!!!!!!!!!!!!!!! -- June 5, update
 CREATE TABLE IF NOT EXISTS SpecificEmployeeBenefits(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
@@ -391,6 +392,8 @@ CREATE TABLE IF NOT EXISTS EmployeeDeductions(
     isDeleted BOOLEAN DEFAULT False
 )ENGINE=INNODB;
 
+
+-- -------------------------------------------------------------------------------------- !!!!!!!!!!!!!!!!!! -- June 5, update
 CREATE TABLE IF NOT EXISTS SpecificEmployeeDeductions(
 	id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     employeeNumber CHAR(8),
@@ -490,12 +493,19 @@ CREATE TABLE IF NOT EXISTS EmployeePayslipBenefits(
     isDeleted BOOLEAN DEFAULT False,
     FOREIGN KEY(payslipId) REFERENCES EmployeePayslips(Id)
 )ENGINE=INNODB;
-ALTER TABLE EmployeePayslipBenefits
-ADD COLUMN multiplier INT;
+
 
 -- May 17 updates:
 ALTER TABLE EmployeePayslipBenefits
 MODIFY COLUMN amount DECIMAL(9,2);
+
+-- -------------------------------------------------------------------------------------- !!!!!!!!!!!!!!!!!! -- June 5, update
+ALTER TABLE EmployeePayslipBenefits
+ADD COLUMN displayType INT;
+ALTER TABLE EmployeePayslipBenefits
+DROP COLUMN multiplier;
+ALTER TABLE EmployeePayslipBenefits
+ADD COLUMN multiplier VARCHAR(50);
 
 
 SELECT * FROM IngredientInventory;

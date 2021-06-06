@@ -1,4 +1,5 @@
-﻿using DataAccess.Data.InventoryManagement.Contracts;
+﻿using DataAccess.Data.EmployeeManagement.Contracts;
+using DataAccess.Data.InventoryManagement.Contracts;
 using DataAccess.Data.PayrollManagement.Contracts;
 using Main.Forms.AttendanceTerminal;
 using Main.Forms.EmployeeManagementForms;
@@ -20,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static EntitiesShared.StaticData;
 
 namespace Main
 {
@@ -39,6 +41,7 @@ namespace Main
         private readonly HomeFrm _frmHome;
         private readonly IIngredientInventoryData _ingredientInventoryData;
         private readonly IEmployeeCashAdvanceRequestData _employeeCashAdvanceRequestData;
+        private readonly IEmployeeLeaveData _employeeLeaveData;
         private Button currentButton;
         private Form activeForm;
 
@@ -55,7 +58,8 @@ namespace Main
                         FrmEmployeeRequests frmEmployeeRequests,
                         HomeFrm frmHome,
                         IIngredientInventoryData ingredientInventoryData,
-                        IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData)
+                        IEmployeeCashAdvanceRequestData employeeCashAdvanceRequestData,
+                        IEmployeeLeaveData employeeLeaveData)
         {
             InitializeComponent();
             _sessions = sessions;
@@ -72,6 +76,7 @@ namespace Main
             _frmHome = frmHome;
             _ingredientInventoryData = ingredientInventoryData;
             _employeeCashAdvanceRequestData = employeeCashAdvanceRequestData;
+            _employeeLeaveData = employeeLeaveData;
         }
 
         private void MainFrm_FormClosed(object sender, FormClosedEventArgs e)
@@ -151,6 +156,23 @@ namespace Main
                         {
                             Title = "Cash Advance request",
                             Message = $"{request.Employee.FullName} request {request.Amount} cash advance"
+                        });
+                    }
+                }
+
+                var pendingEmpLeaveRequests = _employeeLeaveData.GetAllByStatus(EmployeeRequestApprovalStatus.Pending);
+
+                if (pendingEmpLeaveRequests != null && pendingEmpLeaveRequests.Count > 0)
+                {
+                    this.BtnEmployeeManagementMenuItem.Text = $"Employees ({pendingEmpLeaveRequests.Count})";
+                    this.BtnEmployeeManagementMenuItem.ForeColor = Color.Red;
+
+                    foreach(var request in pendingEmpLeaveRequests)
+                    {
+                        alertMessages.Add(new AlertMessage
+                        {
+                            Title = "Leave request",
+                            Message = $"{request.EmployeeNumber} - {request.DurationType}({request.Duration})"
                         });
                     }
                 }

@@ -43,13 +43,9 @@ namespace EntitiesShared.PayrollManagement
             set { amount = value; }
         }
 
-        private int multiplier;
+        public StaticData.DisplayTypes DisplayType { get; set; }
 
-        public int Multiplier
-        {
-            get { return multiplier; }
-            set { multiplier = value; }
-        }
+        public string Multiplier { get; set; }
 
     }
 }

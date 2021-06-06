@@ -151,6 +151,30 @@ namespace PayrollGenerator.Services
             return false;
         }
 
+        private decimal GetActualLeaveValue(StaticData.LeaveDurationType leaveDuration)
+        {
+            decimal leaveValue = 0;
+            switch (leaveDuration)
+            {
+                case StaticData.LeaveDurationType.FullDay:
+                    leaveValue = 1;
+                    break;
+
+                case StaticData.LeaveDurationType.FirstHalfDay:
+                    leaveValue = 0.5m;
+                    break;
+
+                case StaticData.LeaveDurationType.SecondHalfDay:
+                    leaveValue = 0.5m;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return leaveValue;
+        }
+
 
         public PaydaySalaryComputationPayslip GetEmpAttendanceRecSalaryComputation(EmployeeModel employee, 
                                                 List<EmployeeAttendanceModel> empAttendanceRec,
@@ -166,28 +190,87 @@ namespace PayrollGenerator.Services
 
                 if (empLeaveRec != null && empLeaveRec.Count > 0)
                 {
-                    totalLeaveDays = empLeaveRec.Sum(x => x.NumberOfDays);
+                    totalLeaveDays = empLeaveRec.Sum(x => this.GetActualLeaveValue(x.DurationType) * x.NumberOfDays);
                 }
                 totalDays += totalLeaveDays;
 
                 if (employee.Position == null)
                     throw new Exception($"{employee.FullName} don't have salary rate. Kindly update employee details");
 
-                decimal netBasicSalary = empAttendanceRec.Sum(x => x.TotalDailySalary);
+
+                var attendanceRecordWithOvertimeGrpByOTType = empAttendanceRec
+                                                                        .Where(x => x.OverTimeType != StaticData.OverTimeTypes.NA &&
+                                                                                    x.OverTimeType != StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                                        .ToList()
+                                                                        .GroupBy(x => x.OverTimeType);
+
+                var overTimeDaysWithRate = new Dictionary<StaticData.OverTimeTypes, OverTimeCounter>();
+                if (attendanceRecordWithOvertimeGrpByOTType != null)
+                {
+                    foreach (var OTGrp in attendanceRecordWithOvertimeGrpByOTType)
+                    {
+                        overTimeDaysWithRate.Add(OTGrp.Key,
+                                new OverTimeCounter
+                                {
+                                    // late and undertime is already deducted upon time-out computation
+                                    TotalRate = OTGrp.Sum(x => x.OvertimeDailySalaryAdjustment),
+                                    NumberOfOvertime = OTGrp.Count(),
+                                    Late = OTGrp.Sum(x => x.TotalLate).ToString() + "m",
+                                    LateTotalDeduction = OTGrp.Sum(x => x.LateTotalDeduction),
+                                    UnderTime = OTGrp.Sum(x => x.TotalUnderTime).ToString() + "m",
+                                    UnderTimeTotalDeduction = OTGrp.Sum(x => x.UnderTimeTotalDeduction),
+                                    OverTime = OTGrp.Sum(x => x.OverTimeMins).ToString() + "m",
+                                    OverTimeTotalRate = OTGrp.Sum(x => x.OverTimeTotal),
+                                });
+
+                    }
+                }
+
+
+                decimal netBasicSalary = empAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                            x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                                .Sum(x => x.TotalDailySalary);
+
                 netBasicSalary += employee.Position.DailyRate * totalLeaveDays;
 
-                // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
-                decimal lateDeductions = empAttendanceRec.Sum(x => x.LateTotalDeduction);
-                decimal underTimeDeductions = empAttendanceRec.Sum(x => x.UnderTimeTotalDeduction);
 
+                string lateMins = empAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                            .Sum(x => x.TotalLate).ToString() + "m";
+
+                decimal lateTotalDeduction = empAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                            .Sum(x => x.LateTotalDeduction);
+
+                string underTimeMins = empAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                        .Sum(x => x.TotalUnderTime).ToString() + "m";
+
+                decimal underTimeTotalDeduction = empAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                    .Sum(x => x.UnderTimeTotalDeduction);
+
+                string overTimeMins = empAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                      x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                            .Sum(x => x.OverTimeMins).ToString() + "m";
+
+                decimal overTimeTotal = empAttendanceRec.Where(x => x.OverTimeType == StaticData.OverTimeTypes.NA ||
+                                                                            x.OverTimeType == StaticData.OverTimeTypes.OrdinaryDayOvertime)
+                                                                .Sum(x => x.OverTimeTotal);
+
+
+                // no need to deduct this in netBasicSalary, since we already deduct late and undertime upon inserting the data in time-in and out terminal
                 return new PaydaySalaryComputationPayslip
                 {
-                    Late = empAttendanceRec.Sum(x => x.TotalLate).ToString() + "m",
-                    LateTotalDeduction = lateDeductions,
-                    UnderTime = empAttendanceRec.Sum(x => x.TotalUnderTime).ToString() + "m",
-                    UnderTimeTotalDeduction = underTimeDeductions,
+                    Late = lateMins,
+                    LateTotalDeduction = lateTotalDeduction,
+                    UnderTime = underTimeMins,
+                    UnderTimeTotalDeduction = underTimeTotalDeduction,
+                    OverTime = overTimeMins,
+                    OverTimeTotalRate = overTimeTotal,
                     NumberOfDays = totalDays.ToString() + "d",
-                    NetBasicSalary = netBasicSalary
+                    NetBasicSalary = netBasicSalary,
+                    OverTimeDaysWithRate = overTimeDaysWithRate
                 };
             }
 
@@ -275,6 +358,84 @@ namespace PayrollGenerator.Services
                             decimal employeeGovtContributionTotal = 0;
                             decimal empMonthlySalary = empDetails.Position.MonthlyRate;
 
+                            // normal day overtime
+                            if (newPayslipRec.OverTimeTotalRate > 0)
+                            {
+                                _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                {
+                                    PayslipId = payslipId,
+                                    EmployeeNumber = empNum,
+                                    BenefitTitle = $"Overtime",
+                                    Multiplier = newPayslipRec.OverTime,
+                                    Amount = newPayslipRec.OverTimeTotalRate,
+                                    DisplayType = StaticData.DisplayTypes.Earnings
+                                });
+
+                                empTotalBenefits += newPayslipRec.OverTimeTotalRate;
+                            }
+
+                            // Overtimes
+                            if (empPaydateComputation.OverTimeDaysWithRate != null && empPaydateComputation.OverTimeDaysWithRate.Count > 0)
+                            {
+                                foreach (var ot in empPaydateComputation.OverTimeDaysWithRate)
+                                {
+                                    if (ot.Value.LateTotalDeduction > 0)
+                                    {
+                                        _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                        {
+                                            PayslipId = payslipId,
+                                            EmployeeNumber = empNum,
+                                            BenefitTitle = $"Late {ot.Key}",
+                                            Multiplier = ot.Value.Late,
+                                            Amount = ot.Value.LateTotalDeduction,
+                                            DisplayType = StaticData.DisplayTypes.Earnings
+                                        });
+                                    }
+
+                                    if (ot.Value.UnderTimeTotalDeduction > 0)
+                                    {
+                                        _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                        {
+                                            PayslipId = payslipId,
+                                            EmployeeNumber = empNum,
+                                            BenefitTitle = $"Undertime {ot.Key}",
+                                            Multiplier = ot.Value.UnderTime,
+                                            Amount = ot.Value.UnderTimeTotalDeduction,
+                                            DisplayType = StaticData.DisplayTypes.Earnings
+                                        });
+                                    }
+
+                                    decimal overTimeTotalRate = ot.Value.TotalRate;
+
+                                    if (ot.Value.OverTimeTotalRate > 0)
+                                    {
+                                        _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                        {
+                                            PayslipId = payslipId,
+                                            EmployeeNumber = empNum,
+                                            BenefitTitle = $"Overtime {ot.Key}",
+                                            Multiplier = ot.Value.OverTime,
+                                            Amount = ot.Value.OverTimeTotalRate,
+                                            DisplayType = StaticData.DisplayTypes.Earnings
+                                        });
+                                        overTimeTotalRate += ot.Value.OverTimeTotalRate;
+                                    }
+
+                                    _employeePayslipBenefitData.Add(new EmployeePayslipBenefitModel
+                                    {
+                                        PayslipId = payslipId,
+                                        EmployeeNumber = empNum,
+                                        BenefitTitle = $"{ot.Key}",
+                                        Multiplier = ot.Value.NumberOfOvertime.ToString(),
+                                        Amount = overTimeTotalRate,
+                                        DisplayType = StaticData.DisplayTypes.Earnings
+                                    });
+
+                                    empTotalBenefits += overTimeTotalRate;
+                                }
+                            }
+
+
                             List<EmployeePayslipBenefitModel> employeePayslipBenefitsList = new List<EmployeePayslipBenefitModel>();
                             // Benefits
                             foreach (EmployeeBenefitModel benefit in benefits)
@@ -284,7 +445,9 @@ namespace PayrollGenerator.Services
                                     PayslipId = payslipId,
                                     EmployeeNumber = empNum,
                                     BenefitTitle = benefit.BenefitTitle,
-                                    Amount = benefit.Amount
+                                    Multiplier = "",
+                                    Amount = benefit.Amount,
+                                    DisplayType = StaticData.DisplayTypes.Benefit
                                 });
 
                                 empTotalBenefits += benefit.Amount;
@@ -298,7 +461,9 @@ namespace PayrollGenerator.Services
                                     PayslipId = payslipId,
                                     EmployeeNumber = empNum,
                                     BenefitTitle = benefit.BenefitTitle,
-                                    Amount = benefit.Amount
+                                    Multiplier = "",
+                                    Amount = benefit.Amount,
+                                    DisplayType = StaticData.DisplayTypes.Benefit
                                 });
 
                                 empTotalBenefits += benefit.Amount;
@@ -306,23 +471,30 @@ namespace PayrollGenerator.Services
 
 
                             // Sales bonus here
-                            foreach (CashRegisterCashOutTransactionModel salesReport in cashRegisterSalesReport)
+                            int salesBonusNumberOfDays = cashRegisterSalesReport != null ? cashRegisterSalesReport.Count : 0;
+                            if (salesBonusNumberOfDays > 0)
                             {
+                                decimal totalDailySalesBonus = _payrollSettings.EmployeeBonusFromSaleSpecialBonus * salesBonusNumberOfDays;
+                                empTotalBenefits += totalDailySalesBonus;
+
                                 employeePayslipBenefitsList.Add(new EmployeePayslipBenefitModel
                                 {
                                     PayslipId = payslipId,
                                     EmployeeNumber = empNum,
-                                    BenefitTitle = $"Special bonus from sales: {salesReport.CreatedAt.ToShortDateString()}",
-                                    Amount = _payrollSettings.EmployeeBonusFromSaleSpecialBonus
+                                    BenefitTitle = $"Special bonus",
+                                    Multiplier = salesBonusNumberOfDays.ToString(),
+                                    Amount = totalDailySalesBonus,
+                                    DisplayType = StaticData.DisplayTypes.Earnings
                                 });
-
-                                empTotalBenefits += _payrollSettings.EmployeeBonusFromSaleSpecialBonus;
                             }
+                            //foreach (CashRegisterCashOutTransactionModel salesReport in cashRegisterSalesReport)
+                            //{
+                            //    //empTotalBenefits += _payrollSettings.EmployeeBonusFromSaleSpecialBonus;
+                            //}
 
 
 
                             List<EmployeePayslipDeductionModel> employeePayslipDeductionsList = new List<EmployeePayslipDeductionModel>();
-
 
                             #region SSS contribution
                             var sssMonthContribution = _sssContributionCalculator
@@ -402,8 +574,7 @@ namespace PayrollGenerator.Services
 
                             #region Withholding tax
 
-                            decimal monthlyWithholdingTax = _wTaxCalculator
-                                                                        .GetMonthlyWithholdingTax(this.WTaxTable, employeeGovtContributionTotal, empMonthlySalary);
+                            decimal monthlyWithholdingTax = _wTaxCalculator.GetMonthlyWithholdingTax(this.WTaxTable, employeeGovtContributionTotal, empMonthlySalary);
 
                             if (monthlyWithholdingTax > 0)
                             {

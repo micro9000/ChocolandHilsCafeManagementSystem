@@ -1,4 +1,5 @@
-﻿using EntitiesShared.PayrollManagement;
+﻿using DataAccess.Data.EmployeeManagement.Contracts;
+using EntitiesShared.PayrollManagement;
 using Microsoft.Extensions.Options;
 using Shared;
 using System;
@@ -9,17 +10,20 @@ using System.Text;
 using System.Threading.Tasks;
 using WkHtmlToPdfDotNet;
 using WkHtmlToPdfDotNet.Contracts;
+using static EntitiesShared.StaticData;
 
 namespace PDFReportGenerators
 {
     public class EmployeePayslipPDFReport : IEmployeePayslipPDFReport
     {
         private readonly IConverter _converter;
+        private readonly IEmployeeGovtIdCardData _employeeGovtIdCardData;
         private readonly PayrollSettings _payrollSettings;
 
-        public EmployeePayslipPDFReport(IConverter converter, IOptions<PayrollSettings> payrollSettings)
+        public EmployeePayslipPDFReport(IConverter converter, IOptions<PayrollSettings> payrollSettings, IEmployeeGovtIdCardData employeeGovtIdCardData)
         {
             _converter = converter;
+            _employeeGovtIdCardData = employeeGovtIdCardData;
             _payrollSettings = payrollSettings.Value;
         }
 
@@ -39,13 +43,14 @@ namespace PDFReportGenerators
                                         padding: 5px;
                                     }
 
-                                    table#parent-table thead{
+                                    table#parent-table{
                                         text-align: left;
                                     }
 
                                     table {
                                         width: 100%;
                                         border-collapse: collapse;
+                                        page-break-inside: avoid;
                                     }
                                 </style>
                             </header>
@@ -79,13 +84,14 @@ namespace PDFReportGenerators
                                         padding: 5px;
                                     }
 
-                                    table#parent-table thead{
+                                    table#parent-table{
                                         text-align: left;
                                     }
 
                                     table {
                                         width: 100%;
                                         border-collapse: collapse;
+                                        page-break-inside: avoid;
                                     }
                                 </style>
                             </header>
@@ -103,21 +109,26 @@ namespace PDFReportGenerators
         {
             StringBuilder sb = new StringBuilder();
 
+            var employeeGovtIds = _employeeGovtIdCardData.GetAllByEmployeeNumber(payslip.EmployeeNumber);
+            var SSSId = employeeGovtIds.Where(x => x.GovtAgencyEnumVal == GovContributions.SSS).FirstOrDefault();
+            var PhilHealthId = employeeGovtIds.Where(x => x.GovtAgencyEnumVal == GovContributions.PhilHealth).FirstOrDefault();
+            var PagIbigId = employeeGovtIds.Where(x => x.GovtAgencyEnumVal == GovContributions.PagIbig).FirstOrDefault();
+
             StringBuilder header = new StringBuilder();
             header.Append($@"<hr/>
                             <table id='parent-table'>
                             <thead>
                                 <tr>
                                     <th> Employee: {payslip.Employee.FullName}</th>
-                                    <th> SSS no:  </th>
+                                    <th> SSS no: { (SSSId != null ? SSSId.EmployeeIdNumber : "") } </th>
                                 </tr>
                                 <tr>
                                     <th> ID No: {payslip.EmployeeNumber} </th>
-                                    <th> PhilHealth no: </th>
+                                    <th> PhilHealth no: {(PhilHealthId != null ? PhilHealthId.EmployeeIdNumber : "")}</th>
                                 </tr>
                                 <tr>
                                     <th> Position {payslip.Employee.Position.Title} </th>
-                                    <th> PhilHealth no: </th>
+                                    <th> PagIbig no: {(PagIbigId != null ? PagIbigId.EmployeeIdNumber : "")}</th>
                                 </tr>
                                 <tr style='border-bottom: 1px solid gray;'>
                                     <th> Date generated {DateTime.Now.ToShortDateString()} </th>
@@ -148,11 +159,25 @@ namespace PDFReportGenerators
             StringBuilder benefits = new StringBuilder();
             if (payslip.Benefits != null)
             {
-                foreach(var item in payslip.Benefits)
+                foreach (var item in payslip.Benefits.Where(x => x.DisplayType == DisplayTypes.Earnings))
                 {
                     benefits.Append($@"<tr> 
                                     <td>{item.BenefitTitle}</td> 
-                                    <td></td> 
+                                    <td>{item.Multiplier}</td> 
+                                    <td>{item.Amount}</td> 
+                            </tr>");
+                }
+
+                benefits.Append(@"<tr style='border-bottom: 1px solid gray;'> 
+                                    <th>Benefits</th>
+                                    <th></th>
+                                    <th>Amount</th>
+                            </tr>");
+                foreach (var item in payslip.Benefits.Where(x => x.DisplayType == DisplayTypes.Benefit))
+                {
+                    benefits.Append($@"<tr> 
+                                    <td>{item.BenefitTitle}</td> 
+                                    <td>{item.Multiplier}</td> 
                                     <td>{item.Amount}</td> 
                             </tr>");
                 }
@@ -160,17 +185,15 @@ namespace PDFReportGenerators
 
             StringBuilder deductions = new StringBuilder();
 
-            deductions.Append(@"<table>
-                        <thead>
-                            <tr>
-                                <th>Deductions</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>");
+            deductions.Append(@"<table>");
 
             if (payslip.EmployeeGovContributions != null)
             {
+                deductions.Append(@"<tr style='border-bottom: 1px solid gray;'>
+                                <th>Government Contributions</th>
+                                <th>Amount</th>
+                            </tr>");
+
                 foreach (var contrib in payslip.EmployeeGovContributions)
                 {
                     deductions.Append($@"<tr> 
@@ -182,6 +205,10 @@ namespace PDFReportGenerators
 
             if (payslip.Deductions != null)
             {
+                deductions.Append(@"<tr style='border-bottom: 1px solid gray;'><th>Deductions</th>
+                                        <th>Amount</th>
+                                    </tr>");
+
                 foreach (var item in payslip.Deductions)
                 {
                     deductions.Append($@"<tr> 
@@ -192,7 +219,7 @@ namespace PDFReportGenerators
             }
 
 
-            deductions.Append(@"</tbody></table>");
+            deductions.Append(@"</table>");
 
 
             earnings.Append($@"
@@ -233,7 +260,7 @@ namespace PDFReportGenerators
             StringBuilder footer = new StringBuilder();
             footer.Append($@"
                 <tfoot>
-                    <tr>
+                    <tr style='text-align: center !important; '>
                         <th>Total income: {payslip.TotalIncome}</th>
                         <th>Total Deductions: {payslip.DeductionTotal}</th>
                     </tr>

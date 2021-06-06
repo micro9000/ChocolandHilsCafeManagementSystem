@@ -399,8 +399,10 @@ namespace Main.Forms.PayrollForms
                                     {
                                         PayslipId = payslipId,
                                         EmployeeNumber = employeeNumber,
-                                        BenefitTitle = $"Overtime: {empPayslipGen.PaydaySalaryComputation.OverTime}",
-                                        Amount = empPayslipGen.PaydaySalaryComputation.OverTimeTotalRate
+                                        BenefitTitle = $"Overtime",
+                                        Multiplier = empPayslipGen.PaydaySalaryComputation.OverTime,
+                                        Amount = empPayslipGen.PaydaySalaryComputation.OverTimeTotalRate,
+                                        DisplayType = StaticData.DisplayTypes.Earnings
                                     });
 
                                     empTotalBenefits += empPayslipGen.PaydaySalaryComputation.OverTimeTotalRate;
@@ -417,8 +419,10 @@ namespace Main.Forms.PayrollForms
                                             {
                                                 PayslipId = payslipId,
                                                 EmployeeNumber = employeeNumber,
-                                                BenefitTitle = $"Late {ot.Key} - {ot.Value.Late}",
-                                                Amount = ot.Value.LateTotalDeduction
+                                                BenefitTitle = $"Late {ot.Key}",
+                                                Multiplier = ot.Value.Late,
+                                                Amount = ot.Value.LateTotalDeduction,
+                                                DisplayType = StaticData.DisplayTypes.Earnings
                                             });
                                         }
                                         
@@ -428,8 +432,10 @@ namespace Main.Forms.PayrollForms
                                             {
                                                 PayslipId = payslipId,
                                                 EmployeeNumber = employeeNumber,
-                                                BenefitTitle = $"Undertime {ot.Key} - {ot.Value.UnderTime}",
-                                                Amount = ot.Value.UnderTimeTotalDeduction
+                                                BenefitTitle = $"Undertime {ot.Key}",
+                                                Multiplier = ot.Value.UnderTime,
+                                                Amount = ot.Value.UnderTimeTotalDeduction,
+                                                DisplayType = StaticData.DisplayTypes.Earnings
                                             });
                                         }
 
@@ -441,8 +447,10 @@ namespace Main.Forms.PayrollForms
                                             {
                                                 PayslipId = payslipId,
                                                 EmployeeNumber = employeeNumber,
-                                                BenefitTitle = $"Overtime {ot.Key} - {ot.Value.OverTime}",
-                                                Amount = ot.Value.OverTimeTotalRate
+                                                BenefitTitle = $"Overtime {ot.Key}",
+                                                Multiplier = ot.Value.OverTime,
+                                                Amount = ot.Value.OverTimeTotalRate,
+                                                DisplayType = StaticData.DisplayTypes.Earnings
                                             });
                                             overTimeTotalRate += ot.Value.OverTimeTotalRate;
                                         }
@@ -451,8 +459,10 @@ namespace Main.Forms.PayrollForms
                                         {
                                             PayslipId = payslipId,
                                             EmployeeNumber = employeeNumber,
-                                            BenefitTitle = $"{ot.Key} - {ot.Value.NumberOfOvertime}",
-                                            Amount = overTimeTotalRate
+                                            BenefitTitle = $"{ot.Key}",
+                                            Multiplier = ot.Value.NumberOfOvertime.ToString(),
+                                            Amount = overTimeTotalRate,
+                                            DisplayType = StaticData.DisplayTypes.Earnings
                                         });
 
                                         empTotalBenefits += overTimeTotalRate;
@@ -467,7 +477,9 @@ namespace Main.Forms.PayrollForms
                                         PayslipId = payslipId,
                                         EmployeeNumber = employeeNumber,
                                         BenefitTitle = benefit.BenefitTitle,
-                                        Amount = benefit.Amount
+                                        Multiplier = "",
+                                        Amount = benefit.Amount,
+                                        DisplayType = StaticData.DisplayTypes.Benefit
                                     });
 
                                     empTotalBenefits += benefit.Amount;
@@ -481,7 +493,9 @@ namespace Main.Forms.PayrollForms
                                         PayslipId = payslipId,
                                         EmployeeNumber = employeeNumber,
                                         BenefitTitle = benefit.BenefitTitle,
-                                        Amount = benefit.Amount
+                                        Multiplier = "",
+                                        Amount = benefit.Amount,
+                                        DisplayType = StaticData.DisplayTypes.Benefit
                                     });
 
                                     empTotalBenefits += benefit.Amount;
@@ -501,7 +515,8 @@ namespace Main.Forms.PayrollForms
                                         EmployeeNumber = employeeNumber,
                                         BenefitTitle = "Sales bonus",
                                         Amount = totalDailySalesBonus,
-                                        Multiplier = salesBonusNumberOfDays
+                                        Multiplier = salesBonusNumberOfDays.ToString(),
+                                        DisplayType = StaticData.DisplayTypes.Benefit
                                     });
                                 }
                                 

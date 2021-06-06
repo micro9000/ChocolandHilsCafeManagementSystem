@@ -105,13 +105,32 @@ namespace DataAccess.Data.EmployeeManagement.Implementations
             return results;
         }
 
-
-        public int GetCountByStatus(StaticData.EmployeeRequestApprovalStatus status)
+        public List<EmployeeLeaveModel> GetAllByEmpAndStatus(string employeeNumber, StaticData.EmployeeRequestApprovalStatus status)
         {
-            string query = "SELECT COUNT(*) AS COUNT FROM EmployeeLeaves WHERE isDeleted=false AND approvalStatus=@Status";
-            return this.GetValue<int>(query, new { });
-        }
+            string query = @"SELECT * 
+                            FROM EmployeeLeaves AS EL
+                            JOIN LeaveTypes AS LT ON EL.leaveId = LT.id
+                            WHERE EL.isDeleted=false AND EL.approvalStatus=@Status AND EL.employeeNumber=@EmployeeNumber
+                            ORDER BY EL.id DESC";
 
+            List<EmployeeLeaveModel> results = new List<EmployeeLeaveModel>();
+
+            using (var conn = _dbConnFactory.CreateConnection())
+            {
+                results = conn.Query<EmployeeLeaveModel, LeaveTypeModel, EmployeeLeaveModel>(query,
+                        (EL, LT) => {
+                            EL.LeaveType = LT;
+                            return EL;
+                        }, new
+                        {
+                            EmployeeNumber = employeeNumber,
+                            Status = (int)status
+                        }).ToList();
+                conn.Close();
+            }
+
+            return results;
+        }
 
         public List<EmployeeLeaveModel> GetAllByDateRange(int year, DateTime startDate, DateTime endDate)
         {
