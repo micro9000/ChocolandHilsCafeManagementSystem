@@ -114,6 +114,7 @@ namespace PayrollGenerator
                     services.AddTransient<IEmployeePayslipPDFReport, EmployeePayslipPDFReport>();
                     services.AddTransient<IPayrollPDFReport, PayrollPDFReport>();
                     services.AddTransient<ICashRegisterCashOutTransactionData, CashRegisterCashOutTransactionData>();
+                    services.AddTransient<IEmployeeCashAdvanceRequestData, EmployeeCashAdvanceRequestData>();
 
                     services.AddTransient<SSSContributionCalculator>();
                     services.AddTransient<WTaxCalculator>();

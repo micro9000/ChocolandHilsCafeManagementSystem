@@ -90,32 +90,31 @@ namespace Main.Forms.EmployeeManagementForms
             this.ToolStripItem_Benefits_Deductions,
             this.ToolStripItem_PositionAndSalaryRate});
             this.EmployeeMenuItemsMenuStrip.Name = "EmployeeMenuItems";
-            this.EmployeeMenuItemsMenuStrip.OwnerItem = this.MenuItemEmployee;
-            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(260, 92);
+            this.EmployeeMenuItemsMenuStrip.Size = new System.Drawing.Size(206, 92);
             this.EmployeeMenuItemsMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.EmployeeMenuItemsMenuStrip_ItemClicked);
             // 
             // ToolStripItem_DetailsCRUD
             // 
             this.ToolStripItem_DetailsCRUD.Name = "ToolStripItem_DetailsCRUD";
-            this.ToolStripItem_DetailsCRUD.Size = new System.Drawing.Size(259, 22);
+            this.ToolStripItem_DetailsCRUD.Size = new System.Drawing.Size(205, 22);
             this.ToolStripItem_DetailsCRUD.Text = "Details";
             // 
             // ToolStripItem_List
             // 
             this.ToolStripItem_List.Name = "ToolStripItem_List";
-            this.ToolStripItem_List.Size = new System.Drawing.Size(259, 22);
+            this.ToolStripItem_List.Size = new System.Drawing.Size(205, 22);
             this.ToolStripItem_List.Text = "List";
             // 
             // ToolStripItem_Benefits_Deductions
             // 
             this.ToolStripItem_Benefits_Deductions.Name = "ToolStripItem_Benefits_Deductions";
-            this.ToolStripItem_Benefits_Deductions.Size = new System.Drawing.Size(259, 22);
-            this.ToolStripItem_Benefits_Deductions.Text = "Benefits/Deductions/Contributions";
+            this.ToolStripItem_Benefits_Deductions.Size = new System.Drawing.Size(205, 22);
+            this.ToolStripItem_Benefits_Deductions.Text = "Benefits and Deductions";
             // 
             // ToolStripItem_PositionAndSalaryRate
             // 
             this.ToolStripItem_PositionAndSalaryRate.Name = "ToolStripItem_PositionAndSalaryRate";
-            this.ToolStripItem_PositionAndSalaryRate.Size = new System.Drawing.Size(259, 22);
+            this.ToolStripItem_PositionAndSalaryRate.Size = new System.Drawing.Size(205, 22);
             this.ToolStripItem_PositionAndSalaryRate.Text = "Position and Salary Rates";
             // 
             // MenuItemWorkSchedules
